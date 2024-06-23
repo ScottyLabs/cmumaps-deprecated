@@ -1,2 +1,2 @@
-# cmumaps
-cmumaps.com
+# CMU Maps
+Description
