@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Room {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String    @unique
+  events     Event[]
+}
+
+model Event {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  date      String
+  startTime String
+  endTime   String
+  Room      Room   @relation(fields: [roomName], references: [name])
+  roomName  String 
+}

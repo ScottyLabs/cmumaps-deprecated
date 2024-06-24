@@ -7,10 +7,9 @@ import {
   UserButton,
 } from '@clerk/nextjs';
 import './globals.css';
-import "@/styles/global.css";
-import "@/styles/globals.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-
+import '@/styles/global.css';
+import '@/styles/globals.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const metadata: Metadata = {
   title: 'CMU Maps',
