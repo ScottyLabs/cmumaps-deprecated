@@ -33,7 +33,7 @@ import { useRouter } from 'next/navigation';
 import Toolbar from '@/components/Toolbar';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 import { UserButton } from '@clerk/nextjs';
-import { Door } from './api/findPath';
+// import { Door } from './api/findPath';
 import { Placement } from '../types';
 
 /**
@@ -352,34 +352,34 @@ export default function Home() {
 
   // console.log(buildings)
 
-  return <div> 
-    <Map
-            ref={mapRef}
-            token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN!}
-          //   initialRegion={initialRegion}
-          //   cameraBoundary={cameraBoundary}
-          //   maxCameraDistance={1500}
-          //   includedPOICategories={[PointOfInterestCategory.PublicTransport]}
-          //   showsMapTypeControl={false}
-          //   showsUserLocationControl
-          //   allowWheelToZoom
-          //   mapType={MapType.MutedStandard}
-          //   paddingBottom={isDesktop ? 0 : 72}
-          //   paddingLeft={4}
-          //   paddingRight={4}
-          //   paddingTop={10}
-          //   showsZoomControl={!!isDesktop}
-          //   showsCompass={
-          //     isDesktop ? FeatureVisibility.Adaptive : FeatureVisibility.Hidden
-          //   }
-          //   onLoad={() => {
-          //     zoomOnDefaultBuilding(buildings, null);
-          //     setMapLoaded(true);
-          //   }}
-          //   onRegionChangeStart={onRegionChangeStart}
-          //   onRegionChangeEnd={onRegionChangeEnd}
-          >
-          </Map>
-        </div>
-
+  return (
+    <div>
+      <Map
+        ref={mapRef}
+        token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN!}
+        //   initialRegion={initialRegion}
+        //   cameraBoundary={cameraBoundary}
+        //   maxCameraDistance={1500}
+        //   includedPOICategories={[PointOfInterestCategory.PublicTransport]}
+        //   showsMapTypeControl={false}
+        //   showsUserLocationControl
+        //   allowWheelToZoom
+        //   mapType={MapType.MutedStandard}
+        //   paddingBottom={isDesktop ? 0 : 72}
+        //   paddingLeft={4}
+        //   paddingRight={4}
+        //   paddingTop={10}
+        //   showsZoomControl={!!isDesktop}
+        //   showsCompass={
+        //     isDesktop ? FeatureVisibility.Adaptive : FeatureVisibility.Hidden
+        //   }
+        //   onLoad={() => {
+        //     zoomOnDefaultBuilding(buildings, null);
+        //     setMapLoaded(true);
+        //   }}
+        //   onRegionChangeStart={onRegionChangeStart}
+        //   onRegionChangeEnd={onRegionChangeEnd}
+      ></Map>
+    </div>
+  );
 }
