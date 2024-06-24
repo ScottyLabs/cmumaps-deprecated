@@ -7,12 +7,16 @@ import {
   UserButton,
 } from '@clerk/nextjs';
 import './globals.css';
+import "@/styles/global.css";
+import "@/styles/globals.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 export const metadata: Metadata = {
   title: 'CMU Maps',
   description: 'Explore the CMU Maps',
   icons: {
-    icon: '/favicons/icon.png',
+    icon: '/favicons/smapslogo.png',
   },
 };
 
@@ -31,14 +35,6 @@ export default function RootLayout({
         </head>
 
         <body>
-          <header>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
           <div id="root">{children}</div>
         </body>
       </html>
