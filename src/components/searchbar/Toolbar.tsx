@@ -1,22 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import styles from '@/styles/Toolbar.module.css';
-import {
-  MagnifyingGlassIcon, ArrowLeftIcon,
-} from '@heroicons/react/24/solid';
+import { MagnifyingGlassIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import FloorSwitcher from '@/components/FloorSwitcher';
-import {
-  AbsoluteCoordinate,
-  Building,
-  Floor,
-  FloorMap,
-  Room,
-} from '@/types';
+import { AbsoluteCoordinate, Building, Floor, FloorMap, Room } from '@/types';
 import clsx from 'clsx';
 import useEscapeKey from '@/hooks/useEscapeKey';
 import SearchResults from './SearchResults';
 import InfoCard from '@/components/InfoCard';
 import QuickSearch from '@/components/QuickSearch';
-import NavCard from './NavCard';
+import NavCard from '../NavCard';
 import { Door } from '@/pages/api/findPath';
 
 export interface ToolbarProps {
@@ -29,9 +21,9 @@ export interface ToolbarProps {
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   isSearchOpen: boolean;
   onSetIsSearchOpen: (newValue: boolean) => void;
-  buildingAndRoom: {building: Building | null, room: Room | null};
+  buildingAndRoom: { building: Building | null; room: Room | null };
   isCardOpen: boolean;
-  setIsCardOpen: (n: boolean)=>void;
+  setIsCardOpen: (n: boolean) => void;
   isNavOpen: boolean;
   setIsNavOpen: (newValue: boolean) => void;
   userPosition: AbsoluteCoordinate;
@@ -39,7 +31,7 @@ export interface ToolbarProps {
   setNavSRoom: (newValue: Room) => void;
   navERoom: Room;
   navSRoom: Room;
-  setRecommendedPath: (n: Door[]) => void
+  setRecommendedPath: (n: Door[]) => void;
 }
 
 /**
@@ -63,33 +55,29 @@ export default function Toolbar({
   userPosition,
   setNavERoom,
   setNavSRoom,
-  navERoom, 
+  navERoom,
   navSRoom,
-  setRecommendedPath
+  setRecommendedPath,
 }: ToolbarProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
+  useMemo(() => {
+    if (!isCardOpen) return setSearchQuery('');
 
-  useMemo(()=>{
-    if(!isCardOpen)
-      return setSearchQuery("")
+    let formattedName = '';
+    if (buildingAndRoom.room?.alias)
+      return setSearchQuery(buildingAndRoom.room?.alias);
 
-    let formattedName = ""
-    if(buildingAndRoom.room?.alias)
-      return setSearchQuery(buildingAndRoom.room?.alias)
-
-    if(buildingAndRoom.building?.name){
-      formattedName += buildingAndRoom.building?.name 
+    if (buildingAndRoom.building?.name) {
+      formattedName += buildingAndRoom.building?.name;
     }
-    if (buildingAndRoom.room?.name){
-      formattedName += " " + buildingAndRoom.room?.name
-    }else{
-      formattedName == ""
+    if (buildingAndRoom.room?.name) {
+      formattedName += ' ' + buildingAndRoom.room?.name;
+    } else {
+      formattedName == '';
     }
-    if(formattedName != "")
-      setSearchQuery(formattedName)
-    
-  }, [buildingAndRoom, isCardOpen])
+    if (formattedName != '') setSearchQuery(formattedName);
+  }, [buildingAndRoom, isCardOpen]);
   useEscapeKey(() => {
     onSetIsSearchOpen(false);
   });
@@ -99,23 +87,27 @@ export default function Toolbar({
       <div
         className={clsx(
           styles.toolbar,
-          (isSearchOpen) && styles['toolbar-open'],
-          (isCardOpen) && styles['card-open'],
+          isSearchOpen && styles['toolbar-open'],
+          isCardOpen && styles['card-open'],
         )}
-      > 
-      {!isNavOpen && isCardOpen && <InfoCard 
-      building={buildingAndRoom.building} 
-      room={buildingAndRoom.room} 
-      isCardOpen={isCardOpen && !isSearchOpen} 
-      setNavSRoom={setNavSRoom}
-      setNavERoom={setNavERoom}
-      setIsNavOpen={setIsNavOpen}
-      />}
-      {isNavOpen && <NavCard 
-      sroom={navSRoom} 
-      eroom={navERoom} 
-      setRecommendedPath={setRecommendedPath}
-      />}
+      >
+        {!isNavOpen && isCardOpen && (
+          <InfoCard
+            building={buildingAndRoom.building}
+            room={buildingAndRoom.room}
+            isCardOpen={isCardOpen && !isSearchOpen}
+            setNavSRoom={setNavSRoom}
+            setNavERoom={setNavERoom}
+            setIsNavOpen={setIsNavOpen}
+          />
+        )}
+        {isNavOpen && (
+          <NavCard
+            sroom={navSRoom}
+            eroom={navERoom}
+            setRecommendedPath={setRecommendedPath}
+          />
+        )}
         {activeBuilding && !isCardOpen && (
           <FloorSwitcher
             building={activeBuilding}
@@ -134,11 +126,15 @@ export default function Toolbar({
             title="Close"
             className={clsx(
               styles['search-close-button'],
-              (isSearchOpen || isCardOpen || isNavOpen) && styles['search-close-button-visible'],
+              (isSearchOpen || isCardOpen || isNavOpen) &&
+                styles['search-close-button-visible'],
             )}
-            ref={(node) => node && (
-              (isSearchOpen || isCardOpen || isNavOpen) ? node.removeAttribute('inert') : node.setAttribute('inert', '')
-            )}
+            ref={(node) =>
+              node &&
+              (isSearchOpen || isCardOpen || isNavOpen
+                ? node.removeAttribute('inert')
+                : node.setAttribute('inert', ''))
+            }
             onClick={() => {
               onSetIsSearchOpen(false);
               setIsNavOpen(false);
@@ -165,14 +161,11 @@ export default function Toolbar({
             </button>
           )}
         </div>
-        
       </div>
       {isSearchOpen && (
         <input
           type="search"
-          className={clsx(
-            styles['search-box-input'],
-          )}
+          className={clsx(styles['search-box-input'])}
           placeholder="Search"
           value={searchQuery}
           onChange={(event) => {
@@ -197,14 +190,16 @@ export default function Toolbar({
           styles['search-modal'],
           isSearchOpen && styles['search-modal-open'],
         )}
-        ref={(node) => node && (
-          isSearchOpen ? node.removeAttribute('inert') : node.setAttribute('inert', '')
-        )}
+        ref={(node) =>
+          node &&
+          (isSearchOpen
+            ? node.removeAttribute('inert')
+            : node.setAttribute('inert', ''))
+        }
       >
-        
-        {buildings && searchQuery != "" && (
-        <div className={styles['search-list']}>
-          <div className={styles['search-list-scroll']}>
+        {buildings && searchQuery != '' && (
+          <div className={styles['search-list']}>
+            <div className={styles['search-list-scroll']}>
               <SearchResults
                 query={searchQuery}
                 buildings={buildings}
@@ -213,23 +208,23 @@ export default function Toolbar({
                   onSelectBuilding(building);
                   onSetIsSearchOpen(false);
                 }}
-                onSelectRoom={(room: Room, building: Building, newFloor: Floor) => {
+                onSelectRoom={(
+                  room: Room,
+                  building: Building,
+                  newFloor: Floor,
+                ) => {
                   onSelectRoom(room, building, newFloor);
                   onSetIsSearchOpen(false);
                 }}
                 userPosition={userPosition}
               />
-          </div>          
-        </div>
-          )}
-          {buildings && searchQuery == "" && (
-              <QuickSearch
-                setQuery={setSearchQuery}
-              />
-            )}
-            
+            </div>
+          </div>
+        )}
+        {buildings && searchQuery == '' && (
+          <QuickSearch setQuery={setSearchQuery} />
+        )}
       </div>
-      
     </>
   );
 }

@@ -30,7 +30,7 @@ import useMapPosition from '@/hooks/useMapPosition';
 import { isInPolygonCoordinates } from '@/geometry';
 import { getFloorIndexAtOrdinal } from '@/components/FloorSwitcher';
 // import { useRouter } from 'next/router';
-import Toolbar from '@/components/Toolbar';
+import Toolbar from '@/components/searchbar/Toolbar';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 import { UserButton } from '@clerk/nextjs';
 import { Door } from './api/findPath';

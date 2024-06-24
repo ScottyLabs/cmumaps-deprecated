@@ -1,14 +1,12 @@
 /* eslint-disable no-bitwise */
 import { Building, Floor } from '@/types';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  ChevronUpIcon, ChevronDownIcon,
-} from '@heroicons/react/24/solid';
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import styles from '@/styles/FloorSwitcher.module.css';
 import clsx from 'clsx';
 import { useIsDesktop } from '@/hooks/useWindowDimensions';
-import Roundel from './Roundel';
+import Roundel from './shared/Roundel';
 
 interface FloorSwitcherProps {
   building: Building;
@@ -17,14 +15,18 @@ interface FloorSwitcherProps {
   onOrdinalChange: (newOrdinal: number) => void;
 }
 
-export function getFloorIndexAtOrdinal(building: Building, ordinal: number): number {
+export function getFloorIndexAtOrdinal(
+  building: Building,
+  ordinal: number,
+): number {
   let min = 0;
   let max = building.floors.length - 1;
   while (min <= max) {
     const mid = (min + max) >>> 1; // = Math.floor((min + max) / 2)
 
     const midFloorOrdinal = building.floors[mid].ordinal;
-    if (midFloorOrdinal === ordinal) { // found
+    if (midFloorOrdinal === ordinal) {
+      // found
       return mid;
     }
 
@@ -62,13 +64,9 @@ export default function FloorSwitcher({
     ? floorIndex < building.floors.length - 1
     : ~floorIndex <= building.floors.length - 1;
 
-  const lowerFloorIndex = isFloorValid
-    ? floorIndex - 1
-    : insertIndex - 1;
+  const lowerFloorIndex = isFloorValid ? floorIndex - 1 : insertIndex - 1;
   const lowerFloorOrdinal = building.floors[lowerFloorIndex]?.ordinal;
-  const upperFloorIndex = isFloorValid
-    ? floorIndex + 1
-    : insertIndex;
+  const upperFloorIndex = isFloorValid ? floorIndex + 1 : insertIndex;
   const upperFloorOrdinal = building.floors[upperFloorIndex]?.ordinal;
 
   const floorPickerRef = useRef<HTMLDivElement | null>(null);
@@ -78,9 +76,12 @@ export default function FloorSwitcher({
   return (
     <div
       className={clsx(styles.wrapper)}
-      ref={(node) => node && (
-        (isToolbarOpen && !isDesktop) ? node.setAttribute('inert', '') : node.removeAttribute('inert')
-      )}
+      ref={(node) =>
+        node &&
+        (isToolbarOpen && !isDesktop
+          ? node.setAttribute('inert', '')
+          : node.removeAttribute('inert'))
+      }
     >
       <div
         className={clsx(
@@ -98,13 +99,14 @@ export default function FloorSwitcher({
               styles['default-view'],
               showFloorPicker && styles['view-hidden'],
             )}
-            ref={(node) => node && (
-              showFloorPicker ? node.setAttribute('inert', '') : node.removeAttribute('inert')
-            )}
+            ref={(node) =>
+              node &&
+              (showFloorPicker
+                ? node.setAttribute('inert', '')
+                : node.removeAttribute('inert'))
+            }
           >
-            <span className={styles['building-name']}>
-              {building.name}
-            </span>
+            <span className={styles['building-name']}>{building.name}</span>
 
             {building.floors.length !== 0 && (
               <>
@@ -127,23 +129,23 @@ export default function FloorSwitcher({
                     const floorPicker = floorPickerRef.current!;
                     const totalWidth = floorPicker.clientWidth;
                     const buttonWidth = 52;
-                    floorPicker.scrollLeft = (floorIndex + 0.5) * buttonWidth - totalWidth / 2;
+                    floorPicker.scrollLeft =
+                      (floorIndex + 0.5) * buttonWidth - totalWidth / 2;
                   }}
                   disabled={building.floors.length < 2}
                 >
                   {isFloorValid ? building.floors[floorIndex].name : '—'}
                   <span className={styles['ellipsis-indicator']}>
-                    {
-                      building.floors.map((floor: Floor) => (
-                        <div
-                          key={floor.ordinal}
-                          className={clsx(
-                            styles['ellipsis-dot'],
-                            floor.ordinal === ordinal && styles['ellipsis-dot-active'],
-                          )}
-                        />
-                      ))
-                    }
+                    {building.floors.map((floor: Floor) => (
+                      <div
+                        key={floor.ordinal}
+                        className={clsx(
+                          styles['ellipsis-dot'],
+                          floor.ordinal === ordinal &&
+                            styles['ellipsis-dot-active'],
+                        )}
+                      />
+                    ))}
                   </span>
                 </button>
                 <button
@@ -174,9 +176,12 @@ export default function FloorSwitcher({
               styles['floor-picker'],
               !showFloorPicker && styles['view-hidden'],
             )}
-            ref={(node) => node && (
-              showFloorPicker ? node.removeAttribute('inert') : node.setAttribute('inert', '')
-            )}
+            ref={(node) =>
+              node &&
+              (showFloorPicker
+                ? node.removeAttribute('inert')
+                : node.setAttribute('inert', ''))
+            }
           >
             <div className={styles['floor-picker-scroll']} ref={floorPickerRef}>
               {building.floors.map((floor: Floor) => (

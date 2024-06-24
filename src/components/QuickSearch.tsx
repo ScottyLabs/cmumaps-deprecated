@@ -1,89 +1,112 @@
 import React, { useState, useEffect, ReactElement } from 'react';
-import Image from 'next/image'
+import Image from 'next/image';
 import styles from '@/styles/QuickSearch.module.css';
-import coffeeIcon from "/public/assets/icons/coffee.svg"
-import toiletIcon from "/public/assets/icons/toilet.svg"
-import fountainIcon from "/public/assets/icons/water.svg"
-import foodIcon from "/public/assets/icons/forkknife.svg"
+import coffeeIcon from '/public/assets/icons/coffee.svg';
+import toiletIcon from '/public/assets/icons/toilet.svg';
+import fountainIcon from '/public/assets/icons/water.svg';
+import foodIcon from '/public/assets/icons/forkknife.svg';
 
 export interface QuickSearchProps {
-  setQuery: (q:string)=>void,
+  setQuery: (q: string) => void;
 }
 
 /**
  * Displays the search results.
  */
 export default function QuickSearch({
-  setQuery
-}: QuickSearchProps):ReactElement {
-    return(
-        <div className="w-[100%] h-[275px]">
-            <div className="relative h-[275px]">
-                <div className="absolute w-[100%] h-[275px] top-0 left-0 bg-[#8e8e8e] rounded-[20px]" />
-                <p className="absolute w-[100%] top-[165px] left-[10px] [font-family:'Inter-Bold',Helvetica] font-bold text-white text-[16px] tracking-[0] leading-[normal]">
-                    Events (as of now 3:00PM EST Sat Mar 23)
+  setQuery,
+}: QuickSearchProps): ReactElement {
+  return (
+    <div className="h-[275px] w-[100%]">
+      <div className="relative h-[275px]">
+        <div className="absolute left-0 top-0 h-[275px] w-[100%] rounded-[20px] bg-[#8e8e8e]" />
+        <p className="absolute left-[10px] top-[165px] w-[100%] text-[16px] font-bold leading-[normal] tracking-[0] text-white [font-family:'Inter-Bold',Helvetica]">
+          Events (as of now 3:00PM EST Sat Mar 23)
+        </p>
+        <div className="absolute left-[8px] top-[12px] h-[140px] w-[100%]">
+          <div className="absolute left-[2px] top-0 w-[100%] text-[16px] font-bold leading-[normal] tracking-[0] text-white [font-family:'Inter-Bold',Helvetica]">
+            Quick Search
+          </div>
+          <div className="absolute left-0 top-[30px] h-[110px] w-[95%] rounded-[9.71px] bg-[#b1b1b1]">
+            <div
+              className="absolute left-[6px] top-[10px] h-[90px] w-[22%]"
+              onClick={() => setQuery('Restroom')}
+            >
+              <div className="relative h-[90px] w-[100%] rounded-[9.29px] bg-[#e0e0e0]">
+                <p className="absolute left-[9px] top-[3px] w-[22%] text-[13px] font-normal leading-[normal] tracking-[0] text-[#545454] [font-family:'Inter-Bold',Helvetica]">
+                  <span className="font-bold">Restroom</span>
+                  <span className="text-[14.9px] [font-family:'Inter-Regular',Helvetica]">
+                    &nbsp;
+                  </span>
                 </p>
-                <div className="absolute w-[100%] h-[140px] top-[12px] left-[8px]">
-                    <div className="absolute w-[100%] top-0 left-[2px] [font-family:'Inter-Bold',Helvetica] font-bold text-white text-[16px] tracking-[0] leading-[normal]">
-                        Quick Search
-                    </div>
-                    <div className="absolute w-[95%] h-[110px] top-[30px] left-0 bg-[#b1b1b1] rounded-[9.71px]">
-                        <div className="absolute w-[22%] h-[90px] top-[10px] left-[6px]" onClick={()=>setQuery("Restroom")}>
-                            <div className="relative w-[100%] h-[90px] bg-[#e0e0e0] rounded-[9.29px]">
-                                <p className="absolute w-[22%] top-[3px] left-[9px] [font-family:'Inter-Bold',Helvetica] font-normal text-[#545454] text-[13px] tracking-[0] leading-[normal]">
-                                    <span className="font-bold">Restroom</span>
-                                    <span className="[font-family:'Inter-Regular',Helvetica] text-[14.9px]">&nbsp;</span>
-                                </p>
-                                <div className="absolute w-[60px] h-[61px] top-[23px] left-[10px] bg-white rounded-[30.23px/30.25px]" />
-                                <Image className="absolute w-[50%] h-[50hu] top-[32px] left-[20px] object-cover"
-                                    alt="Toilet" 
-                                    src={toiletIcon} width={100} height={100}>    
-                                </Image>
-                            </div>
-                        </div>
-                        <div className="absolute w-[22%] h-[90px] top-[10px] left-[94px]" onClick={()=>setQuery("Cafes")}>
-                            <div className="relative w-[100%] h-[90px] bg-[#e0e0e0] rounded-[9.29px]">
-                                <div className="absolute w-[22%] top-[3px] left-[9px] [font-family:'Inter-Bold',Helvetica] font-bold text-[#545454] text-[13px] text-center tracking-[0] leading-[normal]">
-                                    Coffee
-                                </div>
-                                <div className="absolute w-[60px] h-[61px] top-[23px] left-[10px] bg-white rounded-[30.23px/30.25px]" />
-                                <Image className="absolute w-[58px] h-[58px] top-[23px] left-[12px] object-cover"
-                                    alt="Coffee" 
-                                    src={coffeeIcon} width={100} height={100}>    
-                                </Image>
-                            </div>
-                        </div>
-                        <div className="absolute w-[22%] h-[90px] top-[10px] left-[182px]" onClick={()=>setQuery("Dining")}>
-                            <div className="relative w-[100%] h-[90px] bg-[#e0e0e0] rounded-[9.29px]">
-                                <div className="absolute w-[22%] top-[3px] left-[9px] [font-family:'Inter-Bold',Helvetica] font-bold text-[#545454] text-[13px] text-center tracking-[0] leading-[normal]">
-                                    Food
-                                </div>
-                                <div className="absolute w-[60px] h-[61px] top-[23px] left-[10px] bg-white rounded-[30.23px/30.25px]" />
-                                <Image className="absolute w-[32px] h-[46px] top-[30px] left-[24px] object-cover"
-                                    alt="Food" 
-                                    src={foodIcon} width={100} height={100}>    
-                                </Image>
-                            </div>
-                        </div>
-                        <div className="absolute w-[22%] h-[90px] top-[10px] left-[270px]" onClick={()=>setQuery("restroom")}>
-                            <div className="relative w-[100%] h-[90px] bg-[#e0e0e0] rounded-[9.29px]">
-                                <div className="absolute w-[22%] top-[3px] left-[9px] [font-family:'Inter-Bold',Helvetica] font-bold text-[#545454] text-[13px] text-center tracking-[0] leading-[normal]">
-                                    Fountain
-                                </div>
-                                <div className="absolute w-[60px] h-[61px] top-[23px] left-[10px] bg-white rounded-[30.23px/30.25px]" />
-                                <Image className="absolute w-[42px] h-[42px] top-[33px] left-[20px] object-cover"
-                                    alt="Fountain" 
-                                    src={fountainIcon} width={100} height={100}>    
-                                </Image>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="absolute w-[95%] h-[69px] top-[180px] bg-[#b1b1b1] rounded-[9.82px]" />
-
-                </div>
-
+                <div className="absolute left-[10px] top-[23px] h-[61px] w-[60px] rounded-[30.23px/30.25px] bg-white" />
+                <Image
+                  className="absolute left-[20px] top-[32px] h-[50hu] w-[50%] object-cover"
+                  alt="Toilet"
+                  src={toiletIcon}
+                  width={100}
+                  height={100}
+                ></Image>
+              </div>
             </div>
+            <div
+              className="absolute left-[94px] top-[10px] h-[90px] w-[22%]"
+              onClick={() => setQuery('Cafes')}
+            >
+              <div className="relative h-[90px] w-[100%] rounded-[9.29px] bg-[#e0e0e0]">
+                <div className="absolute left-[9px] top-[3px] w-[22%] text-center text-[13px] font-bold leading-[normal] tracking-[0] text-[#545454] [font-family:'Inter-Bold',Helvetica]">
+                  Coffee
+                </div>
+                <div className="absolute left-[10px] top-[23px] h-[61px] w-[60px] rounded-[30.23px/30.25px] bg-white" />
+                <Image
+                  className="absolute left-[12px] top-[23px] h-[58px] w-[58px] object-cover"
+                  alt="Coffee"
+                  src={coffeeIcon}
+                  width={100}
+                  height={100}
+                ></Image>
+              </div>
+            </div>
+            <div
+              className="absolute left-[182px] top-[10px] h-[90px] w-[22%]"
+              onClick={() => setQuery('Dining')}
+            >
+              <div className="relative h-[90px] w-[100%] rounded-[9.29px] bg-[#e0e0e0]">
+                <div className="absolute left-[9px] top-[3px] w-[22%] text-center text-[13px] font-bold leading-[normal] tracking-[0] text-[#545454] [font-family:'Inter-Bold',Helvetica]">
+                  Food
+                </div>
+                <div className="absolute left-[10px] top-[23px] h-[61px] w-[60px] rounded-[30.23px/30.25px] bg-white" />
+                <Image
+                  className="absolute left-[24px] top-[30px] h-[46px] w-[32px] object-cover"
+                  alt="Food"
+                  src={foodIcon}
+                  width={100}
+                  height={100}
+                ></Image>
+              </div>
+            </div>
+            <div
+              className="absolute left-[270px] top-[10px] h-[90px] w-[22%]"
+              onClick={() => setQuery('restroom')}
+            >
+              <div className="relative h-[90px] w-[100%] rounded-[9.29px] bg-[#e0e0e0]">
+                <div className="absolute left-[9px] top-[3px] w-[22%] text-center text-[13px] font-bold leading-[normal] tracking-[0] text-[#545454] [font-family:'Inter-Bold',Helvetica]">
+                  Fountain
+                </div>
+                <div className="absolute left-[10px] top-[23px] h-[61px] w-[60px] rounded-[30.23px/30.25px] bg-white" />
+                <Image
+                  className="absolute left-[20px] top-[33px] h-[42px] w-[42px] object-cover"
+                  alt="Fountain"
+                  src={fountainIcon}
+                  width={100}
+                  height={100}
+                ></Image>
+              </div>
+            </div>
+          </div>
+          <div className="absolute top-[180px] h-[69px] w-[95%] rounded-[9.82px] bg-[#b1b1b1]" />
         </div>
-    );
-};
-        
+      </div>
+    </div>
+  );
+}
