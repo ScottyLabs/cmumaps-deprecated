@@ -135,12 +135,14 @@ export default function BuildingSearchResults({
     <div>
       <button
         type="button"
-        className="b-0 m-0 flex items-center p-[var(--main-ui-paddig)] text-blue-800"
-        // clsx(
-        //   styles['search-list-element'],
-        //   styles['search-list-element-building'],
-        //   filteredRooms?.length > 0 && styles['search-list-element-sticky'],
-        // ) +
+        className={
+          clsx(
+            styles['search-list-element'],
+            styles['search-list-element-building'],
+            filteredRooms?.length > 0 && styles['search-list-element-sticky'],
+          ) +
+          'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-paddig)]'
+        }
         onClick={() => onSelectBuilding(building)}
       >
         <Roundel code={building.code} />

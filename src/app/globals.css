@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --floor-switcher-height: 52px;
+  --main-ui-padding: 12px;
+  --search-box-height: 45px;
+  --search-icon-width: 40px;
+  --search-transition-duration: 0.3s;
+  --toolbar-gap: 0px;
+  --search-width-desktop: 400px;
+
+  --collection-1-accent: rgba(105, 172, 251, 1);
+  --collection-1-background: rgba(142, 142, 142, 1);
+  --collection-1-highlight: rgba(224, 224, 224, 1);
+  --collection-1-padding: rgba(177, 177, 177, 1);
+  --collection-1-primary: rgba(18, 88, 170, 1);
+}
