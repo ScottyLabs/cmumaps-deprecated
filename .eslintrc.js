@@ -28,9 +28,11 @@ module.exports = {
     // JavaScript rules
     'prefer-const': 'warn',
     'no-var': 'warn',
-    'no-unused-vars': 'warn',
+    // 'no-unused-vars': 'warn',
     'object-shorthand': 'warn',
     'quote-props': ['warn', 'as-needed'],
+    curly: ['error', 'all'],
+
     // TypeScript rules
     '@typescript-eslint/array-type': [
       'warn',

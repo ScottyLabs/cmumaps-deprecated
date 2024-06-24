@@ -49,16 +49,16 @@ export default function BuildingSearchResults({
   onSelectRoom,
   userPosition,
 }: BuildingSearchResultsProps) {
-  const roomNames: string[] = useMemo(
-    () =>
-      building.floors.flatMap(
-        (floor: Floor) =>
-          floorMap[`${building.code}-${floor.name}`]?.rooms
-            .filter((room: Room) => room.alias)
-            .map((room: Room) => simplify(room.alias!)) ?? [],
-      ),
-    [building, floorMap],
-  );
+  // const roomNames: string[] = useMemo(
+  //   () =>
+  //     building.floors.flatMap(
+  //       (floor: Floor) =>
+  //         floorMap[`${building.code}-${floor.name}`]?.rooms
+  //           .filter((room: Room) => room.alias)
+  //           .map((room: Room) => simplify(room.alias!)) ?? [],
+  //     ),
+  //   [building, floorMap],
+  // );
 
   const filteredRooms: RoomWithOrdinal[] = useMemo(() => {
     // No query: only show building names
@@ -104,17 +104,18 @@ export default function BuildingSearchResults({
           })) ?? [],
     );
 
-    if (userPosition)
+    if (userPosition) {
       roomsList.sort(
         (a, b) =>
           distance(a.labelPosition, userPosition) -
           distance(b.labelPosition, userPosition),
       );
+    }
 
     roomsList.sort((a, b) => lDistCache.get(a.id) - lDistCache.get(b.id));
 
     return roomsList;
-  }, [building, simplifiedQuery, floorMap]);
+  }, [simplifiedQuery, building, userPosition, floorMap]);
 
   if (
     filteredRooms.length == 0 &&

@@ -27,7 +27,7 @@ export default function SearchResults({
 }: SearchResultsProps) {
   const simplifiedQuery = useMemo(() => query, [query]);
 
-  if (userPosition)
+  if (userPosition) {
     buildings.sort(
       (b, a) =>
         -distance(
@@ -39,6 +39,7 @@ export default function SearchResults({
           userPosition,
         ),
     );
+  }
 
   return (
     <div className={styles['search-results']}>

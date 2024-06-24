@@ -62,22 +62,31 @@ export default function Toolbar({
   const [searchQuery, setSearchQuery] = useState('');
 
   useMemo(() => {
-    if (!isCardOpen) return setSearchQuery('');
+    if (!isCardOpen) {
+      return setSearchQuery('');
+    }
 
     let formattedName = '';
-    if (buildingAndRoom.room?.alias)
+    if (buildingAndRoom.room?.alias) {
       return setSearchQuery(buildingAndRoom.room?.alias);
+    }
 
     if (buildingAndRoom.building?.name) {
       formattedName += buildingAndRoom.building?.name;
     }
+
     if (buildingAndRoom.room?.name) {
       formattedName += ' ' + buildingAndRoom.room?.name;
     } else {
       formattedName == '';
     }
-    if (formattedName != '') setSearchQuery(formattedName);
+
+    if (formattedName != '') {
+      setSearchQuery(formattedName);
+    }
   }, [buildingAndRoom, isCardOpen]);
+
+  // close search if esc is pressed
   useEscapeKey(() => {
     onSetIsSearchOpen(false);
   });
