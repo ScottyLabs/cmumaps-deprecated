@@ -1,6 +1,5 @@
-import React, { useState, useEffect, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import Image from 'next/image';
-import styles from '@/styles/QuickSearch.module.css';
 import toiletIcon from '/public/assets/icons/toilet.svg';
 import coffeeIcon from '/public/assets/icons/coffee.svg';
 import fountainIcon from '/public/assets/icons/water.svg';
