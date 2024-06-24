@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import useEscapeKey from '@/hooks/useEscapeKey';
 import SearchResults from './SearchResults';
 import InfoCard from '@/components/InfoCard';
-import QuickSearch from '@/components/QuickSearch';
+import QuickSearch from '@/components/searchbar/QuickSearch';
 import NavCard from '../NavCard';
 import { Door } from '@/pages/api/findPath';
 
