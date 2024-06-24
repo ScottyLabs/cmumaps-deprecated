@@ -1,0 +1,82 @@
+.search-list-element {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  margin: 0;
+  width: 100%;
+  padding: var(--main-ui-padding);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  letter-spacing: -.01em;
+  text-align: left;
+  gap: 10px;
+
+  appearance: none;
+  color: inherit;
+
+  height: 60px;
+}
+
+.search-list-element {
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.search-list-element:focus,
+.search-list-element:active {
+  background: rgba(0, 0, 0, .05);
+  outline: 0;
+}
+
+.search-list-element-title {
+  flex: 1;
+  line-height: 1.3;
+  display: flex;
+  overflow: hidden;
+}
+
+.search-list-arrow {
+  width: 20px;
+  height: 20px;
+  fill: rgba(0, 0, 0, .3);
+}
+
+.search-list-element-building {
+  font-weight: 500;
+  letter-spacing: -.01em;
+  font-size: 105%;
+}
+
+.search-list-element-sticky {
+  background: var(--search-background);
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  backdrop-filter: blur(8px);
+}
+
+.search-list-element-room {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.search-list-element-pin {
+  display: flex;
+  justify-content: flex-end;
+  width: 40px;
+}
+
+.search-room-code {
+  /* High legibility alternates */
+  font-feature-settings: 'ss06' on;
+  font-weight: 500;
+}
+
+.search-room-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

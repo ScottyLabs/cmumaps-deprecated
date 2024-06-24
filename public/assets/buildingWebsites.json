@@ -1,0 +1,10 @@
+{
+    "CUC": [{"url":"https://www.cmu.edu/cohon-university-center/"}, {"url":"https://lostandfound.andrew.cmu.edu/", "title":"Lost and Found", "favicon":"https://lostandfound.andrew.cmu.edu/dog-logo.png"}],
+    "GHC": [{"url":"https://www.cs.cmu.edu/"}],
+    "NSH": [{"url":"https://en.wikipedia.org/wiki/Newell_Simon_Hall"}],
+    "WEH": [{"url":"https://wiki.cmukgb.org/index.php/Wean_Hall"}],
+    "TEP": [{"url":"https://www.cmu.edu/tepper/"}],
+    "DH": [{"url":"https://wiki.cmukgb.org/index.php/Doherty_Hall"}],
+    "BH": [{"url":"https://wiki.cmukgb.org/index.php/Baker_Hall"}],
+    "PH": [{"url":"https://wiki.cmukgb.org/index.php/Porter_Hall"}]
+}

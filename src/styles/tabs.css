@@ -1,0 +1,14 @@
+.nav-item {
+    background-color: #c00000;
+    border-bottom: 1px solid #dc0000;
+  }
+  
+  .nav-tabs li {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+  
+  .nav-tabs .active {
+    background-color: #209ba4;
+    border-bottom: 1px solid #ff8181;
+  }

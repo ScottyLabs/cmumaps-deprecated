@@ -1,0 +1,30 @@
+.main {
+  height: 100%;
+  position: relative;
+}
+
+.info-button {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+  background: rgba(255, 255, 255, .8);
+  backdrop-filter: blur(8px);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  padding: 0;
+  color: inherit;
+}
+
+.info-button-icon {
+  width: 30px;
+  height: 30px;
+  fill: #555;
+}
+
+.map-wrapper {
+  height: 100%;
+}

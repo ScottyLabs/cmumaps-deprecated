@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .nav-item {
+    border-bottom: 1px solid #dc0000;
+  } */
+    
+  .nav-item .nav-link {
+    background-color: #8e8e8e;
+    opacity: .6;
+  }
+  .nav-item .nav-link .active{
+    background-color: #e0e0e0;
+  }
