@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import Head from 'next/head';
+import styles from '@/styles/Home.module.css';
 import {
   Coordinate,
   FeatureVisibility,
@@ -10,7 +10,7 @@ import {
   MapType,
   PointOfInterestCategory,
   Polyline,
-} from "mapkit-react";
+} from 'mapkit-react';
 import {
   AbsoluteCoordinate,
   Building,
@@ -18,41 +18,45 @@ import {
   Floor,
   FloorMap,
   Room,
-} from "../../types";
-import BuildingShape from "../../components/BuildingShape";
+} from '../../types';
+import BuildingShape from '../../components/BuildingShape';
 import FloorPlanOverlay, {
   getFloorCenter,
   positionOnMap,
-} from "../../components/FloorPlanOverlay";
-import { useIsDesktop } from "../../hooks/useWindowDimensions";
+} from '../../components/FloorPlanOverlay';
+import { useIsDesktop } from '../../hooks/useWindowDimensions';
 
-import useMapPosition from "../../hooks/useMapPosition";
-import { isInPolygonCoordinates } from "../../geometry";
-import { getFloorIndexAtOrdinal } from "../../components/FloorSwitcher";
+import useMapPosition from '../../hooks/useMapPosition';
+import { isInPolygonCoordinates } from '../../geometry';
+import { getFloorIndexAtOrdinal } from '../../components/FloorSwitcher';
 // import { useRouter } from "next/router";
-import prefersReducedMotion from "../../util/prefersReducedMotion";
-import { UserButton } from "@clerk/nextjs";
+import prefersReducedMotion from '../../util/prefersReducedMotion';
+import { UserButton } from '@clerk/nextjs';
 // import { Door } from "api/findPath";
-import { Placement } from "../../types";
-import Toolbar from "../../components/searchbar/Toolbar";
+import { Placement } from '../../types';
+import Toolbar from '../../components/searchbar/Toolbar';
 
 /**
  * The JSON file at this address contains all the map data used by the project.
  */
-const exportFile = "https://nicolapps.github.io/cmumap-data-mirror/export.json";
+const exportFile = 'https://nicolapps.github.io/cmumap-data-mirror/export.json';
 
 /**
  * The main page of the CMU Map website.
  */
 export default function Home({ params }: { params: { slug: string } }) {
-  function min(x, y){return x <= y ? x : y}
-  function max(x, y){return x >= y ? x : y}
+  function min(x, y) {
+    return x <= y ? x : y;
+  }
+  function max(x, y) {
+    return x >= y ? x : y;
+  }
   // const router = useRouter();
-  console.log("searchme", params.slug)
+  console.log('searchme', params.slug);
   const mapRef = useRef<mapkit.Map | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  var points = [[40.44249719447571, -79.94314319195851]];
+  const points = [[40.44249719447571, -79.94314319195851]];
   function error(err) {
     console.error(`ERROR(${err.code}): ${err.message}`);
   }
@@ -64,42 +68,52 @@ export default function Home({ params }: { params: { slug: string } }) {
 
   let currentBlueDot: undefined | mapkit.Overlay = undefined;
   useEffect(() => {
-    if (!mapLoaded) return;
-    var style = new mapkit.Style({
+    if (!mapLoaded) {
+      return;
+    }
+    const style = new mapkit.Style({
       lineWidth: 2, // 2 CSS pixels.
-      strokeColor: "#999",
-      fillColor: "blue",
+      strokeColor: '#999',
+      fillColor: 'blue',
     });
-    navigator.geolocation.watchPosition((pos)=>{
-      if (currentBlueDot) mapRef.current?.removeOverlay(currentBlueDot)
-      points.push([pos.coords.latitude, pos.coords.longitude])
-      const coord = new mapkit.Coordinate(pos.coords.latitude, pos.coords.longitude);
-
-
-        let circle = new mapkit.CircleOverlay(
-          coord,
-          max(min(20, pos.coords.accuracy), 30)
+    navigator.geolocation.watchPosition(
+      (pos) => {
+        if (currentBlueDot) {
+          mapRef.current?.removeOverlay(currentBlueDot);
+        }
+        points.push([pos.coords.latitude, pos.coords.longitude]);
+        const coord = new mapkit.Coordinate(
+          pos.coords.latitude,
+          pos.coords.longitude,
         );
-        style.fillOpacity = min((pos.coords.altitude - 200) / 100, .5);
+
+        const circle = new mapkit.CircleOverlay(
+          coord,
+          max(min(20, pos.coords.accuracy), 30),
+        );
+        style.fillOpacity = min((pos.coords.altitude - 200) / 100, 0.5);
         circle.style = style;
         currentBlueDot = mapRef.current?.addOverlay(circle);
       },
       error,
-      options
+      options,
     );
     setTimeout(() => {
-      navigator.geolocation.getCurrentPosition((pos)=>{
-        points.push([pos.coords.latitude, pos.coords.longitude])
-        const coord = new mapkit.Coordinate(pos.coords.latitude, pos.coords.longitude);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          points.push([pos.coords.latitude, pos.coords.longitude]);
+          const coord = new mapkit.Coordinate(
+            pos.coords.latitude,
+            pos.coords.longitude,
+          );
 
-        let circle = new mapkit.CircleOverlay(
-          coord, 2
-        )
-        circle.style = style
-        mapRef.current?.addOverlay(
-          circle
-        )
-      }, error, options);
+          const circle = new mapkit.CircleOverlay(coord, 2);
+          circle.style = style;
+          mapRef.current?.addOverlay(circle);
+        },
+        error,
+        options,
+      );
     }, 500);
   }, [mapLoaded]);
 
@@ -119,8 +133,8 @@ export default function Home({ params }: { params: { slug: string } }) {
   const [floorOrdinal, setFloorOrdinal] = useState<number | null>(null);
 
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
-  const [navSRoom, setNavSRoom] =  useState<Room|undefined>(undefined);
-  const [navERoom, setNavERoom] = useState<Room|undefined>(undefined);
+  const [navSRoom, setNavSRoom] = useState<Room | undefined>(undefined);
+  const [navERoom, setNavERoom] = useState<Room | undefined>(undefined);
   const [recommendedPath, setRecommendedPath] = useState<Door[] | null>(null);
 
   const currentFloorName =
@@ -148,25 +162,29 @@ export default function Home({ params }: { params: { slug: string } }) {
           Math.max(...allLat),
           Math.max(...allLon),
           Math.min(...allLat),
-          Math.min(...allLon)
+          Math.min(...allLon),
         ).toCoordinateRegion(),
-        !prefersReducedMotion()
+        !prefersReducedMotion(),
       );
 
       setShowFloor(true);
       setShowRoomNames(false);
-    }    
+    }
     setFloorOrdinal((currentFloorOrdinal) =>
       currentFloorOrdinal === null && newBuilding.floors.length > 0
         ? newBuilding.floors.find(
-            (floor) => floor.name === newBuilding.defaultFloor
+            (floor) => floor.name === newBuilding.defaultFloor,
           )!.ordinal
-        : currentFloorOrdinal
+        : currentFloorOrdinal,
     );
-  }
+  };
 
-  const showRoom = (newRoom: Room, newBuilding: Building | null, convertToMap, updateMap: boolean) => {
-
+  const showRoom = (
+    newRoom: Room,
+    newBuilding: Building | null,
+    convertToMap,
+    updateMap: boolean,
+  ) => {
     setActiveBuilding(newBuilding);
     if (newBuilding === null) {
       return;
@@ -178,71 +196,73 @@ export default function Home({ params }: { params: { slug: string } }) {
       const allLat = coords.map((c) => c.latitude);
       const allLon = coords.map((c) => c.longitude);
 
-      console.log(allLat, allLon)
+      console.log(allLat, allLon);
 
       mapRef.current?.setRegionAnimated(
         new mapkit.BoundingRegion(
           Math.max(...allLat),
           Math.max(...allLon),
           Math.min(...allLat),
-          Math.min(...allLon)
+          Math.min(...allLon),
         ).toCoordinateRegion(),
-        !prefersReducedMotion()
+        !prefersReducedMotion(),
       );
       setShowFloor(true);
       setShowRoomNames(false);
     }
-  }
-    
+  };
 
-  const zoomOnDefaultBuilding = (newBuildings: Building[] | null, newFloors: Floor[] | null) => {
+  const zoomOnDefaultBuilding = (
+    newBuildings: Building[] | null,
+    newFloors: Floor[] | null,
+  ) => {
     // Make sure that both buildings and the map are loaded
-    console.log("searchme", newBuildings, newFloors, mapRef.current)
-    if (!newBuildings || !mapRef.current) return;
-    const r = new RegExp("-|#")
+    console.log('searchme', newBuildings, newFloors, mapRef.current);
+    if (!newBuildings || !mapRef.current) {
+      return;
+    }
+    const r = new RegExp('-|#');
     // Handle the URL
-    const [buildingCode, floorName] = (params.slug?.[0] ?? "")
+    const [buildingCode, floorName] = (params.slug?.[0] ?? '')
       .toUpperCase()
       .split(r);
-    
-    const roomid = params.slug?.[1]
 
-    const building:Building | null =
+    const roomid = params.slug?.[1];
+
+    const building: Building | null =
       buildingCode && newBuildings.find((b) => b.code === buildingCode)!;
-    if (newFloors && roomid && floorName && building){
+    if (newFloors && roomid && floorName && building) {
       const floor = building.floors.find(({ name }) => name === floorName)!;
-      const floorPlan = newFloors[`${building.code}-${floor.name}`]
+      const floorPlan = newFloors[`${building.code}-${floor.name}`];
 
       const { rooms, placement } = floorPlan;
       // Compute the center position of the bounding box of the current floor
       // (Will be used as the rotation center)
-      const center: (AbsoluteCoordinate | undefined) = getFloorCenter(rooms)
-      const convertToMap = (absolute: AbsoluteCoordinate): Coordinate => (
-        positionOnMap(absolute, placement, center)
-      );
+      const center: AbsoluteCoordinate | undefined = getFloorCenter(rooms);
+      const convertToMap = (absolute: AbsoluteCoordinate): Coordinate =>
+        positionOnMap(absolute, placement, center);
 
       if (floor) {
         setFloorOrdinal(floor.ordinal);
       }
-      if(floorPlan && roomid){
-        const room = floorPlan.rooms.find((room)=>room.id === roomid)
-        showRoom(room, building, convertToMap, true)
-        setSelectedRoom(room)
-        setBuildingAndRoom({building: building, room: room})
-        setIsCardOpen(true)
+      if (floorPlan && roomid) {
+        const room = floorPlan.rooms.find((room) => room.id === roomid);
+        showRoom(room, building, convertToMap, true);
+        setSelectedRoom(room);
+        setBuildingAndRoom({ building, room });
+        setIsCardOpen(true);
+      } else {
+        showBuilding(building, true);
       }
-      else {showBuilding(building, true)}
-
-      
-    } else if (building){
+    } else if (building) {
       const floor = building.floors.find(({ name }) => name === floorName)!;
       if (floor) {
         setFloorOrdinal(floor.ordinal);
-      }else { 
-        setFloorOrdinal(0)
+      } else {
+        setFloorOrdinal(0);
       }
-      showBuilding(building, true)
-    }else {
+      showBuilding(building, true);
+    } else {
       // Redirect to the default page
       // params.slug.push("/", undefined, { shallow: true });
     }
@@ -262,15 +282,20 @@ export default function Home({ params }: { params: { slug: string } }) {
 
   // Update the URL from the current floor
   useEffect(() => {
-    if (!buildings) return;
+    if (!buildings) {
+      return;
+    }
 
-    let url = "/";
-    if(activeBuilding)
-      url += `${activeBuilding.code}`
-    if (currentFloorName)
-      url += `-${currentFloorName}`
-    if (buildingAndRoom.room)
-      url += `/${buildingAndRoom.room.id}`
+    let url = '/';
+    if (activeBuilding) {
+      url += `${activeBuilding.code}`;
+    }
+    if (currentFloorName) {
+      url += `-${currentFloorName}`;
+    }
+    if (buildingAndRoom.room) {
+      url += `/${buildingAndRoom.room.id}`;
+    }
 
     // router.push(url, undefined, {
     //   shallow: true,
@@ -285,7 +310,7 @@ export default function Home({ params }: { params: { slug: string } }) {
       latitudeDelta: 0.006337455593801167,
       longitudeDelta: 0.011960061265583022,
     }),
-    []
+    [],
   );
 
   const cameraBoundary = useMemo(
@@ -295,13 +320,15 @@ export default function Home({ params }: { params: { slug: string } }) {
       latitudeDelta: 0.009258427149788417,
       longitudeDelta: 0.014410141520116326,
     }),
-    []
+    [],
   );
 
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
     (region, density) => {
-      if (!buildings) return;
+      if (!buildings) {
+        return;
+      }
 
       const newShowFloors = density >= 200_000;
       setShowFloor(newShowFloors);
@@ -315,7 +342,8 @@ export default function Home({ params }: { params: { slug: string } }) {
         const centerBuilding =
           buildings.find(
             (building: Building) =>
-              building.hitbox && isInPolygonCoordinates(building.hitbox, center)
+              building.hitbox &&
+              isInPolygonCoordinates(building.hitbox, center),
           ) ?? null;
 
         showBuilding(centerBuilding, false);
@@ -325,19 +353,19 @@ export default function Home({ params }: { params: { slug: string } }) {
       }
     },
     mapRef,
-    initialRegion
+    initialRegion,
   );
 
   // Compute the current page title
-  let title = "";
+  let title = '';
   if (activeBuilding) {
     title += activeBuilding.name;
     if (currentFloorName) {
       title += ` ${currentFloorName}`;
     }
-    title += " — ";
+    title += ' — ';
   }
-  title += "CMU Map";
+  title += 'CMU Map';
 
   return (
     <>
@@ -360,7 +388,7 @@ export default function Home({ params }: { params: { slug: string } }) {
             setFloorOrdinal(null);
             showBuilding(building, true);
             setIsCardOpen(true);
-            setBuildingAndRoom({ building: building, room: null });
+            setBuildingAndRoom({ building, room: null });
           }}
           onSelectRoom={(room, building, floor) => {
             setFloorOrdinal(floor.ordinal);
@@ -373,7 +401,7 @@ export default function Home({ params }: { params: { slug: string } }) {
             const points: Coordinate[] = room.shapes
               .flat()
               .map((point: AbsoluteCoordinate) =>
-                positionOnMap(point, placement, center)
+                positionOnMap(point, placement, center),
               );
             const allLat = points.map((p) => p.latitude);
             const allLon = points.map((p) => p.longitude);
@@ -383,22 +411,23 @@ export default function Home({ params }: { params: { slug: string } }) {
                 Math.max(...allLat),
                 Math.max(...allLon),
                 Math.min(...allLat),
-                Math.min(...allLon)
+                Math.min(...allLon),
               ).toCoordinateRegion(),
-              !prefersReducedMotion()
+              !prefersReducedMotion(),
             );
 
             setShowFloor(true);
             setShowRoomNames(true);
 
             setIsCardOpen(true);
-            setBuildingAndRoom({ building: building, room: room });
-
+            setBuildingAndRoom({ building, room });
           }}
           buildingAndRoom={buildingAndRoom}
           isCardOpen={isCardOpen}
-          userPosition={{x:points[points.length-1][0], y:points[points.length-1][1]}}
-
+          userPosition={{
+            x: points[points.length - 1][0],
+            y: points[points.length - 1][1],
+          }}
           setNavERoom={setNavERoom}
           setNavSRoom={setNavSRoom}
           setIsCardOpen={setIsCardOpen}
@@ -410,21 +439,21 @@ export default function Home({ params }: { params: { slug: string } }) {
         />
 
         <div
-          className={styles["map-wrapper"]}
+          className={styles['map-wrapper']}
           ref={(node) =>
             node &&
             (isSearchOpen && !isDesktop
-              ? node.setAttribute("inert", "")
-              : node.removeAttribute("inert"))
+              ? node.setAttribute('inert', '')
+              : node.removeAttribute('inert'))
           }
         >
           <div
             style={{
-              position: "fixed",
-              zIndex: "100",
-              right: "0",
-              height: "10%",
-              padding: "20px",
+              position: 'fixed',
+              zIndex: '100',
+              right: '0',
+              height: '10%',
+              padding: '20px',
             }}
           >
             <UserButton></UserButton>
@@ -450,21 +479,22 @@ export default function Home({ params }: { params: { slug: string } }) {
             }
             allowWheelToZoom
             onLoad={() => {
-                  zoomOnDefaultBuilding(buildings, null);
-                  setMapLoaded(true);
-                }}
-                onRegionChangeStart={onRegionChangeStart}
-                onRegionChangeEnd={onRegionChangeEnd}
+              zoomOnDefaultBuilding(buildings, null);
+              setMapLoaded(true);
+            }}
+            onRegionChangeStart={onRegionChangeStart}
+            onRegionChangeEnd={onRegionChangeEnd}
           >
-            {recommendedPath && <Polyline
-            points={recommendedPath?.map((door)=>door.pos)}
-            selected={false}
-            enabled={true}
-            strokeColor={"red"}
-            strokeOpacity={1}
-            lineWidth={5}
-
-          ></Polyline>}
+            {recommendedPath && (
+              <Polyline
+                points={recommendedPath?.map((door) => door.pos)}
+                selected={false}
+                enabled={true}
+                strokeColor={'red'}
+                strokeOpacity={1}
+                lineWidth={5}
+              ></Polyline>
+            )}
             {buildings &&
               buildings.map((building) => (
                 <BuildingShape
@@ -474,7 +504,7 @@ export default function Home({ params }: { params: { slug: string } }) {
                   toggleCard={(
                     b: Building,
                     r: Room | null,
-                    selectOrDeselect: Boolean
+                    selectOrDeselect: boolean,
                   ) => {
                     /* Right now, the effect of this logic is that if you click on a pin,
                      * you can change what room you've selected by clicking on other pins,
@@ -483,15 +513,18 @@ export default function Home({ params }: { params: { slug: string } }) {
                      * by clicking on a pin
                      * You can always exit by clicking outside
                      */
-                    if (selectOrDeselect) setIsSearchOpen(false);
+                    if (selectOrDeselect) {
+                      setIsSearchOpen(false);
+                    }
                     if (buildingAndRoom.building != b) {
                       setIsCardOpen(true);
                       setBuildingAndRoom({
                         building: b || activeBuilding,
                         room: null,
                       });
-                    } else if (!selectOrDeselect) setIsCardOpen(!isCardOpen);
-
+                    } else if (!selectOrDeselect) {
+                      setIsCardOpen(!isCardOpen);
+                    }
                   }}
                 />
               ))}
@@ -500,7 +533,9 @@ export default function Home({ params }: { params: { slug: string } }) {
               buildings &&
               buildings.flatMap((building: Building) =>
                 building.floors.map((floor: Floor) => {
-                  if (floor.ordinal !== floorOrdinal) return null;
+                  if (floor.ordinal !== floorOrdinal) {
+                    return null;
+                  }
 
                   const code = `${building.code}-${floor.name}`;
                   const floorPlan = floors[code];
@@ -515,11 +550,10 @@ export default function Home({ params }: { params: { slug: string } }) {
                         toggleCard={(
                           b: Building,
                           r: Room,
-                          selectOrDeselect: Boolean
+                          selectOrDeselect: boolean,
                         ) => {
-
-                          if (isNavOpen && r){
-                            setNavSRoom(r)
+                          if (isNavOpen && r) {
+                            setNavSRoom(r);
                           }
 
                           /* Right now, the effect of this logic is that if you click on a pin,
@@ -530,22 +564,25 @@ export default function Home({ params }: { params: { slug: string } }) {
                            * You can always exit by clicking outside
                            */
 
-                          if (selectOrDeselect) setIsSearchOpen(false);
+                          if (selectOrDeselect) {
+                            setIsSearchOpen(false);
+                          }
                           if (buildingAndRoom.room != r) {
                             setIsCardOpen(true);
                             setBuildingAndRoom({
                               building: b || activeBuilding,
                               room: r,
                             });
-                          } else if (!selectOrDeselect)
+                          } else if (!selectOrDeselect) {
                             setIsCardOpen(!isCardOpen);
+                          }
                         }}
                         recommendedPath={recommendedPath}
                         buildingAndRoom={buildingAndRoom}
                       />
                     )
                   );
-                })
+                }),
               )}
           </Map>
         </div>
