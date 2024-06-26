@@ -33,8 +33,8 @@ export default function RootLayout({
           <script>const global = globalThis;</script>
         </head>
 
-        <body>
-          <div id="root">{children}</div>
+        <body >
+          <div style={{"height":"100vu"}} id="root">{children}</div>
         </body>
       </html>
     </ClerkProvider>
