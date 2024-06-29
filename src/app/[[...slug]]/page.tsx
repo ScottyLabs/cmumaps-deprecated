@@ -29,7 +29,6 @@ import { useIsDesktop } from '../../hooks/useWindowDimensions';
 import useMapPosition from '../../hooks/useMapPosition';
 import { isInPolygonCoordinates } from '../../geometry';
 import { getFloorIndexAtOrdinal } from '../../components/FloorSwitcher';
-// import { useRouter } from "next/router";
 import prefersReducedMotion from '../../util/prefersReducedMotion';
 import { UserButton } from '@clerk/nextjs';
 // import { Door } from "api/findPath";
@@ -51,8 +50,6 @@ export default function Home({ params }: { params: { slug: string } }) {
   function max(x, y) {
     return x >= y ? x : y;
   }
-  // const router = useRouter();
-  console.log('searchme', params.slug);
   const mapRef = useRef<mapkit.Map | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
@@ -264,7 +261,7 @@ export default function Home({ params }: { params: { slug: string } }) {
       showBuilding(building, true);
     } else {
       // Redirect to the default page
-      // params.slug.push("/", undefined, { shallow: true });
+      window.history.pushState({}, '', window.location.pathname);
     }
   };
   // Load the data from the API
@@ -296,10 +293,7 @@ export default function Home({ params }: { params: { slug: string } }) {
     if (buildingAndRoom.room) {
       url += `/${buildingAndRoom.room.id}`;
     }
-
-    // router.push(url, undefined, {
-    //   shallow: true,
-    // });
+    window.history.pushState({}, '', url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buildingAndRoom, activeBuilding, currentFloorName]);
 
@@ -374,7 +368,7 @@ export default function Home({ params }: { params: { slug: string } }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Interactive map of the CMU campus" />
       </Head>
-      <main className={styles.main}>
+      <main className="relative h-screen">
         <h1 className="visually-hidden">CMU Map</h1>
         <Toolbar
           buildings={buildings}
