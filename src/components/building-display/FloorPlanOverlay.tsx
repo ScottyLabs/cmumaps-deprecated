@@ -1,19 +1,25 @@
 import { latitudeRatio, longitudeRatio, rotate } from '@/geometry';
 import {
-  AbsoluteCoordinate, FloorPlan, getRoomTypeDetails, Placement, Room,
+  AbsoluteCoordinate,
+  FloorPlan,
+  getRoomTypeDetails,
+  Placement,
+  Room,
 } from '@/types';
-import {
-  Annotation, Coordinate, Polygon,
-} from 'mapkit-react';
+import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 import React, { useMemo, useRef } from 'react';
 import clsx from 'clsx';
 import styles from '../styles/FloorPlanOverlay.module.css';
 import RoomPin, { hasIcon } from './RoomPin';
 
 export function getFloorCenter(rooms: Room[]): AbsoluteCoordinate | undefined {
-  if (!rooms) return undefined;
+  if (!rooms) {
+    return undefined;
+  }
 
-  const points: AbsoluteCoordinate[] = rooms.flatMap((room: Room) => room.shapes.flat());
+  const points: AbsoluteCoordinate[] = rooms.flatMap((room: Room) =>
+    room.shapes.flat(),
+  );
   const allX = points.map((p) => p.x);
   const allY = points.map((p) => p.y);
 
@@ -30,8 +36,12 @@ export function positionOnMap(
   placement: Placement | null,
   center: AbsoluteCoordinate | undefined,
 ) {
-  if (placement === null) throw new Error('No active placement');
-  if (!center) throw new Error('No center');
+  if (placement === null) {
+    throw new Error('No active placement');
+  }
+  if (!center) {
+    throw new Error('No center');
+  }
 
   const [absoluteY, absoluteX] = rotate(
     absolute.x - center.x,
@@ -40,8 +50,10 @@ export function positionOnMap(
   );
 
   return {
-    latitude: (absoluteY / latitudeRatio) / placement.scale + placement.center.latitude,
-    longitude: (absoluteX / longitudeRatio) / placement.scale + placement.center.longitude,
+    latitude:
+      absoluteY / latitudeRatio / placement.scale + placement.center.latitude,
+    longitude:
+      absoluteX / longitudeRatio / placement.scale + placement.center.longitude,
   };
 }
 
@@ -49,7 +61,7 @@ interface FloorPlanOverlayProps {
   floorPlan: FloorPlan;
   showRoomNames: boolean;
   isBackground: boolean;
-  toggleCard: Function;
+  toggleCard;
   buildingAndRoom: any;
 }
 
@@ -67,13 +79,13 @@ export default function FloorPlanOverlay({
 
   // Compute the center position of the bounding box of the current floor
   // (Will be used as the rotation center)
-  const center: (AbsoluteCoordinate | undefined) = useMemo(() => (
-    getFloorCenter(rooms)
-  ), [rooms]);
-
-  const convertToMap = (absolute: AbsoluteCoordinate): Coordinate => (
-    positionOnMap(absolute, placement, center)
+  const center: AbsoluteCoordinate | undefined = useMemo(
+    () => getFloorCenter(rooms),
+    [rooms],
   );
+
+  const convertToMap = (absolute: AbsoluteCoordinate): Coordinate =>
+    positionOnMap(absolute, placement, center);
 
   return (
     <>
@@ -97,45 +109,48 @@ export default function FloorPlanOverlay({
         return (
           <React.Fragment key={room.id}>
             <Polygon
-              points={[
-                ...pointsSrc,
-                pointsSrc[0],
-              ]}
+              points={[...pointsSrc, pointsSrc[0]]}
               selected={buildingAndRoom?.room?.id === room.id}
               enabled={true}
               fillColor={roomColors.background}
               fillOpacity={opacity}
-              strokeColor={buildingAndRoom?.room?.id === room.id ? "#f7efc3": roomColors.border}
+              strokeColor={
+                buildingAndRoom?.room?.id === room.id
+                  ? '#f7efc3'
+                  : roomColors.border
+              }
               strokeOpacity={opacity}
               lineWidth={buildingAndRoom?.room?.id === room.id ? 5 : 1}
               // onSelect={()=>toggleCard(null, room, true)}
               // onDeselect={()=>toggleCard(null, room, false)}
-              />
+            />
 
             {!isBackground && (showRoomNames || showIcon) && (
               <Annotation
                 latitude={labelPos.latitude}
                 longitude={labelPos.longitude}
-                onSelect={()=>toggleCard(null, room, true)}
-                onDeselect={()=>toggleCard(null, room, false)}
+                onSelect={() => toggleCard(null, room, true)}
+                onDeselect={() => toggleCard(null, room, false)}
               >
-                <div className={buildingAndRoom?.room?.id !== room.id ? styles.marker : styles["marker-selected"]}>
+                <div
+                  className={
+                    buildingAndRoom?.room?.id !== room.id
+                      ? styles.marker
+                      : styles['marker-selected']
+                  }
+                >
                   <RoomPin room={room} selected={buildingAndRoom} />
                   {(showRoomNames || room.alias) && (
                     <div
                       className={clsx(
                         styles.label,
-                        (showIcon) && styles['label-on-icon'],
+                        showIcon && styles['label-on-icon'],
                       )}
                     >
                       {showRoomNames && (
-                        <div className={styles['room-number']}>
-                          {room.name}
-                        </div>
+                        <div className={styles['room-number']}>{room.name}</div>
                       )}
-                      {room.alias && (
-                        <div>{room.alias}</div>
-                      )}
+                      {room.alias && <div>{room.alias}</div>}
                     </div>
                   )}
                 </div>

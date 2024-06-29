@@ -17,11 +17,3 @@
   --collection-1-padding: rgba(177, 177, 177, 1);
   --collection-1-primary: rgba(18, 88, 170, 1);
 }
-.main {
-  height: 100%;
-  position: relative;
-}
-
-.map-wrapper {
-  height: 100%;
-}

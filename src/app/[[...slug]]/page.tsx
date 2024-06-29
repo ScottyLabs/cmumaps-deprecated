@@ -19,11 +19,11 @@ import {
   FloorMap,
   Room,
 } from '../../types';
-import BuildingShape from '../../components/BuildingShape';
+import BuildingShape from '../../components/building-display/BuildingShape';
 import FloorPlanOverlay, {
   getFloorCenter,
   positionOnMap,
-} from '../../components/FloorPlanOverlay';
+} from '../../components/building-display/FloorPlanOverlay';
 import { useIsDesktop } from '../../hooks/useWindowDimensions';
 
 import useMapPosition from '../../hooks/useMapPosition';

@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import simplify from '@/util/simplify';
 import titleCase from '@/util/titleCase';
 import Roundel from '../shared/Roundel';
-import RoomPin from '../RoomPin';
+import RoomPin from '../building-display/RoomPin';
 import { distance } from '@/geometry';
 
 import { distance as levenDist } from 'fastest-levenshtein';
