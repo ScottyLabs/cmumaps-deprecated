@@ -2,7 +2,7 @@ import React from 'react';
 import { Building, Room, getRoomTypeDetails } from '@/types';
 import clsx from 'clsx';
 import titleCase from '@/util/titleCase';
-import styles from '../styles/RoomPin.module.css';
+import styles from '../../styles/RoomPin.module.css';
 import pinIcon from '/public/assets/icons/icon-pin.svg';
 import Image from 'next/image';
 

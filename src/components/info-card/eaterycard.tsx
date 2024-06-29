@@ -17,11 +17,11 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import TextProps from '../types/interfaces';
+import TextProps from '../../types/interfaces';
 import {
   IReadOnlyExtendedLocation,
   LocationState,
-} from '../types/locationTypes';
+} from '../../types/locationTypes';
 import React from 'react';
 
 const colors: Record<LocationState, string> = {

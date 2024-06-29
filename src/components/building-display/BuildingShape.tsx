@@ -1,7 +1,7 @@
 import React from 'react';
 import { Building } from '@/types';
 import { Annotation, Polygon } from 'mapkit-react';
-import styles from '../styles/BuildingShape.module.css';
+import styles from '../../styles/BuildingShape.module.css';
 import Roundel from '../shared/Roundel';
 
 interface BuildingShapeProps {

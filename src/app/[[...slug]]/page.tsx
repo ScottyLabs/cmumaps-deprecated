@@ -28,7 +28,7 @@ import { useIsDesktop } from '../../hooks/useWindowDimensions';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import { isInPolygonCoordinates } from '../../geometry';
-import { getFloorIndexAtOrdinal } from '../../components/FloorSwitcher';
+import getFloorIndexAtOrdinal from '../../components/building-display/FloorPlanOverlay';
 import prefersReducedMotion from '../../util/prefersReducedMotion';
 import { UserButton } from '@clerk/nextjs';
 // import { Door } from "api/findPath";

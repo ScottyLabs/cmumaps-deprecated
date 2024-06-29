@@ -1,15 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import styles from '@/styles/Toolbar.module.css';
 import { MagnifyingGlassIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
-import FloorSwitcher from '@/components/FloorSwitcher';
+import FloorSwitcher from '@/components/building-display/FloorSwitcher';
 import { AbsoluteCoordinate, Building, Floor, FloorMap, Room } from '@/types';
 import clsx from 'clsx';
 import useEscapeKey from '@/hooks/useEscapeKey';
 import SearchResults from './SearchResults';
-import InfoCard from '@/components/InfoCard';
+import InfoCard from '@/components/info-card/InfoCard';
 import QuickSearch from '@/components/searchbar/QuickSearch';
-import NavCard from '../NavCard';
-import { Door } from '@/pages/api/findPath';
+import NavCard from '../navigation/NavCard';
+// import { Door } from '@/pages/api/findPath';
 
 export interface ToolbarProps {
   buildings: Building[] | null;

@@ -2,8 +2,7 @@ import React, { useMemo, useState, useEffect, ReactElement } from 'react';
 import { Building, Floor, FloorMap, Room } from '@/types';
 import styles from '@/styles/InfoCard.module.css';
 import simplify from '@/util/simplify';
-import AvailabilitySection from '@/components/AvailabilitySection';
-import WebsiteList from '@/components/WebsiteList';
+import WebsiteList from './WebsiteList';
 import {
   getAvailabilityData,
   getImageURL,
@@ -13,6 +12,7 @@ import {
 import clsx from 'clsx';
 import EateryCard from './eaterycard';
 import NavBar from '../navigation/NavBar';
+import AvailabilitySection from './AvailabilitySection';
 
 type WeekAvailability =
   | { [key: string]: [value: string] }[]
