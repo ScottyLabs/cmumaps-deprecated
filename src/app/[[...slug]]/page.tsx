@@ -20,6 +20,8 @@ import Toolbar from '../../components/searchbar/Toolbar';
 import MapDisplay from '@/components/building-display/MapDisplay';
 import { Coordinate } from 'mapkit-react';
 import { getFloorIndexAtOrdinal } from '@/components/building-display/FloorSwitcher';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { openCard } from '@/lib/features/ui/uiSlice';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -27,6 +29,9 @@ const points = [[40.44249719447571, -79.94314319195851]];
  * The main page of the CMU Map website.
  */
 export default function Home({ params }: { params: { slug: string } }) {
+  const isCardOpenRedux = useAppSelector((state) => state.ui.isCardOpen);
+  const dispatch = useAppDispatch();
+
   const mapRef = useRef<mapkit.Map | null>(null);
 
   const [buildings, setBuildings] = useState<Building[] | null>(null);
@@ -122,7 +127,7 @@ export default function Home({ params }: { params: { slug: string } }) {
           onSelectBuilding={(building) => {
             setFloorOrdinal(null);
             showBuilding(building, true);
-            setIsCardOpen(true);
+            dispatch(openCard());
             setBuildingAndRoom({ building, room: null });
           }}
           onSelectRoom={(room, building, floor) => {
@@ -158,7 +163,7 @@ export default function Home({ params }: { params: { slug: string } }) {
             setBuildingAndRoom({ building, room });
           }}
           buildingAndRoom={buildingAndRoom}
-          isCardOpen={isCardOpen}
+          isCardOpen={isCardOpen || isCardOpenRedux}
           userPosition={{
             x: points[points.length - 1][0],
             y: points[points.length - 1][1],

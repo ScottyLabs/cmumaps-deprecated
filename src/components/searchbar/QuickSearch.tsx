@@ -5,9 +5,6 @@ import coffeeIcon from '/public/assets/icons/coffee.svg';
 import fountainIcon from '/public/assets/icons/water.svg';
 import foodIcon from '/public/assets/icons/forkknife.svg';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { decrement, increment } from '@/lib/features/counter/counterSlice';
-
 export interface QuickSearchProps {
   setQuery: (q: string) => void;
 }
@@ -36,13 +33,6 @@ export default function QuickSearch({
     );
   };
 
-  const count = useAppSelector((state) => state.counter.value);
-  const { value: cardOpen, text: word } = useAppSelector(
-    (state) => state.cardOpen,
-  );
-
-  const dispatch = useAppDispatch();
-
   return (
     <div className="rounded-2xl bg-[#8f8f8f] p-2 pb-3">
       <p className="mb-2 font-bold text-white">Quick Search</p>
@@ -54,24 +44,6 @@ export default function QuickSearch({
       </div>
       <p className="my-2 font-bold text-white">Events</p>
       <div className="h-16 w-full rounded-lg bg-[#b2b2b2]"></div>
-
-      <div>
-        <div className="space-x-2">
-          <button
-            aria-label="Increment value"
-            onClick={() => dispatch(increment())}
-          >
-            Increment
-          </button>
-          <span>{count}</span>
-          <button
-            aria-label="Decrement value"
-            onClick={() => dispatch(decrement())}
-          >
-            Decrement
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

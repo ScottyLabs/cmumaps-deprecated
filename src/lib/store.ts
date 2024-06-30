@@ -1,10 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './features/counter/counterSlice';
-import cardOpenSlice from './features/cardOpen/cardOpenSlice';
+import uiSlice from './features/ui/uiSlice';
 
 export const makeStore = () => {
   return configureStore({
-    reducer: { counter: counterReducer, cardOpen: cardOpenSlice },
+    reducer: { ui: uiSlice },
   });
 };
 
