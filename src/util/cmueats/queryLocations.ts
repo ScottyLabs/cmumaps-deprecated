@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 import {
   LocationState,
@@ -9,7 +9,7 @@ import {
   IReadOnlyLocationStatus,
   ITimeSlots,
   IReadOnlyAPILocation,
-} from "../../types/locationTypes";
+} from '../../types/locationTypes';
 import {
   diffInMinutes,
   currentlyOpen,
@@ -20,21 +20,21 @@ import {
   minutesSinceSundayTimeSlotTime,
   minutesSinceSundayDateTime,
   getApproximateTimeStringFromMinutes,
-} from "./time";
-import toTitleCase from "./string";
+} from './time';
+import toTitleCase from './string';
 import {
   IAPIResponseJoiSchema,
   ILocationAPIJoiSchema,
-} from "../../types/joiLocationTypes";
+} from '../../types/joiLocationTypes';
 
 const WEEKDAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
 ];
 /**
  * Return the status message for a dining location, given the current or next available
@@ -58,21 +58,21 @@ export function getStatusMessage(
 
   const time = getTimeString(nextTime);
 
-  const action = isOpen ? "Closes" : "Opens";
+  const action = isOpen ? 'Closes' : 'Opens';
   let day = WEEKDAYS[nextTime.day];
 
   if (weekdayDiff === 1) {
-    day = "tomorrow";
+    day = 'tomorrow';
   } else if (weekdayDiff === 0) {
-    day = "today";
+    day = 'today';
   }
 
   const relTimeDiff = getApproximateTimeStringFromMinutes(diff);
 
-  if (relTimeDiff === "0 minutes") {
+  if (relTimeDiff === '0 minutes') {
     return `${action} now (${day} at ${time})`;
   }
-  console.log(`${action} in ${relTimeDiff} (${day} at ${time})`)
+  console.log(`${action} in ${relTimeDiff} (${day} at ${time})`);
   return `${action} in ${relTimeDiff} (${day} at ${time})`;
 }
 
@@ -87,12 +87,13 @@ export function getLocationStatus(
   now: DateTime,
 ): IReadOnlyLocationStatus {
   const nextTimeSlot = getNextTimeSlot(timeSlots, now);
-  if (nextTimeSlot === null)
+  if (nextTimeSlot === null) {
     return {
-      statusMsg: "Closed until further notice",
+      statusMsg: 'Closed until further notice',
       closedLongTerm: true,
       locationState: LocationState.CLOSED_LONG_TERM,
     };
+  }
   const isOpen = currentlyOpen(nextTimeSlot, now);
   const relevantTime = isOpen ? nextTimeSlot.end : nextTimeSlot.start; // when will the next closing/opening event happen?
   const timeUntil = diffInMinutes(relevantTime, now);
@@ -132,9 +133,9 @@ export async function queryLocations(
     const validLocations = rawLocations.filter((location) => {
       const { error } = ILocationAPIJoiSchema.validate(location);
       if (error !== undefined) {
-        console.error("Validation error!", error.details);
+        console.error('Validation error!', error.details);
         // eslint-disable-next-line no-underscore-dangle
-        console.error("original obj", error._original);
+        console.error('original obj', error._original);
         // eslint-disable-next-line no-alert
         alert(
           `${location.name} has invalid corresponding data! Ignoring location and continuing validation`,
@@ -145,7 +146,7 @@ export async function queryLocations(
 
     return validLocations.map((location) => ({
       ...location,
-      name: toTitleCase(location.name ?? "Untitled"), // Convert names to title case
+      name: toTitleCase(location.name ?? 'Untitled'), // Convert names to title case
     }));
   } catch (err: any) {
     console.error(err);
