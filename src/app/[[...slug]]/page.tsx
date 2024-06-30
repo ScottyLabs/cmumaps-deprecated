@@ -9,7 +9,7 @@ import { AbsoluteCoordinate, Building, FloorMap, Room } from '../../types';
 
 import { useIsDesktop } from '../../hooks/useWindowDimensions';
 
-import getFloorIndexAtOrdinal, {
+import {
   getFloorCenter,
   positionOnMap,
 } from '../../components/building-display/FloorPlanOverlay';
@@ -19,6 +19,7 @@ import { UserButton } from '@clerk/nextjs';
 import Toolbar from '../../components/searchbar/Toolbar';
 import MapDisplay from '@/components/building-display/MapDisplay';
 import { Coordinate } from 'mapkit-react';
+import { getFloorIndexAtOrdinal } from '@/components/building-display/FloorSwitcher';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
