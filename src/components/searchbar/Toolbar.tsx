@@ -9,6 +9,8 @@ import SearchResults from './SearchResults';
 import InfoCard from '@/components/info-card/InfoCard';
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import NavCard from '../navigation/NavCard';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { closeCard } from '@/lib/features/ui/uiSlice';
 // import { Door } from '@/pages/api/findPath';
 
 export interface ToolbarProps {
@@ -22,8 +24,6 @@ export interface ToolbarProps {
   isSearchOpen: boolean;
   onSetIsSearchOpen: (newValue: boolean) => void;
   buildingAndRoom: { building: Building | null; room: Room | null };
-  isCardOpen: boolean;
-  setIsCardOpen: (n: boolean) => void;
   isNavOpen: boolean;
   setIsNavOpen: (newValue: boolean) => void;
   userPosition: AbsoluteCoordinate;
@@ -37,7 +37,7 @@ export interface ToolbarProps {
 /**
  * Contains the floor switcher, the search bar and the search results.
  */
-export default function Toolbar({
+const Toolbar = ({
   buildings,
   floorMap,
   activeBuilding,
@@ -48,8 +48,6 @@ export default function Toolbar({
   isSearchOpen,
   onSetIsSearchOpen,
   buildingAndRoom,
-  isCardOpen,
-  setIsCardOpen,
   isNavOpen,
   setIsNavOpen,
   userPosition,
@@ -58,7 +56,10 @@ export default function Toolbar({
   navERoom,
   navSRoom,
   setRecommendedPath,
-}: ToolbarProps) {
+}: ToolbarProps) => {
+  const isCardOpen = useAppSelector((state) => state.ui.isCardOpen);
+  const dispatch = useAppDispatch();
+
   const [searchQuery, setSearchQuery] = useState('');
 
   useMemo(() => {
@@ -148,7 +149,7 @@ export default function Toolbar({
               onSetIsSearchOpen(false);
               setIsNavOpen(false);
               setRecommendedPath([]);
-              setIsCardOpen(false);
+              dispatch(closeCard());
             }}
           >
             <ArrowLeftIcon className={styles['search-close-icon']} />
@@ -236,4 +237,6 @@ export default function Toolbar({
       </div>
     </>
   );
-}
+};
+
+export default Toolbar;

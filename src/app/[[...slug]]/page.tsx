@@ -16,11 +16,11 @@ import {
 import prefersReducedMotion from '../../util/prefersReducedMotion';
 import { UserButton } from '@clerk/nextjs';
 // import { Door } from "api/findPath";
-import Toolbar from '../../components/searchbar/Toolbar';
+import Toolbar from '@/components/searchbar/Toolbar';
 import MapDisplay from '@/components/building-display/MapDisplay';
 import { Coordinate } from 'mapkit-react';
 import { getFloorIndexAtOrdinal } from '@/components/building-display/FloorSwitcher';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppDispatch } from '@/lib/hooks';
 import { openCard } from '@/lib/features/ui/uiSlice';
 
 const points = [[40.44249719447571, -79.94314319195851]];
@@ -29,7 +29,6 @@ const points = [[40.44249719447571, -79.94314319195851]];
  * The main page of the CMU Map website.
  */
 export default function Home({ params }: { params: { slug: string } }) {
-  const isCardOpenRedux = useAppSelector((state) => state.ui.isCardOpen);
   const dispatch = useAppDispatch();
 
   const mapRef = useRef<mapkit.Map | null>(null);
@@ -39,7 +38,6 @@ export default function Home({ params }: { params: { slug: string } }) {
   const [showFloor, setShowFloor] = useState(false);
   const [showRoomNames, setShowRoomNames] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isCardOpen, setIsCardOpen] = useState(false);
   const [buildingAndRoom, setBuildingAndRoom] = useState<{
     building: Building | null;
     room: Room | null;
@@ -159,18 +157,16 @@ export default function Home({ params }: { params: { slug: string } }) {
             setShowFloor(true);
             setShowRoomNames(true);
 
-            setIsCardOpen(true);
+            dispatch(openCard());
             setBuildingAndRoom({ building, room });
           }}
           buildingAndRoom={buildingAndRoom}
-          isCardOpen={isCardOpen || isCardOpenRedux}
           userPosition={{
             x: points[points.length - 1][0],
             y: points[points.length - 1][1],
           }}
           setNavERoom={setNavERoom}
           setNavSRoom={setNavSRoom}
-          setIsCardOpen={setIsCardOpen}
           navERoom={navERoom}
           navSRoom={navSRoom}
           isNavOpen={isNavOpen}
@@ -213,14 +209,12 @@ export default function Home({ params }: { params: { slug: string } }) {
             currentFloorName={currentFloorName}
             setSelectedRoom={setSelectedRoom}
             setBuildingAndRoom={setBuildingAndRoom}
-            setIsCardOpen={setIsCardOpen}
             showBuilding={showBuilding}
             setBuildings={setBuildings}
             setFloors={setFloors}
             recommendedPath={recommendedPath}
             showFloor={showFloor}
             setIsSearchOpen={setIsSearchOpen}
-            isCardOpen={isCardOpen}
             floorOrdinal={floorOrdinal}
             floors={floors}
             showRoomNames={showRoomNames}

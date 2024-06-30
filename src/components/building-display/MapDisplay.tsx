@@ -18,6 +18,8 @@ import {
 import { useIsDesktop } from '@/hooks/useWindowDimensions';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 import { AbsoluteCoordinate, Building, Export, Floor, Room } from '@/types';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { openCard, toggleCard } from '@/lib/features/ui/uiSlice';
 
 /**
  * The JSON file at this address contains all the map data used by the project.
@@ -51,14 +53,12 @@ const MapDisplay = ({
   currentFloorName,
   setSelectedRoom,
   setBuildingAndRoom,
-  setIsCardOpen,
   showBuilding,
   setBuildings,
   setFloors,
   recommendedPath,
   showFloor,
   setIsSearchOpen,
-  isCardOpen,
   floorOrdinal,
   floors,
   showRoomNames,
@@ -66,6 +66,9 @@ const MapDisplay = ({
   setNavSRoom,
 }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
+
+  const isCardOpen = useAppSelector((state) => state.ui.isCardOpen);
+  const dispatch = useAppDispatch();
 
   let currentBlueDot: undefined | mapkit.Overlay = undefined;
 
@@ -194,7 +197,7 @@ const MapDisplay = ({
         showRoom(room, building, convertToMap, true);
         setSelectedRoom(room);
         setBuildingAndRoom({ building, room });
-        setIsCardOpen(true);
+        dispatch(openCard());
       } else {
         showBuilding(building, true);
       }
@@ -359,13 +362,13 @@ const MapDisplay = ({
                 setIsSearchOpen(false);
               }
               if (buildingAndRoom.building != b) {
-                setIsCardOpen(true);
+                dispatch(openCard());
                 setBuildingAndRoom({
                   building: b || activeBuilding,
                   room: null,
                 });
               } else if (!selectOrDeselect) {
-                setIsCardOpen(!isCardOpen);
+                dispatch(toggleCard());
               }
             }}
           />
@@ -410,13 +413,13 @@ const MapDisplay = ({
                       setIsSearchOpen(false);
                     }
                     if (buildingAndRoom.room != r) {
-                      setIsCardOpen(true);
+                      dispatch(openCard());
                       setBuildingAndRoom({
                         building: b || activeBuilding,
                         room: r,
                       });
                     } else if (!selectOrDeselect) {
-                      setIsCardOpen(!isCardOpen);
+                      dispatch(toggleCard());
                     }
                   }}
                   recommendedPath={recommendedPath}
