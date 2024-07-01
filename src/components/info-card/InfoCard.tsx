@@ -13,28 +13,27 @@ import clsx from 'clsx';
 import EateryCard from './eaterycard';
 import NavBar from '../navigation/NavBar';
 import AvailabilitySection from './AvailabilitySection';
+import { useAppSelector } from '@/lib/hooks';
 
 type WeekAvailability =
   | { [key: string]: [value: string] }[]
   | Record<string, never>;
 
 export interface InfoCardProps {
-  building: Building | null;
-  room: Room | null;
-  isCardOpen: boolean;
   setNavSRoom: (n: Room) => void;
   setNavERoom: (n: Room) => void;
   setIsNavOpen: (n: boolean) => void;
 }
 
 export default function InfoCard({
-  building,
-  room,
-  isCardOpen,
   setNavSRoom,
   setNavERoom,
   setIsNavOpen,
 }: InfoCardProps): ReactElement {
+  const room = useAppSelector((state) => state.ui.selectedRoom);
+  let building = useAppSelector((state) => state.ui.selectedBuilding);
+  const isCardOpen = !!(room || building);
+  building = useAppSelector((state) => state.ui.focusedBuilding);
   const [imageURL, setImageURL] = useState('');
   const [availabilityData, setAvailabilityData] = useState({});
   const [eatingData, setEatingData] = useState({});
@@ -44,7 +43,6 @@ export default function InfoCard({
 
   useEffect(() => {
     getImageURL(building?.code || '', room?.name || null).then((res) => {
-      console.log(res);
       setImageURL(res);
     });
 
@@ -84,10 +82,6 @@ export default function InfoCard({
       setWebsiteData([]);
     }
   }, [building, room]);
-
-  if (!building) {
-    return <p></p>;
-  }
 
   function availabilityApplicable(avail: WeekAvailability) {
     if (Object.keys(avail).length) {

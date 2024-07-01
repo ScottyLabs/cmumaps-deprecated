@@ -11,6 +11,8 @@ import React, { useMemo, useRef } from 'react';
 import clsx from 'clsx';
 import styles from '../../styles/FloorPlanOverlay.module.css';
 import RoomPin, { hasIcon } from './RoomPin';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { claimRoom, releaseRoom } from '@/lib/features/ui/uiSlice';
 
 export function getFloorCenter(rooms: Room[]): AbsoluteCoordinate | undefined {
   if (!rooms) {
@@ -61,7 +63,6 @@ interface FloorPlanOverlayProps {
   floorPlan: FloorPlan;
   showRoomNames: boolean;
   isBackground: boolean;
-  toggleCard;
   buildingAndRoom: any;
 }
 
@@ -72,7 +73,6 @@ export default function FloorPlanOverlay({
   floorPlan,
   showRoomNames,
   isBackground,
-  toggleCard,
   buildingAndRoom,
 }: FloorPlanOverlayProps) {
   const { rooms, placement } = floorPlan;
@@ -86,6 +86,8 @@ export default function FloorPlanOverlay({
 
   const convertToMap = (absolute: AbsoluteCoordinate): Coordinate =>
     positionOnMap(absolute, placement, center);
+  const dispatch = useAppDispatch();
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
 
   return (
     <>
@@ -96,6 +98,7 @@ export default function FloorPlanOverlay({
         // Turn on for CMUShits.com
         // if (room.type != "restroom" && room.type != "corridor")
         //   return;
+
         const pointsSrc = room.shapes[0].map(convertToMap);
 
         const roomColors = getRoomTypeDetails(room.type);
@@ -104,37 +107,35 @@ export default function FloorPlanOverlay({
 
         const opacity = isBackground ? 0.7 : 1;
 
-        const showIcon = hasIcon(room) || buildingAndRoom?.room?.id === room.id;
+        const showIcon = hasIcon(room) || selectedRoom === room.id;
 
         return (
           <React.Fragment key={room.id}>
             <Polygon
               points={[...pointsSrc, pointsSrc[0]]}
-              selected={buildingAndRoom?.room?.id === room.id}
+              selected={selectedRoom?.id === room.id}
               enabled={true}
               fillColor={roomColors.background}
               fillOpacity={opacity}
               strokeColor={
-                buildingAndRoom?.room?.id === room.id
-                  ? '#f7efc3'
-                  : roomColors.border
+                selectedRoom?.id === room.id ? '#f7efc3' : roomColors.border
               }
               strokeOpacity={opacity}
-              lineWidth={buildingAndRoom?.room?.id === room.id ? 5 : 1}
-              // onSelect={()=>toggleCard(null, room, true)}
-              // onDeselect={()=>toggleCard(null, room, false)}
+              lineWidth={selectedRoom?.id === room.id ? 5 : 1}
+              onSelect={() => dispatch(claimRoom(room))}
+              onDeselect={() => dispatch(releaseRoom(room))}
             />
 
             {!isBackground && (showRoomNames || showIcon) && (
               <Annotation
                 latitude={labelPos.latitude}
                 longitude={labelPos.longitude}
-                onSelect={() => toggleCard(null, room, true)}
-                onDeselect={() => toggleCard(null, room, false)}
+                onSelect={() => dispatch(claimRoom(room))}
+                onDeselect={() => dispatch(releaseRoom(room))}
               >
                 <div
                   className={
-                    buildingAndRoom?.room?.id !== room.id
+                    selectedRoom?.id !== room.id
                       ? styles.marker
                       : styles['marker-selected']
                   }

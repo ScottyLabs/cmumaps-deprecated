@@ -10,7 +10,7 @@ import InfoCard from '@/components/info-card/InfoCard';
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import NavCard from '../navigation/NavCard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { closeCard } from '@/lib/features/ui/uiSlice';
+import { claimRoom } from '@/lib/features/ui/uiSlice';
 // import { Door } from '@/pages/api/findPath';
 
 export interface ToolbarProps {
@@ -57,27 +57,30 @@ const Toolbar = ({
   navSRoom,
   setRecommendedPath,
 }: ToolbarProps) => {
-  const isCardOpen = useAppSelector((state) => state.ui.isCardOpen);
+  const isCardOpen = useAppSelector(
+    (state) => !!(state.ui.selectedRoom || state.ui.selectedBuilding),
+  );
   const dispatch = useAppDispatch();
-
+  const room = useAppSelector((state) => state.ui.selectedRoom);
+  const building = useAppSelector((state) => state.ui.focusedBuilding);
   const [searchQuery, setSearchQuery] = useState('');
 
   useMemo(() => {
-    if (!isCardOpen) {
+    if (!room && !building) {
       return setSearchQuery('');
     }
 
     let formattedName = '';
-    if (buildingAndRoom.room?.alias) {
-      return setSearchQuery(buildingAndRoom.room?.alias);
+    if (room?.alias) {
+      return setSearchQuery(room.alias);
     }
 
-    if (buildingAndRoom.building?.name) {
-      formattedName += buildingAndRoom.building?.name;
+    if (building?.name) {
+      formattedName += building?.name;
     }
 
-    if (buildingAndRoom.room?.name) {
-      formattedName += ' ' + buildingAndRoom.room?.name;
+    if (room?.name) {
+      formattedName += ' ' + room?.name;
     } else {
       formattedName == '';
     }
@@ -85,7 +88,7 @@ const Toolbar = ({
     if (formattedName != '') {
       setSearchQuery(formattedName);
     }
-  }, [buildingAndRoom, isCardOpen]);
+  }, [room, building]);
 
   // close search if esc is pressed
   useEscapeKey(() => {
@@ -103,9 +106,6 @@ const Toolbar = ({
       >
         {!isNavOpen && isCardOpen && (
           <InfoCard
-            building={buildingAndRoom.building}
-            room={buildingAndRoom.room}
-            isCardOpen={isCardOpen && !isSearchOpen}
             setNavSRoom={setNavSRoom}
             setNavERoom={setNavERoom}
             setIsNavOpen={setIsNavOpen}
@@ -149,7 +149,7 @@ const Toolbar = ({
               onSetIsSearchOpen(false);
               setIsNavOpen(false);
               setRecommendedPath([]);
-              dispatch(closeCard());
+              dispatch(claimRoom(null));
             }}
           >
             <ArrowLeftIcon className={styles['search-close-icon']} />

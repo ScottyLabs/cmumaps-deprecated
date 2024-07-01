@@ -21,8 +21,7 @@ function roomType(room: Room): string {
 }
 
 export interface BuildingSearchResultsProps {
-  simplifiedQuery: string;
-  ogQuery: string;
+  query: string;
   building: Building;
   floorMap: FloorMap;
   onSelectBuilding: (selectedBuilding: Building) => void;
@@ -41,8 +40,7 @@ function fullRoomName(room: Room, building: Building, abbrev = false): string {
  * Displays the search results for a specific building.
  */
 export default function BuildingSearchResults({
-  simplifiedQuery,
-  ogQuery,
+  query,
   building,
   floorMap,
   onSelectBuilding,
@@ -62,9 +60,6 @@ export default function BuildingSearchResults({
 
   const filteredRooms: RoomWithOrdinal[] = useMemo(() => {
     // No query: only show building names
-    if (simplifiedQuery === '') {
-      return [];
-    }
     const lDistCache = new Map();
     // Query for another building
     const roomsList = building.floors.flatMap(
@@ -73,23 +68,17 @@ export default function BuildingSearchResults({
           .filter((room: Room) => {
             const fullName = fullRoomName(room, building);
             const fullCodeName = fullRoomName(room, building, true);
-            const a = levenDist(
-              simplifiedQuery.toLowerCase(),
-              fullName.toLowerCase(),
-            );
+            const a = levenDist(query.toLowerCase(), fullName.toLowerCase());
             const b = levenDist(
-              simplifiedQuery.toLowerCase(),
+              query.toLowerCase(),
               fullCodeName.toLowerCase(),
             );
             const c =
               !!room.alias &&
-              levenDist(
-                simplifiedQuery.toLowerCase(),
-                room.alias.toLowerCase(),
-              );
+              levenDist(query.toLowerCase(), room.alias.toLowerCase());
             const d =
               !!room.type &&
-              levenDist(simplifiedQuery.toLowerCase(), room.type.toLowerCase());
+              levenDist(query.toLowerCase(), room.type.toLowerCase());
             lDistCache.set(room.id, (a + b + c + d) / 4);
             return (
               a < fullName.length / 3 ||
@@ -115,17 +104,17 @@ export default function BuildingSearchResults({
     roomsList.sort((a, b) => lDistCache.get(a.id) - lDistCache.get(b.id));
 
     return roomsList;
-  }, [simplifiedQuery, building, userPosition, floorMap]);
+  }, [query, building, userPosition, floorMap]);
 
   if (
     filteredRooms.length == 0 &&
     levenDist(
-      building.name.substring(0, ogQuery.length).toLowerCase(),
-      ogQuery.toLowerCase(),
+      building.name.substring(0, query.length).toLowerCase(),
+      query.toLowerCase(),
     ) > 2 &&
     levenDist(
-      building.code.substring(0, ogQuery.length).toLowerCase(),
-      ogQuery.toLowerCase(),
+      building.code.substring(0, query.length).toLowerCase(),
+      query.toLowerCase(),
     ) > 2
   ) {
     return null;

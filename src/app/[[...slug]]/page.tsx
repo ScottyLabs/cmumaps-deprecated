@@ -21,7 +21,7 @@ import MapDisplay from '@/components/building-display/MapDisplay';
 import { Coordinate } from 'mapkit-react';
 import { getFloorIndexAtOrdinal } from '@/components/building-display/FloorSwitcher';
 import { useAppDispatch } from '@/lib/hooks';
-import { openCard } from '@/lib/features/ui/uiSlice';
+import { claimBuilding, focusBuilding } from '@/lib/features/ui/uiSlice';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -58,6 +58,7 @@ export default function Home({ params }: { params: { slug: string } }) {
 
   const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
     setActiveBuilding(newBuilding);
+    dispatch(focusBuilding(newBuilding));
     if (newBuilding === null) {
       return;
     }
@@ -125,7 +126,6 @@ export default function Home({ params }: { params: { slug: string } }) {
           onSelectBuilding={(building) => {
             setFloorOrdinal(null);
             showBuilding(building, true);
-            dispatch(openCard());
             setBuildingAndRoom({ building, room: null });
           }}
           onSelectRoom={(room, building, floor) => {
@@ -157,7 +157,6 @@ export default function Home({ params }: { params: { slug: string } }) {
             setShowFloor(true);
             setShowRoomNames(true);
 
-            dispatch(openCard());
             setBuildingAndRoom({ building, room });
           }}
           buildingAndRoom={buildingAndRoom}

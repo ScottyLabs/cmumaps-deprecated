@@ -19,7 +19,7 @@ import { useIsDesktop } from '@/hooks/useWindowDimensions';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 import { AbsoluteCoordinate, Building, Export, Floor, Room } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { openCard, toggleCard } from '@/lib/features/ui/uiSlice';
+import { claimRoom, openCard, toggleCard } from '@/lib/features/ui/uiSlice';
 
 /**
  * The JSON file at this address contains all the map data used by the project.
@@ -67,7 +67,6 @@ const MapDisplay = ({
 }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const isCardOpen = useAppSelector((state) => state.ui.isCardOpen);
   const dispatch = useAppDispatch();
 
   let currentBlueDot: undefined | mapkit.Overlay = undefined;
@@ -197,7 +196,7 @@ const MapDisplay = ({
         showRoom(room, building, convertToMap, true);
         setSelectedRoom(room);
         setBuildingAndRoom({ building, room });
-        dispatch(openCard());
+        dispatch(claimRoom(room));
       } else {
         showBuilding(building, true);
       }
@@ -211,7 +210,7 @@ const MapDisplay = ({
       showBuilding(building, true);
     } else {
       // Redirect to the default page
-      //   window.history.pushState({}, '', window.location.pathname);
+      window.history.pushState({}, '', window.location.pathname);
     }
   };
 
@@ -244,7 +243,7 @@ const MapDisplay = ({
     if (buildingAndRoom.room) {
       url += `/${buildingAndRoom.room.id}`;
     }
-    // window.history.pushState({}, '', url);
+    window.history.pushState({}, '', url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buildingAndRoom, activeBuilding, currentFloorName]);
 
@@ -346,31 +345,6 @@ const MapDisplay = ({
             key={building.code}
             building={building}
             showName={!showFloor}
-            toggleCard={(
-              b: Building,
-              r: Room | null,
-              selectOrDeselect: boolean,
-            ) => {
-              /* Right now, the effect of this logic is that if you click on a pin,
-               * you can change what room you've selected by clicking on other pins,
-               * and deselect by clicking on a room body.
-               * If you click on a body, you enter the same loop, but you can exit
-               * by clicking on a pin
-               * You can always exit by clicking outside
-               */
-              if (selectOrDeselect) {
-                setIsSearchOpen(false);
-              }
-              if (buildingAndRoom.building != b) {
-                dispatch(openCard());
-                setBuildingAndRoom({
-                  building: b || activeBuilding,
-                  room: null,
-                });
-              } else if (!selectOrDeselect) {
-                dispatch(toggleCard());
-              }
-            }}
           />
         ))}
 
@@ -392,37 +366,6 @@ const MapDisplay = ({
                   floorPlan={floorPlan}
                   showRoomNames={showRoomNames}
                   isBackground={building.code !== activeBuilding?.code}
-                  toggleCard={(
-                    b: Building,
-                    r: Room,
-                    selectOrDeselect: boolean,
-                  ) => {
-                    if (isNavOpen && r) {
-                      setNavSRoom(r);
-                    }
-
-                    /* Right now, the effect of this logic is that if you click on a pin,
-                     * you can change what room you've selected by clicking on other pins,
-                     * and deselect by clicking on a room body.
-                     * If you click on a body, you enter the same loop, but you can exit
-                     * by clicking on a pin
-                     * You can always exit by clicking outside
-                     */
-
-                    if (selectOrDeselect) {
-                      setIsSearchOpen(false);
-                    }
-                    if (buildingAndRoom.room != r) {
-                      dispatch(openCard());
-                      setBuildingAndRoom({
-                        building: b || activeBuilding,
-                        room: r,
-                      });
-                    } else if (!selectOrDeselect) {
-                      dispatch(toggleCard());
-                    }
-                  }}
-                  recommendedPath={recommendedPath}
                   buildingAndRoom={buildingAndRoom}
                 />
               )

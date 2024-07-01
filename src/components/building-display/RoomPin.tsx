@@ -5,6 +5,7 @@ import titleCase from '@/util/titleCase';
 import styles from '../../styles/RoomPin.module.css';
 import pinIcon from '/public/assets/icons/icon-pin.svg';
 import Image from 'next/image';
+import { useAppSelector } from '@/lib/hooks';
 
 const icons: { [type: string]: string } = {
   elevator:
@@ -53,7 +54,10 @@ export function hasIcon(room: Room) {
 export default function RoomPin({ room, selected }: RoomPinProps) {
   const icon = icons[room.type] ?? null;
   const showIcon = icon !== null;
-  const isSelected = selected?.room?.id === room.id;
+
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+
+  const isSelected = selectedRoom?.id === room.id;
   const roomColors = getRoomTypeDetails(room.type);
   if (!isSelected) {
     return (
