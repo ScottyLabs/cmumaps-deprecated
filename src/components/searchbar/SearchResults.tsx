@@ -42,8 +42,8 @@ export default function SearchResults({
   return (
     <div
       className={
-        styles['search-results'] +
-        'text-l items-center justify-center gap-4 px-2 py-4 text-center font-light'
+        "empty:before:text-l empty:before:gap-4px empty:before:px-20px empty:before:py-40px h-auto empty:before:flex empty:before:h-32 empty:before:items-center empty:before:justify-center empty:before:text-center empty:before:font-light empty:before:content-['No_results_found.']"
+        //styles['search-results']
       }
     >
       {buildings.map((building: Building) => (
