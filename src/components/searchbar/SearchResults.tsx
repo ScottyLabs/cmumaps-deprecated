@@ -45,7 +45,7 @@ export default function SearchResults({
     <div
       className={
         styles['search-results'] +
-        'text-l beg empty:before:content-["No results found."] flex items-center justify-center gap-4 px-2 py-4 text-center font-light'
+        'text-l items-center justify-center gap-4 px-2 py-4 text-center font-light'
       }
     >
       {buildings.map((building: Building) => (
