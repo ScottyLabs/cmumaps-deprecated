@@ -1,15 +1,17 @@
 import React, { useState, useMemo } from 'react';
 import styles from '@/styles/Toolbar.module.css';
 import { MagnifyingGlassIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
-import FloorSwitcher from '@/components/FloorSwitcher';
+import FloorSwitcher from '@/components/building-display/FloorSwitcher';
 import { AbsoluteCoordinate, Building, Floor, FloorMap, Room } from '@/types';
 import clsx from 'clsx';
 import useEscapeKey from '@/hooks/useEscapeKey';
 import SearchResults from './SearchResults';
-import InfoCard from '@/components/InfoCard';
+import InfoCard from '@/components/info-card/InfoCard';
 import QuickSearch from '@/components/searchbar/QuickSearch';
-import NavCard from '../NavCard';
-import { Door } from '@/pages/api/findPath';
+import NavCard from '../navigation/NavCard';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { claimRoom } from '@/lib/features/ui/uiSlice';
+// import { Door } from '@/pages/api/findPath';
 
 export interface ToolbarProps {
   buildings: Building[] | null;
@@ -22,8 +24,6 @@ export interface ToolbarProps {
   isSearchOpen: boolean;
   onSetIsSearchOpen: (newValue: boolean) => void;
   buildingAndRoom: { building: Building | null; room: Room | null };
-  isCardOpen: boolean;
-  setIsCardOpen: (n: boolean) => void;
   isNavOpen: boolean;
   setIsNavOpen: (newValue: boolean) => void;
   userPosition: AbsoluteCoordinate;
@@ -37,7 +37,7 @@ export interface ToolbarProps {
 /**
  * Contains the floor switcher, the search bar and the search results.
  */
-export default function Toolbar({
+const Toolbar = ({
   buildings,
   floorMap,
   activeBuilding,
@@ -48,8 +48,6 @@ export default function Toolbar({
   isSearchOpen,
   onSetIsSearchOpen,
   buildingAndRoom,
-  isCardOpen,
-  setIsCardOpen,
   isNavOpen,
   setIsNavOpen,
   userPosition,
@@ -58,25 +56,31 @@ export default function Toolbar({
   navERoom,
   navSRoom,
   setRecommendedPath,
-}: ToolbarProps) {
+}: ToolbarProps) => {
+  const isCardOpen = useAppSelector(
+    (state) => !!(state.ui.selectedRoom || state.ui.selectedBuilding),
+  );
+  const dispatch = useAppDispatch();
+  const room = useAppSelector((state) => state.ui.selectedRoom);
+  const building = useAppSelector((state) => state.ui.focusedBuilding);
   const [searchQuery, setSearchQuery] = useState('');
 
   useMemo(() => {
-    if (!isCardOpen) {
+    if (!room && !building) {
       return setSearchQuery('');
     }
 
     let formattedName = '';
-    if (buildingAndRoom.room?.alias) {
-      return setSearchQuery(buildingAndRoom.room?.alias);
+    if (room?.alias) {
+      return setSearchQuery(room.alias);
     }
 
-    if (buildingAndRoom.building?.name) {
-      formattedName += buildingAndRoom.building?.name;
+    if (building?.name) {
+      formattedName += building?.name;
     }
 
-    if (buildingAndRoom.room?.name) {
-      formattedName += ' ' + buildingAndRoom.room?.name;
+    if (room?.name) {
+      formattedName += ' ' + room?.name;
     } else {
       formattedName == '';
     }
@@ -84,7 +88,7 @@ export default function Toolbar({
     if (formattedName != '') {
       setSearchQuery(formattedName);
     }
-  }, [buildingAndRoom, isCardOpen]);
+  }, [room, building]);
 
   // close search if esc is pressed
   useEscapeKey(() => {
@@ -102,9 +106,6 @@ export default function Toolbar({
       >
         {!isNavOpen && isCardOpen && (
           <InfoCard
-            building={buildingAndRoom.building}
-            room={buildingAndRoom.room}
-            isCardOpen={isCardOpen && !isSearchOpen}
             setNavSRoom={setNavSRoom}
             setNavERoom={setNavERoom}
             setIsNavOpen={setIsNavOpen}
@@ -148,7 +149,7 @@ export default function Toolbar({
               onSetIsSearchOpen(false);
               setIsNavOpen(false);
               setRecommendedPath([]);
-              setIsCardOpen(false);
+              dispatch(claimRoom(null));
             }}
           >
             <ArrowLeftIcon className={styles['search-close-icon']} />
@@ -236,4 +237,6 @@ export default function Toolbar({
       </div>
     </>
   );
-}
+};
+
+export default Toolbar;
