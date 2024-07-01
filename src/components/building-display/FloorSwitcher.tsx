@@ -6,7 +6,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import styles from '@/styles/FloorSwitcher.module.css';
 import clsx from 'clsx';
 import { useIsDesktop } from '@/hooks/useWindowDimensions';
-import Roundel from './shared/Roundel';
+import Roundel from '../shared/Roundel';
 
 interface FloorSwitcherProps {
   building: Building;

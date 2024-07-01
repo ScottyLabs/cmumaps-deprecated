@@ -1,13 +1,14 @@
 import React from 'react';
 import { Building } from '@/types';
 import { Annotation, Polygon } from 'mapkit-react';
-import styles from '../styles/BuildingShape.module.css';
-import Roundel from './Roundel';
+import styles from '../../styles/BuildingShape.module.css';
+import Roundel from '../shared/Roundel';
+import { claimBuilding, releaseBuilding } from '@/lib/features/ui/uiSlice';
+import { useAppDispatch } from '@/lib/hooks';
 
 interface BuildingShapeProps {
   building: Building;
   showName?: boolean;
-  toggleCard:Function;
 }
 
 /**
@@ -16,8 +17,9 @@ interface BuildingShapeProps {
 export default function BuildingShape({
   building,
   showName = false,
-  toggleCard,
 }: BuildingShapeProps) {
+  const dispatch = useAppDispatch();
+
   return (
     <>
       <Polygon
@@ -27,16 +29,16 @@ export default function BuildingShape({
         fillOpacity={1}
         strokeColor={building.floors.length > 0 ? '#6b7280' : '#374151'}
         lineWidth={1}
-        onSelect={()=>toggleCard(building, null, true)}
-        onDeselect={()=>toggleCard(building, null, false)}
+        onSelect={() => dispatch(claimBuilding(building))}
+        onDeselect={() => dispatch(releaseBuilding(building))}
       />
 
       {(showName || building.floors.length === 0) && (
         <Annotation
           latitude={building.labelPosition.latitude}
           longitude={building.labelPosition.longitude}
-          onSelect={()=> {toggleCard(building, null, true)}}
-          onDeselect={()=>toggleCard(building, null, false)}
+          onSelect={() => dispatch(claimBuilding(building))}
+          onDeselect={() => dispatch(releaseBuilding(building))}
         >
           <div className={styles['roundel-wrapper']}>
             <Roundel code={building.code} />

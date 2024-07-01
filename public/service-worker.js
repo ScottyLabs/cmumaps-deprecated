@@ -1,24 +1,24 @@
 // Choose a cache name
 const cacheName = 'cache-v2';
 // List the files to precache
-const precacheResources = [
-  "/manifest.json", 
-  "main.js", 
-  "/_next/static/chunks/main.js",
-  "/_next/static/chunks/pages/_app.js",
-  "/_next/static/chunks/react-refresh.js",
-  "/_next/static/chunks/pages/%5B%5B...slug%5D%5D.js",
-  "/_next/static/development/_buildManifest.js",
-  "/_next/static/development/_ssgManifest.js",
-  "/favicons/smapslogo.png",
-  "/_next/static/development/_devMiddlewareManifest.json",
-  "/favicons/favicon.ico",
-  "https://wise-pika-28.clerk.accounts.dev/npm/@clerk/clerk-js@4/dist/clerk.browser.js",
-  // "https://cdn.apple-mapkit.com/ti/csr/1.x.x/mk-csr.js?mapkitVersion=5.77.54",
-  // "https://cdn.apple-mapkit.com/ma/bootstrap?apiVersion=2&mkjsVersion=5.77.54&poi=1",
-  "/_next/static/development/_devPagesManifest.json",
+// const precacheResources = [
+//   "/manifest.json", 
+//   "main.js", 
+//   "/_next/static/chunks/main.js",
+//   "/_next/static/chunks/pages/_app.js",
+//   "/_next/static/chunks/react-refresh.js",
+//   "/_next/static/chunks/pages/%5B%5B...slug%5D%5D.js",
+//   "/_next/static/development/_buildManifest.js",
+//   "/_next/static/development/_ssgManifest.js",
+//   "/favicons/smapslogo.png",
+//   "/_next/static/development/_devMiddlewareManifest.json",
+//   "/favicons/favicon.ico",
+//   "https://wise-pika-28.clerk.accounts.dev/npm/@clerk/clerk-js@4/dist/clerk.browser.js",
+//   // "https://cdn.apple-mapkit.com/ti/csr/1.x.x/mk-csr.js?mapkitVersion=5.77.54",
+//   // "https://cdn.apple-mapkit.com/ma/bootstrap?apiVersion=2&mkjsVersion=5.77.54&poi=1",
+//   "/_next/static/development/_devPagesManifest.json",
 
-];
+// ];
 
 console.log("service worker")
 

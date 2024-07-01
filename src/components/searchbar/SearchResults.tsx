@@ -25,8 +25,6 @@ export default function SearchResults({
   onSelectRoom,
   userPosition,
 }: SearchResultsProps) {
-  const simplifiedQuery = useMemo(() => query, [query]);
-
   if (userPosition) {
     buildings.sort(
       (b, a) =>
@@ -50,8 +48,7 @@ export default function SearchResults({
     >
       {buildings.map((building: Building) => (
         <BuildingSearchResults
-          simplifiedQuery={simplifiedQuery}
-          ogQuery={query}
+          query={query || ''}
           building={building}
           floorMap={floorMap}
           onSelectBuilding={onSelectBuilding}

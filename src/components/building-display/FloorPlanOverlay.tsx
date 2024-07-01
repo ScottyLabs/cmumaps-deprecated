@@ -1,19 +1,27 @@
 import { latitudeRatio, longitudeRatio, rotate } from '@/geometry';
 import {
-  AbsoluteCoordinate, FloorPlan, getRoomTypeDetails, Placement, Room,
+  AbsoluteCoordinate,
+  FloorPlan,
+  getRoomTypeDetails,
+  Placement,
+  Room,
 } from '@/types';
-import {
-  Annotation, Coordinate, Polygon,
-} from 'mapkit-react';
+import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 import React, { useMemo, useRef } from 'react';
 import clsx from 'clsx';
-import styles from '../styles/FloorPlanOverlay.module.css';
+import styles from '../../styles/FloorPlanOverlay.module.css';
 import RoomPin, { hasIcon } from './RoomPin';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { claimRoom, releaseRoom } from '@/lib/features/ui/uiSlice';
 
 export function getFloorCenter(rooms: Room[]): AbsoluteCoordinate | undefined {
-  if (!rooms) return undefined;
+  if (!rooms) {
+    return undefined;
+  }
 
-  const points: AbsoluteCoordinate[] = rooms.flatMap((room: Room) => room.shapes.flat());
+  const points: AbsoluteCoordinate[] = rooms.flatMap((room: Room) =>
+    room.shapes.flat(),
+  );
   const allX = points.map((p) => p.x);
   const allY = points.map((p) => p.y);
 
@@ -30,8 +38,12 @@ export function positionOnMap(
   placement: Placement | null,
   center: AbsoluteCoordinate | undefined,
 ) {
-  if (placement === null) throw new Error('No active placement');
-  if (!center) throw new Error('No center');
+  if (placement === null) {
+    throw new Error('No active placement');
+  }
+  if (!center) {
+    throw new Error('No center');
+  }
 
   const [absoluteY, absoluteX] = rotate(
     absolute.x - center.x,
@@ -40,8 +52,10 @@ export function positionOnMap(
   );
 
   return {
-    latitude: (absoluteY / latitudeRatio) / placement.scale + placement.center.latitude,
-    longitude: (absoluteX / longitudeRatio) / placement.scale + placement.center.longitude,
+    latitude:
+      absoluteY / latitudeRatio / placement.scale + placement.center.latitude,
+    longitude:
+      absoluteX / longitudeRatio / placement.scale + placement.center.longitude,
   };
 }
 
@@ -49,7 +63,6 @@ interface FloorPlanOverlayProps {
   floorPlan: FloorPlan;
   showRoomNames: boolean;
   isBackground: boolean;
-  toggleCard: Function;
   buildingAndRoom: any;
 }
 
@@ -60,20 +73,21 @@ export default function FloorPlanOverlay({
   floorPlan,
   showRoomNames,
   isBackground,
-  toggleCard,
   buildingAndRoom,
 }: FloorPlanOverlayProps) {
   const { rooms, placement } = floorPlan;
 
   // Compute the center position of the bounding box of the current floor
   // (Will be used as the rotation center)
-  const center: (AbsoluteCoordinate | undefined) = useMemo(() => (
-    getFloorCenter(rooms)
-  ), [rooms]);
-
-  const convertToMap = (absolute: AbsoluteCoordinate): Coordinate => (
-    positionOnMap(absolute, placement, center)
+  const center: AbsoluteCoordinate | undefined = useMemo(
+    () => getFloorCenter(rooms),
+    [rooms],
   );
+
+  const convertToMap = (absolute: AbsoluteCoordinate): Coordinate =>
+    positionOnMap(absolute, placement, center);
+  const dispatch = useAppDispatch();
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
 
   return (
     <>
@@ -84,6 +98,7 @@ export default function FloorPlanOverlay({
         // Turn on for CMUShits.com
         // if (room.type != "restroom" && room.type != "corridor")
         //   return;
+
         const pointsSrc = room.shapes[0].map(convertToMap);
 
         const roomColors = getRoomTypeDetails(room.type);
@@ -92,50 +107,51 @@ export default function FloorPlanOverlay({
 
         const opacity = isBackground ? 0.7 : 1;
 
-        const showIcon = hasIcon(room) || buildingAndRoom?.room?.id === room.id;
+        const showIcon = hasIcon(room) || selectedRoom === room.id;
 
         return (
           <React.Fragment key={room.id}>
             <Polygon
-              points={[
-                ...pointsSrc,
-                pointsSrc[0],
-              ]}
-              selected={buildingAndRoom?.room?.id === room.id}
+              points={[...pointsSrc, pointsSrc[0]]}
+              selected={selectedRoom?.id === room.id}
               enabled={true}
               fillColor={roomColors.background}
               fillOpacity={opacity}
-              strokeColor={buildingAndRoom?.room?.id === room.id ? "#f7efc3": roomColors.border}
+              strokeColor={
+                selectedRoom?.id === room.id ? '#f7efc3' : roomColors.border
+              }
               strokeOpacity={opacity}
-              lineWidth={buildingAndRoom?.room?.id === room.id ? 5 : 1}
-              // onSelect={()=>toggleCard(null, room, true)}
-              // onDeselect={()=>toggleCard(null, room, false)}
-              />
+              lineWidth={selectedRoom?.id === room.id ? 5 : 1}
+              onSelect={() => dispatch(claimRoom(room))}
+              onDeselect={() => dispatch(releaseRoom(room))}
+            />
 
             {!isBackground && (showRoomNames || showIcon) && (
               <Annotation
                 latitude={labelPos.latitude}
                 longitude={labelPos.longitude}
-                onSelect={()=>toggleCard(null, room, true)}
-                onDeselect={()=>toggleCard(null, room, false)}
+                onSelect={() => dispatch(claimRoom(room))}
+                onDeselect={() => dispatch(releaseRoom(room))}
               >
-                <div className={buildingAndRoom?.room?.id !== room.id ? styles.marker : styles["marker-selected"]}>
+                <div
+                  className={
+                    selectedRoom?.id !== room.id
+                      ? styles.marker
+                      : styles['marker-selected']
+                  }
+                >
                   <RoomPin room={room} selected={buildingAndRoom} />
                   {(showRoomNames || room.alias) && (
                     <div
                       className={clsx(
                         styles.label,
-                        (showIcon) && styles['label-on-icon'],
+                        showIcon && styles['label-on-icon'],
                       )}
                     >
                       {showRoomNames && (
-                        <div className={styles['room-number']}>
-                          {room.name}
-                        </div>
+                        <div className={styles['room-number']}>{room.name}</div>
                       )}
-                      {room.alias && (
-                        <div>{room.alias}</div>
-                      )}
+                      {room.alias && <div>{room.alias}</div>}
                     </div>
                   )}
                 </div>
