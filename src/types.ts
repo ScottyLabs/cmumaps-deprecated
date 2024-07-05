@@ -7,16 +7,13 @@ import { Coordinate } from 'mapkit-react';
 /**
  * An absolute coordinate.
  */
-export interface AbsoluteCoordinate {
-  x: number;
-  y: number;
-}
+export type AbsoluteCoordinate = [number, number];
 
 /**
  * Room types
  */
 export type RoomType =
-  'default'
+  | 'default'
   | 'corridor'
   | 'auditorium'
   | 'office'
@@ -108,20 +105,16 @@ export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
       throw new Error(`Unknown room type ${type}`);
   }
 }
+export interface Polygon {
+  coordinates: AbsoluteCoordinate[][];
+  type: string;
+}
 
-/**
- * A room.
- */
 export interface Room {
   /**
    * Unique ID (UUID)
    */
-  id: string;
-
-  /**
-   * The shapes that the room consists of.
-   */
-  shapes: AbsoluteCoordinate[][];
+  polygon: Polygon;
 
   /**
    * The short name of the room, without the building name but including the
@@ -144,14 +137,8 @@ export interface Room {
    */
   alias?: string;
 
-  /**
-   * The type of the room
-   */
   type: RoomType;
 
-  /**
-   * The position of the room's label
-   */
   labelPosition?: AbsoluteCoordinate;
 
   /**

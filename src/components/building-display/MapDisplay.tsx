@@ -220,7 +220,15 @@ const MapDisplay = ({
       .then((r) => r.json())
       .then((response: Export) => {
         setBuildings(response.buildings);
-        setFloors(response.floors);
+        fetch(
+          'https://drive.google.com/file/d/1YG_hI8xhaDljOSc7eNfNCG7UbAR3Ux0U/view?usp=sharing',
+        )
+          .then((r) => r.json())
+          .then((ghc5response) => {
+            console.log('ghc5', ghc5response);
+            response.floors['GHC-5'] = ghc5response;
+            setFloors(response.floors);
+          });
 
         zoomOnDefaultBuilding(response.buildings, response.floors);
       });
@@ -301,11 +309,11 @@ const MapDisplay = ({
   );
 
   const isDesktop = useIsDesktop();
-
+  console.log(floors);
   return (
     <Map
       ref={mapRef}
-      // token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN!}
+      token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN!}
       initialRegion={initialRegion}
       includedPOICategories={[PointOfInterestCategory.Restaurant]}
       cameraBoundary={cameraBoundary}
@@ -358,7 +366,7 @@ const MapDisplay = ({
 
             const code = `${building.code}-${floor.name}`;
             const floorPlan = floors[code];
-
+            console.log(code, floorPlan);
             return (
               floorPlan && (
                 <FloorPlanOverlay

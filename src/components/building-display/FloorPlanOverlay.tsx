@@ -19,18 +19,20 @@ export function getFloorCenter(rooms: Room[]): AbsoluteCoordinate | undefined {
     return undefined;
   }
 
-  const points: AbsoluteCoordinate[] = rooms.flatMap((room: Room) =>
-    room.shapes.flat(),
+  let points: AbsoluteCoordinate[] = Object.values(rooms).flatMap(
+    (room: Room) => room?.polygon?.coordinates.flat(),
   );
-  const allX = points.map((p) => p.x);
-  const allY = points.map((p) => p.y);
+  points = points.filter((e) => e !== undefined);
+
+  const allX = points.map((p) => p[0]);
+  const allY = points.map((p) => p[1]);
 
   const minX = Math.min(...allX);
   const maxX = Math.max(...allX);
   const minY = Math.min(...allY);
   const maxY = Math.max(...allY);
 
-  return { x: (minX + maxX) / 2, y: (minY + maxY) / 2 };
+  return [(minX + maxX) / 2, (minY + maxY) / 2];
 }
 
 export function positionOnMap(
@@ -46,8 +48,8 @@ export function positionOnMap(
   }
 
   const [absoluteY, absoluteX] = rotate(
-    absolute.x - center.x,
-    absolute.y - center.y,
+    absolute[0] - center[0],
+    absolute[1] - center[1],
     placement.angle,
   );
 
@@ -87,19 +89,21 @@ export default function FloorPlanOverlay({
   const convertToMap = (absolute: AbsoluteCoordinate): Coordinate =>
     positionOnMap(absolute, placement, center);
   const dispatch = useAppDispatch();
-  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+  const selectedRoomId = 'bcd7626a-1427-4e8b-a6b3-043753477156';
 
   return (
     <>
-      {rooms.map((room: Room) => {
-        if (room.shapes.length !== 1) {
-          throw new Error('Multi-shape rooms are not supported.');
-        }
+      {Object.entries(rooms).map((entry) => {
+        const id: string = entry[0];
+        const room: Room = entry[1];
         // Turn on for CMUShits.com
         // if (room.type != "restroom" && room.type != "corridor")
         //   return;
 
-        const pointsSrc = room.shapes[0].map(convertToMap);
+        const pointsSrc = room?.polygon?.coordinates[0].map(convertToMap);
+        if (!pointsSrc) {
+          return;
+        }
 
         const roomColors = getRoomTypeDetails(room.type);
 
@@ -107,21 +111,21 @@ export default function FloorPlanOverlay({
 
         const opacity = isBackground ? 0.7 : 1;
 
-        const showIcon = hasIcon(room) || selectedRoom === room.id;
+        const showIcon = hasIcon(room) || selectedRoomId === id;
 
         return (
-          <React.Fragment key={room.id}>
+          <React.Fragment key={room.name}>
             <Polygon
               points={[...pointsSrc, pointsSrc[0]]}
-              selected={selectedRoom?.id === room.id}
+              selected={selectedRoomId === id}
               enabled={true}
               fillColor={roomColors.background}
               fillOpacity={opacity}
               strokeColor={
-                selectedRoom?.id === room.id ? '#f7efc3' : roomColors.border
+                selectedRoomId === id ? '#f7efc3' : roomColors.border
               }
               strokeOpacity={opacity}
-              lineWidth={selectedRoom?.id === room.id ? 5 : 1}
+              lineWidth={selectedRoomId === id ? 5 : 1}
               onSelect={() => dispatch(claimRoom(room))}
               onDeselect={() => dispatch(releaseRoom(room))}
             />
@@ -135,7 +139,7 @@ export default function FloorPlanOverlay({
               >
                 <div
                   className={
-                    selectedRoom?.id !== room.id
+                    selectedRoomId !== id
                       ? styles.marker
                       : styles['marker-selected']
                   }
