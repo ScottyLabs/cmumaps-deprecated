@@ -121,7 +121,7 @@ export default function BuildingSearchResults({
   }
 
   return (
-    <div>
+    <div name="searchResults">
       <button
         type="button"
         className={
@@ -131,6 +131,9 @@ export default function BuildingSearchResults({
           //   filteredRooms?.length > 0 && styles['search-list-element-sticky'],
           // )
           'font-normal tracking-[-0.01em]' + //search-list-element-building
+          'border-b' +
+          'border-slate-500' +
+          'active:bg-slate-300 active:outline-none' +
           `${filteredRooms?.length > 0 ? 'sticky left-0 top-0 w-full bg-[var(--search-background)] backdrop-blur' : ''}` +
           //search-list-element-sticky
           'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-padding)]' //search-list-element

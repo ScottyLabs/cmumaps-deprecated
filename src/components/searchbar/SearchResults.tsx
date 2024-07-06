@@ -38,6 +38,7 @@ export default function SearchResults({
         ),
     );
   }
+  // const isEmpty = document.getElementsByName('searchResults').length <=0;
 
   return (
     <div
@@ -57,6 +58,10 @@ export default function SearchResults({
           userPosition={userPosition}
         />
       ))}
+      {/* {
+        isEmpty &&
+        <span className = "text-l gap-4px px-20px py-40px flex h-32 items-center justify-center text-center font-light">No results found.</span>
+      } */}
     </div>
   );
 }
