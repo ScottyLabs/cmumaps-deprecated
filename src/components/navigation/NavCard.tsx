@@ -5,21 +5,18 @@ import clsx from 'clsx';
 import g9 from '/public/assets/icons/g9.png';
 import Image from 'next/image';
 import { Door } from '@/pages/api/findPath';
-
-export interface NavCardProps {
-  sroom: Room;
-  eroom: Room;
-  setRecommendedPath: (n: Door[]) => void;
-}
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { setRecommendedPath } from '@/lib/features/ui/navSlice';
 
 /**
  * Displays the search results.
  */
-export default function NavCard({
-  sroom,
-  eroom,
-  setRecommendedPath,
-}: NavCardProps): ReactElement {
+export default function NavCard(): ReactElement {
+  const dispatch = useAppDispatch();
+
+  const startRoom = useAppSelector((state) => state.ui.selectedRoom);
+  const endRoom = useAppSelector((state) => state.nav.endRoom);
+
   return (
     <div
       id="thisthing2"
@@ -33,8 +30,10 @@ export default function NavCard({
               <p>
                 Start:{' '}
                 <input
-                  className="rounded-sm bg-transparent outline focus:rounded-sm focus:outline-4"
-                  value={sroom?.id}
+                  id="startRoom"
+                  className="pointer-events-auto rounded-sm bg-transparent outline focus:rounded-sm focus:outline-4"
+                  value={startRoom?.id}
+                  readOnly={true}
                 ></input>
               </p>
             </div>
@@ -42,8 +41,10 @@ export default function NavCard({
               <p>
                 End:{' '}
                 <input
-                  className="rounded-sm bg-transparent outline focus:rounded-sm focus:outline-4"
-                  value={eroom?.id}
+                  id="endRoom"
+                  className="pointer-events-auto rounded-sm bg-transparent outline focus:rounded-sm focus:outline-4"
+                  value={endRoom?.id}
+                  readOnly={true}
                 ></input>
               </p>
             </div>
@@ -53,15 +54,29 @@ export default function NavCard({
               <div
                 className="pointer-events-auto absolute left-[25%] top-[25%] w-[100%] whitespace-nowrap text-[32px] font-bold leading-[normal] tracking-[0] text-[#1e1e1e] [font-family:'Open_Sans-Bold',Helvetica]"
                 onClick={() => {
+                  const sRoomInput = document.getElementById(
+                    'startRoom',
+                  ) as HTMLInputElement; // Allow the user to type in id of the room
+                  const eRoomInput = document.getElementById(
+                    'endRoom',
+                  ) as HTMLInputElement;
                   fetch('/api/findPath', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ rooms: [sroom.id, eroom.id] }),
+                    body: JSON.stringify({
+                      rooms: [sRoomInput.value, eRoomInput.value],
+                    }),
                   })
                     .then((r) => r.json())
-                    .then((j) => setRecommendedPath(j));
+                    .then((j) => {
+                      if (j.error) {
+                        console.error(j.error);
+                        return;
+                      }
+                      dispatch(setRecommendedPath(j));
+                    });
                 }}
               >
                 GO

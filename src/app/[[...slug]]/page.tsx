@@ -48,9 +48,6 @@ export default function Home({ params }: { params: { slug: string } }) {
   const [floorOrdinal, setFloorOrdinal] = useState<number | null>(null);
 
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
-  const [navSRoom, setNavSRoom] = useState<Room | undefined>(undefined);
-  const [navERoom, setNavERoom] = useState<Room | undefined>(undefined);
-  const [recommendedPath, setRecommendedPath] = useState<Door[] | null>(null);
 
   const isDesktop = useIsDesktop();
 
@@ -164,13 +161,8 @@ export default function Home({ params }: { params: { slug: string } }) {
             x: points[points.length - 1][0],
             y: points[points.length - 1][1],
           }}
-          setNavERoom={setNavERoom}
-          setNavSRoom={setNavSRoom}
-          navERoom={navERoom}
-          navSRoom={navSRoom}
           isNavOpen={isNavOpen}
           setIsNavOpen={setIsNavOpen}
-          setRecommendedPath={setRecommendedPath}
         />
 
         <div
@@ -211,14 +203,12 @@ export default function Home({ params }: { params: { slug: string } }) {
             showBuilding={showBuilding}
             setBuildings={setBuildings}
             setFloors={setFloors}
-            recommendedPath={recommendedPath}
             showFloor={showFloor}
             setIsSearchOpen={setIsSearchOpen}
             floorOrdinal={floorOrdinal}
             floors={floors}
             showRoomNames={showRoomNames}
             isNavOpen={isNavOpen}
-            setNavSRoom={setNavSRoom}
           />
         </div>
       </main>

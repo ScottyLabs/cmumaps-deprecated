@@ -20,6 +20,7 @@ import prefersReducedMotion from '@/util/prefersReducedMotion';
 import { AbsoluteCoordinate, Building, Export, Floor, Room } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { claimRoom, openCard, toggleCard } from '@/lib/features/ui/uiSlice';
+import { node } from '@/app/api/findPath/route';
 
 /**
  * The JSON file at this address contains all the map data used by the project.
@@ -56,18 +57,18 @@ const MapDisplay = ({
   showBuilding,
   setBuildings,
   setFloors,
-  recommendedPath,
   showFloor,
   setIsSearchOpen,
   floorOrdinal,
   floors,
   showRoomNames,
   isNavOpen,
-  setNavSRoom,
 }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   const dispatch = useAppDispatch();
+
+  const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
 
   let currentBlueDot: undefined | mapkit.Overlay = undefined;
 
@@ -142,8 +143,6 @@ const MapDisplay = ({
       const allLat = coords.map((c) => c.latitude);
       const allLon = coords.map((c) => c.longitude);
 
-      console.log(allLat, allLon);
-
       mapRef.current?.setRegionAnimated(
         new mapkit.BoundingRegion(
           Math.max(...allLat),
@@ -163,7 +162,6 @@ const MapDisplay = ({
     newFloors: Floor[] | null,
   ) => {
     // Make sure that both buildings and the map are loaded
-    console.log('searchme', newBuildings, newFloors, mapRef.current);
     if (!newBuildings || !mapRef.current) {
       return;
     }
@@ -220,13 +218,11 @@ const MapDisplay = ({
       .then((r) => r.json())
       .then((response: Export) => {
         setBuildings(response.buildings);
-        fetch(
-          'https://drive.google.com/file/d/1YG_hI8xhaDljOSc7eNfNCG7UbAR3Ux0U/view?usp=sharing',
-        )
+        fetch('/GHC-5.json')
           .then((r) => r.json())
           .then((ghc5response) => {
-            console.log('ghc5', ghc5response);
             response.floors['GHC-5'] = ghc5response;
+
             setFloors(response.floors);
           });
 
@@ -309,7 +305,6 @@ const MapDisplay = ({
   );
 
   const isDesktop = useIsDesktop();
-  console.log(floors);
   return (
     <Map
       ref={mapRef}
@@ -339,7 +334,20 @@ const MapDisplay = ({
     >
       {recommendedPath && (
         <Polyline
-          points={recommendedPath?.map((door) => door.pos)}
+          points={recommendedPath?.map((n: node) =>
+            positionOnMap(
+              [n.pos.x, n.pos.y],
+              {
+                center: {
+                  latitude: 40.44367399601104,
+                  longitude: -79.94452069407168,
+                },
+                scale: 5.85,
+                angle: 254,
+              },
+              [332.58, 327.18],
+            ),
+          )}
           selected={false}
           enabled={true}
           strokeColor={'red'}
@@ -365,8 +373,10 @@ const MapDisplay = ({
             }
 
             const code = `${building.code}-${floor.name}`;
+            if (code !== 'GHC-5') {
+              return null;
+            }
             const floorPlan = floors[code];
-            console.log(code, floorPlan);
             return (
               floorPlan && (
                 <FloorPlanOverlay

@@ -102,7 +102,8 @@ export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
     case 'parking':
       return { primary: '#51a2f7', background: '#d4e9ff', border: '#51a2f7' };
     default:
-      throw new Error(`Unknown room type ${type}`);
+      console.log(`Unknown room type ${type}`);
+      return { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' };
   }
 }
 export interface Polygon {
@@ -113,6 +114,11 @@ export interface Polygon {
 export interface Room {
   /**
    * Unique ID (UUID)
+   */
+  id?: string;
+
+  /**
+   * even-odd included-not-included 2darray of coordinates to polygon
    */
   polygon: Polygon;
 

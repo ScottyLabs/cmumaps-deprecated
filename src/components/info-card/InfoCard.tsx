@@ -20,14 +20,10 @@ type WeekAvailability =
   | Record<string, never>;
 
 export interface InfoCardProps {
-  setNavSRoom: (n: Room) => void;
-  setNavERoom: (n: Room) => void;
   setIsNavOpen: (n: boolean) => void;
 }
 
 export default function InfoCard({
-  setNavSRoom,
-  setNavERoom,
   setIsNavOpen,
 }: InfoCardProps): ReactElement {
   const room = useAppSelector((state) => state.ui.selectedRoom);
@@ -118,12 +114,7 @@ export default function InfoCard({
           />
         )}
 
-        <NavBar
-          room={room}
-          setIsNavOpen={setIsNavOpen}
-          setNavERoom={setNavERoom}
-          setNavSRoom={setNavSRoom}
-        />
+        <NavBar room={room} setIsNavOpen={setIsNavOpen} />
 
         <div
           className="mb-1 mt-1 opacity-90"

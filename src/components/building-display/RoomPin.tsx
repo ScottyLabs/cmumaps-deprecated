@@ -40,7 +40,6 @@ const icons: { [type: string]: string } = {
 
 interface RoomPinProps {
   room: Room;
-  selected: { building: Building; room: Room | null };
 }
 
 export function hasIcon(room: Room) {
@@ -51,7 +50,7 @@ export function hasIcon(room: Room) {
  * The marker displayed for identifying the type of a room.
  * Visible on the map and in the search results.
  */
-export default function RoomPin({ room, selected }: RoomPinProps) {
+export default function RoomPin({ room }: RoomPinProps) {
   const icon = icons[room.type] ?? null;
   const showIcon = icon !== null;
 

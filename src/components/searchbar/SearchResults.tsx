@@ -39,19 +39,18 @@ export default function SearchResults({
     );
   }
 
-  return (
-    <div className={styles['search-results']}>
-      {buildings.map((building: Building) => (
-        <BuildingSearchResults
-          query={query || ''}
-          building={building}
-          floorMap={floorMap}
-          onSelectBuilding={onSelectBuilding}
-          onSelectRoom={onSelectRoom}
-          key={building.code}
-          userPosition={userPosition}
-        />
-      ))}
-    </div>
-  );
+  return null;
+  // <div className={styles['search-results']}>
+  //   {buildings.map((building: Building) => (
+  //     <BuildingSearchResults
+  //       query={query || ''}
+  //       building={building}
+  //       floorMap={floorMap}
+  //       onSelectBuilding={onSelectBuilding}
+  //       onSelectRoom={onSelectRoom}
+  //       key={building.code}
+  //       userPosition={userPosition}
+  //     />
+  //   ))}
+  // </div>
 }

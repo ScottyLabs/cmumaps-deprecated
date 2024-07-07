@@ -11,6 +11,7 @@ import QuickSearch from '@/components/searchbar/QuickSearch';
 import NavCard from '../navigation/NavCard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { claimRoom } from '@/lib/features/ui/uiSlice';
+import { setRecommendedPath } from '@/lib/features/ui/navSlice';
 // import { Door } from '@/pages/api/findPath';
 
 export interface ToolbarProps {
@@ -27,11 +28,6 @@ export interface ToolbarProps {
   isNavOpen: boolean;
   setIsNavOpen: (newValue: boolean) => void;
   userPosition: AbsoluteCoordinate;
-  setNavERoom: (newValue: Room) => void;
-  setNavSRoom: (newValue: Room) => void;
-  navERoom: Room;
-  navSRoom: Room;
-  setRecommendedPath: (n: Door[]) => void;
 }
 
 /**
@@ -51,11 +47,6 @@ const Toolbar = ({
   isNavOpen,
   setIsNavOpen,
   userPosition,
-  setNavERoom,
-  setNavSRoom,
-  navERoom,
-  navSRoom,
-  setRecommendedPath,
 }: ToolbarProps) => {
   const isCardOpen = useAppSelector(
     (state) => !!(state.ui.selectedRoom || state.ui.selectedBuilding),
@@ -104,20 +95,8 @@ const Toolbar = ({
           isCardOpen && styles['card-open'],
         )}
       >
-        {!isNavOpen && isCardOpen && (
-          <InfoCard
-            setNavSRoom={setNavSRoom}
-            setNavERoom={setNavERoom}
-            setIsNavOpen={setIsNavOpen}
-          />
-        )}
-        {isNavOpen && (
-          <NavCard
-            sroom={navSRoom}
-            eroom={navERoom}
-            setRecommendedPath={setRecommendedPath}
-          />
-        )}
+        {!isNavOpen && isCardOpen && <InfoCard setIsNavOpen={setIsNavOpen} />}
+        {isNavOpen && <NavCard />}
         {activeBuilding && !isCardOpen && (
           <FloorSwitcher
             building={activeBuilding}
@@ -148,7 +127,7 @@ const Toolbar = ({
             onClick={() => {
               onSetIsSearchOpen(false);
               setIsNavOpen(false);
-              setRecommendedPath([]);
+              dispatch(setRecommendedPath([]));
               dispatch(claimRoom(null));
             }}
           >

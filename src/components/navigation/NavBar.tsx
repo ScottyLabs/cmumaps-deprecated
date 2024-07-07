@@ -3,12 +3,12 @@ import React, { ReactElement } from 'react';
 import shareIcon from '/public/assets/icons/icon-share-one.svg';
 import navIcon from '/public/assets/icons/icon-navigation.svg';
 import Image from 'next/image';
+import { useAppDispatch } from '@/lib/hooks';
+import { setEndRoom } from '@/lib/features/ui/navSlice';
 
 export interface NavBarProps {
   room: Room;
   setIsNavOpen: (n: boolean) => void;
-  setNavSRoom: (n: Room) => void;
-  setNavERoom: (n: Room) => void;
 }
 /**
  * Displays the search results.
@@ -16,9 +16,9 @@ export interface NavBarProps {
 export default function NavBar({
   room,
   setIsNavOpen,
-  setNavSRoom,
-  setNavERoom,
 }: NavBarProps): ReactElement {
+  const dispatch = useAppDispatch();
+
   return (
     <div className="bg-collection-1-background relative m-[1.25%] h-[78px] w-[355px] w-[97.5%] rounded-[8px] opacity-80">
       <div className="absolute left-0 top-0 h-[78px] w-[100%] rounded-[8px]">
@@ -26,7 +26,8 @@ export default function NavBar({
           <div className="bg-collection-1-padding relative h-[70px] w-[100%] rounded-[12px]">
             <Image
               onClick={() => {
-                setNavERoom(room);
+                console.log(room);
+                dispatch(setEndRoom(room));
                 setIsNavOpen(true);
               }}
               height={66}

@@ -46,7 +46,6 @@ export function positionOnMap(
   if (!center) {
     throw new Error('No center');
   }
-
   const [absoluteY, absoluteX] = rotate(
     absolute[0] - center[0],
     absolute[1] - center[1],
@@ -77,7 +76,7 @@ export default function FloorPlanOverlay({
   isBackground,
   buildingAndRoom,
 }: FloorPlanOverlayProps) {
-  const { rooms, placement } = floorPlan;
+  const { placement, rooms } = floorPlan;
 
   // Compute the center position of the bounding box of the current floor
   // (Will be used as the rotation center)
@@ -85,49 +84,62 @@ export default function FloorPlanOverlay({
     () => getFloorCenter(rooms),
     [rooms],
   );
-
+  console.log(placement, center);
   const convertToMap = (absolute: AbsoluteCoordinate): Coordinate =>
     positionOnMap(absolute, placement, center);
   const dispatch = useAppDispatch();
-  const selectedRoomId = 'bcd7626a-1427-4e8b-a6b3-043753477156';
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
 
   return (
     <>
       {Object.entries(rooms).map((entry) => {
         const id: string = entry[0];
-        const room: Room = entry[1];
+        const room: Room = { ...entry[1], id };
+
         // Turn on for CMUShits.com
         // if (room.type != "restroom" && room.type != "corridor")
         //   return;
 
-        const pointsSrc = room?.polygon?.coordinates[0].map(convertToMap);
-        if (!pointsSrc) {
+        const pointsSrcAbs = room?.polygon?.coordinates.map((shape) =>
+          shape.filter((e) => !!e),
+        );
+
+        if (!pointsSrcAbs) {
           return;
         }
+        const roomCenter = room.labelPosition || [
+          pointsSrcAbs[0].reduce((a, b) => a + b[0], 0) /
+            pointsSrcAbs[0].length,
+          pointsSrcAbs[0].reduce((a, b) => a + b[1], 0) /
+            pointsSrcAbs[0].length,
+        ];
+
+        const pointsSrc = pointsSrcAbs.map((shape) => shape.map(convertToMap));
 
         const roomColors = getRoomTypeDetails(room.type);
 
-        const labelPos = convertToMap(room.labelPosition!);
+        const labelPos = convertToMap(roomCenter);
 
         const opacity = isBackground ? 0.7 : 1;
 
-        const showIcon = hasIcon(room) || selectedRoomId === id;
+        const showIcon = hasIcon(room) || selectedRoom?.id === id;
 
         return (
           <React.Fragment key={room.name}>
             <Polygon
-              points={[...pointsSrc, pointsSrc[0]]}
-              selected={selectedRoomId === id}
+              points={[...pointsSrc]}
+              selected={selectedRoom?.id === id}
               enabled={true}
               fillColor={roomColors.background}
               fillOpacity={opacity}
               strokeColor={
-                selectedRoomId === id ? '#f7efc3' : roomColors.border
+                selectedRoom?.id === id ? '#f7efc3' : roomColors.border
               }
               strokeOpacity={opacity}
-              lineWidth={selectedRoomId === id ? 5 : 1}
+              lineWidth={selectedRoom?.id === id ? 5 : 1}
               onSelect={() => dispatch(claimRoom(room))}
               onDeselect={() => dispatch(releaseRoom(room))}
+              fillRule="nonzero"
             />
 
             {!isBackground && (showRoomNames || showIcon) && (
@@ -139,7 +151,7 @@ export default function FloorPlanOverlay({
               >
                 <div
                   className={
-                    selectedRoomId !== id
+                    selectedRoom?.id !== id
                       ? styles.marker
                       : styles['marker-selected']
                   }
