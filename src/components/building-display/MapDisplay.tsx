@@ -19,7 +19,7 @@ import { useIsDesktop } from '@/hooks/useWindowDimensions';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 import { AbsoluteCoordinate, Building, Export, Floor, Room } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, openCard, toggleCard } from '@/lib/features/ui/uiSlice';
+import { claimRoom, focusBuilding } from '@/lib/features/ui/uiSlice';
 import { node } from '@/app/api/findPath/route';
 
 /**
@@ -45,15 +45,10 @@ const MapDisplay = ({
   mapRef,
   buildings,
   points,
-  setActiveBuilding,
   setShowFloor,
   setShowRoomNames,
   setFloorOrdinal,
-  buildingAndRoom,
-  activeBuilding,
   currentFloorName,
-  setSelectedRoom,
-  setBuildingAndRoom,
   showBuilding,
   setBuildings,
   setFloors,
@@ -62,14 +57,14 @@ const MapDisplay = ({
   floorOrdinal,
   floors,
   showRoomNames,
-  isNavOpen,
 }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   const dispatch = useAppDispatch();
 
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
-
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   let currentBlueDot: undefined | mapkit.Overlay = undefined;
 
   function error(err) {
@@ -132,7 +127,6 @@ const MapDisplay = ({
     convertToMap,
     updateMap: boolean,
   ) => {
-    setActiveBuilding(newBuilding);
     if (newBuilding === null) {
       return;
     }
@@ -192,8 +186,7 @@ const MapDisplay = ({
       if (floorPlan && roomid) {
         const room = floorPlan.rooms.find((room) => room.id === roomid);
         showRoom(room, building, convertToMap, true);
-        setSelectedRoom(room);
-        setBuildingAndRoom({ building, room });
+        dispatch(focusBuilding(building));
         dispatch(claimRoom(room));
       } else {
         showBuilding(building, true);
@@ -238,18 +231,18 @@ const MapDisplay = ({
     }
 
     let url = '/';
-    if (activeBuilding) {
-      url += `${activeBuilding.code}`;
+    if (focusedBuilding) {
+      url += `${focusedBuilding.code}`;
     }
     if (currentFloorName) {
       url += `-${currentFloorName}`;
     }
-    if (buildingAndRoom.room) {
-      url += `/${buildingAndRoom.room.id}`;
+    if (selectedRoom) {
+      url += `/${selectedRoom.id}`;
     }
     window.history.pushState({}, '', url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [buildingAndRoom, activeBuilding, currentFloorName]);
+  }, [selectedRoom, focusedBuilding, currentFloorName]);
 
   const cameraBoundary = useMemo(
     () => ({
@@ -296,7 +289,7 @@ const MapDisplay = ({
 
         showBuilding(centerBuilding, false);
       } else {
-        setActiveBuilding(null);
+        dispatch(focusBuilding(null));
         setFloorOrdinal(null);
       }
     },
@@ -383,8 +376,7 @@ const MapDisplay = ({
                   key={code}
                   floorPlan={floorPlan}
                   showRoomNames={showRoomNames}
-                  isBackground={building.code !== activeBuilding?.code}
-                  buildingAndRoom={buildingAndRoom}
+                  isBackground={building.code !== focusedBuilding?.code}
                 />
               )
             );

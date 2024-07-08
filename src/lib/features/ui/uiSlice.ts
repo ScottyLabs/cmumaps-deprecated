@@ -6,12 +6,16 @@ interface UIState {
   selectedRoom: Room | null;
   selectedBuilding: Building | null;
   focusedBuilding: Building | null;
+  floorOrdinal: number | null;
+  isSearchOpen: boolean;
 }
 
 const initialState: UIState = {
   selectedRoom: null,
   selectedBuilding: null,
   focusedBuilding: null,
+  floorOrdinal: null,
+  isSearchOpen: false,
 };
 
 const uiSlice = createSlice({
@@ -22,6 +26,7 @@ const uiSlice = createSlice({
       if (state.selectedRoom?.id !== action.payload?.id) {
         state.selectedRoom = action.payload;
       }
+      state.isSearchOpen = false;
     },
     releaseRoom(state, action) {
       if (action.payload?.id === state.selectedRoom?.id) {
@@ -34,6 +39,7 @@ const uiSlice = createSlice({
         state.selectedBuilding = action.payload;
         state.focusedBuilding = action.payload;
       }
+      state.isSearchOpen = false;
     },
     releaseBuilding(state, action) {
       if (action.payload?.code === state.selectedBuilding?.code) {
@@ -42,6 +48,12 @@ const uiSlice = createSlice({
     },
     focusBuilding(state, action) {
       state.focusedBuilding = action.payload;
+    },
+    setFloorOrdinal(state, action) {
+      state.floorOrdinal = action.payload;
+    },
+    setIsSearchOpen(state, action) {
+      state.isSearchOpen = action.payload;
     },
   },
 });
@@ -52,5 +64,7 @@ export const {
   claimBuilding,
   releaseBuilding,
   focusBuilding,
+  setFloorOrdinal,
+  setIsSearchOpen,
 } = uiSlice.actions;
 export default uiSlice.reducer;

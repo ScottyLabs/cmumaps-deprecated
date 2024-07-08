@@ -10,23 +10,15 @@ import InfoCard from '@/components/info-card/InfoCard';
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import NavCard from '../navigation/NavCard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom } from '@/lib/features/ui/uiSlice';
-import { setRecommendedPath } from '@/lib/features/ui/navSlice';
+import { claimRoom, setIsSearchOpen } from '@/lib/features/ui/uiSlice';
+import { setIsNavOpen, setRecommendedPath } from '@/lib/features/ui/navSlice';
 // import { Door } from '@/pages/api/findPath';
 
 export interface ToolbarProps {
   buildings: Building[] | null;
   floorMap: FloorMap;
-  activeBuilding: Building | null;
-  floorOrdinal: number | null;
-  setFloorOrdinal: (newOrdinal: number | null) => void;
   onSelectBuilding: (newBuilding: Building | null) => void;
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
-  isSearchOpen: boolean;
-  onSetIsSearchOpen: (newValue: boolean) => void;
-  buildingAndRoom: { building: Building | null; room: Room | null };
-  isNavOpen: boolean;
-  setIsNavOpen: (newValue: boolean) => void;
   userPosition: AbsoluteCoordinate;
 }
 
@@ -36,16 +28,7 @@ export interface ToolbarProps {
 const Toolbar = ({
   buildings,
   floorMap,
-  activeBuilding,
-  floorOrdinal,
-  setFloorOrdinal,
-  onSelectBuilding,
   onSelectRoom,
-  isSearchOpen,
-  onSetIsSearchOpen,
-  buildingAndRoom,
-  isNavOpen,
-  setIsNavOpen,
   userPosition,
 }: ToolbarProps) => {
   const isCardOpen = useAppSelector(
@@ -54,7 +37,11 @@ const Toolbar = ({
   const dispatch = useAppDispatch();
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.focusedBuilding);
+  const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
+  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
+  const floorOrdinal = useAppSelector((state) => state.ui.floorOrdinal);
   const [searchQuery, setSearchQuery] = useState('');
+  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
 
   useMemo(() => {
     if (!room && !building) {
@@ -83,7 +70,7 @@ const Toolbar = ({
 
   // close search if esc is pressed
   useEscapeKey(() => {
-    onSetIsSearchOpen(false);
+    dispatch(setIsSearchOpen(false));
   });
 
   return (
@@ -95,14 +82,13 @@ const Toolbar = ({
           isCardOpen && styles['card-open'],
         )}
       >
-        {!isNavOpen && isCardOpen && <InfoCard setIsNavOpen={setIsNavOpen} />}
+        {!isNavOpen && isCardOpen && <InfoCard />}
         {isNavOpen && <NavCard />}
-        {activeBuilding && !isCardOpen && (
+        {focusedBuilding && !isCardOpen && (
           <FloorSwitcher
-            building={activeBuilding}
+            building={focusedBuilding}
             ordinal={floorOrdinal!}
             isToolbarOpen={isSearchOpen}
-            onOrdinalChange={setFloorOrdinal}
           />
         )}
 
@@ -125,8 +111,8 @@ const Toolbar = ({
                 : node.setAttribute('inert', ''))
             }
             onClick={() => {
-              onSetIsSearchOpen(false);
-              setIsNavOpen(false);
+              dispatch(setIsSearchOpen(false));
+              dispatch(setIsNavOpen(false));
               dispatch(setRecommendedPath([]));
               dispatch(claimRoom(null));
             }}
@@ -142,7 +128,7 @@ const Toolbar = ({
                 !searchQuery && styles.placeholder,
               )}
               onClick={() => {
-                onSetIsSearchOpen(true);
+                dispatch(setIsSearchOpen(true));
                 // inputRef.current!.focus();
               }}
             >
@@ -193,17 +179,13 @@ const Toolbar = ({
                 query={searchQuery}
                 buildings={buildings}
                 floorMap={floorMap}
-                onSelectBuilding={(building: Building) => {
-                  onSelectBuilding(building);
-                  onSetIsSearchOpen(false);
-                }}
                 onSelectRoom={(
                   room: Room,
                   building: Building,
                   newFloor: Floor,
                 ) => {
                   onSelectRoom(room, building, newFloor);
-                  onSetIsSearchOpen(false);
+                  dispatch(setIsSearchOpen(false));
                 }}
                 userPosition={userPosition}
               />

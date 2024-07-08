@@ -15,8 +15,8 @@
 }
 
 .pin-with-icon-selected {
-  width: 40px !important;
-  height: 40px !important;
-  display:block;
+  width: 20px !important;
+  height: 20px !important;
+  position: relative;
   border-radius: 4px;
 }

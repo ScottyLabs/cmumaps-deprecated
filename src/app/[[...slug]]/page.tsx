@@ -20,8 +20,12 @@ import Toolbar from '@/components/searchbar/Toolbar';
 import MapDisplay from '@/components/building-display/MapDisplay';
 import { Coordinate } from 'mapkit-react';
 import { getFloorIndexAtOrdinal } from '@/components/building-display/FloorSwitcher';
-import { useAppDispatch } from '@/lib/hooks';
-import { claimBuilding, focusBuilding } from '@/lib/features/ui/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import {
+  claimBuilding,
+  focusBuilding,
+  setFloorOrdinal,
+} from '@/lib/features/ui/uiSlice';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -37,24 +41,15 @@ export default function Home({ params }: { params: { slug: string } }) {
 
   const [showFloor, setShowFloor] = useState(false);
   const [showRoomNames, setShowRoomNames] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [buildingAndRoom, setBuildingAndRoom] = useState<{
-    building: Building | null;
-    room: Room | null;
-  }>({ building: null, room: null });
-
-  const [activeBuilding, setActiveBuilding] = useState<Building | null>(null);
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-  const [floorOrdinal, setFloorOrdinal] = useState<number | null>(null);
-
-  const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
-
+  const floorOrdinal = useAppSelector((state) => state.ui.floorOrdinal);
+  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const isDesktop = useIsDesktop();
 
   const [floors, setFloors] = useState<FloorMap>({});
 
+  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+
   const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
-    setActiveBuilding(newBuilding);
     dispatch(focusBuilding(newBuilding));
     if (newBuilding === null) {
       return;
@@ -78,24 +73,27 @@ export default function Home({ params }: { params: { slug: string } }) {
       setShowFloor(true);
       setShowRoomNames(false);
     }
-    setFloorOrdinal((currentFloorOrdinal) =>
-      currentFloorOrdinal === null && newBuilding.floors.length > 0
-        ? newBuilding.floors.find(
-            (floor) => floor.name === newBuilding.defaultFloor,
-          )!.ordinal
-        : currentFloorOrdinal,
+    dispatch(
+      setFloorOrdinal(
+        floorOrdinal === null && newBuilding.floors.length > 0
+          ? newBuilding.floors.find(
+              (floor) => floor.name === newBuilding.defaultFloor,
+            )!.ordinal
+          : floorOrdinal,
+      ),
     );
   };
 
   const currentFloorName =
     floorOrdinal !== null &&
-    activeBuilding?.floors[getFloorIndexAtOrdinal(activeBuilding, floorOrdinal)]
-      ?.name;
+    focusedBuilding?.floors[
+      getFloorIndexAtOrdinal(focusedBuilding, floorOrdinal)
+    ]?.name;
 
   // Compute the current page title
   let title = '';
-  if (activeBuilding) {
-    title += activeBuilding.name;
+  if (focusedBuilding) {
+    title += focusedBuilding.name;
     if (currentFloorName) {
       title += ` ${currentFloorName}`;
     }
@@ -115,20 +113,8 @@ export default function Home({ params }: { params: { slug: string } }) {
         <Toolbar
           buildings={buildings}
           floorMap={floors}
-          activeBuilding={activeBuilding}
-          floorOrdinal={floorOrdinal}
-          setFloorOrdinal={setFloorOrdinal}
-          isSearchOpen={isSearchOpen}
-          onSetIsSearchOpen={setIsSearchOpen}
-          onSelectBuilding={(building) => {
-            setFloorOrdinal(null);
-            showBuilding(building, true);
-            setBuildingAndRoom({ building, room: null });
-          }}
           onSelectRoom={(room, building, floor) => {
-            setFloorOrdinal(floor.ordinal);
-            setActiveBuilding(building);
-            setSelectedRoom(room);
+            dispatch(setFloorOrdinal(floor.ordinal));
 
             const { placement, rooms } =
               floors[`${building.code}-${floor.name}`]!;
@@ -153,16 +139,11 @@ export default function Home({ params }: { params: { slug: string } }) {
 
             setShowFloor(true);
             setShowRoomNames(true);
-
-            setBuildingAndRoom({ building, room });
           }}
-          buildingAndRoom={buildingAndRoom}
           userPosition={{
             x: points[points.length - 1][0],
             y: points[points.length - 1][1],
           }}
-          isNavOpen={isNavOpen}
-          setIsNavOpen={setIsNavOpen}
         />
 
         <div
@@ -191,24 +172,17 @@ export default function Home({ params }: { params: { slug: string } }) {
             mapRef={mapRef}
             buildings={buildings}
             points={points}
-            setActiveBuilding={setActiveBuilding}
             setShowFloor={setShowFloor}
             setShowRoomNames={setShowRoomNames}
             setFloorOrdinal={setFloorOrdinal}
-            buildingAndRoom={buildingAndRoom}
-            activeBuilding={activeBuilding}
             currentFloorName={currentFloorName}
-            setSelectedRoom={setSelectedRoom}
-            setBuildingAndRoom={setBuildingAndRoom}
             showBuilding={showBuilding}
             setBuildings={setBuildings}
             setFloors={setFloors}
             showFloor={showFloor}
-            setIsSearchOpen={setIsSearchOpen}
             floorOrdinal={floorOrdinal}
             floors={floors}
             showRoomNames={showRoomNames}
-            isNavOpen={isNavOpen}
           />
         </div>
       </main>

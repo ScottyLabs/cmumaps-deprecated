@@ -40,7 +40,7 @@ export default function BuildingShape({
           onSelect={() => dispatch(claimBuilding(building))}
           onDeselect={() => dispatch(releaseBuilding(building))}
         >
-          <div className={styles['roundel-wrapper']}>
+          <div className="translate-y-1/2 scale-[0.8]">
             <Roundel code={building.code} />
           </div>
         </Annotation>

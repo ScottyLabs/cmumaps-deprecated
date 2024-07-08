@@ -10,6 +10,8 @@ import RoomPin from '../building-display/RoomPin';
 import { distance } from '@/geometry';
 
 import { distance as levenDist } from 'fastest-levenshtein';
+import { useAppDispatch } from '@/lib/hooks';
+import { claimBuilding, claimRoom } from '@/lib/features/ui/uiSlice';
 
 function roomType(room: Room): string {
   switch (room.type) {
@@ -24,7 +26,6 @@ export interface BuildingSearchResultsProps {
   query: string;
   building: Building;
   floorMap: FloorMap;
-  onSelectBuilding: (selectedBuilding: Building) => void;
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   userPosition: AbsoluteCoordinate;
 }
@@ -43,7 +44,6 @@ export default function BuildingSearchResults({
   query,
   building,
   floorMap,
-  onSelectBuilding,
   onSelectRoom,
   userPosition,
 }: BuildingSearchResultsProps) {
@@ -57,7 +57,7 @@ export default function BuildingSearchResults({
   //     ),
   //   [building, floorMap],
   // );
-
+  const dispatch = useAppDispatch();
   const filteredRooms: RoomWithOrdinal[] = useMemo(() => {
     // No query: only show building names
     const lDistCache = new Map();
@@ -120,6 +120,10 @@ export default function BuildingSearchResults({
     return null;
   }
 
+  function setFloorOrdinal(arg0: null): any {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <div>
       <button
@@ -132,7 +136,10 @@ export default function BuildingSearchResults({
           ) +
           'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-paddig)]'
         }
-        onClick={() => onSelectBuilding(building)}
+        onClick={() => {
+          dispatch(claimBuilding(building));
+          dispatch(setFloorOrdinal(null));
+        }}
       >
         <Roundel code={building.code} />
         <span className={styles['search-list-element-title']}>
@@ -147,7 +154,11 @@ export default function BuildingSearchResults({
             type="button"
             className={styles['search-list-element']}
             key={room.id}
-            onClick={() => onSelectRoom(room, building, room.floor)}
+            onClick={() => {
+              dispatch(claimBuilding(building));
+              dispatch(claimRoom(room));
+              onSelectRoom(room, building, room.floor);
+            }}
           >
             <div className={styles['search-list-element-pin']}>
               <RoomPin room={room} />

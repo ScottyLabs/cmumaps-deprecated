@@ -64,7 +64,6 @@ interface FloorPlanOverlayProps {
   floorPlan: FloorPlan;
   showRoomNames: boolean;
   isBackground: boolean;
-  buildingAndRoom: any;
 }
 
 /**
@@ -74,7 +73,6 @@ export default function FloorPlanOverlay({
   floorPlan,
   showRoomNames,
   isBackground,
-  buildingAndRoom,
 }: FloorPlanOverlayProps) {
   const { placement, rooms } = floorPlan;
 
@@ -124,6 +122,14 @@ export default function FloorPlanOverlay({
 
         const showIcon = hasIcon(room) || selectedRoom?.id === id;
 
+        const gutter = selectedRoom?.id === id ? 20 : 4;
+        const iconSize = selectedRoom?.id === id ? 20 : showIcon ? 20 : 10;
+        const labelHeight = 24;
+        const labelOffset = {
+          left: iconSize + gutter,
+          top: (iconSize - labelHeight) / 2,
+        };
+
         return (
           <React.Fragment key={room.name}>
             <Polygon
@@ -150,19 +156,12 @@ export default function FloorPlanOverlay({
                 onDeselect={() => dispatch(releaseRoom(room))}
               >
                 <div
-                  className={
-                    selectedRoom?.id !== id
-                      ? styles.marker
-                      : styles['marker-selected']
-                  }
+                  className={`relative width-[${iconSize}] height-[${iconSize}]`}
                 >
-                  <RoomPin room={room} selected={buildingAndRoom} />
+                  <RoomPin room={room} />
                   {(showRoomNames || room.alias) && (
                     <div
-                      className={clsx(
-                        styles.label,
-                        showIcon && styles['label-on-icon'],
-                      )}
+                      className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
                     >
                       {showRoomNames && (
                         <div className={styles['room-number']}>{room.name}</div>

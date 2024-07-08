@@ -9,7 +9,6 @@ export interface SearchResultsProps {
   query: string;
   buildings: Building[];
   floorMap: FloorMap;
-  onSelectBuilding: (selectedBuilding: Building) => void;
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   userPosition: AbsoluteCoordinate;
 }
@@ -21,7 +20,6 @@ export default function SearchResults({
   query,
   buildings,
   floorMap,
-  onSelectBuilding,
   onSelectRoom,
   userPosition,
 }: SearchResultsProps) {
@@ -39,18 +37,16 @@ export default function SearchResults({
     );
   }
 
-  return null;
-  // <div className={styles['search-results']}>
-  //   {buildings.map((building: Building) => (
-  //     <BuildingSearchResults
-  //       query={query || ''}
-  //       building={building}
-  //       floorMap={floorMap}
-  //       onSelectBuilding={onSelectBuilding}
-  //       onSelectRoom={onSelectRoom}
-  //       key={building.code}
-  //       userPosition={userPosition}
-  //     />
-  //   ))}
-  // </div>
+  <div className={styles['search-results']}>
+    {buildings.map((building: Building) => (
+      <BuildingSearchResults
+        query={query || ''}
+        building={building}
+        floorMap={floorMap}
+        onSelectRoom={onSelectRoom}
+        key={building.code}
+        userPosition={userPosition}
+      />
+    ))}
+  </div>;
 }

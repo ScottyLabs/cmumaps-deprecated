@@ -4,19 +4,15 @@ import shareIcon from '/public/assets/icons/icon-share-one.svg';
 import navIcon from '/public/assets/icons/icon-navigation.svg';
 import Image from 'next/image';
 import { useAppDispatch } from '@/lib/hooks';
-import { setEndRoom } from '@/lib/features/ui/navSlice';
+import { setEndRoom, setIsNavOpen } from '@/lib/features/ui/navSlice';
 
 export interface NavBarProps {
   room: Room;
-  setIsNavOpen: (n: boolean) => void;
 }
 /**
  * Displays the search results.
  */
-export default function NavBar({
-  room,
-  setIsNavOpen,
-}: NavBarProps): ReactElement {
+export default function NavBar({ room }: NavBarProps): ReactElement {
   const dispatch = useAppDispatch();
 
   return (
@@ -28,7 +24,7 @@ export default function NavBar({
               onClick={() => {
                 console.log(room);
                 dispatch(setEndRoom(room));
-                setIsNavOpen(true);
+                dispatch(setIsNavOpen(true));
               }}
               height={66}
               width={66}

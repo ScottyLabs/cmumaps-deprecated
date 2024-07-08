@@ -7,12 +7,13 @@ import styles from '@/styles/FloorSwitcher.module.css';
 import clsx from 'clsx';
 import { useIsDesktop } from '@/hooks/useWindowDimensions';
 import Roundel from '../shared/Roundel';
+import { setFloorOrdinal } from '@/lib/features/ui/uiSlice';
+import { useAppDispatch } from '@/lib/hooks';
 
 interface FloorSwitcherProps {
   building: Building;
   ordinal: number;
   isToolbarOpen: boolean;
-  onOrdinalChange: (newOrdinal: number) => void;
 }
 
 export function getFloorIndexAtOrdinal(
@@ -48,10 +49,9 @@ export default function FloorSwitcher({
   building,
   ordinal,
   isToolbarOpen,
-  onOrdinalChange,
 }: FloorSwitcherProps) {
   const [showFloorPicker, setShowFloorPicker] = useState<boolean>(false);
-
+  const dispatch = useAppDispatch();
   // Hide the floor picker if the building or floor changes
   useEffect(() => setShowFloorPicker(false), [building, ordinal]);
 
@@ -115,7 +115,7 @@ export default function FloorSwitcher({
                   className={styles.button}
                   title="Lower floor"
                   disabled={!canGoDown}
-                  onClick={() => onOrdinalChange(lowerFloorOrdinal)}
+                  onClick={() => dispatch(setFloorOrdinal(lowerFloorOrdinal))}
                 >
                   <ChevronDownIcon className={styles['button-icon']} />
                 </button>
@@ -153,7 +153,7 @@ export default function FloorSwitcher({
                   className={styles.button}
                   title="Upper floor"
                   disabled={!canGoUp}
-                  onClick={() => onOrdinalChange(upperFloorOrdinal)}
+                  onClick={() => dispatch(setFloorOrdinal(upperFloorOrdinal))}
                 >
                   <ChevronUpIcon className={styles['button-icon']} />
                 </button>
@@ -194,7 +194,7 @@ export default function FloorSwitcher({
                   )}
                   onClick={() => {
                     setShowFloorPicker(false);
-                    onOrdinalChange(floor.ordinal);
+                    dispatch(setFloorOrdinal(floor.ordinal));
                   }}
                   role="tab"
                   aria-selected={floor.ordinal === ordinal ? 'true' : 'false'}
