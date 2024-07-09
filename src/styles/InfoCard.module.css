@@ -1,6 +1,6 @@
 .info-card {
-    position: absolute;
-    top:auto;
+    /* position: absolute;
+    top: auto;
     left: 0;
     width: 100%;
     border-radius: 8px;
@@ -12,17 +12,17 @@
 
     z-index: 101;
     transform: translateY(100vh);
-    transition: var(--search-transition-duration) ease-in-out transform;
+    transition: var(--search-transition-duration) ease-in-out transform; */
   }
     @media (prefers-reduced-motion) {
     .info-card {
-        transition: none;
+        /* transition: none; */
     }
     }
 
     .info-card-open {
-        transform: none;
-        pointer-events: none;
+        /* transform: none;
+        pointer-events: none; */
 
     }
     .info-image{
@@ -42,8 +42,8 @@
     
     @media screen and (min-width: 768px) {
         .info-card {
-            width: var(--search-width-desktop);
+            /* width: var(--search-width-desktop);
             bottom: 150px;;
-            top:0;
+            top:0; */
         }
     }

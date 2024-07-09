@@ -1,8 +1,8 @@
 import React from 'react';
 import { Building, Room, getRoomTypeDetails } from '@/types';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import titleCase from '@/util/titleCase';
-import styles from '../../styles/RoomPin.module.css';
+// import styles from '../../styles/RoomPin.module.css';
 import pinIcon from '/public/assets/icons/icon-pin.svg';
 import Image from 'next/image';
 import { useAppSelector } from '@/lib/hooks';
@@ -62,10 +62,14 @@ export default function RoomPin({ room, selected }: RoomPinProps) {
   if (!isSelected) {
     return (
       <div
-        className={clsx(
-          styles.pin,
-          !isSelected && showIcon && styles['pin-with-icon'],
-        )}
+        className={
+          // clsx(
+          //   styles.pin,
+          //   !isSelected && showIcon && styles['pin-with-icon'],
+          // )
+          'flex items-center justify-center ' + 
+          `${(!isSelected && showIcon) ? 'w-[20px] h-[20px] rounded-[4px]' : ' w-[10px] h-[10px] rounded'}`
+        }
         style={{ background: roomColors.primary }}
         title={titleCase(room.type)}
       >
@@ -86,10 +90,14 @@ export default function RoomPin({ room, selected }: RoomPinProps) {
       </div>
     );
   } else {
+    /** The yellow-beige dropped pin when room is selected */
     return (
       <div
-        className={clsx(styles.pin, styles['pin-with-icon-selected'])}
-        style={{ background: '#f7efc3' }}
+        className={
+          // clsx(styles.pin, styles['pin-with-icon-selected'])
+          'block items-center justify-center w-[40px] h-[40px] rounded-[4px] bg-[#f7efc3]'
+        }
+        // style={{ background: '#f7efc3' }}
         title={titleCase(room.type)}
       >
         <img
