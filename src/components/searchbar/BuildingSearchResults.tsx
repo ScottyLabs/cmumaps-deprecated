@@ -121,45 +121,70 @@ export default function BuildingSearchResults({
   }
 
   return (
-    <div>
+    <div name="searchResults">
       <button
         type="button"
         className={
-          clsx(
-            styles['search-list-element'],
-            styles['search-list-element-building'],
-            filteredRooms?.length > 0 && styles['search-list-element-sticky'],
-          ) +
-          'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-paddig)]'
+          // clsx(
+          //  styles['search-list-element']
+          //   styles['search-list-element-building'],
+          //   filteredRooms?.length > 0 && styles['search-list-element-sticky'],
+          // )
+          'font-normal tracking-[-0.01em]' + //search-list-element-building
+          'border-b' +
+          'border-slate-500' +
+          'active:bg-slate-300 active:outline-none' +
+          `${filteredRooms?.length > 0 ? 'sticky left-0 top-0 w-full bg-[var(--search-background)] backdrop-blur' : ''}` +
+          //search-list-element-sticky
+          'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-padding)]' //search-list-element
         }
         onClick={() => onSelectBuilding(building)}
       >
         <Roundel code={building.code} />
-        <span className={styles['search-list-element-title']}>
+        <span
+          className={
+            /*tyles['search-list-element-title']+*/ 'flex grow overflow-hidden leading-[1.3]'
+          }
+        >
           {building.name}
         </span>
-        <ChevronRightIcon className={styles['search-list-arrow']} />
+        <ChevronRightIcon
+          className={
+            /*styles['search-list-arrow']+*/ 'h-5 w-5 fill-[#0000004d]'
+          }
+        />
       </button>
 
       {filteredRooms.map((room: RoomWithOrdinal) => {
         return (
           <button
             type="button"
-            className={styles['search-list-element']}
+            className={
+              //styles['search-list-element']
+              'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-padding)]' //search-list-element
+            }
             key={room.id}
             onClick={() => onSelectRoom(room, building, room.floor)}
           >
-            <div className={styles['search-list-element-pin']}>
+            <div
+              className={
+                /*styles['search-list-element-pin']+*/ 'w-40px flex justify-end'
+              }
+            >
               <RoomPin room={room} />
             </div>
             <div
-              className={clsx(
-                styles['search-list-element-title'],
-                styles['search-list-element-room'],
-              )}
+              className={
+                //   clsx(
+                //   styles['search-list-element-title'],
+                //   styles['search-list-element-room'],
+                // )
+                'flex grow overflow-hidden leading-[1.3]' + //search-list-element-title
+                'flex flex-col leading-[1.2]' //search-list-element-room
+              }
             >
               <div>
-                <span className={styles['search-room-code']}>
+                <span className={'font-medium' + styles['search-room-code']}>
                   {building.code} {room.name}
                 </span>
                 {room.type !== 'default' && (
@@ -167,10 +192,17 @@ export default function BuildingSearchResults({
                 )}
               </div>
               {room.alias && (
-                <div className={styles['search-room-name']}>{room.alias}</div>
+                <div className={'truncate'}>
+                  {/*styles['search-room-name']*/}
+                  {room.alias}
+                </div>
               )}
             </div>
-            <ChevronRightIcon className={styles['search-list-arrow']} />
+            <ChevronRightIcon
+              className={
+                /*styles['search-list-arrow']+*/ 'h-5 w-5 fill-[#0000004d]'
+              }
+            />
           </button>
         );
       })}

@@ -38,9 +38,15 @@ export default function SearchResults({
         ),
     );
   }
+  // const isEmpty = document.getElementsByName('searchResults').length <=0;
 
   return (
-    <div className={styles['search-results']}>
+    <div
+      className={
+        "empty:before:text-l empty:before:gap-4px empty:before:px-20px empty:before:py-40px h-auto empty:before:flex empty:before:h-32 empty:before:items-center empty:before:justify-center empty:before:text-center empty:before:font-light empty:before:content-['No_results_found.']"
+        //styles['search-results']
+      }
+    >
       {buildings.map((building: Building) => (
         <BuildingSearchResults
           query={query || ''}
@@ -52,6 +58,10 @@ export default function SearchResults({
           userPosition={userPosition}
         />
       ))}
+      {/* {
+        isEmpty &&
+        <span className = "text-l gap-4px px-20px py-40px flex h-32 items-center justify-center text-center font-light">No results found.</span>
+      } */}
     </div>
   );
 }
