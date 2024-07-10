@@ -201,8 +201,8 @@ const Toolbar = ({
                 //styles['open-search-button'],
                 //!searchQuery && styles.placeholder, //What does this do?
                 //)
-                'absolute block h-full w-full cursor-text whitespace-nowrap rounded-[8px] border-0 bg-transparent pl-[var(--search-icon-width)] text-left text-[20px] [color:inherit] [font-family:inherit]' +
-                'focus-visible:pl-[calc(var(--search-icon-width) - 3px)] focus-visible:border-[3px] focus-visible:border-solid focus-visible:border-[#007cff] focus-visible:bg-[#e0efff]'
+                'absolute block h-full w-full cursor-text whitespace-nowrap rounded-[8px] border-0 bg-transparent pl-[var(--search-icon-width)] text-left text-[20px] [color:inherit] [font-family:inherit] ' +
+                ' focus-visible:pl-[calc(var(--search-icon-width) - 3px)] focus-visible:border-[3px] focus-visible:border-solid focus-visible:border-[#007cff] focus-visible:bg-[#e0efff]'
               }
               onClick={() => {
                 onSetIsSearchOpen(true);
@@ -219,7 +219,7 @@ const Toolbar = ({
           type="search"
           className={
             clsx(styles['search-box-input']) +
-            ' w-18 fixed left-14 top-4 h-9 border-0 bg-transparent p-0 pr-3 font-["inherit"] text-[20px]'
+            ' fixed left-12 top-4 h-9 border-0 bg-transparent p-0 pr-3 font-["inherit"] text-[20px]'
           }
           placeholder="Search"
           value={searchQuery}
@@ -240,7 +240,7 @@ const Toolbar = ({
           //   isSearchOpen && styles['search-modal-background-active'],
           // )
           'pointer-events-none absolute left-0 top-0 w-full bg-[rgba(0,_0,_0,_.5)] opacity-0 [transition:var(--search-transition-duration)_ease-in-out_opacity]' +
-          `${isSearchOpen ? 'opacity-100' : ''}`
+          `${isSearchOpen ? ' opacity-100' : ''}`
         }
         role="presentation"
       />
