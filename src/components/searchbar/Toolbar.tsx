@@ -12,6 +12,7 @@ import NavCard from '../navigation/NavCard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { claimRoom } from '@/lib/features/ui/uiSlice';
 // import { Door } from '@/pages/api/findPath';
+import { twMerge } from 'tailwind-merge';
 
 export interface ToolbarProps {
   buildings: Building[] | null;
@@ -103,16 +104,17 @@ const Toolbar = ({
           //styles.toolbar +
           //' absolute bottom-0 left-0' + ' w-full z-100 p-[var(--main-ui-padding)] pt-0 mt-[var(--main-ui-padding)] ease-in-out duration-[var(--search-transition-duration)] flex flex-col gap-[var(--toolbar-gap)] justify-end ' //toolbar
           //+
-          clsx(
-            styles.toolbar,
-            //isSearchOpen && styles['toolbar-open'],
-            //isCardOpen && styles['card-open'],
-          ) +
-          `${isSearchOpen ? 'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] translate-y-[calc(-1*(var(--floor-switcher-height] bottom-[unset] top-[0]' + styles['toolbar-open'] : ''}` +
-          `${isCardOpen ? 'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] translate-y-[calc(-1*(var(--floor-switcher-height] bottom-[unset] top-[0]' + styles['card-open'] : ''}` +
-          ' h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] top-0' +
-          ' h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] top-0'
-          //Something is wrong
+          twMerge(
+            clsx(
+              styles.toolbar,
+              //isSearchOpen && styles['toolbar-open'],
+              //isCardOpen && styles['card-open'],
+            ),
+            `${isSearchOpen ? 'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] translate-y-[calc(-1*(var(--floor-switcher-height] bottom-[unset] top-[0]' + styles['toolbar-open'] : ''}`,
+            `${isCardOpen ? 'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] translate-y-[calc(-1*(var(--floor-switcher-height] bottom-[unset] top-[0]' + styles['card-open'] : ''}`,
+            'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] top-0',
+            'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] top-0',
+          )
         }
       >
         {!isNavOpen && isCardOpen && (
