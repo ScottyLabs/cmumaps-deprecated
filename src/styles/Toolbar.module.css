@@ -24,14 +24,25 @@
 .toolbar-open {
   top: 0;
   bottom: unset;
-  height: calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding));
-  transform: translateY(calc(-1 * (var(--floor-switcher-height) + var(--toolbar-gap))));
+  height: calc(
+    var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) +
+      var(--main-ui-padding)
+  );
+  transform: translateY(
+    calc(-1 * (var(--floor-switcher-height) + var(--toolbar-gap)))
+  );
 }
+
 .card-open {
   top: 0;
   bottom: unset;
-  height: calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding));
-  transform: translateY(calc(-1 * (var(--floor-switcher-height) + var(--toolbar-gap))));
+  height: calc(
+    var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) +
+      var(--main-ui-padding)
+  );
+  transform: translateY(
+    calc(-1 * (var(--floor-switcher-height) + var(--toolbar-gap)))
+  );
 }
 
 @supports (height: 100dvh) {
@@ -42,7 +53,9 @@
   }
 
   .toolbar-open {
-    transform: translateY(calc(-1 * (var(--floor-switcher-height) + var(--toolbar-gap))));
+    transform: translateY(
+      calc(-1 * (var(--floor-switcher-height) + var(--toolbar-gap)))
+    );
   }
 }
 
@@ -59,40 +72,45 @@
 }
 
 .search-box {
-  position: relative;
+  /* position: relative;
   background: white;
   height: var(--search-box-height);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   border: 0;
   border-radius: 8px;
-  overflow: hidden;
+  overflow: hidden; */
 }
 
 .search-box-input {
-  background: transparent;
-  border: 0;
-  font-size: 20px;
-  padding: 0;
-  padding-right: 12px;
+  /* background: transparent;
+  border: 0; */
+  /* font-size: 20px;
+  padding: 0; */
+  /* padding-right: 12px; */
   font-family: inherit;
-  animation: var(--search-transition-duration) linear appear;
+  /* animation: var(--search-transition-duration) linear appear; */
 
   /*
    * Force the search box input to be at the top of the screen.
    * This ensures that Safari on iOS will not try to scroll down when
    * it is focused and it moves top the top.
    */
-  position: fixed;
-  top: calc(var(--main-ui-padding));
+  /* position: fixed; */
+  /* top: calc(var(--main-ui-padding));
   left: calc(var(--main-ui-padding) + 40px);
   height: var(--search-box-height);
-  width: calc(100% - 2 * var(--main-ui-padding) - var(--search-icon-width));
+  width: calc(100% - 2 * var(--main-ui-padding) - var(--search-icon-width)); */
   z-index: 100;
 }
 
 @keyframes appear {
-  0%, 80% { opacity: 0 }
-  100% { opacity: 1 }
+  0%,
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .search-box-input::-webkit-search-decoration {
@@ -104,7 +122,7 @@
 }
 
 .search-icon-wrapper {
-  --search-close-margin: 8px;
+  /* --search-close-margin: 8px;
   position: absolute;
 
   left: var(--search-close-margin);
@@ -117,17 +135,17 @@
   height: 100%;
 
   pointer-events: none;
-  z-index: 95;
+  z-index: 95; */
 }
 
 .search-icon {
-  width: 24px;
+  /* width: 24px;
   height: 24px;
-  fill: #767575;
+  fill: #767575; */
 }
 
 .search-close-button {
-  --search-close-margin: 8px;
+  /* --search-close-margin: 8px;
 
   display: flex;
   align-items: center;
@@ -137,7 +155,7 @@
   top: var(--search-close-margin);
   left: var(--search-close-margin);
   width: 10 ;/*calc(var(--search-icon-width) - 4 * var(--search-close-margin));*/
-  border-radius: 8px;
+  /* border-radius: 8px;
   height: calc(var(--search-box-height) - 2 * var(--search-close-margin));
   background: white;
   border: 0;
@@ -146,26 +164,26 @@
   opacity: 0;
   transition: var(--search-transition-duration) ease-in-out opacity;
   pointer-events: none;
-  z-index: 100;
+  z-index: 100;  */
 }
 
 .search-close-button:focus-visible {
-  border: 3px solid #007cff;
+  /* border: 3px solid #007cff; */
 }
 
 .search-close-button-visible {
-  opacity: 1;
-  pointer-events: all;
+  /* opacity: 1;
+  pointer-events: all; */
 }
 
 .search-close-icon {
-  width: 24px;
+  /* width: 24px;
   height: 24px;
-  color: #4b5563;
+  color: #4b5563; */
 }
 
 .open-search-button {
-  position: absolute;
+  /* position: absolute;
   width: 100%;
   height: 100%;
   background: transparent;
@@ -179,23 +197,33 @@
   font-family: inherit;
   white-space: nowrap;
   color: inherit;
-  border-radius: 8px;
+  border-radius: 8px; */
 }
 
 .open-search-button:focus-visible {
-  border: 3px solid #007cff;
+  /* border: 3px solid #007cff;
   background: #e0efff;
-  padding-left: calc(var(--search-icon-width) - 3px);
+  padding-left: calc(var(--search-icon-width) - 3px); */
 }
 
-.placeholder { color: #767575; }
-.search-box-input::-webkit-input-placeholder { color: #767575; }
-.search-box-input:-moz-placeholder { color: #767575; }
-.search-box-input::-moz-placeholder { color: #767575; }
-.search-box-input:-ms-input-placeholder { color: #767575; }
+.placeholder {
+  color: #767575;
+}
+.search-box-input::-webkit-input-placeholder {
+  color: #767575;
+}
+.search-box-input:-moz-placeholder {
+  color: #767575;
+}
+.search-box-input::-moz-placeholder {
+  color: #767575;
+}
+.search-box-input:-ms-input-placeholder {
+  color: #767575;
+}
 
 .search-modal-background {
-  position: absolute;
+  /* position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -204,25 +232,25 @@
 
   opacity: 0;
   pointer-events: none;
-  transition: var(--search-transition-duration) ease-in-out opacity;
+  transition: var(--search-transition-duration) ease-in-out opacity; */
 }
 
 .search-modal-background-active {
-  opacity: 1;
+  /* opacity: 1; */
 }
 
 .search-modal {
-  position: absolute;
+  /* position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100%; */
 
-  padding: var(--main-ui-padding);
+  /* padding: var(--main-ui-padding);
   padding-top: calc(var(--main-ui-padding) + var(--search-box-height) + var(--main-ui-padding));
-  padding-bottom: 0;
+  padding-bottom: 0; */
 
   z-index: 95;
-  transform: translateY(100vh);
+  /* transform: translateY(100vh); */
   transition: var(--search-transition-duration) ease-in-out transform;
 }
 
@@ -233,23 +261,23 @@
 }
 
 .search-modal-open {
-  transform: none;
+  /* transform: none; */
 }
 
 .search-list {
-  --search-background: #dedfdf;
+  /* --search-background: #dedfdf;
   background: var(--search-background);
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   border-radius: 8px;
   height: 90vh;
   overflow: hidden;
   position: relative;
-  z-index: 100;
+  z-index: 100; */
 }
 
 .search-list-scroll {
-  height: 100%;
-  overflow-y: auto;
+  /* height: 100%;
+  overflow-y: auto; */
 }
 
 /* Desktop layout */
@@ -276,9 +304,8 @@
 
   .search-box-input {
     width: calc(
-      var(--search-width-desktop)
-      - var(--search-icon-width)
-      - 2 * var(--main-ui-padding)
+      var(--search-width-desktop) - var(--search-icon-width) - 2 *
+        var(--main-ui-padding)
     );
     animation: none;
   }
