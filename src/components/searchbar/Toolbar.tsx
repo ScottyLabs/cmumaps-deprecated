@@ -197,19 +197,6 @@ const Toolbar = ({
         />
       )}
 
-      {/*No clue what this is*/}
-      <div
-        className={
-          // clsx(
-          //   styles['search-modal-background'],
-          //   isSearchOpen && styles['search-modal-background-active'],
-          // )
-          'pointer-events-none absolute left-0 top-0 w-full bg-[rgba(0,_0,_0,_.5)] opacity-0 [transition:var(--search-transition-duration)_ease-in-out_opacity]' +
-          `${isSearchOpen ? 'opacity-100' : ''}`
-        }
-        role="presentation"
-      />
-
       <div
         className={
           //   clsx(

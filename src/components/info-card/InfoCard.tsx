@@ -7,7 +7,6 @@ import {
   getAvailabilityData,
   getImageURL,
   getEatingData,
-  getBuildingWebsites,
 } from '@/util/data/idToNames';
 // import clsx from 'clsx';
 import EateryCard from './eaterycard';
@@ -22,14 +21,15 @@ type WeekAvailability =
 export default function InfoCard(): ReactElement {
   const room = useAppSelector((state) => state.ui.selectedRoom);
   let building = useAppSelector((state) => state.ui.selectedBuilding);
-  const isCardOpen = !!(room || building);
+  const isCardOpen = !!(room || building); // Card is open iff room is selected, or building is selected
+
+  // But we need the focused building, which is the same as selected building if selected building exists
   building = useAppSelector((state) => state.ui.focusedBuilding);
+
   const [imageURL, setImageURL] = useState('');
   const [availabilityData, setAvailabilityData] = useState({});
   const [eatingData, setEatingData] = useState({});
   const [websiteData, setWebsiteData] = useState([]);
-  const [background, setBackground] = useState('#fff');
-  const [name, setName] = useState('');
 
   useEffect(() => {
     getImageURL(building?.code || '', room?.name || null).then((res) => {
@@ -42,21 +42,12 @@ export default function InfoCard(): ReactElement {
           setAvailabilityData(res);
         } else {
           setAvailabilityData({});
-          setBackground('#fff');
         }
       });
     } else {
       setAvailabilityData({});
-      setBackground('#fff');
     }
 
-    setName(
-      room
-        ? room?.alias
-          ? ' ' + room.alias
-          : ' ' + building?.code + ' ' + room?.name
-        : ' ' + building?.name || 'Building not found',
-    );
     if (room?.alias) {
       getEatingData(room?.alias).then((res) => {
         console.log(res);
@@ -64,12 +55,6 @@ export default function InfoCard(): ReactElement {
       });
     } else {
       setEatingData({});
-    }
-
-    if (!room) {
-      getBuildingWebsites(building?.code).then((res) => setWebsiteData(res));
-    } else {
-      setWebsiteData([]);
     }
   }, [building, room]);
 
@@ -85,15 +70,8 @@ export default function InfoCard(): ReactElement {
     }
     return;
   }
-  function websitesApplicable(websiteData: any) {
-    if (websiteData && websiteData.length) {
-      return <WebsiteList websiteList={websiteData} />;
-    }
-    return;
-  }
   return (
     <div
-      id="thisthing"
       className={
         // clsx(
         //   styles['info-card'],
@@ -122,7 +100,6 @@ export default function InfoCard(): ReactElement {
         >
           {availabilityApplicable(availabilityData)}
           {eatingApplicable(eatingData)}
-          {websitesApplicable(websiteData)}
         </div>
       </div>
     </div>
