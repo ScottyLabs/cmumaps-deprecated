@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { claimRoom, setIsSearchOpen } from '@/lib/features/ui/uiSlice';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/features/ui/navSlice';
 // import { Door } from '@/pages/api/findPath';
+import { twMerge } from 'tailwind-merge';
 
 export interface ToolbarProps {
   buildings: Building[] | null;
@@ -76,11 +77,23 @@ const Toolbar = ({
   return (
     <>
       <div
-        className={clsx(
-          styles.toolbar,
-          isSearchOpen && styles['toolbar-open'],
-          isCardOpen && styles['card-open'],
-        )}
+        //Search Bar
+        className={
+          //styles.toolbar +
+          //' absolute bottom-0 left-0' + ' w-full z-100 p-[var(--main-ui-padding)] pt-0 mt-[var(--main-ui-padding)] ease-in-out duration-[var(--search-transition-duration)] flex flex-col gap-[var(--toolbar-gap)] justify-end ' //toolbar
+          //+
+          twMerge(
+            clsx(
+              styles.toolbar,
+              //isSearchOpen && styles['toolbar-open'],
+              //isCardOpen && styles['card-open'],
+            ),
+            `${isSearchOpen ? 'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] translate-y-[calc(-1*(var(--floor-switcher-height] bottom-[unset] top-[0]' + styles['toolbar-open'] : ''}`,
+            `${isCardOpen ? 'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] translate-y-[calc(-1*(var(--floor-switcher-height] bottom-[unset] top-[0]' + styles['card-open'] : ''}`,
+            'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] top-0',
+            'h-[calc(var(--floor-switcher-height) + var(--toolbar-gap) + var(--search-box-height) + var(--main-ui-padding))] top-0',
+          )
+        }
       >
         {!isNavOpen && isCardOpen && <InfoCard />}
         {isNavOpen && <NavCard />}
@@ -92,18 +105,37 @@ const Toolbar = ({
           />
         )}
 
-        <div className={styles['search-box']}>
-          <div className={styles['search-icon-wrapper']}>
-            <MagnifyingGlassIcon className={styles['search-icon']} />
+        {/* Search bar */}
+        <div
+          className={
+            'relative h-[var(--search-box-height)] overflow-hidden rounded-[8px] border-0 bg-white [box-shadow:0_10px_15px_-3px_rgb(0_0_0_/_0.1),_0_4px_6px_-4px_rgb(0_0_0_/_0.1)]' /*styles['search-box']*/
+          }
+        >
+          {/* Arrow */}
+          <div
+            className={
+              'pointer-events-none absolute left-0.5 flex h-full w-10 items-center justify-center' /*styles['search-icon-wrapper']*/
+            }
+          >
+            {/* Magnifying Glass Size */}
+            <MagnifyingGlassIcon
+              className={'h-6 w-6 fill-[#767575]' /*styles['search-icon']*/}
+            />
           </div>
           <button
             type="button"
             title="Close"
-            className={clsx(
-              styles['search-close-button'],
-              (isSearchOpen || isCardOpen || isNavOpen) &&
-                styles['search-close-button-visible'],
-            )}
+            // back arrow
+            className={
+              'absolute left-2 top-2.5 flex items-center justify-center bg-white opacity-0' + //search-close-button
+              ' focus-visible:border-3px focus-visible:border-solid focus-visible:border-[#007cff]' + //search-close-button: focus-visible
+              `${isSearchOpen || isCardOpen || isNavOpen ? ' pointer-events-auto opacity-100' : ''}` //search-close-button-visible
+              // clsx(
+              //   //styles['search-close-button'],
+              //   //(isSearchOpen || isCardOpen || isNavOpen) &&
+              //   //styles['search-close-button-visible'],
+              // )
+            }
             ref={(node) =>
               node &&
               (isSearchOpen || isCardOpen || isNavOpen
@@ -117,16 +149,26 @@ const Toolbar = ({
               dispatch(claimRoom(null));
             }}
           >
-            <ArrowLeftIcon className={styles['search-close-icon']} />
+            {/* Arrow Left on Search Bar */}
+            <ArrowLeftIcon
+              className={
+                'h-6 w-6 text-[#4b5563]' /*styles['search-close-icon']*/
+              }
+            />
           </button>
           {!isSearchOpen && (
             <button
               type="button"
               aria-label="Open Search"
-              className={clsx(
-                styles['open-search-button'],
-                !searchQuery && styles.placeholder,
-              )}
+              // Search Word in search bar
+              className={
+                //clsx(
+                //styles['open-search-button'],
+                //!searchQuery && styles.placeholder, //What does this do?
+                //)
+                'absolute block h-full w-full cursor-text whitespace-nowrap rounded-[8px] border-0 bg-transparent pl-[var(--search-icon-width)] text-left text-[20px] [color:inherit] [font-family:inherit]' +
+                'focus-visible:pl-[calc(var(--search-icon-width) - 3px)] focus-visible:border-[3px] focus-visible:border-solid focus-visible:border-[#007cff] focus-visible:bg-[#e0efff]'
+              }
               onClick={() => {
                 dispatch(setIsSearchOpen(true));
                 // inputRef.current!.focus();
@@ -140,7 +182,10 @@ const Toolbar = ({
       {isSearchOpen && (
         <input
           type="search"
-          className={clsx(styles['search-box-input'])}
+          className={
+            clsx(styles['search-box-input']) +
+            ' w-18 fixed left-14 top-4 h-9 border-0 bg-transparent p-0 pr-3 font-["inherit"] text-[20px]'
+          }
           placeholder="Search"
           value={searchQuery}
           onChange={(event) => {
@@ -152,19 +197,30 @@ const Toolbar = ({
         />
       )}
 
+      {/*No clue what this is*/}
       <div
-        className={clsx(
-          styles['search-modal-background'],
-          isSearchOpen && styles['search-modal-background-active'],
-        )}
+        className={
+          // clsx(
+          //   styles['search-modal-background'],
+          //   isSearchOpen && styles['search-modal-background-active'],
+          // )
+          'pointer-events-none absolute left-0 top-0 w-full bg-[rgba(0,_0,_0,_.5)] opacity-0 [transition:var(--search-transition-duration)_ease-in-out_opacity]' +
+          `${isSearchOpen ? 'opacity-100' : ''}`
+        }
         role="presentation"
       />
 
       <div
-        className={clsx(
-          styles['search-modal'],
-          isSearchOpen && styles['search-modal-open'],
-        )}
+        className={
+          //   clsx(
+          //   styles['search-modal'],
+          //   //SearchOpen && styles['search-modal-open'],
+          // )
+          styles['search-modal'] +
+          ' z-95 absolute left-0 top-0 w-[var(--search-width-desktop)] translate-y-[100vh] p-[var(--main-ui-padding)] pb-0 pt-20' + //search-modal
+          `${isSearchOpen ? ' transform-none' : ''}` //search-modal-open
+          //something is wrong
+        }
         ref={(node) =>
           node &&
           (isSearchOpen
@@ -173,8 +229,18 @@ const Toolbar = ({
         }
       >
         {buildings && searchQuery != '' && (
-          <div className={styles['search-list']}>
-            <div className={styles['search-list-scroll']}>
+          // Search results
+          <div
+            className={
+              'rounded-3 relative h-[90vh] overflow-hidden bg-gray-50 p-2.5 [box-shadow:0_20px_25px_-5px_rgb(0_0_0_/_0.1),_0_8px_10px_-6px_rgb(0_0_0_/_0.1)]'
+              //+ styles['search-list']
+            }
+          >
+            <div
+              className={
+                'h-full overflow-y-auto' /*styles['search-list-scroll']*/
+              }
+            >
               <SearchResults
                 query={searchQuery}
                 buildings={buildings}

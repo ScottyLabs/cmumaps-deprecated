@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, ReactElement } from 'react';
 import { Building, Floor, FloorMap, Room } from '@/types';
-import styles from '@/styles/InfoCard.module.css';
+// import styles from '@/styles/InfoCard.module.css';
 import simplify from '@/util/simplify';
 import WebsiteList from './WebsiteList';
 import {
@@ -9,7 +9,7 @@ import {
   getEatingData,
   getBuildingWebsites,
 } from '@/util/data/idToNames';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import EateryCard from './eaterycard';
 import NavBar from '../navigation/NavBar';
 import AvailabilitySection from './AvailabilitySection';
@@ -94,10 +94,16 @@ export default function InfoCard(): ReactElement {
   return (
     <div
       id="thisthing"
-      className={clsx(
-        styles['info-card'],
-        isCardOpen && styles['info-card-open'],
-      )}
+      className={
+        // clsx(
+        //   styles['info-card'],
+        //   isCardOpen && styles['info-card-open'],
+        // )
+        'absolute left-0 top-auto z-[101] w-full rounded-lg md:bottom-[150px] md:top-0 md:w-[var(--search-width-desktop)] ' +
+        'p-[var(--main-ui-padding)] py-[calc(calc(var(--main-ui-padding)+var(--search-box-height)+var(--main-ui-padding)))]' +
+        'transition-transform duration-[var(--search-transition-duration)] ease-in-out motion-reduce:transition-none' +
+        `${isCardOpen ? 'motion-reduce:pointer-events-none motion-reduce:transform-none' : 'translate-y-[100vh]'}`
+      }
     >
       <div className="pointer-events-auto relative max-h-[800px] w-[100%] rounded-[8px] bg-[#929292] bg-opacity-20 p-2 backdrop-blur-sm">
         {imageURL && (

@@ -1,22 +1,22 @@
 .pin {
-  width: 10px;
+  /* width: 10px;
   height: 10px;
   border-radius: 50%;
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
 }
 
 .pin-with-icon {
-  width: 20px;
+  /* width: 20px;
   height: 20px;
-  border-radius: 4px;
+  border-radius: 4px; */
 }
 
 .pin-with-icon-selected {
-  width: 20px !important;
-  height: 20px !important;
-  position: relative;
-  border-radius: 4px;
+  /* width: 40px !important;
+  height: 40px !important;
+  display:block;
+  border-radius: 4px; */
 }

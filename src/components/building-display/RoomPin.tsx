@@ -1,9 +1,9 @@
 import React from 'react';
 import { Building, Room, getRoomTypeDetails } from '@/types';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import titleCase from '@/util/titleCase';
-import styles from '../../styles/RoomPin.module.css';
-import pinIcon from '/public/assets/icons/icon-pin.svg';
+// import styles from '../../styles/RoomPin.module.css';
+// import pinIcon from '/public/assets/icons/icon-pin.svg';
 import Image from 'next/image';
 import { useAppSelector } from '@/lib/hooks';
 
@@ -61,10 +61,14 @@ export default function RoomPin({ room }: RoomPinProps) {
   if (!isSelected) {
     return (
       <div
-        className={clsx(
-          styles.pin,
-          !isSelected && showIcon && styles['pin-with-icon'],
-        )}
+        className={
+          // clsx(
+          //   styles.pin,
+          //   !isSelected && showIcon && styles['pin-with-icon'],
+          // )
+          'flex items-center justify-center' +
+          `${!isSelected && showIcon ? ' h-[20px] w-[20px] rounded-[4px]' : ' h-[10px] w-[10px] rounded'}`
+        }
         style={{ background: roomColors.primary }}
         title={titleCase(room.type)}
       >
@@ -85,16 +89,20 @@ export default function RoomPin({ room }: RoomPinProps) {
       </div>
     );
   } else {
+    /** The yellow-beige dropped pin when room is selected */
     return (
       <div
-        className={clsx(styles.pin, styles['pin-with-icon-selected'])}
-        style={{ background: '#f7efc3' }}
+        className={
+          // clsx(styles.pin, styles['pin-with-icon-selected'])
+          'block h-[40px] w-[40px] items-center justify-center rounded-[4px] bg-[#f7efc3]'
+        }
+        // style={{ background: '#f7efc3' }}
         title={titleCase(room.type)}
       >
-        <img
+        <Image
           alt="pin"
-          width="40px"
-          height="40px"
+          width={40}
+          height={40}
           src="/assets/icons/icon-pin.svg"
         />
         {/* <Image alt="pin" width={40} height={40} src={pinIcon} /> */}
