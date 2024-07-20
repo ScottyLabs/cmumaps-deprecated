@@ -141,7 +141,7 @@ const MapDisplay = ({
     }
 
     if (updateMap) {
-      const points: AbsoluteCoordinate[] = newRoom.shapes.flat();
+      const points: AbsoluteCoordinate[] = newRoom.polygon.coordinates.flat();
       const coords: Coordinate[] = points.map((p) => convertToMap(p));
       const allLat = coords.map((c) => c.latitude);
       const allLon = coords.map((c) => c.longitude);
