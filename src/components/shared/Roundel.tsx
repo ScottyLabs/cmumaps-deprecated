@@ -1,3 +1,4 @@
+// Roundel is based on all of the maps that cmu likes to publish, so even though theo thinks its ugly we will keep it. :(
 import React from 'react';
 // import clsx from 'clsx';
 // import styles from '../../styles/Roundel.module.css';
@@ -14,14 +15,9 @@ export default function Roundel({ code }: { code: string }) {
         //   code.length > 2 && styles.condensed,
         //   code === 'WWG' && styles['hyper-condensed'],
         // )
-        'flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[#4b5563]' +
-        ' border border-white' +
-        ' text-center font-medium tracking-[0.02em] text-white' +
-        `${
-          code == 'WWG'
-            ? ' text-[0.75em]'
-            : `${code.length > 2 ? ' text-[0.9em]' : ' text-[1.1em]'}`
-        }`
+        'flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[#4b5563] font-mono font-extrabold ' +
+        'border border-white' +
+        'text-center text-[1.05em] font-medium tracking-[0.02em] text-white'
       }
     >
       {code}
