@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import styles from '@/styles/Toolbar.module.css';
 import FloorSwitcher from '@/components/building-display/FloorSwitcher';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
@@ -32,24 +32,28 @@ const Toolbar = ({ onSelectRoom, userPosition }: ToolbarProps) => {
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const [searchQuery, setSearchQuery] = useState('');
 
-  useMemo(() => {
+  // set the search query using room and building
+  useEffect(() => {
+    // set the search query to empty when there is no room or building selected
     if (!room && !building) {
-      return setSearchQuery('');
+      setSearchQuery('');
+      return;
     }
 
-    let formattedName = '';
+    // set the search query to the alias of the room if there is a room
     if (room?.alias) {
-      return setSearchQuery(room.alias);
+      setSearchQuery(room.alias);
+      return;
     }
 
+    // otherwise the formatted name is the building name + the room name
+    let formattedName = '';
     if (building?.name) {
       formattedName += building?.name;
     }
 
     if (room?.name) {
       formattedName += ' ' + room?.name;
-    } else {
-      formattedName == '';
     }
 
     if (formattedName != '') {
