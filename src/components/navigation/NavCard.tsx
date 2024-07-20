@@ -1,12 +1,8 @@
-import React, { useMemo, useState, useEffect, ReactElement } from 'react';
-import { Building, Floor, FloorMap, Room } from '@/types';
+import React, { ReactElement } from 'react';
 import styles from '@/styles/InfoCard.module.css';
 import clsx from 'clsx';
-import g9 from '/public/assets/icons/g9.png';
-import Image from 'next/image';
-import { Door } from '@/pages/api/findPath';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setRecommendedPath } from '@/lib/features/ui/navSlice';
+import { setRecommendedPath } from '@/lib/redux/navSlice';
 
 /**
  * Displays the search results.

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import styles from '@/styles/Toolbar.module.css';
 import { MagnifyingGlassIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import FloorSwitcher from '@/components/building-display/FloorSwitcher';
-import { AbsoluteCoordinate, Building, Floor, FloorMap, Room } from '@/types';
+import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import clsx from 'clsx';
 import useEscapeKey from '@/hooks/useEscapeKey';
 import SearchResults from './SearchResults';
@@ -10,14 +10,12 @@ import InfoCard from '@/components/info-card/InfoCard';
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import NavCard from '../navigation/NavCard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, setIsSearchOpen } from '@/lib/features/ui/uiSlice';
-import { setIsNavOpen, setRecommendedPath } from '@/lib/features/ui/navSlice';
+import { claimRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
+import { setIsNavOpen, setRecommendedPath } from '@/lib/redux/navSlice';
 // import { Door } from '@/pages/api/findPath';
 import { twMerge } from 'tailwind-merge';
 
 export interface ToolbarProps {
-  buildings: Building[] | null;
-  floorMap: FloorMap;
   onSelectBuilding: (newBuilding: Building | null) => void;
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   userPosition: AbsoluteCoordinate;
@@ -26,16 +24,13 @@ export interface ToolbarProps {
 /**
  * Contains the floor switcher, the search bar and the search results.
  */
-const Toolbar = ({
-  buildings,
-  floorMap,
-  onSelectRoom,
-  userPosition,
-}: ToolbarProps) => {
+const Toolbar = ({ onSelectRoom, userPosition }: ToolbarProps) => {
   const isCardOpen = useAppSelector(
     (state) => !!(state.ui.selectedRoom || state.ui.selectedBuilding),
   );
   const dispatch = useAppDispatch();
+
+  const buildings = useAppSelector((state) => state.data.buildings);
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.focusedBuilding);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
@@ -231,7 +226,6 @@ const Toolbar = ({
               <SearchResults
                 query={searchQuery}
                 buildings={buildings}
-                floorMap={floorMap}
                 onSelectRoom={(
                   room: Room,
                   building: Building,

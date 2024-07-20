@@ -7,7 +7,7 @@ import styles from '@/styles/FloorSwitcher.module.css';
 import clsx from 'clsx';
 import { useIsDesktop } from '@/hooks/useWindowDimensions';
 import Roundel from '../shared/Roundel';
-import { setFloorOrdinal } from '@/lib/features/ui/uiSlice';
+import { setFloorOrdinal } from '@/lib/redux/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
 
 interface FloorSwitcherProps {

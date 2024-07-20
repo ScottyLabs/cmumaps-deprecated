@@ -17,10 +17,22 @@ import {
 } from 'mapkit-react';
 import { useIsDesktop } from '@/hooks/useWindowDimensions';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
-import { AbsoluteCoordinate, Building, Export, Floor, Room } from '@/types';
+import {
+  AbsoluteCoordinate,
+  Building,
+  Export,
+  Floor,
+  FloorMap,
+  Room,
+} from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, focusBuilding } from '@/lib/features/ui/uiSlice';
+import { claimRoom, focusBuilding } from '@/lib/redux/uiSlice';
 import { node } from '@/app/api/findPath/route';
+import {
+  setBuildings,
+  setFloorMap,
+  setLegacyFloorMap,
+} from '@/lib/redux/dataSlice';
 
 /**
  * The JSON file at this address contains all the map data used by the project.
@@ -43,28 +55,25 @@ const options = {
 const MapDisplay = ({
   params,
   mapRef,
-  buildings,
   points,
   setShowFloor,
   setShowRoomNames,
   setFloorOrdinal,
   currentFloorName,
   showBuilding,
-  setBuildings,
-  setFloors,
   showFloor,
-  setIsSearchOpen,
   floorOrdinal,
-  floors,
   showRoomNames,
 }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   const dispatch = useAppDispatch();
 
+  const buildings = useAppSelector((state) => state.data.buildings);
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+  const floors = useAppSelector((state) => state.data.floorMap);
   let currentBlueDot: undefined | mapkit.Overlay = undefined;
 
   function error(err) {
@@ -207,20 +216,29 @@ const MapDisplay = ({
 
   // Load the data from the API
   useEffect(() => {
-    fetch(exportFile)
+    fetch(exportFile) // Only use this file for the buildings
       .then((r) => r.json())
       .then((response: Export) => {
-        setBuildings(response.buildings);
-        fetch('/GHC-5.json')
-          .then((r) => r.json())
-          .then((ghc5response) => {
-            response.floors['GHC-5'] = ghc5response;
-
-            setFloors(response.floors);
-          });
-
+        dispatch(setBuildings(response.buildings));
+        dispatch(setLegacyFloorMap(response.floors));
         zoomOnDefaultBuilding(response.buildings, response.floors);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // To improve speed later, we can load the floor data only when needed --
+  // but we need to load it all for now to support search
+  useEffect(() => {
+    fetch('/GHC-5.json')
+      .then((r) => r.json())
+      .then((ghc5response) => {
+        const floors = {};
+        floors['GHC-5'] = ghc5response;
+
+        dispatch(setFloorMap(floors));
+        zoomOnDefaultBuilding(buildings, floors);
+      });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

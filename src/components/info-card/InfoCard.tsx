@@ -1,8 +1,4 @@
 import React, { useMemo, useState, useEffect, ReactElement } from 'react';
-import { Building, Floor, FloorMap, Room } from '@/types';
-// import styles from '@/styles/InfoCard.module.css';
-import simplify from '@/util/simplify';
-import WebsiteList from './WebsiteList';
 import {
   getAvailabilityData,
   getImageURL,

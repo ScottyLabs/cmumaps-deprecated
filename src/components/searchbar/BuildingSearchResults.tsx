@@ -10,8 +10,8 @@ import RoomPin from '../building-display/RoomPin';
 import { distance } from '@/geometry';
 
 import { distance as levenDist } from 'fastest-levenshtein';
-import { useAppDispatch } from '@/lib/hooks';
-import { claimBuilding, claimRoom } from '@/lib/features/ui/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { claimBuilding, claimRoom } from '@/lib/redux/uiSlice';
 
 function roomType(room: Room): string {
   switch (room.type) {
@@ -25,8 +25,6 @@ function roomType(room: Room): string {
 export interface BuildingSearchResultsProps {
   query: string;
   building: Building;
-  floorMap: FloorMap;
-  onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   userPosition: AbsoluteCoordinate;
 }
 
@@ -43,10 +41,10 @@ function fullRoomName(room: Room, building: Building, abbrev = false): string {
 export default function BuildingSearchResults({
   query,
   building,
-  floorMap,
-  onSelectRoom,
   userPosition,
 }: BuildingSearchResultsProps) {
+  let floorMap = useAppSelector((state) => state.data.legacyFloorMap); // for legacy floors layout (use state.data.floorMap for new floors layout)
+  floorMap = floorMap ? { ...floorMap } : {};
   // const roomNames: string[] = useMemo(
   //   () =>
   //     building.floors.flatMap(
@@ -57,15 +55,23 @@ export default function BuildingSearchResults({
   //     ),
   //   [building, floorMap],
   // );
+
   const dispatch = useAppDispatch();
   const filteredRooms: RoomWithOrdinal[] = useMemo(() => {
     // No query: only show building names
     const lDistCache = new Map();
     // Query for another building
-    const roomsList = building.floors.flatMap(
-      (floor: Floor) =>
-        floorMap[`${building.code}-${floor.name}`]?.rooms
+    const roomsList = building.floors.flatMap((floor: Floor) => {
+      if (!floorMap[`${building.code}-${floor.name}`]?.rooms) {
+        return [];
+      }
+      // let roomsObj = Object.entries(floorMap[`${building.code}-${floor.name}`]?.rooms) // for new floors layout
+      const roomsObj = floorMap[`${building.code}-${floor.name}`]?.rooms; // for legacy floors layout
+      return (
+        roomsObj
+          // .filter((roomId: string, room: Room) => { // for new floors layout
           .filter((room: Room) => {
+            // legacy floors layout
             const fullName = fullRoomName(room, building);
             const fullCodeName = fullRoomName(room, building, true);
             const a = levenDist(query.toLowerCase(), fullName.toLowerCase());
@@ -79,7 +85,9 @@ export default function BuildingSearchResults({
             const d =
               !!room.type &&
               levenDist(query.toLowerCase(), room.type.toLowerCase());
-            lDistCache.set(room.id, (a + b + c + d) / 4);
+            // lDistCache.set(roomId, (a + b + c + d) / 4); // new
+            lDistCache.set(room.id, (a + b + c + d) / 4); // legacy
+
             return (
               a < fullName.length / 3 ||
               b < fullCodeName.length / 3 ||
@@ -87,11 +95,15 @@ export default function BuildingSearchResults({
               (room.type && d < room.type.length / 3)
             );
           })
-          .map((room: Room) => ({
+          // .map(([roomId, room]) => ({ // new
+          .map((room) => ({
+            // legacy
+            // id: roomId, // new
             ...room,
             floor,
-          })) ?? [],
-    );
+          })) ?? []
+      );
+    });
 
     if (userPosition) {
       roomsList.sort(
@@ -102,7 +114,6 @@ export default function BuildingSearchResults({
     }
 
     roomsList.sort((a, b) => lDistCache.get(a.id) - lDistCache.get(b.id));
-
     return roomsList;
   }, [query, building, userPosition, floorMap]);
 
@@ -174,7 +185,6 @@ export default function BuildingSearchResults({
             onClick={() => {
               dispatch(claimBuilding(building));
               dispatch(claimRoom(room));
-              onSelectRoom(room, building, room.floor);
             }}
           >
             <div

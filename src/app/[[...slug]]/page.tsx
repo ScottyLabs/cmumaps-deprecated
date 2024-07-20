@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react';
 import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
 
-import { AbsoluteCoordinate, Building, FloorMap, Room } from '../../types';
+import { AbsoluteCoordinate, Building } from '../../types';
 
 import { useIsDesktop } from '../../hooks/useWindowDimensions';
 
@@ -25,7 +25,7 @@ import {
   claimBuilding,
   focusBuilding,
   setFloorOrdinal,
-} from '@/lib/features/ui/uiSlice';
+} from '@/lib/redux/uiSlice';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -37,15 +37,12 @@ export default function Home({ params }: { params: { slug: string } }) {
 
   const mapRef = useRef<mapkit.Map | null>(null);
 
-  const [buildings, setBuildings] = useState<Building[] | null>(null);
-
   const [showFloor, setShowFloor] = useState(false);
   const [showRoomNames, setShowRoomNames] = useState(false);
   const floorOrdinal = useAppSelector((state) => state.ui.floorOrdinal);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
+  const floors = useAppSelector((state) => state.data.floorMap);
   const isDesktop = useIsDesktop();
-
-  const [floors, setFloors] = useState<FloorMap>({});
 
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
 
@@ -111,8 +108,6 @@ export default function Home({ params }: { params: { slug: string } }) {
       <main className="relative h-screen">
         <h1 className="visually-hidden">CMU Map</h1>
         <Toolbar
-          buildings={buildings}
-          floorMap={floors}
           onSelectRoom={(room, building, floor) => {
             dispatch(setFloorOrdinal(floor.ordinal));
 
@@ -170,18 +165,14 @@ export default function Home({ params }: { params: { slug: string } }) {
           <MapDisplay
             params={params}
             mapRef={mapRef}
-            buildings={buildings}
             points={points}
             setShowFloor={setShowFloor}
             setShowRoomNames={setShowRoomNames}
             setFloorOrdinal={setFloorOrdinal}
             currentFloorName={currentFloorName}
             showBuilding={showBuilding}
-            setBuildings={setBuildings}
-            setFloors={setFloors}
             showFloor={showFloor}
             floorOrdinal={floorOrdinal}
-            floors={floors}
             showRoomNames={showRoomNames}
           />
         </div>

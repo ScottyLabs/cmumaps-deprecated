@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import styles from '../../styles/FloorPlanOverlay.module.css';
 import RoomPin, { hasIcon } from './RoomPin';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, releaseRoom } from '@/lib/features/ui/uiSlice';
+import { claimRoom, releaseRoom } from '@/lib/redux/uiSlice';
 
 export function getFloorCenter(rooms: Room[]): AbsoluteCoordinate | undefined {
   if (!rooms) {
