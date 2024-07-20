@@ -9,7 +9,7 @@ import NavCard from './navigation/NavCard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 // import { Door } from '@/pages/api/findPath';
 import { twMerge } from 'tailwind-merge';
-import SearchBar from './searchbar/SearchBar';
+import SearchBar from './search-bar/SearchBar';
 import { setIsSearchOpen } from '@/lib/redux/uiSlice';
 
 interface ToolbarProps {

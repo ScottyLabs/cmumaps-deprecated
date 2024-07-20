@@ -3,7 +3,7 @@ import styles from '@/styles/Toolbar.module.css';
 import { MagnifyingGlassIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import clsx from 'clsx';
-import QuickSearch from '@/components/searchbar/QuickSearch';
+import QuickSearch from '@/components/search-bar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { claimRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/redux/navSlice';
