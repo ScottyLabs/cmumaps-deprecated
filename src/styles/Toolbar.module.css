@@ -71,16 +71,6 @@
   }
 }
 
-.search-box {
-  /* position: relative;
-  background: white;
-  height: var(--search-box-height);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  border: 0;
-  border-radius: 8px;
-  overflow: hidden; */
-}
-
 .search-box-input {
   /* background: transparent;
   border: 0; */
