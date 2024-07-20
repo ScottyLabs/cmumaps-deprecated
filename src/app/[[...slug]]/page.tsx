@@ -16,7 +16,7 @@ import {
 import prefersReducedMotion from '../../util/prefersReducedMotion';
 import { UserButton } from '@clerk/nextjs';
 // import { Door } from "api/findPath";
-import Toolbar from '@/components/searchbar/Toolbar';
+import Toolbar from '@/components/Toolbar';
 import MapDisplay from '@/components/building-display/MapDisplay';
 import { Coordinate } from 'mapkit-react';
 import { getFloorIndexAtOrdinal } from '@/components/building-display/FloorSwitcher';
