@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/search-bar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setIsSearchOpen } from '@/lib/redux/uiSlice';
+import { claimRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
 import SearchResults from './SearchResults';
-
+import { IoIosClose } from 'react-icons/io';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import useEscapeKey from '@/hooks/useEscapeKey';
+import { setIsNavOpen, setRecommendedPath } from '@/lib/redux/navSlice';
 
 interface Props {
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
@@ -59,26 +60,26 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
   });
 
   const renderSearchQueryInput = () => {
-    // const renderCloseButton = () => (
-    //   <IoIosClose
-    //     title="Close"
-    //     size={25}
-    //     className="absolute right-2"
-    //     onClick={() => {
-    //       dispatch(setIsSearchOpen(false));
-    //       dispatch(setIsNavOpen(false));
-    //       dispatch(setRecommendedPath([]));
-    //       dispatch(claimRoom(null));
-    //     }}
-    //   />
-    // );
+    const renderCloseButton = () => (
+      <IoIosClose
+        title="Close"
+        size={25}
+        className="absolute right-2"
+        onClick={() => {
+          dispatch(setIsSearchOpen(false));
+          dispatch(setIsNavOpen(false));
+          dispatch(setRecommendedPath([]));
+          dispatch(claimRoom(null));
+        }}
+      />
+    );
 
     return (
       <div className="flex items-center rounded bg-white">
         {!isFocused && <HiMagnifyingGlass className="pl-1" size={25} />}
 
         <input
-          type="search"
+          type="text"
           className="w-full rounded p-2"
           placeholder="Search"
           value={searchQuery}
@@ -95,7 +96,7 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
           }}
         />
 
-        {/* {isFocused && renderCloseButton()} */}
+        {isFocused && renderCloseButton()}
       </div>
     );
   };
