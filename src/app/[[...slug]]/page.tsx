@@ -19,13 +19,18 @@ import { UserButton } from '@clerk/nextjs';
 import Toolbar from '@/components/Toolbar';
 import MapDisplay from '@/components/building-display/MapDisplay';
 import { Coordinate } from 'mapkit-react';
-import { getFloorIndexAtOrdinal } from '@/components/building-display/FloorSwitcher';
+import FloorSwitcher, {
+  getFloorIndexAtOrdinal,
+} from '@/components/building-display/FloorSwitcher';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
   claimBuilding,
   focusBuilding,
   setFloorOrdinal,
 } from '@/lib/redux/uiSlice';
+import SearchBar from '@/components/search-bar/SearchBar';
+import InfoCard from '@/components/info-card/InfoCard';
+import NavCard from '@/components/navigation/NavCard';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -45,6 +50,7 @@ export default function Home({ params }: { params: { slug: string } }) {
   const isDesktop = useIsDesktop();
 
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+  const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
 
   const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
     dispatch(focusBuilding(newBuilding));
@@ -81,6 +87,33 @@ export default function Home({ params }: { params: { slug: string } }) {
     );
   };
 
+  const onSelectRoom = (room, building, floor) => {
+    dispatch(setFloorOrdinal(floor.ordinal));
+
+    const { placement, rooms } = floors[`${building.code}-${floor.name}`]!;
+    const center = getFloorCenter(rooms);
+    const points: Coordinate[] = room.shapes
+      .flat()
+      .map((point: AbsoluteCoordinate) =>
+        positionOnMap(point, placement, center),
+      );
+    const allLat = points.map((p) => p.latitude);
+    const allLon = points.map((p) => p.longitude);
+
+    mapRef.current?.setRegionAnimated(
+      new mapkit.BoundingRegion(
+        Math.max(...allLat),
+        Math.max(...allLon),
+        Math.min(...allLat),
+        Math.min(...allLon),
+      ).toCoordinateRegion(),
+      !prefersReducedMotion(),
+    );
+
+    setShowFloor(true);
+    setShowRoomNames(true);
+  };
+
   const currentFloorName =
     floorOrdinal !== null &&
     focusedBuilding?.floors[
@@ -107,38 +140,23 @@ export default function Home({ params }: { params: { slug: string } }) {
       </Head>
       <main className="relative h-screen">
         <h1 className="hidden">CMU Map</h1>
-        <Toolbar
-          onSelectRoom={(room, building, floor) => {
-            dispatch(setFloorOrdinal(floor.ordinal));
 
-            const { placement, rooms } =
-              floors[`${building.code}-${floor.name}`]!;
-            const center = getFloorCenter(rooms);
-            const points: Coordinate[] = room.shapes
-              .flat()
-              .map((point: AbsoluteCoordinate) =>
-                positionOnMap(point, placement, center),
-              );
-            const allLat = points.map((p) => p.latitude);
-            const allLon = points.map((p) => p.longitude);
+        {!isNavOpen && <InfoCard />}
+        {isNavOpen && <NavCard />}
+        {focusedBuilding && floorOrdinal && (
+          <FloorSwitcher
+            building={focusedBuilding}
+            ordinal={floorOrdinal}
+            isToolbarOpen={isSearchOpen}
+          />
+        )}
 
-            mapRef.current?.setRegionAnimated(
-              new mapkit.BoundingRegion(
-                Math.max(...allLat),
-                Math.max(...allLon),
-                Math.min(...allLat),
-                Math.min(...allLon),
-              ).toCoordinateRegion(),
-              !prefersReducedMotion(),
-            );
-
-            setShowFloor(true);
-            setShowRoomNames(true);
-          }}
-          userPosition={{
-            x: points[points.length - 1][0],
-            y: points[points.length - 1][1],
-          }}
+        <SearchBar
+          onSelectRoom={onSelectRoom}
+          userPosition={[
+            points[points.length - 1][0],
+            points[points.length - 1][1],
+          ]}
         />
 
         <div

@@ -109,14 +109,16 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
             : 'h-0 opacity-0'
         }`}
       >
-        <SearchResults
-          query={searchQuery}
-          onSelectRoom={(room: Room, building: Building, newFloor: Floor) => {
-            onSelectRoom(room, building, newFloor);
-            dispatch(setIsSearchOpen(false));
-          }}
-          userPosition={userPosition}
-        />
+        {searchQuery != '' && (
+          <SearchResults
+            query={searchQuery}
+            onSelectRoom={(room: Room, building: Building, newFloor: Floor) => {
+              onSelectRoom(room, building, newFloor);
+              dispatch(setIsSearchOpen(false));
+            }}
+            userPosition={userPosition}
+          />
+        )}
       </div>
     );
   };
