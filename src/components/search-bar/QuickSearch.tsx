@@ -27,7 +27,7 @@ export default function QuickSearch({
     return (
       <Collapsible
         trigger={
-          <div className="flex flex-row items-center justify-between bg-white px-2.5 py-2">
+          <div className="mt-3 flex flex-row items-center justify-between rounded bg-white px-2.5 py-2">
             <p className="m-0 font-bold text-black">{title}</p>
             <div>
               {!open ? (

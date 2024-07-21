@@ -184,31 +184,6 @@
   /* opacity: 1; */
 }
 
-.search-modal {
-  /* position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%; */
-
-  /* padding: var(--main-ui-padding);
-  padding-top: calc(var(--main-ui-padding) + var(--search-box-height) + var(--main-ui-padding));
-  padding-bottom: 0; */
-
-  z-index: 95;
-  /* transform: translateY(100vh); */
-  transition: var(--search-transition-duration) ease-in-out transform;
-}
-
-@media (prefers-reduced-motion) {
-  .search-modal {
-    transition: none;
-  }
-}
-
-.search-modal-open {
-  /* transform: none; */
-}
-
 .search-list {
   /* --search-background: #dedfdf;
   background: var(--search-background);
@@ -218,11 +193,6 @@
   overflow: hidden;
   position: relative;
   z-index: 100; */
-}
-
-.search-list-scroll {
-  /* height: 100%;
-  overflow-y: auto; */
 }
 
 /* Desktop layout */

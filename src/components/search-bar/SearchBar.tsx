@@ -31,19 +31,19 @@ const SearchBar = ({
   const [isFocused, setIsFocused] = useState(false);
 
   const renderSearchQueryInput = () => {
-    const renderCloseButton = () => (
-      <IoIosClose
-        title="Close"
-        size={25}
-        className="absolute right-2"
-        onClick={() => {
-          dispatch(setIsSearchOpen(false));
-          dispatch(setIsNavOpen(false));
-          dispatch(setRecommendedPath([]));
-          dispatch(claimRoom(null));
-        }}
-      />
-    );
+    // const renderCloseButton = () => (
+    //   <IoIosClose
+    //     title="Close"
+    //     size={25}
+    //     className="absolute right-2"
+    //     onClick={() => {
+    //       dispatch(setIsSearchOpen(false));
+    //       dispatch(setIsNavOpen(false));
+    //       dispatch(setRecommendedPath([]));
+    //       dispatch(claimRoom(null));
+    //     }}
+    //   />
+    // );
 
     return (
       <div className="flex items-center rounded bg-white">
@@ -62,57 +62,22 @@ const SearchBar = ({
           onBlur={() => setIsFocused(false)}
         />
 
-        {isFocused && renderCloseButton()}
+        {/* {isFocused && renderCloseButton()} */}
       </div>
     );
   };
 
   const renderSearchResults = () => {
     return (
-      <div
-        className={
-          //   clsx(
-          //   styles['search-modal'],
-          //   //SearchOpen && styles['search-modal-open'],
-          // )
-          styles['search-modal'] +
-          ' z-95 left-0 top-0 w-[var(--search-width-desktop)] translate-y-[100vh] p-[var(--main-ui-padding)] pb-0 pt-20' + //search-modal
-          `${isSearchOpen ? ' transform-none' : ''}` //search-modal-open
-          //something is wrong
-        }
-        ref={(node) =>
-          node &&
-          (isSearchOpen
-            ? node.removeAttribute('inert')
-            : node.setAttribute('inert', ''))
-        }
-      >
-        <div
-          className={
-            'rounded-3 relative h-[90vh] overflow-hidden bg-gray-50 p-2.5 [box-shadow:0_20px_25px_-5px_rgb(0_0_0_/_0.1),_0_8px_10px_-6px_rgb(0_0_0_/_0.1)]'
-            //+ styles['search-list']
-          }
-        >
-          <div
-            className={
-              'h-full overflow-y-auto' /*styles['search-list-scroll']*/
-            }
-          >
-            <SearchResults
-              query={searchQuery}
-              buildings={buildings}
-              onSelectRoom={(
-                room: Room,
-                building: Building,
-                newFloor: Floor,
-              ) => {
-                onSelectRoom(room, building, newFloor);
-                dispatch(setIsSearchOpen(false));
-              }}
-              userPosition={userPosition}
-            />
-          </div>
-        </div>
+      <div className="mt-1 overflow-scroll rounded bg-gray-50 transition duration-300 ease-out">
+        <SearchResults
+          query={searchQuery}
+          onSelectRoom={(room: Room, building: Building, newFloor: Floor) => {
+            onSelectRoom(room, building, newFloor);
+            dispatch(setIsSearchOpen(false));
+          }}
+          userPosition={userPosition}
+        />
       </div>
     );
   };
@@ -125,17 +90,13 @@ const SearchBar = ({
   return (
     <div
       id="SearchBar"
-      className="box-shadow fixed left-2 right-2 top-4 z-10 space-y-5 rounded"
+      className="box-shadow fixed left-2 right-2 top-4 z-10 rounded"
     >
       {renderSearchQueryInput()}
 
-      {/* displays the QuickSearch or the search results 
-          depending on if the search query is empty */}
-      {searchQuery == '' ? (
-        <QuickSearch setQuery={setSearchQuery} />
-      ) : (
-        renderSearchResults()
-      )}
+      {searchQuery == '' && <QuickSearch setQuery={setSearchQuery} />}
+
+      {searchQuery != '' && renderSearchResults()}
     </div>
   );
 };
