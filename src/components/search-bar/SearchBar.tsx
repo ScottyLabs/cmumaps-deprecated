@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/search-bar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -6,24 +6,64 @@ import { setIsSearchOpen } from '@/lib/redux/uiSlice';
 import SearchResults from './SearchResults';
 
 import { HiMagnifyingGlass } from 'react-icons/hi2';
+import useEscapeKey from '@/hooks/useEscapeKey';
 
 interface Props {
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   userPosition: AbsoluteCoordinate;
-  searchQuery: string;
-  setSearchQuery: Dispatch<SetStateAction<string>>;
 }
 
-const SearchBar = ({
-  onSelectRoom,
-  userPosition,
-  searchQuery,
-  setSearchQuery,
-}: Props) => {
+const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const [isFocused, setIsFocused] = useState(false);
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const room = useAppSelector((state) => state.ui.selectedRoom);
+  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+  const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+
+  // set the search query using room and building
+  useEffect(() => {
+    // set the search query to empty when there is no room or building selected
+    if (!room && !selectedBuilding) {
+      setSearchQuery('');
+      return;
+    }
+
+    // set the search query to the alias of the room if there is a room
+    if (room?.alias) {
+      setSearchQuery(room.alias);
+      return;
+    }
+
+    // return the building name if a building is selected
+    if (selectedBuilding?.name) {
+      setSearchQuery(selectedBuilding?.name);
+      return;
+    }
+
+    // otherwise the formatted name is the focused building name + the room name
+    let formattedName = '';
+    if (focusedBuilding) {
+      formattedName += focusedBuilding?.name;
+    }
+
+    if (room?.name) {
+      formattedName += ' ' + room?.name;
+    }
+
+    if (formattedName != '') {
+      setSearchQuery(formattedName);
+    }
+  }, [room, buildings, selectedBuilding, focusedBuilding]);
+
+  // close search if esc is pressed
+  useEscapeKey(() => {
+    dispatch(setIsSearchOpen(false));
+  });
 
   const renderSearchQueryInput = () => {
     // const renderCloseButton = () => (
@@ -65,8 +105,8 @@ const SearchBar = ({
   const renderSearchResults = () => {
     return (
       <div
-        className={`mt-1 h-screen overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          searchQuery != '' ? 'opacity-100' : 'opacity-0'
+        className={`mt-1 overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
+          searchQuery != '' ? 'h-screen opacity-100' : 'h-0 opacity-0'
         }`}
       >
         <SearchResults
@@ -93,7 +133,7 @@ const SearchBar = ({
     >
       {renderSearchQueryInput()}
       {searchQuery == '' && <QuickSearch setQuery={setSearchQuery} />}
-      {/* {renderSearchResults()} */}
+      {renderSearchResults()}
     </div>
   );
 };
