@@ -7,7 +7,19 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        blinking: {
+          '0%': { opacity: '0' },
+          '50%': { opacity: '1' },
+          '75%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+      },
+      animation: {
+        blinking: 'blinking 1s infinite',
+      },
+    },
   },
   plugins: [],
 };
