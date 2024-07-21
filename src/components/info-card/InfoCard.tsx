@@ -7,7 +7,7 @@ import CardWrapper from './CardWrapper';
 
 export default function InfoCard(): ReactElement {
   const room = useAppSelector((state) => state.ui.selectedRoom);
-  const building = useAppSelector((state) => state.ui.focusedBuilding);
+  const building = useAppSelector((state) => state.ui.selectedBuilding);
 
   if (room) {
     if (room.type == 'dining') {

@@ -20,46 +20,38 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
   const buildings = useAppSelector((state) => state.data.buildings);
 
   const room = useAppSelector((state) => state.ui.selectedRoom);
-  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
-  const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+  const building = useAppSelector((state) => state.ui.selectedBuilding);
 
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // set the search query using room and building
   useEffect(() => {
+    // return the building name if a building is selected
+    if (building?.name) {
+      setSearchQuery(building?.name);
+      return;
+    }
+
+    // if there is a selected room, the search query is
+    // the room alias if the room has an alias,
+    // otherwise it is the room floor name + the room name
+    if (room) {
+      if (room?.alias) {
+        setSearchQuery(room.alias);
+        return;
+      } else {
+        setSearchQuery(room.floor + room.name);
+        return;
+      }
+    }
+
     // set the search query to empty when there is no room or building selected
-    if (!room && !selectedBuilding) {
+    if (!room && !building) {
       setSearchQuery('');
       return;
     }
-
-    // set the search query to the alias of the room if there is a room
-    if (room?.alias) {
-      setSearchQuery(room.alias);
-      return;
-    }
-
-    // // return the building name if a building is selected
-    // if (selectedBuilding?.name) {
-    //   setSearchQuery(selectedBuilding?.name);
-    //   return;
-    // }
-
-    // otherwise the formatted name is the focused building name + the room name
-    let formattedName = '';
-    if (focusedBuilding) {
-      formattedName += focusedBuilding?.name;
-    }
-
-    if (room?.name) {
-      formattedName += ' ' + room?.name;
-    }
-
-    if (formattedName != '') {
-      setSearchQuery(formattedName);
-    }
-  }, [room, buildings, selectedBuilding, focusedBuilding]);
+  }, [room, buildings, building]);
 
   // close search if esc is pressed
   useEscapeKey(() => {

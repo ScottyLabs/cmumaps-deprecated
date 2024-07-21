@@ -12,7 +12,7 @@ export const findRooms = (
   building: Building,
   floorMap: FloorMap,
   userPosition: AbsoluteCoordinate,
-) => {
+): Room[] => {
   // No query: only show building names
   const lDistCache = new Map();
   // Query for another building

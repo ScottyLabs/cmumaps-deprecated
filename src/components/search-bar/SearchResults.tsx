@@ -24,8 +24,6 @@ function roomType(room: Room): string {
   }
 }
 
-type RoomWithOrdinal = Room & { floor: Floor };
-
 /**
  * Displays the search results.
  */
@@ -88,8 +86,8 @@ export default function SearchResults({
     );
   };
 
-  const renderRoomResults = (rooms: RoomWithOrdinal[], building: Building) => {
-    const renderText = (room: RoomWithOrdinal) => (
+  const renderRoomResults = (rooms: Room[], building: Building) => {
+    const renderText = (room: Room) => (
       <div className="flex flex-col text-left">
         <div>
           <span>
@@ -103,13 +101,13 @@ export default function SearchResults({
       </div>
     );
 
-    return rooms.map((room: RoomWithOrdinal) => (
+    return rooms.map((room: Room) => (
       <button
         type="button"
         className="flex h-14 w-full justify-between gap-2 p-1 pl-6"
         key={room.id}
         onClick={() => {
-          dispatch(claimBuilding(building));
+          // dispatch(claimBuilding(building));
           dispatch(claimRoom(room));
         }}
       >
