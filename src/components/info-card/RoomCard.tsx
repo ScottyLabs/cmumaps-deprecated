@@ -1,5 +1,4 @@
-import { useAppSelector } from '@/lib/hooks';
-import { getImageURL } from '@/util/data/idToNames';
+import { getAvailabilityData, getImageURL } from '@/util/data/idToNames';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Room } from '@/types';
@@ -21,15 +20,13 @@ interface Props {
 }
 
 const RoomCard = ({ room }: Props) => {
-  let building = useAppSelector((state) => state.ui.selectedBuilding);
-  building = useAppSelector((state) => state.ui.focusedBuilding);
   const [imageURL, setImageURL] = useState('');
 
   useEffect(() => {
-    getImageURL(building?.code || '', room?.name || null).then((res) => {
+    getImageURL(room.floor, room?.name || null).then((res) => {
       setImageURL(res);
     });
-  }, [building, room]);
+  }, [room]);
 
   const renderRoomImage = () => {
     return (

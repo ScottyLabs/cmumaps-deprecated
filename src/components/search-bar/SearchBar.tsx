@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/search-bar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
+import { claimRoom, releaseRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
 import SearchResults from './SearchResults';
 import { IoIosClose } from 'react-icons/io';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
@@ -65,11 +65,12 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
         title="Close"
         size={25}
         className="absolute right-2"
-        onClick={() => {
+        onPointerDown={() => {
           dispatch(setIsSearchOpen(false));
           dispatch(setIsNavOpen(false));
           dispatch(setRecommendedPath([]));
-          dispatch(claimRoom(null));
+          dispatch(releaseRoom(null));
+          setSearchQuery('');
         }}
       />
     );
