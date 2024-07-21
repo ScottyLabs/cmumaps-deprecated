@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, ReactElement } from 'react';
+import React, { useState, useEffect, ReactElement } from 'react';
 import {
   getAvailabilityData,
   getImageURL,
@@ -9,8 +9,9 @@ import NavBar from '../navigation/NavBar';
 import AvailabilitySection from './AvailabilitySection';
 import { useAppSelector } from '@/lib/hooks';
 import BuildingCard from './BuildingCard';
-import EateryCard from './eaterycard';
+import EateryCard from './Eaterycard';
 import RoomCard from './RoomCard';
+import CardWrapper from './CardWrapper';
 
 type WeekAvailability =
   | { [key: string]: [value: string] }[]
@@ -68,17 +69,21 @@ export default function InfoCard(): ReactElement {
     return;
   }
 
-  if (room) {
-    if (room.type == 'dining') {
-      return <EateryCard />;
-    } else {
-      return <RoomCard />;
+  const renderCard = () => {
+    if (room) {
+      if (room.type == 'dining') {
+        return <EateryCard />;
+      } else {
+        return <RoomCard />;
+      }
+    } else if (building) {
+      return <BuildingCard building={building} />;
     }
-  } else if (building) {
-    return <BuildingCard />;
-  }
 
-  return;
+    return <></>;
+  };
+
+  return <CardWrapper>{renderCard()}</CardWrapper>;
 
   return (
     <div
