@@ -1,6 +1,6 @@
-import Joi from "joi";
-import { isValidTimeSlotArray } from "../util/cmueats/time";
-import { IReadOnlyAPILocation } from "./locationTypes";
+import Joi from 'joi';
+import { isValidTimeSlotArray } from '../time';
+import { IReadOnlyAPILocation } from './locationTypes';
 
 const { string, number, boolean } = Joi.types();
 const ITimeSlotTimeJoiSchema = Joi.object({
@@ -37,7 +37,7 @@ export const ILocationAPIJoiSchema = Joi.object<IReadOnlyAPILocation>({
     .custom((val) => {
       return val;
     })
-    .message("Received invalid (probably improperly sorted) time slots!"),
+    .message('Received invalid (probably improperly sorted) time slots!'),
   todaysSpecials: Joi.array().items(ISpecialJoiSchema),
   todaysSoups: Joi.array().items(ISpecialJoiSchema),
 });

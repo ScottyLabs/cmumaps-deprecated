@@ -9,7 +9,7 @@ import {
   IReadOnlyLocationStatus,
   ITimeSlots,
   IReadOnlyAPILocation,
-} from '../../types/locationTypes';
+} from './types/locationTypes';
 import {
   diffInMinutes,
   currentlyOpen,
@@ -25,7 +25,7 @@ import toTitleCase from './string';
 import {
   IAPIResponseJoiSchema,
   ILocationAPIJoiSchema,
-} from '../../types/joiLocationTypes';
+} from './types/joiLocationTypes';
 
 const WEEKDAYS = [
   'Sunday',

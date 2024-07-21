@@ -1,9 +1,9 @@
 /** Pure utility functions that process location (restaurant) timeslots
  */
 
-import { DateTime } from "luxon";
-import { ITimeSlotTime, ITimeSlot, ITimeSlots } from "../../types/locationTypes";
-import bounded from "./misc";
+import { DateTime } from 'luxon';
+import { ITimeSlotTime, ITimeSlot, ITimeSlots } from './types/locationTypes';
+import bounded from './misc';
 
 const WEEK_MINUTES = 7 * 24 * 60;
 
@@ -62,9 +62,8 @@ export function isTimeSlot(timeSlot: ITimeSlot, allowWrapAround?: boolean) {
  * @returns ("1 day", "32 minutes", "3 hours", etc.)
  */
 export function getApproximateTimeStringFromMinutes(minutes: number) {
-
   const pluralTag = (strings: TemplateStringsArray, amt: number) =>
-    `${strings[0]}${amt}${strings[1]}${amt === 1 ? "" : "s"}`;
+    `${strings[0]}${amt}${strings[1]}${amt === 1 ? '' : 's'}`;
 
   let diff = minutes;
   const minuteCount = diff % 60;
@@ -72,8 +71,12 @@ export function getApproximateTimeStringFromMinutes(minutes: number) {
   const hourCount = diff % 24;
   diff = Math.floor(diff / 24);
   const dayCount = diff;
-  if (dayCount !== 0) return pluralTag`${dayCount} day`;
-  if (hourCount !== 0) return pluralTag`${hourCount} hour`;
+  if (dayCount !== 0) {
+    return pluralTag`${dayCount} day`;
+  }
+  if (hourCount !== 0) {
+    return pluralTag`${hourCount} hour`;
+  }
   return pluralTag`${minuteCount} minute`;
 }
 
@@ -85,7 +88,7 @@ export function getApproximateTimeStringFromMinutes(minutes: number) {
 export function getTimeString(time: ITimeSlotTime) {
   const { hour, minute } = time;
   const hour12H = hour % 12 === 0 ? 12 : hour % 12;
-  const ampm = hour >= 12 ? "PM" : "AM";
+  const ampm = hour >= 12 ? 'PM' : 'AM';
   const minutePadded = minute < 10 ? `0${minute}` : minute;
   return `${hour12H}:${minutePadded} ${ampm}`;
 }
@@ -104,15 +107,18 @@ export function getTimeString(time: ITimeSlotTime) {
 export function isValidTimeSlotArray(timeSlots: ITimeSlots) {
   for (let i = 0; i < timeSlots.length; i += 1) {
     const allowWrapAround = i === timeSlots.length - 1;
-    if (!isTimeSlot(timeSlots[i], allowWrapAround)) return false;
+    if (!isTimeSlot(timeSlots[i], allowWrapAround)) {
+      return false;
+    }
     if (i > 0) {
       const { start } = timeSlots[i];
       const prevEnd = timeSlots[i - 1].end;
       if (
         minutesSinceSundayTimeSlotTime(prevEnd) >=
         minutesSinceSundayTimeSlotTime(start)
-      )
+      ) {
         return false;
+      }
     }
   }
   return true;
@@ -156,7 +162,9 @@ export function currentlyOpen(timeSlot: ITimeSlot, now: DateTime) {
  * then it returns that slot). If there are no available slots, it returns null
  */
 export function getNextTimeSlot(times: ITimeSlots, now: DateTime) {
-  if (times.length === 0) return null;
+  if (times.length === 0) {
+    return null;
+  }
   const nowMinutes = minutesSinceSundayDateTime(now);
   // Find the first time slot that opens after now
   const nextTimeSlot = times.find(

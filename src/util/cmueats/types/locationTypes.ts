@@ -42,7 +42,7 @@ export interface ITimeSlot {
  * and not wrapping (aka end time found in minutesFromSunday is less than
  * start time) except for possibly the last entry
  */
-export type ITimeSlots = ReadonlyArray<ITimeSlot>;
+export type ITimeSlots = readonly ITimeSlot[];
 
 interface ISpecial {
   title: string;

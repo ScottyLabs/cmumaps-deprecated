@@ -2,7 +2,7 @@ import { Room } from '@/types';
 import { getEatingData, getImageURL } from '@/util/data/idToNames';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { IReadOnlyExtendedLocation } from '@/types/locationTypes';
+import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 import ButtonsRow from './ButtonsRow';
 import { ImSpoonKnife } from 'react-icons/im';
 

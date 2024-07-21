@@ -15,19 +15,13 @@ import {
 } from '../../components/building-display/FloorPlanOverlay';
 import prefersReducedMotion from '../../util/prefersReducedMotion';
 import { UserButton } from '@clerk/nextjs';
-// import { Door } from "api/findPath";
-import Toolbar from '@/components/Toolbar';
 import MapDisplay from '@/components/building-display/MapDisplay';
 import { Coordinate } from 'mapkit-react';
 import FloorSwitcher, {
   getFloorIndexAtOrdinal,
 } from '@/components/building-display/FloorSwitcher';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import {
-  claimBuilding,
-  focusBuilding,
-  setFloorOrdinal,
-} from '@/lib/redux/uiSlice';
+import { focusBuilding, setFloorOrdinal } from '@/lib/redux/uiSlice';
 import SearchBar from '@/components/search-bar/SearchBar';
 import InfoCard from '@/components/info-card/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
