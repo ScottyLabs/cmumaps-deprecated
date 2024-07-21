@@ -5,6 +5,17 @@ import Image from 'next/image';
 import { Room } from '@/types';
 import ButtonsRow from './ButtonsRow';
 
+// function availabilityApplicable(avail: WeekAvailability) {
+//   if (Object.keys(avail).length) {
+//     return <AvailabilitySection availability={avail} />;
+//   }
+//   return;
+// }
+
+// type WeekAvailability =
+// | { [key: string]: [value: string] }[]
+// | Record<string, never>;
+
 interface Props {
   room: Room;
 }
