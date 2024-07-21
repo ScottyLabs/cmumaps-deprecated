@@ -103,7 +103,7 @@ export default function SearchResults({
         }
         onClick={() => {
           dispatch(claimBuilding(building));
-          dispatch(setFloorOrdinal(null));
+          // dispatch(setFloorOrdinal(null));
         }}
       >
         <Roundel code={building.code} />

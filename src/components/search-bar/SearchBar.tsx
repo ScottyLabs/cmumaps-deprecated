@@ -64,7 +64,11 @@ const SearchBar = ({
 
   const renderSearchResults = () => {
     return (
-      <div className="mt-1 overflow-scroll rounded bg-gray-50 transition duration-300 ease-out">
+      <div
+        className={`mt-1 h-screen overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
+          searchQuery != '' ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
         <SearchResults
           query={searchQuery}
           onSelectRoom={(room: Room, building: Building, newFloor: Floor) => {
@@ -91,7 +95,7 @@ const SearchBar = ({
 
       {searchQuery == '' && <QuickSearch setQuery={setSearchQuery} />}
 
-      {searchQuery != '' && renderSearchResults()}
+      {renderSearchResults()}
     </div>
   );
 };
