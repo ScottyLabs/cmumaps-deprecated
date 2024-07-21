@@ -1,5 +1,4 @@
 import { Room } from '@/types';
-import { getEatingData } from '@/util/data/idToNames';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
@@ -8,6 +7,7 @@ import {
 } from '@/util/cmueats/types/locationTypes';
 import ButtonsRow from './ButtonsRow';
 import { ImSpoonKnife } from 'react-icons/im';
+import { getEatingData } from '@/util/cmueats/getEatingData';
 
 interface Props {
   room: Room;
@@ -16,11 +16,6 @@ interface Props {
 const Eaterycard = ({ room }: Props) => {
   const [eatingData, setEatingData] =
     useState<IReadOnlyExtendedLocation | null>();
-
-  const getEateryImageURL = () => {
-    const eateryName = eatingData?.name.toLowerCase().split(' ').join('_');
-    return `/assets/location_images/eatery_images/${eateryName}.jpg`;
-  };
 
   useEffect(() => {
     const fetchEatingData = async () => {
@@ -31,16 +26,21 @@ const Eaterycard = ({ room }: Props) => {
   }, [room.alias]);
 
   const renderEateryImage = () => {
-    return (
-      <div className="relative h-36 w-full">
-        <Image
-          className="object-cover"
-          fill={true}
-          alt="Room Image"
-          src={getEateryImageURL()}
-        />
-      </div>
-    );
+    if (eatingData) {
+      const eateryName = eatingData.name.toLowerCase().split(' ').join('_');
+      const url = `/assets/location_images/eatery_images/${eateryName}.jpg`;
+
+      return (
+        <div className="relative h-36 w-full">
+          <Image
+            className="object-cover"
+            fill={true}
+            alt="Room Image"
+            src={url}
+          />
+        </div>
+      );
+    }
   };
 
   const renderInfo = () => {
@@ -77,9 +77,11 @@ const Eaterycard = ({ room }: Props) => {
         }
       };
 
-      const color = colors[getLocationState()];
-
-      console.log(`bg-[${color}]`);
+      const locationState = getLocationState();
+      const color = colors[locationState];
+      const changesSoon =
+        locationState == LocationState.CLOSES_SOON ||
+        locationState == LocationState.OPENS_SOON;
 
       return (
         <>
@@ -90,7 +92,7 @@ const Eaterycard = ({ room }: Props) => {
               <div
                 className={
                   `h-3 w-3 rounded-full bg-[${color}] ` +
-                  (eatingData.changesSoon ? 'animate-blinking' : 'opacity-100')
+                  (changesSoon ? 'animate-blinking' : 'opacity-100')
                 }
               ></div>
             </div>
@@ -127,7 +129,7 @@ const Eaterycard = ({ room }: Props) => {
 
   return (
     <div>
-      {eatingData && renderEateryImage()}
+      {renderEateryImage()}
       {renderInfo()}
       {renderButtonsRow()}
     </div>
