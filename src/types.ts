@@ -111,11 +111,36 @@ export interface Polygon {
   type: string;
 }
 
-export interface Room {
+export interface SearchRoom {
   /**
    * Unique ID (UUID)
    */
   id?: string;
+
+  /**
+   * The short name of the room, without the building name but including the
+   * floor level (e.g. '121' for CUC 121)
+   */
+  name: string;
+
+  /**
+   * Another name under which the room is known (e.g. 'McConomy Auditorium')
+   */
+  alias?: string;
+
+  type: RoomType;
+}
+
+export interface Room {
+  /**
+   * Unique ID (UUID)
+   */
+  id: string;
+
+  /**
+   * Building-Floor code (e.g. 'WEH-4')
+   */
+  floor: string;
 
   /**
    * even-odd included-not-included 2darray of coordinates to polygon
