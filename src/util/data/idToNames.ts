@@ -19,7 +19,7 @@ export async function getImageURL(
     const res = await fetch('/assets/location_images/list_of_files.txt');
     const txt = await res.text();
     return txt.indexOf(room) != -1
-      ? `/assets/location_images/${buildingCode}/${simplify(room)}.jpg`
+      ? `/assets/location_images/room_images/${buildingCode}/${simplify(room)}.jpg`
       : getImageURL(buildingCode, null);
   }
   // "./assets/location_images/GHC/4102.jpg"

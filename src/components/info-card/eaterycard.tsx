@@ -11,15 +11,13 @@ interface Props {
 }
 
 const Eaterycard = ({ room }: Props) => {
-  const [imageURL, setImageURL] = useState('');
   const [eatingData, setEatingData] =
     useState<IReadOnlyExtendedLocation | null>();
 
-  useEffect(() => {
-    getImageURL('', room.name).then((res) => {
-      setImageURL(res);
-    });
-  }, [room]);
+  const getEateryImageURL = () => {
+    const eateryName = eatingData?.name.toLowerCase().split(' ').join('_');
+    return `/assets/location_images/eatery_images/${eateryName}.jpg`;
+  };
 
   useEffect(() => {
     const fetchEatingData = async () => {
@@ -29,14 +27,14 @@ const Eaterycard = ({ room }: Props) => {
     fetchEatingData();
   }, [room.alias]);
 
-  const renderRoomImage = () => {
+  const renderEateryImage = () => {
     return (
       <div className="relative h-36 w-full">
         <Image
           className="object-cover"
           fill={true}
           alt="Room Image"
-          src={imageURL}
+          src={getEateryImageURL()}
         />
       </div>
     );
@@ -82,7 +80,7 @@ const Eaterycard = ({ room }: Props) => {
 
   return (
     <div>
-      {/* {renderRoomImage()} */}
+      {eatingData && renderEateryImage()}
       {renderInfo()}
       {renderButtonsRow()}
     </div>

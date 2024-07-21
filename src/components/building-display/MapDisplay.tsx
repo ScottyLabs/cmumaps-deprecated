@@ -211,7 +211,7 @@ const MapDisplay = ({
       showBuilding(building, true);
     } else {
       // Redirect to the default page
-      window.history.pushState({}, '', window.location.pathname);
+      // window.history.pushState({}, '', window.location.pathname);
     }
   };
 
@@ -270,7 +270,7 @@ const MapDisplay = ({
     if (selectedRoom) {
       url += `/${selectedRoom.id}`;
     }
-    window.history.pushState({}, '', url);
+    // window.history.pushState({}, '', url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRoom, focusedBuilding, currentFloorName]);
 
