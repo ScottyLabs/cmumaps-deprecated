@@ -74,7 +74,7 @@ export default function InfoCard(): ReactElement {
       if (room.type == 'dining') {
         return <EateryCard />;
       } else {
-        return <RoomCard />;
+        return <RoomCard room={room} />;
       }
     } else if (building) {
       return <BuildingCard building={building} />;

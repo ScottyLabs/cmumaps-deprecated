@@ -119,7 +119,7 @@ const BuildingCard = ({ building }: Props) => {
   return (
     <div>
       {renderBuildingImage()}
-      <div className="ml-3 mt-2 font-bold">{building?.name}</div>
+      <div className="ml-3 mt-2 font-bold">{building.name}</div>
       {renderButtonsRow()}
       {renderEateryCarousel()}
     </div>
