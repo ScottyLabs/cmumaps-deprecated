@@ -16,14 +16,15 @@ interface Props {
 const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
   const dispatch = useAppDispatch();
 
+  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const buildings = useAppSelector((state) => state.data.buildings);
-  const [isFocused, setIsFocused] = useState(false);
-
-  const [searchQuery, setSearchQuery] = useState('');
 
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+
+  const [isFocused, setIsFocused] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // set the search query using room and building
   useEffect(() => {
@@ -39,11 +40,11 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
       return;
     }
 
-    // return the building name if a building is selected
-    if (selectedBuilding?.name) {
-      setSearchQuery(selectedBuilding?.name);
-      return;
-    }
+    // // return the building name if a building is selected
+    // if (selectedBuilding?.name) {
+    //   setSearchQuery(selectedBuilding?.name);
+    //   return;
+    // }
 
     // otherwise the formatted name is the focused building name + the room name
     let formattedName = '';
@@ -93,8 +94,13 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
             setSearchQuery(event.target.value);
           }}
           title="Search query"
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onFocus={() => {
+            dispatch(setIsSearchOpen(true));
+            setIsFocused(true);
+          }}
+          onBlur={() => {
+            setIsFocused(false);
+          }}
         />
 
         {/* {isFocused && renderCloseButton()} */}
@@ -106,7 +112,9 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
     return (
       <div
         className={`my-1 overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          searchQuery != '' ? 'h-[46em] opacity-100' : 'h-0 opacity-0'
+          isSearchOpen && searchQuery != ''
+            ? 'h-[46em] opacity-100'
+            : 'h-0 opacity-0'
         }`}
       >
         <SearchResults

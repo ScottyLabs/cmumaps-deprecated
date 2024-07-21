@@ -18,7 +18,6 @@ const Toolbar = ({ onSelectRoom, userPosition }: ToolbarProps) => {
   );
 
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
-  // const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   // const floorOrdinal = useAppSelector((state) => state.ui.floorOrdinal);
   // const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
 
