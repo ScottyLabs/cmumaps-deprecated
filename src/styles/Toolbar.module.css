@@ -184,6 +184,20 @@
   /* opacity: 1; */
 }
 
+.search-modal {
+  /* position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; */
+
+  /* padding: var(--main-ui-padding);
+  padding-top: calc(var(--main-ui-padding) + var(--search-box-height) + var(--main-ui-padding));
+  padding-bottom: 0; */
+
+  /* transform: translateY(100vh); */
+  transition: var(--search-transition-duration) ease-in-out transform;
+}
+
 .search-list {
   /* --search-background: #dedfdf;
   background: var(--search-background);

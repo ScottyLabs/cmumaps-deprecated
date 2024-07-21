@@ -71,5 +71,24 @@ export const findRooms = (
   }
 
   roomsList.sort((a, b) => lDistCache.get(a.id) - lDistCache.get(b.id));
+
+  if (!roomsList) {
+    return [];
+  }
+
   return roomsList;
+
+  // if (
+  //   filteredRooms.length == 0 &&
+  //   levenDist(
+  //     building.name.substring(0, query.length).toLowerCase(),
+  //     query.toLowerCase(),
+  //   ) > 2 &&
+  //   levenDist(
+  //     building.code.substring(0, query.length).toLowerCase(),
+  //     query.toLowerCase(),
+  //   ) > 2
+  // ) {
+  //   return null;
+  // }
 };

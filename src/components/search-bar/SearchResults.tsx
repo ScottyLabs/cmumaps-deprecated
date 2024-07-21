@@ -10,6 +10,7 @@ import Roundel from '../shared/Roundel';
 import { claimBuilding, claimRoom } from '@/lib/redux/uiSlice';
 import RoomPin from '../building-display/RoomPin';
 import { findRooms } from './searchUtil';
+import titleCase from '@/util/titleCase';
 
 export interface SearchResultsProps {
   query: string;
@@ -36,6 +37,8 @@ export default function SearchResults({
   onSelectRoom,
   userPosition,
 }: SearchResultsProps) {
+  const dispatch = useAppDispatch();
+
   let floorMap = useAppSelector((state) => state.data.legacyFloorMap); // for legacy floors layout (use state.data.floorMap for new floors layout)
   floorMap = floorMap ? { ...floorMap } : {};
   let buildings = useAppSelector((state) => state.data.buildings);
@@ -55,129 +58,138 @@ export default function SearchResults({
     );
   }
 
-  const helper = (building: Building) => {
-    const roomsFound = findRooms(query, building, floorMap, userPosition);
-    for (const room of roomsFound) {
-      console.log(room.alias);
-    }
+  const searchResult = buildings.map((building: Building) => ({
+    Building: building,
+    Rooms: findRooms(query, building, floorMap, userPosition),
+  }));
 
-    // if (
-    //   filteredRooms.length == 0 &&
-    //   levenDist(
-    //     building.name.substring(0, query.length).toLowerCase(),
-    //     query.toLowerCase(),
-    //   ) > 2 &&
-    //   levenDist(
-    //     building.code.substring(0, query.length).toLowerCase(),
-    //     query.toLowerCase(),
-    //   ) > 2
-    // ) {
-    //   return null;
-    // }
-    // function setFloorOrdinal(arg0: null): any {
-    //   throw new Error('Function not implemented.');
-    // }
-    // return (
-    //   <div id="searchResults">
-    //     <button
-    //       type="button"
-    //       className={
-    //         // clsx(
-    //         //  styles['search-list-element']
-    //         //   styles['search-list-element-building'],
-    //         //   filteredRooms?.length > 0 && styles['search-list-element-sticky'],
-    //         // )
-    //         'font-normal tracking-[-0.01em]' + //search-list-element-building
-    //         'border-b' +
-    //         'border-slate-500' +
-    //         'active:bg-slate-300 active:outline-none' +
-    //         `${filteredRooms?.length > 0 ? 'sticky left-0 top-0 w-full bg-[var(--search-background)] backdrop-blur' : ''}` +
-    //         //search-list-element-sticky
-    //         'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-padding)]' //search-list-element
-    //       }
-    //       onClick={() => {
-    //         dispatch(claimBuilding(building));
-    //         dispatch(setFloorOrdinal(null));
-    //       }}
-    //     >
-    //       <Roundel code={building.code} />
-    //       <span
-    //         className={
-    //           /*tyles['search-list-element-title']+*/ 'flex grow overflow-hidden leading-[1.3]'
-    //         }
-    //       >
-    //         {building.name}
-    //       </span>
-    //       <ChevronRightIcon
-    //         className={
-    //           /*styles['search-list-arrow']+*/ 'h-5 w-5 fill-[#0000004d]'
-    //         }
-    //       />
-    //     </button>
-    //     {filteredRooms.map((room: RoomWithOrdinal) => {
-    //       return (
-    //         <button
-    //           type="button"
-    //           className={
-    //             //styles['search-list-element']
-    //             'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-padding)]' //search-list-element
-    //           }
-    //           key={room.id}
-    //           onClick={() => {
-    //             dispatch(claimBuilding(building));
-    //             dispatch(claimRoom(room));
-    //           }}
-    //         >
-    //           <div
-    //             className={
-    //               /*styles['search-list-element-pin']+*/ 'w-40px flex justify-end'
-    //             }
-    //           >
-    //             <RoomPin room={room} />
-    //           </div>
-    //           <div
-    //             className={
-    //               //   clsx(
-    //               //   styles['search-list-element-title'],
-    //               //   styles['search-list-element-room'],
-    //               // )
-    //               'flex grow overflow-hidden leading-[1.3]' + //search-list-element-title
-    //               'flex flex-col leading-[1.2]' //search-list-element-room
-    //             }
-    //           >
-    //             <div>
-    //               <span className={'font-medium' + styles['search-room-code']}>
-    //                 {building.code} {room.name}
-    //               </span>
-    //               {room.type !== 'default' && (
-    //                 <span>{` • ${titleCase(roomType(room))}`}</span>
-    //               )}
-    //             </div>
-    //             {room.alias && (
-    //               <div className={'truncate'}>
-    //                 {/*styles['search-room-name']*/}
-    //                 {room.alias}
-    //               </div>
-    //             )}
-    //           </div>
-    //           <ChevronRightIcon
-    //             className={
-    //               /*styles['search-list-arrow']+*/ 'h-5 w-5 fill-[#0000004d]'
-    //             }
-    //           />
-    //         </button>
-    //       );
-    //     })}
-    //   </div>
+  let hasResult = false;
+  for (const buildingResult of searchResult) {
+    if (buildingResult['Rooms'].length > 0) {
+      hasResult = true;
+    }
+  }
+
+  if (!hasResult) {
+    return (
+      <div className="text-l gap-4px px-20px py-40px flex h-32 items-center justify-center text-center font-light">
+        No Result Found
+      </div>
+    );
+  }
+
+  function setFloorOrdinal(arg0: null): any {
+    throw new Error('Function not implemented.');
+  }
+
+  const renderBuildingResults = (building: Building) => {
+    return (
+      <button
+        key={building.code}
+        type="button"
+        className={
+          // clsx(
+          //  styles['search-list-element']
+          //   styles['search-list-element-building'],
+          //   filteredRooms?.length > 0 && styles['search-list-element-sticky'],
+          // )
+          'font-normal tracking-[-0.01em]' + //search-list-element-building
+          'border-b' +
+          'border-slate-500' +
+          'active:bg-slate-300 active:outline-none' +
+          // `${buildingResult['Rooms'].length > 0 ? 'sticky left-0 top-0 w-full bg-[var(--search-background)] backdrop-blur' : ''}` +
+          //search-list-element-sticky
+          'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-padding)]' //search-list-element
+        }
+        onClick={() => {
+          dispatch(claimBuilding(building));
+          dispatch(setFloorOrdinal(null));
+        }}
+      >
+        <Roundel code={building.code} />
+        <span
+          className={
+            /*tyles['search-list-element-title']+*/ 'flex grow overflow-hidden leading-[1.3]'
+          }
+        >
+          {building.name}
+        </span>
+        <ChevronRightIcon
+          className={
+            /*styles['search-list-arrow']+*/ 'h-5 w-5 fill-[#0000004d]'
+          }
+        />
+      </button>
+    );
   };
 
-  // const isEmpty = document.getElementsByName('searchResults').length <=0;
+  const renderRoomResults = (rooms: RoomWithOrdinal[], building: Building) => {
+    return rooms.map((room: RoomWithOrdinal) => (
+      <button
+        type="button"
+        className={
+          //styles['search-list-element']
+          'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-padding)]' //search-list-element
+        }
+        key={room.id}
+        onClick={() => {
+          dispatch(claimBuilding(building));
+          dispatch(claimRoom(room));
+        }}
+      >
+        <div
+          className={
+            /*styles['search-list-element-pin']+*/ 'w-40px flex justify-end'
+          }
+        >
+          <RoomPin room={room} />
+        </div>
+        <div
+          className={
+            //   clsx(
+            //   styles['search-list-element-title'],
+            //   styles['search-list-element-room'],
+            // )
+            'flex grow overflow-hidden leading-[1.3]' + //search-list-element-title
+            'flex flex-col leading-[1.2]' //search-list-element-room
+          }
+        >
+          <div>
+            <span className={'font-medium' + styles['search-room-code']}>
+              {building.code} {room.name}
+            </span>
+            {room.type !== 'default' && (
+              <span>{` • ${titleCase(roomType(room))}`}</span>
+            )}
+          </div>
+          {room.alias && (
+            <div className={'truncate'}>
+              {/*styles['search-room-name']*/}
+              {room.alias}
+            </div>
+          )}
+        </div>
+        <ChevronRightIcon
+          className={
+            /*styles['search-list-arrow']+*/ 'h-5 w-5 fill-[#0000004d]'
+          }
+        />
+      </button>
+    ));
+  };
+
   return (
-    <div
-      className="empty:before:text-l empty:before:gap-4px empty:before:px-20px empty:before:py-40px h-auto empty:before:flex empty:before:h-32 empty:before:items-center empty:before:justify-center empty:before:text-center empty:before:font-light empty:before:content-['No_results_found.']"
-      //styles['search-results']
-    >
-      {buildings.map((building: Building) => helper(building))}
+    <div id="searchResults">
+      {searchResult.map((buildingResult) => {
+        const building = buildingResult['Building'];
+        return (
+          <>
+            {buildingResult['Rooms'].length > 0 &&
+              renderBuildingResults(building)}
+            {/* {renderRoomResults(buildingResult['Rooms'], building)} */}
+          </>
+        );
+      })}
     </div>
   );
 }
