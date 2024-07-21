@@ -7,13 +7,15 @@ export default function toTitleCase(str: string) {
   return str
     .trim()
     .toLowerCase()
-    .split(" ")
+    .split(' ')
     .map((word) => {
-      if (word === "ii") return "II"; // special case
+      if (word === 'ii') {
+        return 'II';
+      } // special case
       if (word.length > 1) {
         return word[0].toUpperCase() + word.slice(1);
       }
       return word;
     })
-    .join(" ");
+    .join(' ');
 }
