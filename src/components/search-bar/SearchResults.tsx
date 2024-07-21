@@ -1,8 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import styles from '@/styles/SearchResults.module.css';
-import simplify from '@/util/simplify';
-import BuildingSearchResults from './BuildingSearchResults';
 import { distance } from '@/geometry';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
@@ -34,7 +32,6 @@ type RoomWithOrdinal = Room & { floor: Floor };
  */
 export default function SearchResults({
   query,
-  onSelectRoom,
   userPosition,
 }: SearchResultsProps) {
   const dispatch = useAppDispatch();
@@ -47,12 +44,12 @@ export default function SearchResults({
   if (userPosition) {
     buildings.sort(
       (b, a) =>
-        -distance(
-          { x: a.labelPosition.longitude, y: a.labelPosition.latitude },
-          userPosition,
-        ) +
         distance(
-          { x: b.labelPosition.longitude, y: b.labelPosition.latitude },
+          [b.labelPosition.longitude, b.labelPosition.latitude],
+          userPosition,
+        ) -
+        distance(
+          [a.labelPosition.longitude, a.labelPosition.latitude],
           userPosition,
         ),
     );
@@ -78,47 +75,21 @@ export default function SearchResults({
     );
   }
 
-  function setFloorOrdinal(arg0: null): any {
-    throw new Error('Function not implemented.');
-  }
-
   const renderBuildingResults = (building: Building) => {
     return (
       <button
-        key={building.code}
         type="button"
-        className={
-          // clsx(
-          //  styles['search-list-element']
-          //   styles['search-list-element-building'],
-          //   filteredRooms?.length > 0 && styles['search-list-element-sticky'],
-          // )
-          'font-normal tracking-[-0.01em]' + //search-list-element-building
-          'border-b' +
-          'border-slate-500' +
-          'active:bg-slate-300 active:outline-none' +
-          // `${buildingResult['Rooms'].length > 0 ? 'sticky left-0 top-0 w-full bg-[var(--search-background)] backdrop-blur' : ''}` +
-          //search-list-element-sticky
-          'b-0 m-0 flex h-14 w-full items-center gap-2 p-[var(--main-ui-padding)]' //search-list-element
-        }
+        className="flex h-14 w-full justify-between gap-2 p-1"
         onClick={() => {
           dispatch(claimBuilding(building));
           // dispatch(setFloorOrdinal(null));
         }}
       >
-        <Roundel code={building.code} />
-        <span
-          className={
-            /*tyles['search-list-element-title']+*/ 'flex grow overflow-hidden leading-[1.3]'
-          }
-        >
-          {building.name}
-        </span>
-        <ChevronRightIcon
-          className={
-            /*styles['search-list-arrow']+*/ 'h-5 w-5 fill-[#0000004d]'
-          }
-        />
+        <div className="flex items-center space-x-2">
+          <Roundel code={building.code} />
+          <p className="">{building.name}</p>
+        </div>
+        <ChevronRightIcon className="h-5 w-5 fill-black" />
       </button>
     );
   };
@@ -183,11 +154,11 @@ export default function SearchResults({
       {searchResult.map((buildingResult) => {
         const building = buildingResult['Building'];
         return (
-          <>
+          <div key={building.code}>
             {buildingResult['Rooms'].length > 0 &&
               renderBuildingResults(building)}
             {/* {renderRoomResults(buildingResult['Rooms'], building)} */}
-          </>
+          </div>
         );
       })}
     </div>

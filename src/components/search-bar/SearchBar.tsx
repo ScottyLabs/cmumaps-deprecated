@@ -92,10 +92,8 @@ const SearchBar = ({
       className="box-shadow fixed left-2 right-2 top-4 z-10 rounded"
     >
       {renderSearchQueryInput()}
-
       {searchQuery == '' && <QuickSearch setQuery={setSearchQuery} />}
-
-      {renderSearchResults()}
+      {/* {renderSearchResults()} */}
     </div>
   );
 };

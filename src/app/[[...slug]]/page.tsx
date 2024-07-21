@@ -106,7 +106,7 @@ export default function Home({ params }: { params: { slug: string } }) {
         <meta name="description" content="Interactive map of the CMU campus" />
       </Head>
       <main className="relative h-screen">
-        <h1 className="visually-hidden">CMU Map</h1>
+        <h1 className="hidden">CMU Map</h1>
         <Toolbar
           onSelectRoom={(room, building, floor) => {
             dispatch(setFloorOrdinal(floor.ordinal));
