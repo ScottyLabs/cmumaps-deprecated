@@ -5,10 +5,11 @@ import {
   getEatingData,
 } from '@/util/data/idToNames';
 // import clsx from 'clsx';
-import EateryCard from './eaterycard';
 import NavBar from '../navigation/NavBar';
 import AvailabilitySection from './AvailabilitySection';
 import { useAppSelector } from '@/lib/hooks';
+import BuildingCard from './BuildingCard';
+import EateryCard from './eaterycard';
 
 type WeekAvailability =
   | { [key: string]: [value: string] }[]
@@ -64,6 +65,16 @@ export default function InfoCard(): ReactElement {
       return <EateryCard location={eatData} />;
     }
     return;
+  }
+
+  if (room) {
+    if (room.type == 'dining') {
+      return <EateryCard />;
+    } else {
+      // return <RoomCard />
+    }
+  } else if (building) {
+    return <BuildingCard />;
   }
 
   return;
