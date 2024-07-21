@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getImageURL } from '@/util/data/idToNames';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { HiMagnifyingGlass } from 'react-icons/hi2';
 import Image from 'next/image';
 import ButtonsRow from './ButtonsRow';
 import { Building } from '@/types';
@@ -37,9 +37,9 @@ const BuildingCard = ({ building }: Props) => {
     const renderMiddleButton = () => (
       <button
         type="button"
-        className="flex h-full w-fit flex-row items-center rounded-lg bg-[#1e86ff] px-2 py-1 text-white"
+        className="flex rounded-lg bg-[#1e86ff] px-2 py-1 text-white"
       >
-        <MagnifyingGlassIcon className="mr-2 h-4 w-4 stroke-white" />
+        <HiMagnifyingGlass className="mr-2" />
         <p className="my-0 text-xs">Find rooms</p>
       </button>
     );

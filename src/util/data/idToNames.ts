@@ -79,12 +79,16 @@ export async function getAvailabilityData(
   return thisroom || null;
 }
 
-export async function getEatingData(alias: string): Promise<any | null> {
+export async function getEatingData(alias: string | undefined) {
+  if (!alias) {
+    return {};
+  }
+
   const now = DateTime.now().setZone('America/New_York');
-  console.log(now);
   const WEEK_MINUTES = 7 * 24 * 60;
   const res = await fetch('https://dining.apis.scottylabs.org/locations/');
   let eatingData = await res.json();
+
   if (eatingData.length == 0) {
     return {};
   }

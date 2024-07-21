@@ -11,7 +11,11 @@ export default function InfoCard(): ReactElement {
 
   if (room) {
     if (room.type == 'dining') {
-      return <EateryCard />;
+      return (
+        <CardWrapper snapPoint={0.35}>
+          <EateryCard room={room} />
+        </CardWrapper>
+      );
     } else {
       return (
         <CardWrapper snapPoint={0.35}>
