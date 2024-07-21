@@ -69,21 +69,25 @@ export default function InfoCard(): ReactElement {
     return;
   }
 
-  const renderCard = () => {
-    if (room) {
-      if (room.type == 'dining') {
-        return <EateryCard />;
-      } else {
-        return <RoomCard room={room} />;
-      }
-    } else if (building) {
-      return <BuildingCard building={building} />;
+  if (room) {
+    if (room.type == 'dining') {
+      return <EateryCard />;
+    } else {
+      return (
+        <CardWrapper snapPoint={0.35}>
+          <RoomCard room={room} />
+        </CardWrapper>
+      );
     }
+  } else if (building) {
+    return (
+      <CardWrapper snapPoint={0.5}>
+        <BuildingCard building={building} />
+      </CardWrapper>
+    );
+  }
 
-    return <></>;
-  };
-
-  return <CardWrapper>{renderCard()}</CardWrapper>;
+  return <></>;
 
   return (
     <div

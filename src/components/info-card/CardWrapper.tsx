@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Sheet, SheetRef } from 'react-modal-sheet';
 
 interface CardWrapperProps {
+  snapPoint: number;
   children: React.ReactElement;
 }
 
-const CardWrapper = ({ children }: CardWrapperProps) => {
+const CardWrapper = ({ snapPoint, children }: CardWrapperProps) => {
   const [isOpen, setOpen] = useState(true);
   const ref = useRef<SheetRef>();
-  const snapPoints = [0.5, 0.25, 0.1, 32];
+  const snapPoints = [snapPoint, 32];
   const snapTo = (i: number) => ref.current?.snapTo(i);
 
   useEffect(() => {
