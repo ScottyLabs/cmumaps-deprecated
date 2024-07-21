@@ -1,14 +1,11 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import styles from '@/styles/Toolbar.module.css';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/search-bar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
-import { setIsNavOpen, setRecommendedPath } from '@/lib/redux/navSlice';
+import { setIsSearchOpen } from '@/lib/redux/uiSlice';
 import SearchResults from './SearchResults';
 
 import { HiMagnifyingGlass } from 'react-icons/hi2';
-import { IoIosClose } from 'react-icons/io';
 
 interface Props {
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
@@ -26,8 +23,6 @@ const SearchBar = ({
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
-  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
-
   const [isFocused, setIsFocused] = useState(false);
 
   const renderSearchQueryInput = () => {
