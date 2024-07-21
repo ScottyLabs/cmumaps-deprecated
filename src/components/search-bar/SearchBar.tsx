@@ -105,8 +105,8 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
   const renderSearchResults = () => {
     return (
       <div
-        className={`mt-1 overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          searchQuery != '' ? 'h-screen opacity-100' : 'h-0 opacity-0'
+        className={`my-1 overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
+          searchQuery != '' ? 'h-[46em] opacity-100' : 'h-0 opacity-0'
         }`}
       >
         <SearchResults
