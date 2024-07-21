@@ -23,6 +23,7 @@ import {
   Export,
   Floor,
   FloorMap,
+  FloorPlan,
   Room,
 } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -220,6 +221,13 @@ const MapDisplay = ({
       .then((r) => r.json())
       .then((response: Export) => {
         dispatch(setBuildings(response.buildings));
+        Object.entries(response.floors).forEach(([code, floorPlan]) => {
+          const rooms = floorPlan.rooms;
+          // Add floor code to room objects
+          rooms.forEach((room: Room) => {
+            room.floor = code;
+          });
+        });
         dispatch(setLegacyFloorMap(response.floors));
         zoomOnDefaultBuilding(response.buildings, response.floors);
       });
@@ -231,10 +239,14 @@ const MapDisplay = ({
   useEffect(() => {
     fetch('/GHC-5.json')
       .then((r) => r.json())
-      .then((ghc5response) => {
+      .then((ghc5response: FloorPlan) => {
         const floors = {};
         floors['GHC-5'] = ghc5response;
-
+        // Add ids and floors to room objects
+        Object.entries(ghc5response).forEach(([id, room]: [string, Room]) => {
+          room.id = id;
+          room.floor = 'GHC-5';
+        });
         dispatch(setFloorMap(floors));
         zoomOnDefaultBuilding(buildings, floors);
       });
