@@ -25,7 +25,6 @@ export default function InfoCard(): ReactElement {
   const [imageURL, setImageURL] = useState('');
   const [availabilityData, setAvailabilityData] = useState({});
   const [eatingData, setEatingData] = useState({});
-  const [websiteData, setWebsiteData] = useState([]);
 
   useEffect(() => {
     getImageURL(building?.code || '', room?.name || null).then((res) => {
@@ -66,6 +65,9 @@ export default function InfoCard(): ReactElement {
     }
     return;
   }
+
+  return;
+
   return (
     <div
       className={

@@ -150,7 +150,7 @@ export default function Home({ params }: { params: { slug: string } }) {
               : node.removeAttribute('inert'))
           }
         >
-          <div
+          {/* <div
             style={{
               position: 'fixed',
               zIndex: '100',
@@ -160,7 +160,7 @@ export default function Home({ params }: { params: { slug: string } }) {
             }}
           >
             <UserButton></UserButton>
-          </div>
+          </div> */}
 
           <MapDisplay
             params={params}

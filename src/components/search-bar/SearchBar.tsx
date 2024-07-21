@@ -1,13 +1,14 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styles from '@/styles/Toolbar.module.css';
-import { MagnifyingGlassIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
-import clsx from 'clsx';
 import QuickSearch from '@/components/search-bar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { claimRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/redux/navSlice';
 import SearchResults from './SearchResults';
+
+import { HiMagnifyingGlass } from 'react-icons/hi2';
+import { IoIosClose } from 'react-icons/io';
 
 interface Props {
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
@@ -22,84 +23,47 @@ const SearchBar = ({
   searchQuery,
   setSearchQuery,
 }: Props) => {
-  const isCardOpen = useAppSelector(
-    (state) => !!(state.ui.selectedRoom || state.ui.selectedBuilding),
-  );
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
-  const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
 
+  const [isFocused, setIsFocused] = useState(false);
+
   const renderSearchQueryInput = () => {
+    const renderCloseButton = () => (
+      <IoIosClose
+        title="Close"
+        size={25}
+        className="absolute right-2"
+        onClick={() => {
+          dispatch(setIsSearchOpen(false));
+          dispatch(setIsNavOpen(false));
+          dispatch(setRecommendedPath([]));
+          dispatch(claimRoom(null));
+        }}
+      />
+    );
+
     return (
-      <>
-        <div>
-          {/* Arrow */}
-          <div
-            className={
-              'pointer-events-none absolute left-0.5 flex h-full w-10 items-center justify-center' /*styles['search-icon-wrapper']*/
-            }
-          >
-            {/* Magnifying Glass Size */}
-            <MagnifyingGlassIcon
-              className={'h-6 w-6 fill-[#767575]' /*styles['search-icon']*/}
-            />
-          </div>
-          <button
-            type="button"
-            title="Close"
-            // back arrow
-            className={
-              'absolute left-2 top-2.5 flex items-center justify-center bg-white opacity-0' + //search-close-button
-              ' focus-visible:border-3px focus-visible:border-solid focus-visible:border-[#007cff]' + //search-close-button: focus-visible
-              `${isSearchOpen || isCardOpen || isNavOpen ? ' pointer-events-auto opacity-100' : ''}` //search-close-button-visible
-              // clsx(
-              //   //styles['search-close-button'],
-              //   //(isSearchOpen || isCardOpen || isNavOpen) &&
-              //   //styles['search-close-button-visible'],
-              // )
-            }
-            ref={(node) =>
-              node &&
-              (isSearchOpen || isCardOpen || isNavOpen
-                ? node.removeAttribute('inert')
-                : node.setAttribute('inert', ''))
-            }
-            onClick={() => {
-              dispatch(setIsSearchOpen(false));
-              dispatch(setIsNavOpen(false));
-              dispatch(setRecommendedPath([]));
-              dispatch(claimRoom(null));
-            }}
-          >
-            {/* Arrow Left on Search Bar */}
-            <ArrowLeftIcon
-              className={
-                'h-6 w-6 text-[#4b5563]' /*styles['search-close-icon']*/
-              }
-            />
-          </button>
-        </div>
-        ;
-        {isSearchOpen && (
-          <input
-            type="search"
-            className={
-              clsx(styles['search-box-input']) +
-              ' w-18 fixed left-14 top-4 h-9 border-0 bg-transparent p-0 pr-3 font-["inherit"] text-[20px]'
-            }
-            placeholder="Search"
-            value={searchQuery}
-            onChange={(event) => {
-              setSearchQuery(event.target.value);
-            }}
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
-            title="Search query"
-          />
-        )}
-      </>
+      <div className="flex items-center rounded bg-white">
+        {!isFocused && <HiMagnifyingGlass className="pl-1" size={25} />}
+
+        <input
+          type="search"
+          className="w-full rounded p-2"
+          placeholder="Search"
+          value={searchQuery}
+          onChange={(event) => {
+            setSearchQuery(event.target.value);
+          }}
+          title="Search query"
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
+
+        {isFocused && renderCloseButton()}
+      </div>
     );
   };
 
@@ -161,14 +125,12 @@ const SearchBar = ({
   return (
     <div
       id="SearchBar"
-      className="box-shadow fixed top-10 z-10 rounded bg-white"
+      className="box-shadow fixed left-2 right-2 top-4 z-10 space-y-5 rounded"
     >
       {renderSearchQueryInput()}
 
-      {/* 
-      displays the QuickSearch or the search results 
-      depending on if the search query is empty
-       */}
+      {/* displays the QuickSearch or the search results 
+          depending on if the search query is empty */}
       {searchQuery == '' ? (
         <QuickSearch setQuery={setSearchQuery} />
       ) : (

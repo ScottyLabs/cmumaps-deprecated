@@ -71,28 +71,6 @@
   }
 }
 
-.search-box-input {
-  /* background: transparent;
-  border: 0; */
-  /* font-size: 20px;
-  padding: 0; */
-  /* padding-right: 12px; */
-  font-family: inherit;
-  /* animation: var(--search-transition-duration) linear appear; */
-
-  /*
-   * Force the search box input to be at the top of the screen.
-   * This ensures that Safari on iOS will not try to scroll down when
-   * it is focused and it moves top the top.
-   */
-  /* position: fixed; */
-  /* top: calc(var(--main-ui-padding));
-  left: calc(var(--main-ui-padding) + 40px);
-  height: var(--search-box-height);
-  width: calc(100% - 2 * var(--main-ui-padding) - var(--search-icon-width)); */
-  z-index: 100;
-}
-
 @keyframes appear {
   0%,
   80% {
@@ -109,29 +87,6 @@
 
 .search-box-input:focus {
   outline: 0;
-}
-
-.search-icon-wrapper {
-  /* --search-close-margin: 8px;
-  position: absolute;
-
-  left: var(--search-close-margin);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 10;
-  height: 100%;
-
-  pointer-events: none;
-  z-index: 95; */
-}
-
-.search-icon {
-  /* width: 24px;
-  height: 24px;
-  fill: #767575; */
 }
 
 .search-close-button {
