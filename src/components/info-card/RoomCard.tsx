@@ -2,8 +2,8 @@ import { useAppSelector } from '@/lib/hooks';
 import { getImageURL } from '@/util/data/idToNames';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { renderButtonsRowHelper } from './displayUtils';
 import { Room } from '@/types';
+import ButtonsRow from './ButtonsRow';
 
 interface Props {
   room: Room;
@@ -34,7 +34,7 @@ const RoomCard = ({ room }: Props) => {
   };
 
   const renderButtonsRow = () => {
-    return renderButtonsRowHelper(<></>);
+    return <ButtonsRow middleButton={<></>} />;
   };
 
   return (

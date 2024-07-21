@@ -1,7 +1,12 @@
 import { FaArrowRight } from 'react-icons/fa';
 import { MdIosShare } from 'react-icons/md';
+import React from 'react';
 
-export const renderButtonsRowHelper = (middleButton: React.JSX.Element) => {
+interface Props {
+  middleButton: React.JSX.Element;
+}
+
+const ButtonsRow = ({ middleButton }: Props) => {
   return (
     <div className="mx-3 flex justify-between py-3">
       <div className="flex gap-2.5">
@@ -23,3 +28,5 @@ export const renderButtonsRowHelper = (middleButton: React.JSX.Element) => {
     </div>
   );
 };
+
+export default ButtonsRow;

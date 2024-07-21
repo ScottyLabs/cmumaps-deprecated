@@ -4,7 +4,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import { renderButtonsRowHelper } from './displayUtils';
+import ButtonsRow from './ButtonsRow';
 import { Building } from '@/types';
 
 interface Props {
@@ -44,7 +44,7 @@ const BuildingCard = ({ building }: Props) => {
       </button>
     );
 
-    return renderButtonsRowHelper(renderMiddleButton());
+    return <ButtonsRow middleButton={renderMiddleButton()} />;
   };
 
   const renderEateryCarousel = () => {
