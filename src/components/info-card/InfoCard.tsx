@@ -10,6 +10,7 @@ import AvailabilitySection from './AvailabilitySection';
 import { useAppSelector } from '@/lib/hooks';
 import BuildingCard from './BuildingCard';
 import EateryCard from './eaterycard';
+import RoomCard from './RoomCard';
 
 type WeekAvailability =
   | { [key: string]: [value: string] }[]
@@ -71,7 +72,7 @@ export default function InfoCard(): ReactElement {
     if (room.type == 'dining') {
       return <EateryCard />;
     } else {
-      // return <RoomCard />
+      return <RoomCard />;
     }
   } else if (building) {
     return <BuildingCard />;
