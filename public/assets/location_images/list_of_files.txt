@@ -133,8 +133,7 @@
 ├── pos.jpg
 ├── rof.jpg
 ├── sh.jpg
-├── tep.jpg
 ├── weh.jpg
 └── wwg.jpg
 
-17 directories, 121 files
+17 directories, 120 files

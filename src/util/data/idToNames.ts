@@ -13,7 +13,7 @@ export async function getImageURL(
   room: string | null,
 ): Promise<string> {
   if (room === null) {
-    return `/assets/location_images/${simplify(buildingCode)}.jpg`;
+    return `/assets/location_images/building_images/${simplify(buildingCode)}.jpg`;
   } else {
     //check if file exists
     const res = await fetch('/assets/location_images/list_of_files.txt');
@@ -146,18 +146,4 @@ export async function getEatingData(alias: string | undefined) {
     }
   }
   return eatingData || null;
-}
-
-export async function getBuildingWebsites(buildingCode: string | undefined) {
-  if (!buildingCode) {
-    return;
-  }
-  const res = await fetch('./assets/buildingWebsites.json');
-  // var getFavicons = require('get-website-favicon')
-  const buildingWebsites = await res.json();
-  const websiteList = buildingWebsites[buildingCode + ''];
-  if (!websiteList) {
-    return null;
-  }
-  return websiteList;
 }
