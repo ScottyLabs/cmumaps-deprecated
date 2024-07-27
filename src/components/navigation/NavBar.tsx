@@ -4,7 +4,7 @@ import shareIcon from '/public/assets/icons/icon-share-one.svg';
 import navIcon from '/public/assets/icons/icon-navigation.svg';
 import Image from 'next/image';
 import { useAppDispatch } from '@/lib/hooks';
-import { setEndRoom, setIsNavOpen } from '@/lib/redux/navSlice';
+import { setEndRoom, setIsNavOpen } from '@/lib/features/navSlice';
 
 export interface NavBarProps {
   room: Room;
