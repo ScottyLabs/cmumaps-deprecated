@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styles from '@/styles/InfoCard.module.css';
 import clsx from 'clsx';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setRecommendedPath } from '@/lib/redux/navSlice';
+import { setRecommendedPath } from '@/lib/features/navSlice';
 
 /**
  * Displays the search results.

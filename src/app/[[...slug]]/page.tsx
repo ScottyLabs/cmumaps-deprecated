@@ -21,7 +21,7 @@ import FloorSwitcher, {
   getFloorIndexAtOrdinal,
 } from '@/components/building-display/FloorSwitcher';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { focusBuilding, setFloorOrdinal } from '@/lib/redux/uiSlice';
+import { focusBuilding, setFloorOrdinal } from '@/lib/features/uiSlice';
 import SearchBar from '@/components/search-bar/SearchBar';
 import InfoCard from '@/components/info-card/InfoCard';
 import NavCard from '@/components/navigation/NavCard';

@@ -27,13 +27,13 @@ import {
   Room,
 } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, focusBuilding } from '@/lib/redux/uiSlice';
+import { claimRoom, focusBuilding } from '@/lib/features/uiSlice';
 import { node } from '@/app/api/findPath/route';
 import {
   setBuildings,
   setFloorMap,
   setLegacyFloorMap,
-} from '@/lib/redux/dataSlice';
+} from '@/lib/features/dataSlice';
 import { useRouter } from 'next/navigation';
 
 /**
@@ -239,22 +239,23 @@ const MapDisplay = ({
   // To improve speed later, we can load the floor data only when needed --
   // but we need to load it all for now to support search
   useEffect(() => {
-    fetch('/GHC-5.json')
-      .then((r) => r.json())
-      .then((ghc5response: FloorPlan) => {
-        const floors = {};
-        floors['GHC-5'] = ghc5response;
-        // Add ids and floors to room objects
-        Object.entries(ghc5response).forEach(([id, room]: [string, Room]) => {
-          room.id = id;
-          room.floor = 'GHC-5';
-        });
-        dispatch(setFloorMap(floors));
-        zoomOnDefaultBuilding(buildings, floors);
-      });
-
+    if (!buildings) {
+      return;
+    }
+    const floors = {};
+    for (const building of buildings) {
+      for (const floor of building.floors) {
+        fetch(`/floors/${building.code}-${floor.name}.json`)
+          .then((r) => r.json())
+          .then((floorPlan: FloorPlan) => {
+            floors[`${building.code}-${floor.name}`] = floorPlan;
+          });
+      }
+    }
+    dispatch(setFloorMap(floors));
+    zoomOnDefaultBuilding(buildings, floors);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [buildings]);
 
   // Update the URL from the current floor
   useEffect(() => {
