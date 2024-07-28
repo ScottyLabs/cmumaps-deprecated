@@ -1,4 +1,4 @@
-import { getAvailabilityData, getImageURL } from '@/util/data/idToNames';
+import { getImageURL } from '@/util/data/idToNames';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Room } from '@/types';

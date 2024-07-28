@@ -14,10 +14,7 @@ export default function NavCard(): ReactElement {
   const endRoom = useAppSelector((state) => state.nav.endRoom);
 
   return (
-    <div
-      id="thisthing2"
-      className={clsx(styles['info-card'], styles['info-card-open'])}
-    >
+    <div className={clsx(styles['info-card'], styles['info-card-open'])}>
       <div className="relative max-h-[800px] w-[100%] rounded-[8px] bg-[#929292] bg-opacity-20 p-2 backdrop-blur-sm">
         <h1>Directions</h1>
         <div className="relative m-[1.25%] h-[90px] w-[97.5%] rounded-[8px] bg-[#b1b1b1] opacity-80">
