@@ -1,24 +1,43 @@
-.
+building_room_images
+├── 3SC
+│   └── 3SC.jpg
+├── 4SC
+│   └── 4SC.jpg
+├── AH
+│   └── AH.jpg
+├── AN
+│   └── AN.jpg
 ├── BH
-│   ├── 136a.jpg
-│   ├── 136e.jpg
-│   ├── 140a.jpg
-│   ├── 140b.jpg
-│   ├── 154a.jpg
-│   ├── 235a.jpg
-│   ├── 235b.jpg
-│   ├── 237b.jpg
-│   ├── 255a.jpg
-│   ├── a51.jpg
-│   └── a53.jpg
+│   ├── 136A.jpg
+│   ├── 136E.jpg
+│   ├── 140A.jpg
+│   ├── 140B.jpg
+│   ├── 154A.jpg
+│   ├── 235A.jpg
+│   ├── 235B.jpg
+│   ├── 237B.jpg
+│   ├── 255A.jpg
+│   ├── A51.jpg
+│   ├── A53.jpg
+│   └── BH.jpg
+├── BR
+│   └── BR.jpg
+├── CC
+│   └── CC.jpg
 ├── CFA
 │   ├── 102.jpg
 │   ├── 317.jpg
 │   ├── 318.jpg
 │   ├── 321.jpg
-│   └── 323.jpg
+│   ├── 323.jpg
+│   └── CFA.jpg
+├── CIC
+│   └── CIC.jpg
+├── CUC
+│   └── CUC.jpg
 ├── CYH
-│   └── 100a.jpg
+│   ├── 100A.jpg
+│   └── CYH.jpg
 ├── DH
 │   ├── 1112.jpg
 │   ├── 1117.jpg
@@ -30,7 +49,14 @@
 │   ├── 2210.jpg
 │   ├── 2302.jpg
 │   ├── 2315.jpg
-│   └── a302.jpg
+│   ├── A302.jpg
+│   └── DH.jpg
+├── EDS
+│   └── EDS.jpg
+├── FM
+│   └── FM.jpg
+├── FRB
+│   └── FRB.jpg
 ├── GHC
 │   ├── 4101.jpg
 │   ├── 4102.jpg
@@ -39,44 +65,64 @@
 │   ├── 4301.jpg
 │   ├── 4307.jpg
 │   ├── 4401.jpg
-│   └── 5222.jpg
+│   ├── 5222.jpg
+│   └── GHC.jpg
+├── HBH
+│   └── HBH.jpg
 ├── HH
-│   ├── b103.jpg
-│   └── b131.jpg
+│   ├── B103.jpg
+│   ├── B131.jpg
+│   └── HH.jpg
+├── HL
+│   └── HL.jpg
 ├── HOA
 │   ├── 107.jpg
 │   └── 160.jpg
+├── III
+│   └── III.jpg
+├── MC
+│   └── MC.jpg
 ├── MI
 │   ├── 348.jpg
 │   ├── 355.jpg
-│   └── 448.jpg
+│   ├── 448.jpg
+│   └── MI.jpg
 ├── MM
 │   ├── 103.jpg
-│   └── a14.jpg
+│   ├── A14.jpg
+│   └── MM.jpg
 ├── MOR
-│   └── morewoodlab.jpg
+│   ├── MOR.jpg
+│   └── MOREWOODLAB.jpg
+├── NSH
+│   └── NSH.jpg
+├── PC
+│   └── PC.jpg
+├── PCA
+│   └── PCA.jpg
 ├── PH
 │   ├── 100.jpg
-│   ├── 125b.jpg
-│   ├── 125c.jpg
-│   ├── 125d.jpg
-│   ├── 126a.jpg
-│   ├── 225b2.jpg
-│   ├── 226a.jpg
-│   ├── 226b.jpg
-│   ├── 226c.jpg
-│   ├── a18a.jpg
-│   ├── a18b.jpg
-│   ├── a18c.jpg
-│   ├── a19.jpg
-│   ├── a19a.jpg
-│   ├── a19c.jpg
-│   ├── a19d.jpg
-│   ├── a20.jpg
-│   ├── a20a.jpg
-│   ├── a21.jpg
-│   ├── a21a.jpg
-│   └── a22.jpg
+│   ├── 125B.jpg
+│   ├── 125C.jpg
+│   ├── 125D.jpg
+│   ├── 126A.jpg
+│   ├── 225B2.jpg
+│   ├── 226A.jpg
+│   ├── 226B.jpg
+│   ├── 226C.jpg
+│   ├── A18A.jpg
+│   ├── A18B.jpg
+│   ├── A18C.jpg
+│   ├── A19.jpg
+│   ├── A19A.jpg
+│   ├── A19C.jpg
+│   ├── A19D.jpg
+│   ├── A20.jpg
+│   ├── A20A.jpg
+│   ├── A21.jpg
+│   ├── A21A.jpg
+│   ├── A22.jpg
+│   └── PH.jpg
 ├── POS
 │   ├── 145.jpg
 │   ├── 146.jpg
@@ -84,14 +130,25 @@
 │   ├── 151.jpg
 │   ├── 152.jpg
 │   ├── 153.jpg
-│   └── a35.jpg
+│   ├── A35.jpg
+│   └── POS.jpg
+├── REH
+│   └── REH.jpg
 ├── ROF
-│   └── residencefifth.jpg
+│   ├── RESIDENCEFIFTH.jpg
+│   └── ROF.jpg
 ├── SH
 │   ├── 105.jpg
 │   ├── 234.jpg
 │   ├── 236.jpg
-│   └── 238.jpg
+│   ├── 238.jpg
+│   └── SH.jpg
+├── TCS
+│   └── TCS.jpg
+├── TEP
+│   └── TEP.jpg
+├── UT
+│   └── UT.jpg
 ├── WEH
 │   ├── 4623.jpg
 │   ├── 4625.jpg
@@ -115,25 +172,16 @@
 │   ├── 6403.jpg
 │   ├── 6423.jpg
 │   ├── 7500.jpg
-│   └── 8427.jpg
-├── WWG
-│   └── westwing.jpg
-├── bh.jpg
-├── cfa.jpg
-├── cuc.jpg
-├── cyh.jpg
-├── dh.jpg
-├── ghc.jpg
-├── hh.jpg
-├── list_of_files.txt
-├── mi.jpg
-├── mm.jpg
-├── mor.jpg
-├── ph.jpg
-├── pos.jpg
-├── rof.jpg
-├── sh.jpg
-├── weh.jpg
-└── wwg.jpg
+│   ├── 8427.jpg
+│   └── WEH.jpg
+├── WH
+│   └── WH.jpg
+├── WHIT
+│   └── WHIT.jpg
+├── WQ
+│   └── WQ.jpg
+└── WWG
+    ├── WESTWING.jpg
+    └── WWG.jpg
 
-17 directories, 120 files
+42 directories, 143 files
