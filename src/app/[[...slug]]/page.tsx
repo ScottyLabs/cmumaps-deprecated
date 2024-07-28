@@ -12,18 +12,18 @@ import { useIsDesktop } from '../../hooks/useWindowDimensions';
 import {
   getFloorCenter,
   positionOnMap,
-} from '../../components/building-display/FloorPlanOverlay';
+} from '../../components/buildings/FloorPlanOverlay';
 import prefersReducedMotion from '../../util/prefersReducedMotion';
 import { UserButton } from '@clerk/nextjs';
-import MapDisplay from '@/components/building-display/MapDisplay';
+import MapDisplay from '@/components/buildings/MapDisplay';
 import { Coordinate } from 'mapkit-react';
 import FloorSwitcher, {
   getFloorIndexAtOrdinal,
-} from '@/components/building-display/FloorSwitcher';
+} from '@/components/buildings/FloorSwitcher';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { focusBuilding, setFloorOrdinal } from '@/lib/features/uiSlice';
-import SearchBar from '@/components/search-bar/SearchBar';
-import InfoCard from '@/components/info-card/InfoCard';
+import SearchBar from '@/components/searchbar/SearchBar';
+import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 
 const points = [[40.44249719447571, -79.94314319195851]];

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
-import QuickSearch from '@/components/search-bar/QuickSearch';
+import QuickSearch from '@/components/searchbar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
   claimRoom,
