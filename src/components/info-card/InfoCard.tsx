@@ -29,7 +29,7 @@ export default function InfoCard(): ReactElement {
         <BuildingCard building={building} />
       </CardWrapper>
     );
+  } else {
+    return <></>;
   }
-
-  return <></>;
 }

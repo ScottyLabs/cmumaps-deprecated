@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/search-bar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, releaseRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
+import { releaseRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
 import SearchResults from './SearchResults';
 import { IoIosClose } from 'react-icons/io';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
@@ -133,7 +133,7 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
   return (
     <div
       id="SearchBar"
-      className="box-shadow fixed left-2 right-2 top-4 z-10 rounded"
+      className="box-shadow fixed left-2 right-2 top-4 z-10 w-full rounded sm:w-1/4"
     >
       {renderSearchQueryInput()}
       {searchQuery == '' && <QuickSearch setQuery={setSearchQuery} />}
