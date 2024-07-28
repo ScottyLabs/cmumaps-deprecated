@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/search-bar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { releaseRoom, setIsSearchOpen } from '@/lib/redux/uiSlice';
+import {
+  claimRoom,
+  releaseRoom,
+  setIsSearchOpen,
+} from '@/lib/features/uiSlice';
 import SearchResults from './SearchResults';
 import { IoIosClose } from 'react-icons/io';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import useEscapeKey from '@/hooks/useEscapeKey';
-import { setIsNavOpen, setRecommendedPath } from '@/lib/redux/navSlice';
+import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
 
 interface Props {
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
