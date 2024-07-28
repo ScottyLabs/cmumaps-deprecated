@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import {
-  claimRoom,
-  releaseRoom,
-  setIsSearchOpen,
-} from '@/lib/features/uiSlice';
+import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
 import SearchResults from './SearchResults';
 import { IoIosClose } from 'react-icons/io';
 import { HiMagnifyingGlass } from 'react-icons/hi2';

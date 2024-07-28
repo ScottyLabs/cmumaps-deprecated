@@ -27,7 +27,11 @@ import {
   Room,
 } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, focusBuilding } from '@/lib/features/uiSlice';
+import {
+  claimRoom,
+  focusBuilding,
+  setIsSearchOpen,
+} from '@/lib/features/uiSlice';
 import { node } from '@/app/api/findPath/route';
 import {
   addFloorToMap,
@@ -369,6 +373,7 @@ const MapDisplay = ({
       }}
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={onRegionChangeEnd}
+      onClick={() => dispatch(setIsSearchOpen(false))}
     >
       {recommendedPath && (
         <Polyline
