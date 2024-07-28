@@ -51,7 +51,6 @@ export function positionOnMap(
     absolute[1] - center[1],
     placement.angle,
   );
-
   return {
     latitude:
       absoluteY / latitudeRatio / placement.scale + placement.center.latitude,
@@ -82,7 +81,6 @@ export default function FloorPlanOverlay({
     () => getFloorCenter(rooms),
     [rooms],
   );
-  console.log(placement, center);
   const convertToMap = (absolute: AbsoluteCoordinate): Coordinate =>
     positionOnMap(absolute, placement, center);
   const dispatch = useAppDispatch();
@@ -105,6 +103,7 @@ export default function FloorPlanOverlay({
         if (!pointsSrcAbs) {
           return;
         }
+        room.labelPosition = [room.labelPosition?.x, room.labelPosition?.y];
         const roomCenter = room.labelPosition || [
           pointsSrcAbs[0].reduce((a, b) => a + b[0], 0) /
             pointsSrcAbs[0].length,
