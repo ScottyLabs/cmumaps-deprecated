@@ -217,7 +217,7 @@ const MapDisplay = ({
     } else {
       // Redirect to the default page
       // window.history.pushState({}, '', window.location.pathname);
-      window.history.pushState({}, '', window.location.href);
+      // window.history.pushState({}, '', window.location.href);
       // router.push('/', {scroll: false});
     }
   };
@@ -288,7 +288,7 @@ const MapDisplay = ({
       url += `${selectedRoom.id}`;
     }
     // window.history.pushState({}, '', url);
-    window.history.pushState({}, '', url);
+    // window.history.pushState({}, '', url);
     // router.push(url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRoom, focusedBuilding, currentFloorName]);
