@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { getImageURL } from '@/util/data/idToNames';
+import React from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
@@ -12,22 +11,18 @@ interface Props {
 }
 
 const BuildingCard = ({ building }: Props) => {
-  const [imageURL, setImageURL] = useState('');
-
-  useEffect(() => {
-    getImageURL(building.code, null).then((res) => {
-      setImageURL(res);
-    });
-  }, [building]);
-
   const renderBuildingImage = () => {
+    const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
+
+    console.log(url);
+
     return (
       <div className="relative h-36 w-full">
         <Image
           className="object-cover"
           fill={true}
           alt="Room Image"
-          src={imageURL}
+          src={url}
         />
       </div>
     );
@@ -118,7 +113,7 @@ const BuildingCard = ({ building }: Props) => {
 
   return (
     <div>
-      {imageURL && renderBuildingImage()}
+      {renderBuildingImage()}
       <div className="ml-3 mt-2 font-bold">{building.name}</div>
       {renderButtonsRow()}
       {renderEateryCarousel()}
