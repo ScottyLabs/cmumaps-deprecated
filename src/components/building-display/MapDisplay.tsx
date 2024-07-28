@@ -34,7 +34,6 @@ import {
   setFloorMap,
   setLegacyFloorMap,
 } from '@/lib/redux/dataSlice';
-import { useRouter } from 'next/navigation';
 
 /**
  * The JSON file at this address contains all the map data used by the project.
@@ -53,6 +52,7 @@ const options = {
   timeout: 5000,
   maximumAge: 0,
 };
+
 const MapDisplay = ({
   params,
   mapRef,
@@ -67,7 +67,6 @@ const MapDisplay = ({
   showRoomNames,
 }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
-  const router = useRouter();
 
   const dispatch = useAppDispatch();
 
@@ -213,7 +212,6 @@ const MapDisplay = ({
     } else {
       // Redirect to the default page
       // window.history.pushState({}, '', window.location.pathname);
-      router.push('/');
     }
   };
 
@@ -272,7 +270,7 @@ const MapDisplay = ({
     if (selectedRoom) {
       url += `/${selectedRoom.id}`;
     }
-    router.push(url);
+    // window.history.pushState({}, '', url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRoom, focusedBuilding, currentFloorName]);
 
