@@ -54,37 +54,33 @@ export default function FloorSwitcher({
   // Hide the floor picker if the building or floor changes
   useEffect(() => setShowFloorPicker(false), [building, ordinal]);
 
-  const floorIndex: number = getFloorIndexAtOrdinal(building, ordinal);
-  const isFloorValid = floorIndex >= 0;
-
-  const insertIndex = ~floorIndex;
-  const canGoDown = (isFloorValid ? floorIndex : insertIndex) > 0;
-  const canGoUp = isFloorValid
-    ? floorIndex < building.floors.length - 1
-    : ~floorIndex <= building.floors.length - 1;
-
-  const lowerFloorIndex = isFloorValid ? floorIndex - 1 : insertIndex - 1;
-  const lowerFloorOrdinal = building.floors[lowerFloorIndex]?.ordinal;
-  const upperFloorIndex = isFloorValid ? floorIndex + 1 : insertIndex;
-  const upperFloorOrdinal = building.floors[upperFloorIndex]?.ordinal;
-
   const renderDefaultView = () => {
+    const floorIndex: number = getFloorIndexAtOrdinal(building, ordinal);
+    const isFloorValid = floorIndex >= 0;
+
+    const insertIndex = ~floorIndex;
+    const canGoDown = (isFloorValid ? floorIndex : insertIndex) > 0;
+    const canGoUp = isFloorValid
+      ? floorIndex < building.floors.length - 1
+      : ~floorIndex <= building.floors.length - 1;
+
+    const lowerFloorIndex = isFloorValid ? floorIndex - 1 : insertIndex - 1;
+    const lowerFloorOrdinal = building.floors[lowerFloorIndex]?.ordinal;
+    const upperFloorIndex = isFloorValid ? floorIndex + 1 : insertIndex;
+    const upperFloorOrdinal = building.floors[upperFloorIndex]?.ordinal;
+
     if (building.floors.length === 0) {
       return (
-        <>
+        <div className="flex items-center">
           <p className="mx-2">{building.name}</p>
           <AiOutlineExclamationCircle size={30} className="mr-2" />
-          <p className="p-1">
-            Floor plan
-            <br />
-            not available
-          </p>
-        </>
+          <p className="p-1">Floor plan not available</p>
+        </div>
       );
     }
 
     return (
-      <>
+      <div className="flex items-center">
         <p className="mx-2">{building.name}</p>
 
         <button
@@ -126,47 +122,39 @@ export default function FloorSwitcher({
         >
           <FaArrowUp />
         </button>
-      </>
+      </div>
     );
   };
 
   const renderFloorPicker = () => {
     return (
-      <div className={styles.views}>
-        <div
-          className={clsx(
-            styles['floor-picker'],
-            !showFloorPicker && styles['view-hidden'],
-          )}
-        >
-          <div className={styles['floor-picker-scroll']}>
-            {building.floors.map((floor: Floor) => (
-              <button
-                key={floor.ordinal}
-                type="button"
-                className={clsx(
-                  styles.button,
-                  floor.ordinal === ordinal && styles['button-active'],
-                )}
-                onClick={() => {
-                  setShowFloorPicker(false);
-                  dispatch(setFloorOrdinal(floor.ordinal));
-                }}
-                role="tab"
-                aria-selected={floor.ordinal === ordinal ? 'true' : 'false'}
-              >
-                {floor.name}
-              </button>
-            ))}
+      <div className="ml-2 flex items-stretch">
+        {building.floors.map((floor: Floor) => (
+          <div
+            key={floor.ordinal}
+            className="flex items-center border-l border-gray-300"
+          >
+            <div
+              className={
+                'cursor-pointer px-4 ' +
+                (floor.ordinal === ordinal ? 'font-bold' : '')
+              }
+              onClick={() => {
+                setShowFloorPicker(false);
+                dispatch(setFloorOrdinal(floor.ordinal));
+              }}
+            >
+              {floor.name}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     );
   };
 
   return (
     <div id="FloorSwitcher" className="fixed bottom-2 left-1/2 z-10">
-      <div className="flex items-center justify-center rounded bg-white p-1">
+      <div className="flex items-stretch justify-center rounded bg-white p-1">
         <Roundel code={building.code} />
         {showFloorPicker ? renderFloorPicker() : renderDefaultView()}
       </div>
