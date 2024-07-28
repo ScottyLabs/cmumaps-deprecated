@@ -83,25 +83,27 @@ export default function Home({ params }: { params: { slug: string } }) {
         <meta name="description" content="Interactive map of the CMU campus" />
       </Head>
       <main className="relative h-screen">
-        <h1 className="hidden">CMU Map</h1>
+        <div className="absolute z-10">
+          <h1 className="hidden">CMU Map</h1>
 
-        {!isNavOpen && <InfoCard />}
-        {isNavOpen && <NavCard />}
+          {!isNavOpen && <InfoCard />}
+          {isNavOpen && <NavCard />}
 
-        {focusedBuilding && !!floorOrdinal && (
-          <FloorSwitcher building={focusedBuilding} ordinal={floorOrdinal} />
-        )}
+          {focusedBuilding && !!floorOrdinal && (
+            <FloorSwitcher building={focusedBuilding} ordinal={floorOrdinal} />
+          )}
 
-        <SearchBar
-          mapRef={mapRef.current}
-          userPosition={[
-            points[points.length - 1][0],
-            points[points.length - 1][1],
-          ]}
-        />
+          <SearchBar
+            mapRef={mapRef.current}
+            userPosition={[
+              points[points.length - 1][0],
+              points[points.length - 1][1],
+            ]}
+          />
 
-        <div className="fixed right-2 top-2 z-10">
-          <UserButton />
+          <div className="fixed right-2 top-2">
+            <UserButton />
+          </div>
         </div>
 
         <MapDisplay
