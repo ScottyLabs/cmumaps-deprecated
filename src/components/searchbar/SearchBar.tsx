@@ -2,19 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
+import {
+  releaseRoom,
+  setFloorOrdinal,
+  setIsSearchOpen,
+} from '@/lib/features/uiSlice';
 import SearchResults from './SearchResults';
 import { IoIosClose } from 'react-icons/io';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import useEscapeKey from '@/hooks/useEscapeKey';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
+import { getFloorCenter, positionOnMap } from '../buildings/FloorPlanOverlay';
+import { Coordinate } from 'mapkit-react';
+import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 interface Props {
-  onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
+  mapRef: mapkit.Map | null;
   userPosition: AbsoluteCoordinate;
 }
 
-const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
+const SearchBar = ({ mapRef, userPosition }: Props) => {
   const dispatch = useAppDispatch();
 
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
@@ -22,6 +29,8 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
 
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
+
+  const floors = useAppSelector((state) => state.data.floorMap);
 
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -100,6 +109,38 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
         {isFocused && renderCloseButton()}
       </div>
     );
+  };
+
+  const onSelectRoom = (room: Room, building: Building, floor: Floor) => {
+    if (!floors) {
+      console.error('floors is null, but how?');
+      return;
+    }
+
+    dispatch(setFloorOrdinal(floor.ordinal));
+
+    const { placement, rooms } = floors[`${building.code}-${floor.name}`];
+    const center = getFloorCenter(rooms);
+    const points: Coordinate[] = room.shapes
+      .flat()
+      .map((point: AbsoluteCoordinate) =>
+        positionOnMap(point, placement, center),
+      );
+    const allLat = points.map((p) => p.latitude);
+    const allLon = points.map((p) => p.longitude);
+
+    mapRef?.setRegionAnimated(
+      new mapkit.BoundingRegion(
+        Math.max(...allLat),
+        Math.max(...allLon),
+        Math.min(...allLat),
+        Math.min(...allLon),
+      ).toCoordinateRegion(),
+      !prefersReducedMotion(),
+    );
+
+    // setShowFloor(true);
+    // setShowRoomNames(true);
   };
 
   const renderSearchResults = () => {

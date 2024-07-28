@@ -1,27 +1,15 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 'use client';
 
 import React, { useRef, useState } from 'react';
 import Head from 'next/head';
-import styles from '@/styles/Home.module.css';
 
-import { AbsoluteCoordinate, Building } from '../../types';
-
-import { useIsDesktop } from '../../hooks/useWindowDimensions';
-
-import {
-  getFloorCenter,
-  positionOnMap,
-} from '../../components/buildings/FloorPlanOverlay';
-import prefersReducedMotion from '../../util/prefersReducedMotion';
 import { UserButton } from '@clerk/nextjs';
 import MapDisplay from '@/components/buildings/MapDisplay';
-import { Coordinate } from 'mapkit-react';
 import FloorSwitcher, {
   getFloorIndexAtOrdinal,
 } from '@/components/buildings/FloorSwitcher';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { focusBuilding, setFloorOrdinal } from '@/lib/features/uiSlice';
+import { useAppSelector } from '@/lib/hooks';
+import { setFloorOrdinal } from '@/lib/features/uiSlice';
 import SearchBar from '@/components/searchbar/SearchBar';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
@@ -32,81 +20,13 @@ const points = [[40.44249719447571, -79.94314319195851]];
  * The main page of the CMU Map website.
  */
 export default function Home({ params }: { params: { slug: string } }) {
-  const dispatch = useAppDispatch();
-
   const mapRef = useRef<mapkit.Map | null>(null);
 
   const [showFloor, setShowFloor] = useState(false);
   const [showRoomNames, setShowRoomNames] = useState(false);
   const floorOrdinal = useAppSelector((state) => state.ui.floorOrdinal);
-  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
-  const floors = useAppSelector((state) => state.data.floorMap);
-  const isDesktop = useIsDesktop();
-
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
-
-  const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
-    dispatch(focusBuilding(newBuilding));
-    if (newBuilding === null) {
-      return;
-    }
-
-    if (updateMap) {
-      const points: Coordinate[] = newBuilding.shapes.flat();
-      const allLat = points.map((p) => p.latitude);
-      const allLon = points.map((p) => p.longitude);
-
-      mapRef.current?.setRegionAnimated(
-        new mapkit.BoundingRegion(
-          Math.max(...allLat),
-          Math.max(...allLon),
-          Math.min(...allLat),
-          Math.min(...allLon),
-        ).toCoordinateRegion(),
-        !prefersReducedMotion(),
-      );
-
-      setShowFloor(true);
-      setShowRoomNames(false);
-    }
-    dispatch(
-      setFloorOrdinal(
-        floorOrdinal === null && newBuilding.floors.length > 0
-          ? newBuilding.floors.find(
-              (floor) => floor.name === newBuilding.defaultFloor,
-            )!.ordinal
-          : floorOrdinal,
-      ),
-    );
-  };
-
-  const onSelectRoom = (room, building, floor) => {
-    dispatch(setFloorOrdinal(floor.ordinal));
-
-    const { placement, rooms } = floors[`${building.code}-${floor.name}`]!;
-    const center = getFloorCenter(rooms);
-    const points: Coordinate[] = room.shapes
-      .flat()
-      .map((point: AbsoluteCoordinate) =>
-        positionOnMap(point, placement, center),
-      );
-    const allLat = points.map((p) => p.latitude);
-    const allLon = points.map((p) => p.longitude);
-
-    mapRef.current?.setRegionAnimated(
-      new mapkit.BoundingRegion(
-        Math.max(...allLat),
-        Math.max(...allLon),
-        Math.min(...allLat),
-        Math.min(...allLon),
-      ).toCoordinateRegion(),
-      !prefersReducedMotion(),
-    );
-
-    setShowFloor(true);
-    setShowRoomNames(true);
-  };
 
   const currentFloorName =
     floorOrdinal !== null &&
@@ -143,42 +63,29 @@ export default function Home({ params }: { params: { slug: string } }) {
         )}
 
         <SearchBar
-          onSelectRoom={onSelectRoom}
+          mapRef={mapRef.current}
           userPosition={[
             points[points.length - 1][0],
             points[points.length - 1][1],
           ]}
         />
 
-        <div
-          className={styles['map-wrapper']}
-          ref={(node) =>
-            node &&
-            (isSearchOpen && !isDesktop
-              ? node.setAttribute('inert', '')
-              : node.removeAttribute('inert'))
-          }
-        >
-          <div className="fixed right-2 top-2">
-            <UserButton />
-          </div>
-
-          <div className="absolute -z-50 h-full w-full">
-            <MapDisplay
-              params={params}
-              mapRef={mapRef}
-              points={points}
-              setShowFloor={setShowFloor}
-              setShowRoomNames={setShowRoomNames}
-              setFloorOrdinal={setFloorOrdinal}
-              currentFloorName={currentFloorName}
-              showBuilding={showBuilding}
-              showFloor={showFloor}
-              floorOrdinal={floorOrdinal}
-              showRoomNames={showRoomNames}
-            />
-          </div>
+        <div className="fixed right-2 top-2 z-10">
+          <UserButton />
         </div>
+
+        <MapDisplay
+          params={params}
+          mapRef={mapRef}
+          points={points}
+          setShowFloor={setShowFloor}
+          setShowRoomNames={setShowRoomNames}
+          setFloorOrdinal={setFloorOrdinal}
+          currentFloorName={currentFloorName}
+          showFloor={showFloor}
+          floorOrdinal={floorOrdinal}
+          showRoomNames={showRoomNames}
+        />
       </main>
     </>
   );
