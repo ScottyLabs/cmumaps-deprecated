@@ -158,8 +158,24 @@ export default function FloorSwitcher({
     );
   };
 
+  // const wrapper = (children: React.ReactElement) => {
+  //   if (isDesktop) {
+  //     return (
+  //       <div className="fixed bottom-2 left-1/2 z-10 -translate-x-1/2">
+  //         {children}
+  //       </div>
+  //     );
+  //   } else {
+  //     return (
+  //       <div className="fixed bottom-2 left-1/2 z-10 w-full -translate-x-1/2">
+  //         {children}
+  //       </div>
+  //     );
+  //   }
+  // };
+
   return (
-    <div id="FloorSwitcher" className="fixed bottom-2 left-1/2 z-10">
+    <div className="fixed bottom-2 left-1/2 z-10 mx-1 w-full -translate-x-1/2 sm:w-fit">
       <div className="flex items-stretch justify-center rounded bg-white">
         <div className="p-1">
           <Roundel code={building.code} />
