@@ -77,7 +77,7 @@ const SearchBar = ({ onSelectRoom, userPosition }: Props) => {
 
     return (
       <div className="flex items-center rounded bg-white">
-        {!isFocused && <HiMagnifyingGlass className="pl-1" size={25} />}
+        <HiMagnifyingGlass className="m-1" size={25} />
 
         <input
           type="text"
