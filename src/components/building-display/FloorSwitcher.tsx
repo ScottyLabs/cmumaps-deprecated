@@ -1,19 +1,18 @@
 /* eslint-disable no-bitwise */
 import { Building, Floor } from '@/types';
-import React, { useEffect, useRef, useState } from 'react';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import React, { useEffect, useState } from 'react';
 import styles from '@/styles/FloorSwitcher.module.css';
 import clsx from 'clsx';
-import { useIsDesktop } from '@/hooks/useWindowDimensions';
 import Roundel from '../shared/Roundel';
 import { setFloorOrdinal } from '@/lib/redux/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
+import { AiOutlineExclamationCircle } from 'react-icons/ai';
+import { FaArrowUp } from 'react-icons/fa';
+import { FaArrowDown } from 'react-icons/fa';
 
 interface FloorSwitcherProps {
   building: Building;
   ordinal: number;
-  isToolbarOpen: boolean;
 }
 
 export function getFloorIndexAtOrdinal(
@@ -48,10 +47,10 @@ export function getFloorIndexAtOrdinal(
 export default function FloorSwitcher({
   building,
   ordinal,
-  isToolbarOpen,
 }: FloorSwitcherProps) {
   const [showFloorPicker, setShowFloorPicker] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+
   // Hide the floor picker if the building or floor changes
   useEffect(() => setShowFloorPicker(false), [building, ordinal]);
 
@@ -69,142 +68,107 @@ export default function FloorSwitcher({
   const upperFloorIndex = isFloorValid ? floorIndex + 1 : insertIndex;
   const upperFloorOrdinal = building.floors[upperFloorIndex]?.ordinal;
 
-  const floorPickerRef = useRef<HTMLDivElement | null>(null);
+  const renderDefaultView = () => {
+    if (building.floors.length === 0) {
+      return (
+        <>
+          <p className="mx-2">{building.name}</p>
+          <AiOutlineExclamationCircle size={30} className="mr-2" />
+          <p className="p-1">
+            Floor plan
+            <br />
+            not available
+          </p>
+        </>
+      );
+    }
 
-  const isDesktop = useIsDesktop();
+    return (
+      <>
+        <p className="mx-2">{building.name}</p>
+
+        <button
+          title="Increment floor"
+          disabled={!canGoDown}
+          onClick={() => dispatch(setFloorOrdinal(lowerFloorOrdinal))}
+        >
+          <FaArrowDown />
+        </button>
+
+        <button
+          title="Select a floor"
+          className={clsx(styles.button)}
+          onClick={() => {
+            setShowFloorPicker(true);
+          }}
+          disabled={building.floors.length < 2}
+        >
+          <div className="px-2 text-center">
+            {building.floors[floorIndex].name}
+          </div>
+          <div className="flex justify-center">
+            {building.floors.map((floor: Floor) => (
+              <div
+                key={floor.ordinal}
+                className={
+                  'm-[1px] h-1 w-1 rounded-full ' +
+                  (floor.ordinal == ordinal ? 'bg-black' : 'bg-gray-400')
+                }
+              ></div>
+            ))}
+          </div>
+        </button>
+
+        <button
+          title="Decrement floor"
+          disabled={!canGoUp}
+          onClick={() => dispatch(setFloorOrdinal(upperFloorOrdinal))}
+        >
+          <FaArrowUp />
+        </button>
+      </>
+    );
+  };
+
+  const renderFloorPicker = () => {
+    return (
+      <div className={styles.views}>
+        <div
+          className={clsx(
+            styles['floor-picker'],
+            !showFloorPicker && styles['view-hidden'],
+          )}
+        >
+          <div className={styles['floor-picker-scroll']}>
+            {building.floors.map((floor: Floor) => (
+              <button
+                key={floor.ordinal}
+                type="button"
+                className={clsx(
+                  styles.button,
+                  floor.ordinal === ordinal && styles['button-active'],
+                )}
+                onClick={() => {
+                  setShowFloorPicker(false);
+                  dispatch(setFloorOrdinal(floor.ordinal));
+                }}
+                role="tab"
+                aria-selected={floor.ordinal === ordinal ? 'true' : 'false'}
+              >
+                {floor.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div
-      className={clsx(styles.wrapper)}
-      ref={(node) =>
-        node &&
-        (isToolbarOpen && !isDesktop
-          ? node.setAttribute('inert', '')
-          : node.removeAttribute('inert'))
-      }
-    >
-      <div
-        className={clsx(
-          styles['floor-switcher'],
-          isToolbarOpen && styles['toolbar-open'],
-        )}
-      >
-        <div className={styles['building-roundel-wrapper']}>
-          <Roundel code={building.code} />
-        </div>
-
-        <div className={styles.views}>
-          <div
-            className={clsx(
-              styles['default-view'],
-              showFloorPicker && styles['view-hidden'],
-            )}
-            ref={(node) =>
-              node &&
-              (showFloorPicker
-                ? node.setAttribute('inert', '')
-                : node.removeAttribute('inert'))
-            }
-          >
-            <span className={styles['building-name']}>{building.name}</span>
-
-            {building.floors.length !== 0 && (
-              <>
-                <button
-                  type="button"
-                  className={styles.button}
-                  title="Lower floor"
-                  disabled={!canGoDown}
-                  onClick={() => dispatch(setFloorOrdinal(lowerFloorOrdinal))}
-                >
-                  <ChevronDownIcon className={styles['button-icon']} />
-                </button>
-                <button
-                  type="button"
-                  title="Select a floor"
-                  className={clsx(styles.button, styles['current-floor'])}
-                  onClick={() => {
-                    setShowFloorPicker(true);
-
-                    const floorPicker = floorPickerRef.current!;
-                    const totalWidth = floorPicker.clientWidth;
-                    const buttonWidth = 52;
-                    floorPicker.scrollLeft =
-                      (floorIndex + 0.5) * buttonWidth - totalWidth / 2;
-                  }}
-                  disabled={building.floors.length < 2}
-                >
-                  {isFloorValid ? building.floors[floorIndex].name : '—'}
-                  <span className={styles['ellipsis-indicator']}>
-                    {building.floors.map((floor: Floor) => (
-                      <div
-                        key={floor.ordinal}
-                        className={clsx(
-                          styles['ellipsis-dot'],
-                          floor.ordinal === ordinal &&
-                            styles['ellipsis-dot-active'],
-                        )}
-                      />
-                    ))}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  className={styles.button}
-                  title="Upper floor"
-                  disabled={!canGoUp}
-                  onClick={() => dispatch(setFloorOrdinal(upperFloorOrdinal))}
-                >
-                  <ChevronUpIcon className={styles['button-icon']} />
-                </button>
-              </>
-            )}
-
-            {building.floors.length === 0 && (
-              <p className={styles['no-floor']}>
-                <ExclamationCircleIcon className={styles['no-floor-icon']} />
-                <span>
-                  Floor plan
-                  <br />
-                  not available
-                </span>
-              </p>
-            )}
-          </div>
-          <div
-            className={clsx(
-              styles['floor-picker'],
-              !showFloorPicker && styles['view-hidden'],
-            )}
-            ref={(node) =>
-              node &&
-              (showFloorPicker
-                ? node.removeAttribute('inert')
-                : node.setAttribute('inert', ''))
-            }
-          >
-            <div className={styles['floor-picker-scroll']} ref={floorPickerRef}>
-              {building.floors.map((floor: Floor) => (
-                <button
-                  key={floor.ordinal}
-                  type="button"
-                  className={clsx(
-                    styles.button,
-                    floor.ordinal === ordinal && styles['button-active'],
-                  )}
-                  onClick={() => {
-                    setShowFloorPicker(false);
-                    dispatch(setFloorOrdinal(floor.ordinal));
-                  }}
-                  role="tab"
-                  aria-selected={floor.ordinal === ordinal ? 'true' : 'false'}
-                >
-                  {floor.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+    <div id="FloorSwitcher" className="fixed bottom-2 left-1/2 z-10">
+      <div className="flex items-center justify-center rounded bg-white p-1">
+        <Roundel code={building.code} />
+        {showFloorPicker ? renderFloorPicker() : renderDefaultView()}
       </div>
     </div>
   );

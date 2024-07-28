@@ -32,7 +32,6 @@ const Eaterycard = ({ room }: Props) => {
         .split(' ')
         .join('-')
         .replace('é', 'e');
-      console.log(eateryName);
       const url = `/assets/location_images/eatery_images/${eateryName}.jpg`;
 
       return (
