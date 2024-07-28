@@ -213,7 +213,7 @@ const MapDisplay = ({
     } else {
       // Redirect to the default page
       // window.history.pushState({}, '', window.location.pathname);
-      window.history.pushState({}, '', window.location.pathname);
+      window.history.pushState({}, '', window.location.href);
       // router.push('/', {scroll: false});
     }
   };
@@ -273,7 +273,7 @@ const MapDisplay = ({
       return;
     }
 
-    let url = '/';
+    let url = window.location.href;
     if (focusedBuilding) {
       url += `${focusedBuilding.code}`;
     }
@@ -281,7 +281,7 @@ const MapDisplay = ({
       url += `-${currentFloorName}`;
     }
     if (selectedRoom) {
-      url += `/${selectedRoom.id}`;
+      url += `${selectedRoom.id}`;
     }
     // window.history.pushState({}, '', url);
     window.history.pushState({}, '', url);
