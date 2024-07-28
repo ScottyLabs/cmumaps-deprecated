@@ -14,8 +14,6 @@ const BuildingCard = ({ building }: Props) => {
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
 
-    console.log(url);
-
     return (
       <div className="relative h-36 w-full">
         <Image

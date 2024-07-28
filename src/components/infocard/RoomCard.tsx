@@ -1,41 +1,23 @@
-import { getImageURL } from '@/util/data/idToNames';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { Room } from '@/types';
 import ButtonsRow from './ButtonsRow';
-
-// function availabilityApplicable(avail: WeekAvailability) {
-//   if (Object.keys(avail).length) {
-//     return <AvailabilitySection availability={avail} />;
-//   }
-//   return;
-// }
-
-// type WeekAvailability =
-// | { [key: string]: [value: string] }[]
-// | Record<string, never>;
 
 interface Props {
   room: Room;
 }
 
 const RoomCard = ({ room }: Props) => {
-  const [imageURL, setImageURL] = useState('');
-
-  useEffect(() => {
-    getImageURL(room.floor, room?.name || null).then((res) => {
-      setImageURL(res);
-    });
-  }, [room]);
-
   const renderRoomImage = () => {
+    const url = `/assets/location_images/building_room_images/${room.floor}/${room.name}.jpg`;
+
     return (
       <div className="relative h-36 w-full">
         <Image
           className="object-cover"
           fill={true}
           alt="Room Image"
-          src={imageURL}
+          src={url}
         />
       </div>
     );
