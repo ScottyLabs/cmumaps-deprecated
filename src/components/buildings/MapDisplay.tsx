@@ -36,7 +36,6 @@ import { node } from '@/app/api/findPath/route';
 import {
   addFloorToMap,
   setBuildings,
-  setFloorMap,
   setLegacyFloorMap,
 } from '@/lib/features/dataSlice';
 
@@ -66,7 +65,6 @@ const MapDisplay = ({
   setShowRoomNames,
   setFloorOrdinal,
   currentFloorName,
-  showBuilding,
   showFloor,
   floorOrdinal,
   showRoomNames,
@@ -135,6 +133,42 @@ const MapDisplay = ({
       );
     }, 500);
   }, [mapLoaded]);
+
+  const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
+    dispatch(focusBuilding(newBuilding));
+    if (newBuilding === null) {
+      return;
+    }
+
+    if (updateMap) {
+      const points: Coordinate[] = newBuilding.shapes.flat();
+      const allLat = points.map((p) => p.latitude);
+      const allLon = points.map((p) => p.longitude);
+
+      mapRef.current?.setRegionAnimated(
+        new mapkit.BoundingRegion(
+          Math.max(...allLat),
+          Math.max(...allLon),
+          Math.min(...allLat),
+          Math.min(...allLon),
+        ).toCoordinateRegion(),
+        !prefersReducedMotion(),
+      );
+
+      setShowFloor(true);
+      setShowRoomNames(false);
+    }
+    dispatch(
+      setFloorOrdinal(
+        floorOrdinal === null && newBuilding.floors.length > 0
+          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            newBuilding.floors.find(
+              (floor) => floor.name === newBuilding.defaultFloor,
+            )!.ordinal
+          : floorOrdinal,
+      ),
+    );
+  };
 
   const showRoom = (
     newRoom: Room,
