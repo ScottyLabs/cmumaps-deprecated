@@ -27,7 +27,12 @@ const Eaterycard = ({ room }: Props) => {
 
   const renderEateryImage = () => {
     if (eatingData) {
-      const eateryName = eatingData.name.toLowerCase().split(' ').join('_');
+      const eateryName = eatingData.name
+        .toLowerCase()
+        .split(' ')
+        .join('-')
+        .replace('é', 'e');
+      console.log(eateryName);
       const url = `/assets/location_images/eatery_images/${eateryName}.jpg`;
 
       return (
