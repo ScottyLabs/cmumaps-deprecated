@@ -80,16 +80,19 @@ export default function FloorSwitcher({
     }
 
     return (
-      <div className="flex items-center">
-        <p className="mx-2">{building.name}</p>
+      <div className="flex items-stretch">
+        <p className="mx-2 flex items-center">{building.name}</p>
 
-        <button
-          title="Increment floor"
-          disabled={!canGoDown}
-          onClick={() => dispatch(setFloorOrdinal(lowerFloorOrdinal))}
-        >
-          <FaArrowDown />
-        </button>
+        <div className="mr-2 flex items-center border-x border-gray-300 px-2">
+          <button
+            title="Increment floor"
+            className={canGoDown ? '' : 'text-gray-300'}
+            disabled={!canGoDown}
+            onClick={() => dispatch(setFloorOrdinal(lowerFloorOrdinal))}
+          >
+            <FaArrowDown />
+          </button>
+        </div>
 
         <button
           title="Select a floor"
@@ -115,13 +118,16 @@ export default function FloorSwitcher({
           </div>
         </button>
 
-        <button
-          title="Decrement floor"
-          disabled={!canGoUp}
-          onClick={() => dispatch(setFloorOrdinal(upperFloorOrdinal))}
-        >
-          <FaArrowUp />
-        </button>
+        <div className="ml-2 flex items-center border-l border-gray-300 px-2">
+          <button
+            title="Decrement floor"
+            className={canGoUp ? '' : 'text-gray-300'}
+            disabled={!canGoUp}
+            onClick={() => dispatch(setFloorOrdinal(upperFloorOrdinal))}
+          >
+            <FaArrowUp />
+          </button>
+        </div>
       </div>
     );
   };
@@ -154,8 +160,10 @@ export default function FloorSwitcher({
 
   return (
     <div id="FloorSwitcher" className="fixed bottom-2 left-1/2 z-10">
-      <div className="flex items-stretch justify-center rounded bg-white p-1">
-        <Roundel code={building.code} />
+      <div className="flex items-stretch justify-center rounded bg-white">
+        <div className="p-1">
+          <Roundel code={building.code} />
+        </div>
         {showFloorPicker ? renderFloorPicker() : renderDefaultView()}
       </div>
     </div>
