@@ -23,12 +23,20 @@ const dataSlice = createSlice({
     setFloorMap(state, action) {
       state.floorMap = action.payload;
     },
+    addFloorToMap(state, action) {
+      const [floorName, floorMap] = action.payload;
+      console.log(floorName, floorMap);
+      if (!state.floorMap) {
+        state.floorMap = {};
+      }
+      state.floorMap[floorName] = floorMap;
+    },
     setLegacyFloorMap(state, action) {
       state.legacyFloorMap = action.payload;
     },
   },
 });
 
-export const { setBuildings, setFloorMap, setLegacyFloorMap } =
+export const { setBuildings, setFloorMap, setLegacyFloorMap, addFloorToMap } =
   dataSlice.actions;
 export default dataSlice.reducer;

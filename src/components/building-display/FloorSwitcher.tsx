@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '@/styles/FloorSwitcher.module.css';
 import clsx from 'clsx';
 import Roundel from '../shared/Roundel';
-import { setFloorOrdinal } from '@/lib/redux/uiSlice';
+import { setFloorOrdinal } from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { FaArrowUp } from 'react-icons/fa';

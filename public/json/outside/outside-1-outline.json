@@ -1,0 +1,28 @@
+{
+  "width": 792,
+  "height": 612,
+  "walls": [],
+  "doors": {},
+  "roomlessDoors": [],
+  "floorCodeDNE": true,
+  "rooms": {
+    "a5be0a4b-2a82-4f45-b454-1ce798623ad3": {
+      "name": "",
+      "labelPosition": { "x": "380.58", "y": "464.17" },
+      "type": "default",
+      "alias": [],
+      "polygon": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [338.73, 439.8],
+            [330.97, 457.37],
+            [401.26, 476.23],
+            [405.65, 455.82],
+            [338.73, 439.8]
+          ]
+        ]
+      }
+    }
+  }
+}

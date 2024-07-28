@@ -27,13 +27,14 @@ import {
   Room,
 } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { claimRoom, focusBuilding } from '@/lib/redux/uiSlice';
+import { claimRoom, focusBuilding } from '@/lib/features/uiSlice';
 import { node } from '@/app/api/findPath/route';
 import {
+  addFloorToMap,
   setBuildings,
   setFloorMap,
   setLegacyFloorMap,
-} from '@/lib/redux/dataSlice';
+} from '@/lib/features/dataSlice';
 
 /**
  * The JSON file at this address contains all the map data used by the project.
@@ -82,7 +83,7 @@ const MapDisplay = ({
   }
 
   useEffect(() => {
-    if (!mapLoaded) {
+    if (!mapLoaded || !floors || Object.keys(floors).length < 10) {
       return;
     }
     const style = new mapkit.Style({
@@ -212,6 +213,8 @@ const MapDisplay = ({
     } else {
       // Redirect to the default page
       // window.history.pushState({}, '', window.location.pathname);
+      window.history.pushState({}, '', window.location.pathname);
+      // router.push('/', {scroll: false});
     }
   };
 
@@ -220,7 +223,6 @@ const MapDisplay = ({
     fetch(exportFile) // Only use this file for the buildings
       .then((r) => r.json())
       .then((response: Export) => {
-        dispatch(setBuildings(response.buildings));
         Object.entries(response.floors).forEach(([code, floorPlan]) => {
           const rooms = floorPlan.rooms;
           // Add floor code to room objects
@@ -228,29 +230,40 @@ const MapDisplay = ({
             room.floor = code;
           });
         });
-        dispatch(setLegacyFloorMap(response.floors));
-        zoomOnDefaultBuilding(response.buildings, response.floors);
+
+        const buildings = response.buildings;
+        // To improve speed later, we can load the floor data only when needed --
+        // but we need to load it all for now to support search
+        const promises = buildings
+          .map((building) =>
+            building.floors.map(async (floor) => {
+              if (!['GHC'].includes(building.code)) {
+                return [null, null];
+              }
+              const outlineResp = await fetch(
+                `/json/${building.code}/${building.code}-${floor.name}-outline.json`,
+              );
+              const outlineJson = await outlineResp.json();
+              return [`${building.code}-${floor.name}`, outlineJson];
+            }),
+          )
+          .flat(2);
+        console.log(promises);
+        Promise.all(promises).then((responses) => {
+          console.log(responses);
+          responses.forEach(([code, floorPlan]) => {
+            if (code) {
+              dispatch(addFloorToMap([code, floorPlan]));
+            }
+          });
+          dispatch(setBuildings(response.buildings));
+          dispatch(setLegacyFloorMap(response.floors));
+          zoomOnDefaultBuilding(response.buildings, response.floors);
+        });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  // To improve speed later, we can load the floor data only when needed --
-  // but we need to load it all for now to support search
-  useEffect(() => {
-    fetch('/GHC-5.json')
-      .then((r) => r.json())
-      .then((ghc5response: FloorPlan) => {
-        const floors = {};
-        floors['GHC-5'] = ghc5response;
-        // Add ids and floors to room objects
-        Object.entries(ghc5response).forEach(([id, room]: [string, Room]) => {
-          room.id = id;
-          room.floor = 'GHC-5';
-        });
-        dispatch(setFloorMap(floors));
-        zoomOnDefaultBuilding(buildings, floors);
-      });
-
+    // zoomOnDefaultBuilding(buildings, floors);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -271,6 +284,8 @@ const MapDisplay = ({
       url += `/${selectedRoom.id}`;
     }
     // window.history.pushState({}, '', url);
+    window.history.pushState({}, '', url);
+    // router.push(url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRoom, focusedBuilding, currentFloorName]);
 
@@ -396,7 +411,7 @@ const MapDisplay = ({
             }
 
             const code = `${building.code}-${floor.name}`;
-            if (code !== 'GHC-5') {
+            if (code.substring(0, 3) != 'GHC') {
               return null;
             }
             const floorPlan = floors[code];
