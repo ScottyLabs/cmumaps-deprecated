@@ -137,6 +137,7 @@ export default function Home({ params }: { params: { slug: string } }) {
 
         {!isNavOpen && <InfoCard />}
         {isNavOpen && <NavCard />}
+
         {focusedBuilding && !!floorOrdinal && (
           <FloorSwitcher building={focusedBuilding} ordinal={floorOrdinal} />
         )}
