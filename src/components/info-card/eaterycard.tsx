@@ -45,14 +45,6 @@ const Eaterycard = ({ room }: Props) => {
 
   const renderInfo = () => {
     if (eatingData) {
-      const colors: Record<LocationState, string> = {
-        [LocationState.OPEN]: '#19b875',
-        [LocationState.CLOSED]: '#dd3c18',
-        [LocationState.CLOSED_LONG_TERM]: '#dd3c18',
-        [LocationState.OPENS_SOON]: '#f6cc5d',
-        [LocationState.CLOSES_SOON]: '#f3f65d',
-      };
-
       const getLocationState = () => {
         if (eatingData.closedLongTerm) {
           return LocationState.CLOSED_LONG_TERM;
@@ -78,7 +70,28 @@ const Eaterycard = ({ room }: Props) => {
       };
 
       const locationState = getLocationState();
-      const color = colors[locationState];
+
+      // reason for two dictionaries: https://tailwindcss.com/docs/content-configuration#class-detection-in-depth
+      // "Don’t construct class names dynamically"
+      const textColors: Record<LocationState, string> = {
+        [LocationState.OPEN]: 'text-[#19b875]',
+        [LocationState.CLOSED]: 'text-[#dd3c18]',
+        [LocationState.CLOSED_LONG_TERM]: 'text-[#dd3c18]',
+        [LocationState.OPENS_SOON]: 'text-[#f6cc5d]',
+        [LocationState.CLOSES_SOON]: 'text-[#f3f65d]',
+      };
+
+      const bgColors: Record<LocationState, string> = {
+        [LocationState.OPEN]: 'bg-[#19b875]',
+        [LocationState.CLOSED]: 'bg-[#dd3c18]',
+        [LocationState.CLOSED_LONG_TERM]: 'bg-[#dd3c18]',
+        [LocationState.OPENS_SOON]: 'bg-[#f6cc5d]',
+        [LocationState.CLOSES_SOON]: 'bg-[#f3f65d]',
+      };
+
+      const textColor = textColors[locationState];
+      const bgColor = bgColors[locationState];
+
       const changesSoon =
         locationState == LocationState.CLOSES_SOON ||
         locationState == LocationState.OPENS_SOON;
@@ -88,10 +101,10 @@ const Eaterycard = ({ room }: Props) => {
           <div className="mx-3 mt-2">
             <p className="font-bold">{eatingData.name}</p>
             <div className="flex items-center justify-between">
-              <p className={`text-[${color}]`}>{eatingData.statusMsg}</p>
+              <p className={textColor}>{eatingData.statusMsg}</p>
               <div
                 className={
-                  `h-3 w-3 rounded-full bg-[${color}] ` +
+                  `${bgColor} h-3 w-3 rounded-full ` +
                   (changesSoon ? 'animate-blinking' : 'opacity-100')
                 }
               ></div>
