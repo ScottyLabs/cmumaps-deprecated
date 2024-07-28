@@ -158,23 +158,25 @@ export default function Home({ params }: { params: { slug: string } }) {
               : node.removeAttribute('inert'))
           }
         >
-          <div className="fixed right-2 top-2 z-10">
+          <div className="fixed right-2 top-2">
             <UserButton />
           </div>
 
-          <MapDisplay
-            params={params}
-            mapRef={mapRef}
-            points={points}
-            setShowFloor={setShowFloor}
-            setShowRoomNames={setShowRoomNames}
-            setFloorOrdinal={setFloorOrdinal}
-            currentFloorName={currentFloorName}
-            showBuilding={showBuilding}
-            showFloor={showFloor}
-            floorOrdinal={floorOrdinal}
-            showRoomNames={showRoomNames}
-          />
+          <div className="absolute -z-50 h-full w-full">
+            <MapDisplay
+              params={params}
+              mapRef={mapRef}
+              points={points}
+              setShowFloor={setShowFloor}
+              setShowRoomNames={setShowRoomNames}
+              setFloorOrdinal={setFloorOrdinal}
+              currentFloorName={currentFloorName}
+              showBuilding={showBuilding}
+              showFloor={showFloor}
+              floorOrdinal={floorOrdinal}
+              showRoomNames={showRoomNames}
+            />
+          </div>
         </div>
       </main>
     </>
