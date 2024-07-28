@@ -77,7 +77,7 @@ export default function SearchResults({
           // dispatch(setFloorOrdinal(null));
         }}
       >
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-3">
           <Roundel code={building.code} />
           <p className="">{building.name}</p>
         </div>
