@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import Roundel from '../shared/Roundel';
 import { claimBuilding, claimRoom } from '@/lib/features/uiSlice';
-import RoomPin from '../building-display/RoomPin';
+import RoomPin from '../buildings/RoomPin';
 import { findRooms } from './searchUtil';
 import titleCase from '@/util/titleCase';
 

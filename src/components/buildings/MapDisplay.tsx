@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import BuildingShape from '../../components/building-display/BuildingShape';
+import BuildingShape from '../../components/buildings/BuildingShape';
 import FloorPlanOverlay, {
   getFloorCenter,
   positionOnMap,
-} from '../../components/building-display/FloorPlanOverlay';
+} from '../../components/buildings/FloorPlanOverlay';
 import useMapPosition from '../../hooks/useMapPosition';
 import { isInPolygonCoordinates } from '../../geometry';
 
