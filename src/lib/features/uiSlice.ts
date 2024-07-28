@@ -8,6 +8,7 @@ interface UIState {
   focusedBuilding: Building | null;
   floorOrdinal: number | null;
   isSearchOpen: boolean;
+  roomImageList: Record<string, string[]>;
 }
 
 const initialState: UIState = {
@@ -16,6 +17,7 @@ const initialState: UIState = {
   focusedBuilding: null,
   floorOrdinal: null,
   isSearchOpen: false,
+  roomImageList: {},
 };
 
 const uiSlice = createSlice({
@@ -55,6 +57,9 @@ const uiSlice = createSlice({
     setIsSearchOpen(state, action) {
       state.isSearchOpen = action.payload;
     },
+    setRoomImageList(state, action) {
+      state.roomImageList = action.payload;
+    },
   },
 });
 
@@ -66,5 +71,6 @@ export const {
   focusBuilding,
   setFloorOrdinal,
   setIsSearchOpen,
+  setRoomImageList,
 } = uiSlice.actions;
 export default uiSlice.reducer;

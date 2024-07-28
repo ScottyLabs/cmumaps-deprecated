@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
 
 import { UserButton } from '@clerk/nextjs';
@@ -8,8 +8,8 @@ import MapDisplay from '@/components/buildings/MapDisplay';
 import FloorSwitcher, {
   getFloorIndexAtOrdinal,
 } from '@/components/buildings/FloorSwitcher';
-import { useAppSelector } from '@/lib/hooks';
-import { setFloorOrdinal } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { setFloorOrdinal, setRoomImageList } from '@/lib/features/uiSlice';
 import SearchBar from '@/components/searchbar/SearchBar';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
@@ -20,6 +20,8 @@ const points = [[40.44249719447571, -79.94314319195851]];
  * The main page of the CMU Map website.
  */
 export default function Home({ params }: { params: { slug: string } }) {
+  const dispatch = useAppDispatch();
+
   const mapRef = useRef<mapkit.Map | null>(null);
 
   const [showFloor, setShowFloor] = useState(false);
@@ -27,6 +29,34 @@ export default function Home({ params }: { params: { slug: string } }) {
   const floorOrdinal = useAppSelector((state) => state.ui.floorOrdinal);
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
+
+  // loads the list of images of the rooms
+  useEffect(() => {
+    const getRoomImageList = async () => {
+      const res = await fetch('/assets/location_images/list_of_files.txt');
+      const txt = await res.text();
+      const lines = txt.trim().split('\n');
+
+      const roomImageList: Record<string, string[]> = {};
+
+      let curBuilding = '';
+
+      for (const line of lines) {
+        if (line.startsWith('├──')) {
+          curBuilding = line.substring(4);
+          roomImageList[curBuilding] = [];
+        } else if (line.includes('.jpg')) {
+          const curRoom = line.split(' ').at(-1);
+          if (curRoom) {
+            roomImageList[curBuilding].push(curRoom);
+          }
+        }
+      }
+
+      dispatch(setRoomImageList(roomImageList));
+    };
+    getRoomImageList();
+  }, [dispatch]);
 
   const currentFloorName =
     floorOrdinal !== null &&

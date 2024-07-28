@@ -2,14 +2,19 @@ import React from 'react';
 import Image from 'next/image';
 import { Room } from '@/types';
 import ButtonsRow from './ButtonsRow';
+import { useAppSelector } from '@/lib/hooks';
 
 interface Props {
   room: Room;
 }
 
 const RoomCard = ({ room }: Props) => {
+  const roomImageList = useAppSelector((state) => state.ui.roomImageList);
+
   const renderRoomImage = () => {
     const url = `/assets/location_images/building_room_images/${room.floor}/${room.name}.jpg`;
+
+    console.log(roomImageList);
 
     return (
       <div className="relative h-36 w-full">
