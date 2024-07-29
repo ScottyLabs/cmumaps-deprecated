@@ -5,16 +5,19 @@ import { HiMagnifyingGlass } from 'react-icons/hi2';
 import Image from 'next/image';
 import ButtonsRow from './ButtonsRow';
 import { Building, Room } from '@/types';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { getEatingData } from '@/util/cmueats/getEatingData';
 import EateryInfo from './EateryInfo';
 import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
+import { claimRoom } from '@/lib/features/uiSlice';
 
 interface Props {
   building: Building;
 }
 
 const BuildingCard = ({ building }: Props) => {
+  const dispatch = useAppDispatch();
+
   const floorMap = useAppSelector((state) => state.data.floorMap);
   const legacyFloorMap = useAppSelector((state) => state.data.legacyFloorMap);
 
@@ -166,7 +169,11 @@ const BuildingCard = ({ building }: Props) => {
   const renderEateryCarousel = () => (
     <div className="mx-2 mb-3 space-y-3">
       {eatingData.map(([eatery, eatingData]) => (
-        <div key={eatery.id} className="rounded border p-1">
+        <div
+          key={eatery.id}
+          className="cursor-pointer rounded border p-1"
+          onClick={() => dispatch(claimRoom(eatery))}
+        >
           <EateryInfo room={eatery} eatingData={eatingData} />
         </div>
       ))}
@@ -176,7 +183,7 @@ const BuildingCard = ({ building }: Props) => {
   return (
     <div>
       {renderBuildingImage()}
-      <div className="ml-3 mt-2 font-bold">{building.name}</div>
+      <h2 className="ml-3 mt-2">{building.name}</h2>
       {renderButtonsRow()}
       {renderEateryCarousel()}
     </div>
