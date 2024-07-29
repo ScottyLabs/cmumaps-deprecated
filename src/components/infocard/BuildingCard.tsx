@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import Image from 'next/image';
 import ButtonsRow from './ButtonsRow';
-import { Building } from '@/types';
+import { Building, Room } from '@/types';
 import { useAppSelector } from '@/lib/hooks';
+import { getEatingData } from '@/util/cmueats/getEatingData';
+import EateryInfo from './EateryInfo';
+import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
 interface Props {
   building: Building;
@@ -13,6 +16,41 @@ interface Props {
 
 const BuildingCard = ({ building }: Props) => {
   const floorMap = useAppSelector((state) => state.data.floorMap);
+
+  const [eatingData, setEatingData] = useState<
+    [Room, IReadOnlyExtendedLocation | null][]
+  >([]);
+
+  useEffect(() => {
+    const getEateries = () => {
+      if (floorMap) {
+        return building.floors
+          .map((floor) => {
+            const rooms = floorMap[`${building.code}-${floor.name}`].rooms;
+            return Object.values(rooms).filter((room) => room.type == 'dining');
+          })
+          .flat();
+      } else {
+        return [];
+      }
+    };
+
+    const fetchEatingData = async () => {
+      const eateriesData = getEateries();
+
+      const newEatingData: [Room, IReadOnlyExtendedLocation | null][] = [];
+
+      await Promise.all(
+        eateriesData.map(async (eatery) => {
+          const data = await getEatingData(eatery.alias);
+          newEatingData.push([eatery, data]);
+        }),
+      );
+      setEatingData(newEatingData);
+    };
+
+    fetchEatingData();
+  }, [building.code, building.floors, floorMap]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
@@ -113,22 +151,11 @@ const BuildingCard = ({ building }: Props) => {
   // };
 
   const renderEateryCarousel = () => {
-    const getEateries = () => {
-      if (floorMap) {
-        return building.floors
-          .map((floor) => {
-            const rooms = floorMap[`${building.code}-${floor.name}`].rooms;
-            return Object.values(rooms).filter((room) => room.type == 'dining');
-          })
-          .flat();
-      } else {
-        return [];
-      }
-    };
-
-    return getEateries().map((eatery) => (
-      <div key={eatery.id}>{eatery.name}</div>
-    ));
+    return eatingData.map(([eatery, eatingData]) => {
+      return (
+        <EateryInfo key={eatery.id} room={eatery} eatingData={eatingData} />
+      );
+    });
   };
 
   return (
