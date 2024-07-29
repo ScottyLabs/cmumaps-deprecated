@@ -16,6 +16,7 @@ interface Props {
 
 const BuildingCard = ({ building }: Props) => {
   const floorMap = useAppSelector((state) => state.data.floorMap);
+  const legacyFloorMap = useAppSelector((state) => state.data.legacyFloorMap);
 
   const [eatingData, setEatingData] = useState<
     [Room, IReadOnlyExtendedLocation | null][]
@@ -23,11 +24,23 @@ const BuildingCard = ({ building }: Props) => {
 
   useEffect(() => {
     const getEateries = () => {
-      if (floorMap) {
+      if (legacyFloorMap) {
+        // return building.floors
+        //   .map((floor) => {
+        //     const rooms = floorMap[`${building.code}-${floor.name}`].rooms;
+        //     return Object.values(rooms).filter((room) => room.type == 'dining');
+        //   })
+        //   .flat();
         return building.floors
           .map((floor) => {
-            const rooms = floorMap[`${building.code}-${floor.name}`].rooms;
-            return Object.values(rooms).filter((room) => room.type == 'dining');
+            const rooms =
+              legacyFloorMap[`${building.code}-${floor.name}`].rooms;
+            return Object.values(rooms).filter(
+              (room) =>
+                room.alias == 'El Gallo de Oro' ||
+                room.alias == 'Revolution Noodle' ||
+                room.alias == 'Schatz Dining Room',
+            );
           })
           .flat();
       } else {
@@ -36,12 +49,12 @@ const BuildingCard = ({ building }: Props) => {
     };
 
     const fetchEatingData = async () => {
-      const eateriesData = getEateries();
+      const eateries = getEateries();
 
       const newEatingData: [Room, IReadOnlyExtendedLocation | null][] = [];
 
       await Promise.all(
-        eateriesData.map(async (eatery) => {
+        eateries.map(async (eatery) => {
           const data = await getEatingData(eatery.alias);
           newEatingData.push([eatery, data]);
         }),
@@ -50,7 +63,7 @@ const BuildingCard = ({ building }: Props) => {
     };
 
     fetchEatingData();
-  }, [building.code, building.floors, floorMap]);
+  }, [building.code, building.floors, floorMap, legacyFloorMap]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
@@ -150,13 +163,15 @@ const BuildingCard = ({ building }: Props) => {
   //   );
   // };
 
-  const renderEateryCarousel = () => {
-    return eatingData.map(([eatery, eatingData]) => {
-      return (
-        <EateryInfo key={eatery.id} room={eatery} eatingData={eatingData} />
-      );
-    });
-  };
+  const renderEateryCarousel = () => (
+    <div className="mx-2 mb-3 space-y-3">
+      {eatingData.map(([eatery, eatingData]) => (
+        <div key={eatery.id} className="rounded border p-1">
+          <EateryInfo room={eatery} eatingData={eatingData} />
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <div>
