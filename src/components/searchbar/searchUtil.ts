@@ -52,13 +52,6 @@ export const findRooms = (
             (room.type && d < room.type.length / 3)
           );
         })
-        // .map(([roomId, room]) => ({ // new
-        .map((room) => ({
-          // legacy
-          // id: roomId, // new
-          ...room,
-          floor,
-        })) ?? []
     );
   });
 

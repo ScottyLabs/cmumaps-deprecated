@@ -51,7 +51,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         setSearchQuery(room.alias);
         return;
       } else {
-        setSearchQuery(room.floor + room.name);
+        setSearchQuery(room.floor.split('-')[0] + ' ' + room.name);
         return;
       }
     }
