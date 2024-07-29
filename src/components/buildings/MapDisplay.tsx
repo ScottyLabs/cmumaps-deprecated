@@ -250,9 +250,7 @@ const MapDisplay = ({
       showBuilding(building, true);
     } else {
       // Redirect to the default page
-      // window.history.pushState({}, '', window.location.pathname);
-      // window.history.pushState({}, '', window.location.href);
-      // router.push('/', {scroll: false});
+      window.history.pushState({}, '', window.location.origin);
     }
   };
 
@@ -286,9 +284,7 @@ const MapDisplay = ({
             }),
           )
           .flat(2);
-        console.log(promises);
         Promise.all(promises).then((responses) => {
-          console.log(responses);
           responses.forEach(([code, floorPlan]) => {
             if (code) {
               dispatch(addFloorToMap([code, floorPlan]));
@@ -311,19 +307,18 @@ const MapDisplay = ({
       return;
     }
 
-    let url = window.location.href;
-    if (focusedBuilding) {
-      url += `${focusedBuilding.code}`;
-    }
-    if (currentFloorName) {
-      url += `-${currentFloorName}`;
-    }
+    let url = window.location.origin + '/';
     if (selectedRoom) {
-      url += `${selectedRoom.id}`;
+      url += `${selectedRoom.floor}/${selectedRoom.id}`;
+    } else if (focusedBuilding) {
+      url += `${focusedBuilding.code}`;
+
+      if (currentFloorName) {
+        url += `-${currentFloorName}`;
+      }
     }
-    // window.history.pushState({}, '', url);
-    // window.history.pushState({}, '', url);
-    // router.push(url);
+
+    window.history.pushState({}, '', url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRoom, focusedBuilding, currentFloorName]);
 
