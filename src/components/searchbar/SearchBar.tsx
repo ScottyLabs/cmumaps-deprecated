@@ -174,7 +174,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   return (
     <div
       id="SearchBar"
-      className="box-shadow fixed left-2 right-2 top-4 z-10 w-full rounded sm:w-1/4"
+      className="box-shadow fixed left-2 right-2 top-4 z-10 w-full rounded sm:w-96"
     >
       {renderSearchQueryInput()}
       {searchQuery == '' && <QuickSearch setQuery={setSearchQuery} />}
