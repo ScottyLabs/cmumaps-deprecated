@@ -15,9 +15,7 @@ const RoomSchedule = () => {
   today.setHours(0, 0, 0, 0);
 
   const [currentWeek, setCurrentWeek] = useState<Date>(today);
-
-  const handlePreviousWeek = () => setCurrentWeek((prev) => subWeeks(prev, 1));
-  const handleNextWeek = () => setCurrentWeek((prev) => addWeeks(prev, 1));
+  const [dayOfWeek, setDayOfWeek] = useState<number>(today.getDay());
 
   const startOfCurrentWeek = startOfWeek(currentWeek, { weekStartsOn: 0 });
   const endOfCurrentWeek = endOfWeek(currentWeek, { weekStartsOn: 0 });
@@ -32,6 +30,10 @@ const RoomSchedule = () => {
         format(startOfCurrentWeek, 'MMM d') +
         ' - ' +
         format(endOfCurrentWeek, 'MMM d');
+
+      const handlePreviousWeek = () => setCurrentWeek(subWeeks(currentWeek, 1));
+
+      const handleNextWeek = () => setCurrentWeek(addWeeks(currentWeek, 1));
 
       return (
         <div className="flex items-center justify-center gap-2">
@@ -48,19 +50,32 @@ const RoomSchedule = () => {
       );
     };
 
-    const renderWeekRow = () => (
-      <div className="mx-10 mt-2 flex justify-between">
-        {daysOfWeek.map((day, index) => (
-          <div key={index} className="text-center">
+    const renderWeekRow = () => {
+      const renderDay = (day: Date) => {
+        let classNames = 'w-7 text-sm text-center ';
+        if (day.getDay() == dayOfWeek) {
+          classNames += 'rounded-full bg-black text-white p-1';
+        } else if (day.getTime() === today.getTime()) {
+          classNames += 'text-blue-500 ';
+        }
+
+        return <div className={classNames}>{format(day, 'EEEEEE')}</div>;
+      };
+
+      return (
+        <div className="mx-10 mt-2 flex items-center justify-between">
+          {daysOfWeek.map((day, index) => (
             <div
-              className={`text-sm ${day.getTime() === today.getTime() ? 'font-bold' : ''}`}
+              key={index}
+              className="cursor-pointer"
+              onClick={() => setDayOfWeek(day.getDay())}
             >
-              {format(day, 'EEEEEE')}
+              {renderDay(day)}
             </div>
-          </div>
-        ))}
-      </div>
-    );
+          ))}
+        </div>
+      );
+    };
 
     return (
       <div>
