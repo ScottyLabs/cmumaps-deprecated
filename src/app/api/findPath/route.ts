@@ -9,7 +9,7 @@ import { NextRequest } from 'next/server';
 export type node = {
   pos: { x: number; y: number };
   neighbors: { [neighborId: string]: { dist: number } };
-  roomID: string;
+  roomId: string;
 };
 export interface GraphResponse {
   nodes: { [nodeId: string]: node };
@@ -31,15 +31,17 @@ const comparePaths: ICompare<Path> = (a: Path, b: Path) => a.length - b.length;
 
 // Dijkstras algorithm to search from room 1 to room 2
 function findPath(
-  rooms: string[],
+  rooms: Room[],
   nodes: { [nodeId: string]: node },
 ): node[] | { error: string } {
-  const start = Object.values(nodes).find((e) => e.roomID == rooms[0]);
-  const end = Object.values(nodes).find((e) => e.roomID == rooms[1]);
-  if (!start || !end) {
-    return { error: 'Room not found' };
+  const start = Object.values(nodes).find((e) => e.roomId == rooms[0].id);
+  const end = Object.values(nodes).find((e) => e.roomId == rooms[1].id);
+  if (!start) {
+    return { error: 'Start room not found' };
+  } else if (!end) {
+    return { error: 'End room not found' };
   }
-
+  console.log(start, end);
   // Dijkstras algorithm
   const visited = new Set();
 
@@ -52,7 +54,8 @@ function findPath(
   });
 
   while (queue.size()) {
-    const { node, currPath, length } = queue.dequeue();
+    const a = queue.dequeue();
+    const { node, currPath, length } = a;
     if (end.pos == node.pos) {
       return currPath;
     }
@@ -63,6 +66,10 @@ function findPath(
         const n_id = neigh[0];
         const n_dist = neigh[1]['dist'];
         const nextNode = nodes[n_id];
+        if (!nextNode) {
+          console.log('searchme', n_id, node);
+          return;
+        }
         queue.enqueue({
           node: nextNode,
           currPath: [...currPath, nextNode],
@@ -84,10 +91,9 @@ export async function POST(req: NextRequest) {
       `GHC-${ordinal}-graph.json`,
     );
     const f = JSON.parse(fs.readFileSync(graphPath, 'utf-8'));
-
+    console.log(Object.keys(nodes).length, Object.keys(f).length);
     nodes = { ...nodes, ...f };
   }
-  console.log(nodes);
   const { rooms } = await req.json();
   if (!rooms || rooms.length !== 2) {
     return Response.error();
