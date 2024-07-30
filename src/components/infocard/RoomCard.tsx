@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Room } from '@/types';
 import ButtonsRow from './ButtonsRow';
 import { useAppSelector } from '@/lib/hooks';
+import RoomSchedule from './RoomSchedule';
 
 interface Props {
   room: Room;
@@ -45,6 +46,7 @@ const RoomCard = ({ room }: Props) => {
         No Room Schedule Available
       </div>
       {renderButtonsRow()}
+      <RoomSchedule />
     </div>
   );
 };
