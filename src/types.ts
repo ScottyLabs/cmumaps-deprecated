@@ -153,16 +153,6 @@ export interface Room {
   name: string;
 
   /**
-   * The name extracted from the SVG file attributes, when applicable
-   */
-  sourceNameAttribute?: string | null;
-
-  /**
-   * The name extracted from the SVG file labels, when applicable
-   */
-  sourceNameLabel?: string | null;
-
-  /**
    * Another name under which the room is known (e.g. 'McConomy Auditorium')
    */
   alias?: string;
@@ -170,16 +160,6 @@ export interface Room {
   type: RoomType;
 
   labelPosition?: AbsoluteCoordinate;
-
-  /**
-   * A warning generated during automatic extraction
-   */
-  warning?: string;
-
-  /**
-   * A comment for internal usage
-   */
-  comment?: string;
 }
 
 /**
@@ -233,11 +213,6 @@ export interface Building {
   name: string;
 
   /**
-   * The ID of the OpenStreetMap way that corresponds to the building.
-   */
-  osmId: string;
-
-  /**
    * The floors in the building.
    */
   floors: Floor[];
@@ -256,11 +231,6 @@ export interface Building {
    * The shapes that the building consists of.
    */
   shapes: Coordinate[][];
-
-  /**
-   * A comment (for internal usage only).
-   */
-  comment?: string;
 
   /**
    * The zone in which the building is considered to be the primary building.
