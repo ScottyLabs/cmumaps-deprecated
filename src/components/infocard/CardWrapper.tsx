@@ -38,7 +38,7 @@ const CardWrapper = ({ snapPoint, children }: CardWrapperProps) => {
     );
   } else {
     return (
-      <div id="thisThing" className="fixed left-2 top-16 z-10 w-1/4 bg-white">
+      <div className="fixed left-2 top-16 z-10 w-96 rounded bg-white">
         {children}
       </div>
     );

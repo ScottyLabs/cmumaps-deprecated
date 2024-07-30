@@ -12,9 +12,14 @@ const RoomCard = ({ room }: Props) => {
   const roomImageList = useAppSelector((state) => state.ui.roomImageList);
 
   const renderRoomImage = () => {
-    const url = `/assets/location_images/building_room_images/${room.floor}/${room.name}.jpg`;
+    const buildingCode = room.floor.split('-')[0];
 
-    console.log(roomImageList);
+    // the default image is the building image
+    // but get the room image if it exists
+    let url = `/assets/location_images/building_room_images/${buildingCode}/${buildingCode}.jpg`;
+    if (roomImageList[buildingCode].includes(room.name + '.jpg')) {
+      url = `/assets/location_images/building_room_images/${buildingCode}/${room.name}.jpg`;
+    }
 
     return (
       <div className="relative h-36 w-full">
