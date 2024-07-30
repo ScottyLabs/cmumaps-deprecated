@@ -1,8 +1,12 @@
 import { FaArrowRight } from 'react-icons/fa';
 import { MdIosShare } from 'react-icons/md';
 import React from 'react';
-import { useAppDispatch } from '@/lib/hooks';
-import { setIsNavOpen } from '@/lib/features/navSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import {
+  setEndRoom,
+  setIsNavOpen,
+  setStartRoom,
+} from '@/lib/features/navSlice';
 
 interface Props {
   middleButton: React.JSX.Element;
@@ -10,6 +14,7 @@ interface Props {
 
 const ButtonsRow = ({ middleButton }: Props) => {
   const dispatch = useAppDispatch();
+  const room = useAppSelector((state) => state.ui.selectedRoom);
 
   return (
     <div className="mx-3 flex justify-between py-3">
@@ -17,7 +22,10 @@ const ButtonsRow = ({ middleButton }: Props) => {
         <button
           type="button"
           className="flex items-center gap-1.5 rounded-lg bg-[#56b57b] px-2 py-1 text-white"
-          onClick={() => dispatch(setIsNavOpen(true))}
+          onClick={() => {
+            dispatch(setIsNavOpen(true));
+            dispatch(setEndRoom(room));
+          }}
         >
           <FaArrowRight size={12} />
           <p className="text-xs">Directions</p>

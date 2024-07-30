@@ -76,19 +76,25 @@ function findPath(
 type resp = NextApiResponse<Door[] | { error: string }>;
 
 export async function POST(req: NextRequest) {
-  const graphPath = path.resolve(
-    process.cwd(),
-    './src/app/api/graph',
-    'GHC-5-graph.json',
-  );
-  const f = JSON.parse(fs.readFileSync(graphPath, 'utf-8'));
+  let nodes = {};
+  for (const ordinal of ['1', '2', '3', '4', '5', '6', '7', '8', '9']) {
+    const graphPath = path.resolve(
+      process.cwd(),
+      './public/json/GHC/',
+      `GHC-${ordinal}-graph.json`,
+    );
+    const f = JSON.parse(fs.readFileSync(graphPath, 'utf-8'));
+
+    nodes = { ...nodes, ...f };
+  }
+  console.log(nodes);
   const { rooms } = await req.json();
   if (!rooms || rooms.length !== 2) {
     return Response.error();
   }
   console.log(rooms);
   // Find the path
-  const recommendedPath = findPath(rooms, f);
+  const recommendedPath = findPath(rooms, nodes);
   console.log('recpath', recommendedPath);
   return Response.json(recommendedPath);
 }
