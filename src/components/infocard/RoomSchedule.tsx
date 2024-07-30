@@ -77,10 +77,19 @@ const RoomSchedule = () => {
       );
     };
 
+    const renderContent = () => {
+      return (
+        <p>
+          Theo, please give me the events for {daysOfWeek[dayOfWeek].toString()}
+        </p>
+      );
+    };
+
     return (
       <div>
         {renderDateRow()}
         {renderWeekRow()}
+        {renderContent()}
       </div>
     );
   };
