@@ -1,6 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
+import {
+  setIsNavOpen,
+  setRecommendedPath,
+  setStartRoom,
+} from '@/lib/features/navSlice';
 import CardWrapper from '../infocard/CardWrapper';
 import { IoIosArrowBack } from 'react-icons/io';
 
@@ -12,7 +16,21 @@ export default function NavCard(): ReactElement {
 
   const startRoom = useAppSelector((state) => state.ui.selectedRoom);
   const endRoom = useAppSelector((state) => state.nav.endRoom);
-
+  useEffect(() => {
+    console.log(startRoom, endRoom);
+    fetch('/api/findPath', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ rooms: [startRoom, endRoom] }),
+    })
+      .then((r) => r.json())
+      .then((j) => {
+        console.log(j);
+        setRecommendedPath(j);
+      });
+  }, [startRoom, endRoom]);
   return (
     <CardWrapper snapPoint={0.5}>
       <div>
@@ -29,10 +47,15 @@ export default function NavCard(): ReactElement {
             <input
               className="w-fit border"
               placeholder="Choose your starting location..."
+              value={startRoom?.name}
             />
           </div>
           <div>
-            <input className="w-fit border" placeholder="Desination" />
+            <input
+              className="w-fit border"
+              placeholder="Desination"
+              value={endRoom?.name}
+            />
           </div>
         </div>
       </div>

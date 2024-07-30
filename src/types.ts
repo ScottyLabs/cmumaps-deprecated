@@ -102,7 +102,6 @@ export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
     case 'parking':
       return { primary: '#51a2f7', background: '#d4e9ff', border: '#51a2f7' };
     default:
-      console.log(`Unknown room type ${type}`);
       return { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' };
   }
 }
