@@ -30,6 +30,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
   claimRoom,
   focusBuilding,
+  setFloorOrdinal,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
 import { node } from '@/app/api/findPath/route';
@@ -44,18 +45,22 @@ import {
  */
 const exportFile = 'https://nicolapps.github.io/cmumap-data-mirror/export.json';
 
-function min(x, y) {
-  return x <= y ? x : y;
-}
-function max(x, y) {
-  return x >= y ? x : y;
-}
-
 const options = {
   enableHighAccuracy: true,
   timeout: 5000,
   maximumAge: 0,
 };
+interface MapDisplayProps {
+  params: { slug: string };
+  mapRef: React.RefObject<mapkit.Map | null>;
+  points: number[][];
+  setShowFloor: (show: boolean) => void;
+  setShowRoomNames: (show: boolean) => void;
+  currentFloorName: string | false | undefined;
+  showFloor: boolean;
+  floorOrdinal: number | null;
+  showRoomNames: boolean;
+}
 
 const MapDisplay = ({
   params,
@@ -63,12 +68,11 @@ const MapDisplay = ({
   points,
   setShowFloor,
   setShowRoomNames,
-  setFloorOrdinal,
   currentFloorName,
   showFloor,
   floorOrdinal,
   showRoomNames,
-}) => {
+}: MapDisplayProps) => {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -80,7 +84,7 @@ const MapDisplay = ({
   const floors = useAppSelector((state) => state.data.floorMap);
   let currentBlueDot: undefined | mapkit.Overlay = undefined;
 
-  function error(err) {
+  function error(err: GeolocationPositionError) {
     console.error(`ERROR(${err.code}): ${err.message}`);
   }
 
@@ -106,9 +110,12 @@ const MapDisplay = ({
 
         const circle = new mapkit.CircleOverlay(
           coord,
-          max(min(20, pos.coords.accuracy), 30),
+          Math.max(Math.min(20, pos.coords.accuracy), 30),
         );
-        style.fillOpacity = min((pos.coords.altitude - 200) / 100, 0.5);
+        style.fillOpacity = Math.min(
+          (pos.coords.altitude || 0 - 200) / 100,
+          0.5,
+        );
         circle.style = style;
         currentBlueDot = mapRef.current?.addOverlay(circle);
       },
@@ -158,11 +165,11 @@ const MapDisplay = ({
       setShowFloor(true);
       setShowRoomNames(false);
     }
+    // WTF is going on here
     dispatch(
       setFloorOrdinal(
         floorOrdinal === null && newBuilding.floors.length > 0
-          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            newBuilding.floors.find(
+          ? newBuilding.floors.find(
               (floor) => floor.name === newBuilding.defaultFloor,
             )!.ordinal
           : floorOrdinal,
@@ -173,7 +180,7 @@ const MapDisplay = ({
   const showRoom = (
     newRoom: Room,
     newBuilding: Building | null,
-    convertToMap,
+    convertToMap: (absolute: AbsoluteCoordinate) => Coordinate,
     updateMap: boolean,
   ) => {
     if (newBuilding === null) {
@@ -216,11 +223,12 @@ const MapDisplay = ({
 
     const roomid = params.slug?.[1];
 
-    const building: Building | null =
-      buildingCode && newBuildings.find((b) => b.code === buildingCode)!;
+    const building: Building = newBuildings.find(
+      (b) => b.code === buildingCode,
+    )!;
     if (newFloors && roomid && floorName && building) {
       const floor = building.floors.find(({ name }) => name === floorName)!;
-      const floorPlan = newFloors[`${building.code}-${floor.name}`];
+      const floorPlan = newFloors[`${building.code}-${floor.name}`]; // uhhhh
 
       const { rooms, placement } = floorPlan;
       // Compute the center position of the bounding box of the current floor
@@ -233,7 +241,7 @@ const MapDisplay = ({
         setFloorOrdinal(floor.ordinal);
       }
       if (floorPlan && roomid) {
-        const room = floorPlan.rooms.find((room) => room.id === roomid);
+        const room = floorPlan.rooms.find((room: Room) => room.id === roomid);
         showRoom(room, building, convertToMap, true);
         dispatch(focusBuilding(building));
         dispatch(claimRoom(room));
@@ -292,7 +300,7 @@ const MapDisplay = ({
           });
           dispatch(setBuildings(response.buildings));
           dispatch(setLegacyFloorMap(response.floors));
-          zoomOnDefaultBuilding(response.buildings, response.floors);
+          zoomOnDefaultBuilding(response.buildings, response.floors); // !TODO: This is probably broken
         });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -404,29 +412,6 @@ const MapDisplay = ({
       onRegionChangeEnd={onRegionChangeEnd}
       onClick={() => dispatch(setIsSearchOpen(false))}
     >
-      {recommendedPath && (
-        <Polyline
-          points={recommendedPath?.map((n: node) =>
-            positionOnMap(
-              [n.pos.x, n.pos.y],
-              {
-                center: {
-                  latitude: 40.44367399601104,
-                  longitude: -79.94452069407168,
-                },
-                scale: 5.85,
-                angle: 254,
-              },
-              [332.58, 327.18],
-            ),
-          )}
-          selected={false}
-          enabled={true}
-          strokeColor={'red'}
-          strokeOpacity={1}
-          lineWidth={5}
-        ></Polyline>
-      )}
       {buildings &&
         buildings.map((building) => (
           <BuildingShape
@@ -437,7 +422,8 @@ const MapDisplay = ({
         ))}
 
       {showFloor &&
-        buildings &&
+        !!buildings &&
+        !!floors &&
         buildings.flatMap((building: Building) =>
           building.floors.map((floor: Floor) => {
             if (floor.ordinal !== floorOrdinal) {
@@ -464,6 +450,29 @@ const MapDisplay = ({
             );
           }),
         )}
+      {recommendedPath && (
+        <Polyline
+          points={(recommendedPath || []).map((n: node) =>
+            positionOnMap(
+              [n.pos.x, n.pos.y],
+              {
+                center: {
+                  latitude: 40.44367399601104,
+                  longitude: -79.94452069407168,
+                },
+                scale: 5.85,
+                angle: 254,
+              },
+              [332.58, 327.18],
+            ),
+          )}
+          selected={false}
+          enabled={true}
+          strokeColor={'red'}
+          strokeOpacity={1}
+          lineWidth={5}
+        ></Polyline>
+      )}
     </Map>
   );
 };
