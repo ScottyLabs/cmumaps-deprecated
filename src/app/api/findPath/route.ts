@@ -91,16 +91,13 @@ export async function POST(req: NextRequest) {
       `GHC-${ordinal}-graph.json`,
     );
     const f = JSON.parse(fs.readFileSync(graphPath, 'utf-8'));
-    console.log(Object.keys(nodes).length, Object.keys(f).length);
     nodes = { ...nodes, ...f };
   }
   const { rooms } = await req.json();
   if (!rooms || rooms.length !== 2) {
     return Response.error();
   }
-  console.log(rooms);
   // Find the path
   const recommendedPath = findPath(rooms, nodes);
-  console.log('recpath', recommendedPath);
   return Response.json(recommendedPath);
 }
