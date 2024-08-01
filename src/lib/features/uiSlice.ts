@@ -1,4 +1,4 @@
-import { Building, Room } from '@/types';
+import { Building, Floor, Room } from '@/types';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface UIState {
@@ -6,7 +6,7 @@ interface UIState {
   selectedRoom: Room | null;
   selectedBuilding: Building | null;
   focusedBuilding: Building | null;
-  floorOrdinal: number | null;
+  focusedFloor: Floor | null;
   isSearchOpen: boolean;
   roomImageList: Record<string, string[]>;
 }
@@ -15,7 +15,7 @@ const initialState: UIState = {
   selectedRoom: null,
   selectedBuilding: null,
   focusedBuilding: null,
-  floorOrdinal: null,
+  focusedFloor: null,
   isSearchOpen: false,
   roomImageList: {},
 };
@@ -51,8 +51,8 @@ const uiSlice = createSlice({
     focusBuilding(state, action) {
       state.focusedBuilding = action.payload;
     },
-    setFloorOrdinal(state, action) {
-      state.floorOrdinal = action.payload;
+    setFocusedFloor(state, action) {
+      state.focusedFloor = action.payload;
     },
     setIsSearchOpen(state, action) {
       state.isSearchOpen = action.payload;
@@ -69,7 +69,7 @@ export const {
   claimBuilding,
   releaseBuilding,
   focusBuilding,
-  setFloorOrdinal,
+  setFocusedFloor,
   setIsSearchOpen,
   setRoomImageList,
 } = uiSlice.actions;

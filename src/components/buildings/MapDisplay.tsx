@@ -30,7 +30,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
   claimRoom,
   focusBuilding,
-  setFloorOrdinal,
+  setFocusedFloor,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
 import { node } from '@/app/api/findPath/route';
@@ -51,26 +51,20 @@ const options = {
   maximumAge: 0,
 };
 interface MapDisplayProps {
-  params: { slug: string };
   mapRef: React.RefObject<mapkit.Map | null>;
   points: number[][];
   setShowFloor: (show: boolean) => void;
   setShowRoomNames: (show: boolean) => void;
-  currentFloorName: string | false | undefined;
   showFloor: boolean;
-  floorOrdinal: number | null;
   showRoomNames: boolean;
 }
 
 const MapDisplay = ({
-  params,
   mapRef,
   points,
   setShowFloor,
   setShowRoomNames,
-  currentFloorName,
   showFloor,
-  floorOrdinal,
   showRoomNames,
 }: MapDisplayProps) => {
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -80,66 +74,23 @@ const MapDisplay = ({
   const buildings = useAppSelector((state) => state.data.buildings);
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const floors = useAppSelector((state) => state.data.floorMap);
-  let currentBlueDot: undefined | mapkit.Overlay = undefined;
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
 
-  function error(err: GeolocationPositionError) {
-    console.error(`ERROR(${err.code}): ${err.message}`);
-  }
-
-  useEffect(() => {
-    if (!mapLoaded || !floors || Object.keys(floors).length < 10) {
-      return;
-    }
-    const style = new mapkit.Style({
-      lineWidth: 2, // 2 CSS pixels.
-      strokeColor: '#999',
-      fillColor: 'blue',
-    });
-    navigator.geolocation.watchPosition(
-      (pos) => {
-        if (currentBlueDot) {
-          mapRef.current?.removeOverlay(currentBlueDot);
-        }
-        points.push([pos.coords.latitude, pos.coords.longitude]);
-        const coord = new mapkit.Coordinate(
-          pos.coords.latitude,
-          pos.coords.longitude,
-        );
-
-        const circle = new mapkit.CircleOverlay(
-          coord,
-          Math.max(Math.min(20, pos.coords.accuracy), 30),
-        );
-        style.fillOpacity = Math.min(
-          (pos.coords.altitude || 0 - 200) / 100,
-          0.5,
-        );
-        circle.style = style;
-        currentBlueDot = mapRef.current?.addOverlay(circle);
-      },
-      error,
-      options,
+  function zoomOnObject(points: Coordinate[]) {
+    const allLat = points.map((p) => p.latitude);
+    const allLon = points.map((p) => p.longitude);
+    mapRef.current?.setRegionAnimated(
+      new mapkit.BoundingRegion(
+        Math.max(...allLat),
+        Math.max(...allLon),
+        Math.min(...allLat),
+        Math.min(...allLon),
+      ).toCoordinateRegion(),
+      !prefersReducedMotion(),
     );
-    setTimeout(() => {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          points.push([pos.coords.latitude, pos.coords.longitude]);
-          const coord = new mapkit.Coordinate(
-            pos.coords.latitude,
-            pos.coords.longitude,
-          );
-
-          const circle = new mapkit.CircleOverlay(coord, 2);
-          circle.style = style;
-          mapRef.current?.addOverlay(circle);
-        },
-        error,
-        options,
-      );
-    }, 500);
-  }, [mapLoaded]);
+  }
 
   const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
     dispatch(focusBuilding(newBuilding));
@@ -148,33 +99,24 @@ const MapDisplay = ({
     }
 
     if (updateMap) {
+      // Updates viewbox based on OSM shape
       const points: Coordinate[] = newBuilding.shapes.flat();
-      const allLat = points.map((p) => p.latitude);
-      const allLon = points.map((p) => p.longitude);
 
-      mapRef.current?.setRegionAnimated(
-        new mapkit.BoundingRegion(
-          Math.max(...allLat),
-          Math.max(...allLon),
-          Math.min(...allLat),
-          Math.min(...allLon),
-        ).toCoordinateRegion(),
-        !prefersReducedMotion(),
-      );
+      zoomOnObject(points);
 
       setShowFloor(true);
       setShowRoomNames(false);
     }
-    // WTF is going on here
-    dispatch(
-      setFloorOrdinal(
-        floorOrdinal === null && newBuilding.floors.length > 0
-          ? newBuilding.floors.find(
-              (floor) => floor.name === newBuilding.defaultFloor,
-            )!.ordinal
-          : floorOrdinal,
-      ),
-    );
+    // If no floor set, find default floor and set it to that
+    if (!updateMap && !focusedFloor && newBuilding.floors.length > 0) {
+      const floorLevel = newBuilding.defaultFloor;
+      dispatch(
+        setFocusedFloor({
+          buildingCode: newBuilding.code,
+          level: floorLevel,
+        }),
+      );
+    }
   };
 
   const showRoom = (
@@ -190,45 +132,58 @@ const MapDisplay = ({
     if (updateMap) {
       const points: AbsoluteCoordinate[] = newRoom.polygon.coordinates.flat();
       const coords: Coordinate[] = points.map((p) => convertToMap(p));
-      const allLat = coords.map((c) => c.latitude);
-      const allLon = coords.map((c) => c.longitude);
+      zoomOnObject(coords);
 
-      mapRef.current?.setRegionAnimated(
-        new mapkit.BoundingRegion(
-          Math.max(...allLat),
-          Math.max(...allLon),
-          Math.min(...allLat),
-          Math.min(...allLon),
-        ).toCoordinateRegion(),
-        !prefersReducedMotion(),
-      );
       setShowFloor(true);
-      setShowRoomNames(false);
+      setShowRoomNames(true);
     }
   };
 
   const zoomOnDefaultBuilding = (
-    newBuildings: Building[] | null,
-    newFloors: Floor[] | null,
+    newBuildings: Building[],
+    newFloors: FloorMap | null,
   ) => {
+    // Gets from URL and sets the default building and floor and room
+
     // Make sure that both buildings and the map are loaded
     if (!newBuildings || !mapRef.current) {
       return;
     }
+
+    // Get defaults from URL
+    const [_, floor, roomid] = (window?.location?.pathname || '').split('/');
     const r = new RegExp('-|#');
-    // Handle the URL
-    const [buildingCode, floorName] = (params.slug?.[0] ?? '')
-      .toUpperCase()
-      .split(r);
-
-    const roomid = params.slug?.[1];
-
-    const building: Building = newBuildings.find(
+    let [buildingCode, floorLevel] = floor.toUpperCase().split(r);
+    console.log(
+      'searchme',
+      window?.location?.pathname,
+      buildingCode,
+      floorLevel,
+      roomid,
+    );
+    // If building is not found, do nothing
+    const building: Building | undefined = newBuildings.find(
       (b) => b.code === buildingCode,
-    )!;
-    if (newFloors && roomid && floorName && building) {
-      const floor = building.floors.find(({ name }) => name === floorName)!;
-      const floorPlan = newFloors[`${building.code}-${floor.name}`]; // uhhhh
+    );
+    if (!building) {
+      window.history.pushState({}, '', window.location.origin);
+      return;
+    }
+
+    // If floor is not specified, set it to the default floor
+    if (!floorLevel) {
+      floorLevel = building.defaultFloor.split('-')[1];
+    }
+
+    console.log('searchme1', floorLevel);
+    dispatch(
+      setFocusedFloor({ buildingCode: building.code, level: floorLevel }),
+    );
+    dispatch(focusBuilding(building));
+
+    if (newFloors) {
+      const floor = building.floors.find(({ name }) => name == floorLevel)!; // .find({ level } => level == floorLevel)! once replace file format
+      const floorPlan = newFloors[`${building.code}-${floor.name}`];
 
       const { rooms, placement } = floorPlan;
       // Compute the center position of the bounding box of the current floor
@@ -237,30 +192,40 @@ const MapDisplay = ({
       const convertToMap = (absolute: AbsoluteCoordinate): Coordinate =>
         positionOnMap(absolute, placement, center);
 
-      if (floor) {
-        setFloorOrdinal(floor.ordinal);
-      }
+      // If we also have the room in the URL, focus on that
       if (floorPlan && roomid) {
         const room = floorPlan.rooms.find((room: Room) => room.id === roomid);
-        showRoom(room, building, convertToMap, true);
-        dispatch(focusBuilding(building));
-        dispatch(claimRoom(room));
+        room && dispatch(claimRoom(room));
+        room && showRoom(room, building, convertToMap, true);
       } else {
+        // Otherwise, zoom on the just the building
         showBuilding(building, true);
       }
-    } else if (building) {
-      const floor = building.floors.find(({ name }) => name === floorName)!;
-      if (floor) {
-        setFloorOrdinal(floor.ordinal);
-      } else {
-        setFloorOrdinal(0);
-      }
-      showBuilding(building, true);
     } else {
-      // Redirect to the default page
-      window.history.pushState({}, '', window.location.origin);
+      showBuilding(building, true);
     }
   };
+
+  // Update the URL from the current floor
+  useEffect(() => {
+    if (!buildings) {
+      return;
+    }
+
+    let url = window.location.origin + '/';
+    if (selectedRoom) {
+      console.log(selectedRoom);
+      url += `${selectedRoom.floor}/${selectedRoom.id}`;
+    } else if (focusedBuilding) {
+      url += `${focusedBuilding.code}`;
+
+      if (focusedFloor) {
+        url += `-${focusedFloor.level}`;
+      }
+    }
+    window.history.pushState({}, '', url);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedRoom, focusedBuilding, focusedFloor]);
 
   // Load the data from the API
   useEffect(() => {
@@ -303,32 +268,7 @@ const MapDisplay = ({
           zoomOnDefaultBuilding(response.buildings, response.floors); // !TODO: This is probably broken
         });
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-
-    // zoomOnDefaultBuilding(buildings, floors);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Update the URL from the current floor
-  useEffect(() => {
-    if (!buildings) {
-      return;
-    }
-
-    let url = window.location.origin + '/';
-    if (selectedRoom) {
-      url += `${selectedRoom.floor}/${selectedRoom.id}`;
-    } else if (focusedBuilding) {
-      url += `${focusedBuilding.code}`;
-
-      if (currentFloorName) {
-        url += `-${currentFloorName}`;
-      }
-    }
-
-    window.history.pushState({}, '', url);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedRoom, focusedBuilding, currentFloorName]);
 
   const cameraBoundary = useMemo(
     () => ({
@@ -376,7 +316,8 @@ const MapDisplay = ({
         showBuilding(centerBuilding, false);
       } else {
         dispatch(focusBuilding(null));
-        setFloorOrdinal(null);
+        console.log('searchme2', null);
+        dispatch(setFocusedFloor(null));
       }
     },
     mapRef,
@@ -425,8 +366,9 @@ const MapDisplay = ({
         !!buildings &&
         !!floors &&
         buildings.flatMap((building: Building) =>
-          building.floors.map((floor: Floor) => {
-            if (floor.ordinal !== floorOrdinal) {
+          building.floors.map((floor: { name: string; ordinal: number }) => {
+            if (floor.name !== focusedFloor?.level) {
+              // TODO: update this after update nicolas export
               return null;
             }
 
@@ -450,7 +392,7 @@ const MapDisplay = ({
             );
           }),
         )}
-      {recommendedPath && (
+      {recommendedPath && ( // This will be its own component at some point
         <Polyline
           points={(recommendedPath || []).map((n: node) =>
             positionOnMap(
