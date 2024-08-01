@@ -5,30 +5,28 @@ import Head from 'next/head';
 
 import { UserButton } from '@clerk/nextjs';
 import MapDisplay from '@/components/buildings/MapDisplay';
-import FloorSwitcher, {
-  getFloorIndexAtOrdinal,
-} from '@/components/buildings/FloorSwitcher';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setFloorOrdinal, setRoomImageList } from '@/lib/features/uiSlice';
+import { setRoomImageList } from '@/lib/features/uiSlice';
 import SearchBar from '@/components/searchbar/SearchBar';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
+import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
 /**
  * The main page of the CMU Map website.
  */
-export default function Home({ params }: { params: { slug: string } }) {
+export default function Home() {
   const dispatch = useAppDispatch();
 
   const mapRef = useRef<mapkit.Map | null>(null);
 
   const [showFloor, setShowFloor] = useState(false);
   const [showRoomNames, setShowRoomNames] = useState(false);
-  const floorOrdinal = useAppSelector((state) => state.ui.floorOrdinal);
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 
   // loads the list of images of the rooms
   useEffect(() => {
@@ -58,11 +56,7 @@ export default function Home({ params }: { params: { slug: string } }) {
     getRoomImageList();
   }, [dispatch]);
 
-  const currentFloorName =
-    floorOrdinal !== null &&
-    focusedBuilding?.floors[
-      getFloorIndexAtOrdinal(focusedBuilding, floorOrdinal)
-    ]?.name;
+  const currentFloorName = focusedFloor?.level;
 
   // Compute the current page title
   let title = '';
@@ -107,15 +101,11 @@ export default function Home({ params }: { params: { slug: string } }) {
         </div>
 
         <MapDisplay
-          params={params}
           mapRef={mapRef}
           points={points}
           setShowFloor={setShowFloor}
           setShowRoomNames={setShowRoomNames}
-          setFloorOrdinal={setFloorOrdinal}
-          currentFloorName={currentFloorName}
           showFloor={showFloor}
-          floorOrdinal={floorOrdinal}
           showRoomNames={showRoomNames}
         />
       </main>
