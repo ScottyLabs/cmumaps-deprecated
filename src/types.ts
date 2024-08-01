@@ -186,8 +186,8 @@ export interface Placement {
  * A floor in a building.
  */
 export interface Floor {
-  name: string;
-  ordinal: number;
+  buildingCode: string;
+  level: string;
 }
 
 /**
@@ -215,7 +215,7 @@ export interface Building {
   /**
    * The floors in the building.
    */
-  floors: Floor[];
+  floors: { name: string; ordinal: number }[];
 
   /**
    * The name of the floor displayed by default for this building.
