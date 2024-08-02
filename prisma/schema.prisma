@@ -19,9 +19,9 @@ model Room {
 model Event {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  date      String
-  startTime String
-  endTime   String
+  date      DateTime
+  startTime DateTime
+  endTime   DateTime
   Room      Room   @relation(fields: [roomName], references: [name])
   roomName  String 
 }

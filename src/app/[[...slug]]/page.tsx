@@ -83,9 +83,9 @@ export default function Home() {
           {!isNavOpen && <InfoCard />}
           {isNavOpen && <NavCard />}
 
-          {focusedBuilding && !!floorOrdinal && (
-            <FloorSwitcher building={focusedBuilding} ordinal={floorOrdinal} />
-          )}
+          {/* {focusedBuilding && !!focusedFloor && (
+            <FloorSwitcher building={focusedBuilding} focusedFloor={focusedFloor} />
+          )} */}
 
           <SearchBar
             mapRef={mapRef.current}
