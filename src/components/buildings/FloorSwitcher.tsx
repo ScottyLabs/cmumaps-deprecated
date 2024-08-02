@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { isDesktop } from 'react-device-detect';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { FaArrowUp } from 'react-icons/fa';
 import { FaArrowDown } from 'react-icons/fa';
 
-import { setFocusedFloor } from '@/lib/features/uiSlice';
-import { useAppDispatch } from '@/lib/hooks';
+import { getIsCardOpen, setFocusedFloor } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Floor } from '@/types';
 
 import Roundel from '../shared/Roundel';
@@ -23,7 +24,17 @@ export default function FloorSwitcher({
   focusedFloor,
 }: FloorSwitcherProps) {
   const [showFloorPicker, setShowFloorPicker] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
+
+  const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
+  const isCardWrapperCollapsed = useAppSelector(
+    (state) => state.ui.isCardWrapperCollapsed,
+  );
+
+  if (!isDesktop && isCardOpen && !isCardWrapperCollapsed) {
+    return <></>;
+  }
 
   // // Hide the floor picker if the building or floor changes
   // useEffect(() => setShowFloorPicker(false), [building]);
@@ -108,7 +119,7 @@ export default function FloorSwitcher({
 
     return (
       <div className="flex items-stretch">
-        <p className="mx-2 flex items-center">{building.name}</p>
+        <p className="mx-2 flex items-center text-nowrap">{building.name}</p>
         {renderDownArrow()}
         {renderFloorLevelCell()}
         {renderUpArrow()}
@@ -142,30 +153,36 @@ export default function FloorSwitcher({
     );
   };
 
-  // const wrapper = (children: React.ReactElement) => {
-  //   if (isDesktop) {
-  //     return (
-  //       <div className="fixed bottom-2 left-1/2 z-10 -translate-x-1/2">
-  //         {children}
-  //       </div>
-  //     );
-  //   } else {
-  //     return (
-  //       <div className="fixed bottom-2 left-1/2 z-10 w-full -translate-x-1/2">
-  //         {children}
-  //       </div>
-  //     );
-  //   }
-  // };
-
-  return (
-    <div className="fixed bottom-2 left-1/2 z-10 mx-1 w-full -translate-x-1/2 sm:w-fit">
-      <div className="flex items-stretch justify-center rounded bg-white">
-        <div className="p-1">
-          <Roundel code={building.code} />
+  const wrapper = (children: React.ReactElement) => {
+    if (isDesktop) {
+      return (
+        <div className="fixed bottom-2 left-1/2 z-10 px-2 -translate-x-1/2 w-fit">
+          <div className="flex items-stretch justify-center rounded bg-white">
+            {children}
+          </div>
         </div>
-        {showFloorPicker ? renderFloorPicker() : renderDefaultView()}
+      );
+    } else {
+      const bottomClass = isCardOpen ? 'bottom-10' : 'bottom-2';
+
+      return (
+        <div
+          className={`fixed left-1/2 z-10 px-2 -translate-x-1/2 w-fit ${bottomClass}`}
+        >
+          <div className="flex items-stretch justify-center rounded bg-white">
+            {children}
+          </div>
+        </div>
+      );
+    }
+  };
+
+  return wrapper(
+    <>
+      <div className="p-1">
+        <Roundel code={building.code} />
       </div>
-    </div>
+      {showFloorPicker ? renderFloorPicker() : renderDefaultView()}
+    </>,
   );
 }
