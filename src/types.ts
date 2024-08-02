@@ -1,7 +1,6 @@
 /**
  * Contains TypeScript type definitions used in the project.
  */
-
 import { Coordinate } from 'mapkit-react';
 
 /**
@@ -12,30 +11,35 @@ export type AbsoluteCoordinate = [number, number];
 /**
  * Room types
  */
-export type RoomType =
-  | 'default'
-  | 'corridor'
-  | 'auditorium'
-  | 'office'
-  | 'classroom'
-  | 'operational' // Used for storage or maintenance, not publicly accessible
-  | 'conference'
-  | 'study'
-  | 'laboratory'
-  | 'computer lab'
-  | 'studio'
-  | 'workshop'
-  | 'vestibule'
-  | 'storage'
-  | 'restroom'
-  | 'stairs'
-  | 'elevator'
-  | 'ramp'
-  | 'dining'
-  | 'store'
-  | 'library'
-  | 'sport'
-  | 'parking';
+export const RoomTypeList = [
+  'default',
+  'corridor',
+  'auditorium',
+  'office',
+  'classroom',
+  'operational', // Used for storage or maintenance, not publicly accessible
+  'conference',
+  'study',
+  'laboratory',
+  'computer lab',
+  'studio',
+  'workshop',
+  'vestibule',
+  'storage',
+  'restroom',
+  'stairs',
+  'elevator',
+  'ramp',
+  'dining',
+  'store',
+  'library',
+  'sport',
+  'parking',
+  'inaccessible',
+  '', // not assigned
+];
+
+export type RoomType = (typeof RoomTypeList)[number];
 
 /**
  * The attributes of a room type.
@@ -215,7 +219,7 @@ export interface Building {
   /**
    * The floors in the building.
    */
-  floors: { name: string; ordinal: number }[];
+  floors: Floor[];
 
   /**
    * The name of the floor displayed by default for this building.
