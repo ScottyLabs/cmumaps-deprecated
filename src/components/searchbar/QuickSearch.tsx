@@ -1,13 +1,14 @@
-import React, { ReactElement } from 'react';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
-import studyIcon from '/public/assets/icons/quick_search/study.svg';
+
+import React, { ReactElement } from 'react';
+
+import CollapsibleWrapper from './CollapsibleWrapper';
+import classesIcon from '/public/assets/icons/quick_search/classes.svg';
 import foodIcon from '/public/assets/icons/quick_search/food.svg';
 import restroomIcon from '/public/assets/icons/quick_search/restroom.svg';
+import studyIcon from '/public/assets/icons/quick_search/study.svg';
 
-import fountainIcon from '/public/assets/icons/water.svg';
-
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
-import CollapsibleWrapper from './CollapsibleWrapper';
 export interface QuickSearchProps {
   setQuery: (q: string) => void;
 }
@@ -45,7 +46,7 @@ export default function QuickSearch({
         {renderIconHelper('Restroom', restroomIcon, 'Restroom', 'bg-[#EFB1F4]')}
         {renderIconHelper('Study', studyIcon, 'Study', 'bg-[#A6E08B]')}
         {renderIconHelper('Food', foodIcon, 'Dining', 'bg-[#FFBD59]')}
-        {renderIconHelper('Classes', fountainIcon, 'Fountain', 'bg-[#52a2ff]')}
+        {renderIconHelper('Classes', classesIcon, 'Classes', 'bg-[#C41230]')}
       </div>
     </CollapsibleWrapper>
   );
