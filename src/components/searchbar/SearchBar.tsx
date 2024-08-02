@@ -2,11 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import {
-  releaseRoom,
-  setFloorOrdinal,
-  setIsSearchOpen,
-} from '@/lib/features/uiSlice';
+import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
 import SearchResults from './SearchResults';
 import { IoIosClose } from 'react-icons/io';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
@@ -130,7 +126,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
       return;
     }
 
-    dispatch(setFloorOrdinal(floor.ordinal));
+    // dispatch(setFloorOrdinal(floor.ordinal));
 
     const { placement, rooms } = floors[`${building.code}-${floor.name}`];
     const center = getFloorCenter(rooms);
@@ -190,7 +186,13 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
       className="box-shadow fixed top-4 z-10 w-full rounded px-2 sm:w-96"
     >
       {renderSearchQueryInput()}
-      {searchQuery == '' && <QuickSearch setQuery={setSearchQuery} />}
+
+      {searchQuery == '' && (
+        <div className="mt-3">
+          <QuickSearch setQuery={setSearchQuery} />
+        </div>
+      )}
+
       {renderSearchResults()}
     </div>
   );

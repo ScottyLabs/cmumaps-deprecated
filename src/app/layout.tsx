@@ -7,7 +7,7 @@ import StoreProvider from './StoreProvider';
 import { Lato } from 'next/font/google';
 
 const lato = Lato({
-  weight: '400',
+  weight: ['400', '700'],
   subsets: ['latin'],
 });
 
