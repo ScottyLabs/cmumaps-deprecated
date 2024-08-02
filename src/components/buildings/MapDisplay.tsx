@@ -17,15 +17,7 @@ import {
 } from 'mapkit-react';
 import { useIsDesktop } from '@/hooks/useWindowDimensions';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
-import {
-  AbsoluteCoordinate,
-  Building,
-  Export,
-  Floor,
-  FloorMap,
-  FloorPlan,
-  Room,
-} from '@/types';
+import { AbsoluteCoordinate, Building, Export, FloorMap, Room } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
   claimRoom,
@@ -34,22 +26,8 @@ import {
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
 import { node } from '@/app/api/findPath/route';
-import {
-  addFloorToMap,
-  setBuildings,
-  setLegacyFloorMap,
-} from '@/lib/features/dataSlice';
+import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
 
-/**
- * The JSON file at this address contains all the map data used by the project.
- */
-const exportFile = 'https://nicolapps.github.io/cmumap-data-mirror/export.json';
-
-const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
   points: number[][];
@@ -228,47 +206,84 @@ const MapDisplay = ({
   }, [selectedRoom, focusedBuilding, focusedFloor]);
 
   // Load the data from the API
-  useEffect(() => {
-    fetch(exportFile) // Only use this file for the buildings
-      .then((r) => r.json())
-      .then((response: Export) => {
-        Object.entries(response.floors).forEach(([code, floorPlan]) => {
-          const rooms = floorPlan.rooms;
-          // Add floor code to room objects
-          rooms.forEach((room: Room) => {
-            room.floor = code;
-          });
-        });
 
-        const buildings = response.buildings;
-        // To improve speed later, we can load the floor data only when needed --
-        // but we need to load it all for now to support search
-        const promises = buildings
-          .map((building) =>
-            building.floors.map(async (floor) => {
-              if (!['GHC', 'WEH'].includes(building.code)) {
-                return [null, null];
-              }
-              const outlineResp = await fetch(
-                `/json/${building.code}/${building.code}-${floor.name}-outline.json`,
-              );
-              const outlineJson = await outlineResp.json();
-              return [`${building.code}-${floor.name}`, outlineJson];
-            }),
-          )
-          .flat(2);
-        Promise.all(promises).then((responses) => {
-          responses.forEach(([code, floorPlan]) => {
-            if (code) {
-              dispatch(addFloorToMap([code, floorPlan]));
+  useEffect(() => {
+    const getBuildings = async () => {
+      // set buildings
+      const response = await fetch('/json/buildings.json');
+      const buildings: Building[] = (await response.json()).buildings;
+      dispatch(setBuildings(buildings));
+
+      // set floors
+      const promises = buildings
+        .map((building) =>
+          building.floors.map(async (floor) => {
+            // only loads GHC for now
+            if (!['GHC'].includes(building.code)) {
+              return [null, null];
             }
-          });
-          dispatch(setBuildings(response.buildings));
-          dispatch(setLegacyFloorMap(response.floors));
-          zoomOnDefaultBuilding(response.buildings, response.floors); // !TODO: This is probably broken
+            const outlineResponse = await fetch(
+              `/json/${building.code}/${building.code}-${floor.name}-outline.json`,
+            );
+            const outlineJson = await outlineResponse.json();
+            return [`${building.code}-${floor.name}`, outlineJson];
+          }),
+        )
+        .flat(2);
+
+      Promise.all(promises).then((responses) => {
+        responses.forEach(([code, floorPlan]) => {
+          if (code) {
+            dispatch(addFloorToMap([code, floorPlan]));
+          }
         });
       });
-  }, []);
+    };
+
+    getBuildings();
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   fetch(exportFile) // Only use this file for the buildings
+  //     .then((r) => r.json())
+  //     .then((response: Export) => {
+  //       Object.entries(response.floors).forEach(([code, floorPlan]) => {
+  //         const rooms = floorPlan.rooms;
+  //         // Add floor code to room objects
+  //         rooms.forEach((room: Room) => {
+  //           room.floor = code;
+  //         });
+  //       });
+
+  //       const buildings = response.buildings;
+  //       // To improve speed later, we can load the floor data only when needed --
+  //       // but we need to load it all for now to support search
+  //       const promises = buildings
+  //         .map((building) =>
+  //           building.floors.map(async (floor) => {
+  //             if (!['GHC', 'WEH'].includes(building.code)) {
+  //               return [null, null];
+  //             }
+  //             const outlineResp = await fetch(
+  //               `/json/${building.code}/${building.code}-${floor.name}-outline.json`,
+  //             );
+  //             const outlineJson = await outlineResp.json();
+  //             return [`${building.code}-${floor.name}`, outlineJson];
+  //           }),
+  //         )
+  //         .flat(2);
+
+  //       Promise.all(promises).then((responses) => {
+  //         responses.forEach(([code, floorPlan]) => {
+  //           if (code) {
+  //             dispatch(addFloorToMap([code, floorPlan]));
+  //           }
+  //         });
+  //         dispatch(setBuildings(response.buildings));
+  //         zoomOnDefaultBuilding(response.buildings, response.floors); // !TODO: This is probably broken
+  //       });
+  //     });
+  // }, []);
 
   const cameraBoundary = useMemo(
     () => ({
