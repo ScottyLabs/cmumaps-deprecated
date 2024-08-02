@@ -1,6 +1,9 @@
-import Collapsible from 'react-collapsible';
-import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import dynamic from 'next/dynamic';
+
 import { useState } from 'react';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+
+const Collapsible = dynamic(() => import('react-collapsible'), { ssr: false });
 
 interface Props {
   title: string;
@@ -14,6 +17,7 @@ const CollapsibleWrapper = ({ title, children }: Props) => {
     <div className="flex items-center justify-between rounded px-2.5 py-2">
       <p className="font-bold">{title}</p>
       <div>
+        <IoIosArrowUp size={15} />
         {open ? <IoIosArrowUp size={15} /> : <IoIosArrowDown size={15} />}
       </div>
     </div>
