@@ -36,7 +36,7 @@ export default function SearchResults({
 }: SearchResultsProps) {
   const dispatch = useAppDispatch();
 
-  let floorMap = useAppSelector((state) => state.data.legacyFloorMap); // for legacy floors layout (use state.data.floorMap for new floors layout)
+  let floorMap = useAppSelector((state) => state.data.floorMap);
   floorMap = floorMap ? { ...floorMap } : {};
   let buildings = useAppSelector((state) => state.data.buildings);
   buildings = buildings ? [...buildings] : [];
@@ -108,7 +108,8 @@ export default function SearchResults({
       <button
         type="button"
         className="flex h-14 w-full justify-between gap-2 p-1 pl-6"
-        key={room.id}
+        // replace with id when possible !!!
+        key={room.name + room.floor}
         onClick={() => {
           // dispatch(claimBuilding(building));
           dispatch(claimRoom(room));
