@@ -242,11 +242,3 @@ export interface Building {
  * A map from floor identifiers (e.g. 'WEH-4') to floor plans.
  */
 export type FloorMap = { [code: string]: FloorPlan };
-
-/**
- * The structure of the export file containing the CMU Map data.
- */
-export interface Export {
-  buildings: Building[];
-  floors: FloorMap;
-}
