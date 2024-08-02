@@ -101,7 +101,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         <Image
           alt="Search Icon"
           src={searchIcon}
-          className="size-5 invert ml-4"
+          className="size-4.5 invert ml-4 opacity-60"
         />
 
         <input
