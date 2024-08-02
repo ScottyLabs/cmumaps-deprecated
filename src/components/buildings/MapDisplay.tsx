@@ -215,8 +215,8 @@ const MapDisplay = ({
       const promises = buildings
         .map((building) =>
           building.floors.map(async (floor) => {
-            // only loads GHC for now
-            if (!['GHC'].includes(building.code)) {
+            // only loads GHC and WEH for now
+            if (!['GHC', 'WEH'].includes(building.code)) {
               return [null, null];
             }
             const outlineResponse = await fetch(

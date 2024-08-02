@@ -1,5 +1,6 @@
-import { Room } from '@/types';
 import React from 'react';
+
+import { Room } from '@/types';
 import {
   IReadOnlyExtendedLocation,
   LocationState,
@@ -12,7 +13,7 @@ interface Props {
 
 const EateryInfo = ({ room, eatingData }: Props) => {
   if (!eatingData) {
-    return <div className="ml-3 mt-2 font-bold"> {room.alias}</div>;
+    return <div className="ml-3 mt-2 font-bold"> {room.aliases[0]}</div>;
   }
 
   const getLocationState = () => {
