@@ -5,6 +5,7 @@ import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { FaArrowUp } from 'react-icons/fa';
 import { FaArrowDown } from 'react-icons/fa';
 
+import { setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import styles from '@/styles/FloorSwitcher.module.css';
 import { Building, Floor } from '@/types';
@@ -31,23 +32,11 @@ export default function FloorSwitcher({
   // useEffect(() => setShowFloorPicker(false), [building]);
 
   const renderDefaultView = () => {
-    console.log(building);
-    console.log(focusedFloor);
+    const floorLevels = building.floors.map((floor) => floor.level);
+    const floorIndex = floorLevels.indexOf(focusedFloor.level);
 
-    return;
-
-    const isFloorValid = floorIndex >= 0;
-
-    const insertIndex = ~floorIndex;
-    const canGoDown = (isFloorValid ? floorIndex : insertIndex) > 0;
-    const canGoUp = isFloorValid
-      ? floorIndex < building.floors.length - 1
-      : ~floorIndex <= building.floors.length - 1;
-
-    const lowerFloorIndex = isFloorValid ? floorIndex - 1 : insertIndex - 1;
-    const lowerFloorOrdinal = building.floors[lowerFloorIndex]?.ordinal;
-    const upperFloorIndex = isFloorValid ? floorIndex + 1 : insertIndex;
-    const upperFloorOrdinal = building.floors[upperFloorIndex]?.ordinal;
+    const canGoDown = floorIndex > 0;
+    const canGoUp = floorIndex < floorLevels.length - 1;
 
     if (building.floors.length === 0) {
       return (
@@ -65,10 +54,12 @@ export default function FloorSwitcher({
 
         <div className="mr-2 flex items-center border-x border-gray-300 px-2">
           <button
-            title="Increment floor"
+            title="Decrement floor"
             className={canGoDown ? '' : 'text-gray-300'}
             disabled={!canGoDown}
-            onClick={() => dispatch(setFloorOrdinal(lowerFloorOrdinal))}
+            onClick={() =>
+              dispatch(setFocusedFloor(building.floors[floorIndex - 1]))
+            }
           >
             <FaArrowDown />
           </button>
@@ -83,15 +74,17 @@ export default function FloorSwitcher({
           disabled={building.floors.length < 2}
         >
           <div className="px-2 text-center">
-            {building.floors[floorIndex].name}
+            {building.floors[floorIndex].level}
           </div>
           <div className="flex justify-center">
             {building.floors.map((floor: Floor) => (
               <div
-                key={floor.ordinal}
+                key={floor.level}
                 className={
                   'm-[1px] h-1 w-1 rounded-full ' +
-                  (floor.ordinal == ordinal ? 'bg-black' : 'bg-gray-400')
+                  (floor.level == focusedFloor.level
+                    ? 'bg-black'
+                    : 'bg-gray-400')
                 }
               ></div>
             ))}
@@ -100,10 +93,12 @@ export default function FloorSwitcher({
 
         <div className="ml-2 flex items-center border-l border-gray-300 px-2">
           <button
-            title="Decrement floor"
+            title="Increment floor"
             className={canGoUp ? '' : 'text-gray-300'}
             disabled={!canGoUp}
-            onClick={() => dispatch(setFloorOrdinal(upperFloorOrdinal))}
+            onClick={() =>
+              dispatch(setFocusedFloor(building.floors[floorIndex + 1]))
+            }
           >
             <FaArrowUp />
           </button>
