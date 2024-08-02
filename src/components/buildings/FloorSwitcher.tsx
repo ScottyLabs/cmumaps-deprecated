@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { isDesktop } from 'react-device-detect';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { FaArrowUp } from 'react-icons/fa';
@@ -153,7 +153,7 @@ export default function FloorSwitcher({
     );
   };
 
-  const wrapper = (children: React.ReactElement) => {
+  const wrapper = (children: ReactElement) => {
     if (isDesktop) {
       return (
         <div className="fixed bottom-2 left-1/2 z-10 px-2 -translate-x-1/2 w-fit">

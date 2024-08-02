@@ -72,8 +72,9 @@ export default function Home() {
 
   const renderClerkIcon = () => {
     if (isDesktop) {
+      // <div className="fixed right-2 top-2">
       return (
-        <div className="fixed right-2 top-2">
+        <div className="fixed right-2 bottom-10">
           <UserButton />
         </div>
       );

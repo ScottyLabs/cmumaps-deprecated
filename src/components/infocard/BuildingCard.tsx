@@ -31,8 +31,18 @@ const BuildingCard = ({ building }: Props) => {
     const getEateries = () => {
       return building.floors
         .map((floor) => {
+          // remove this later!!!
+          if (!floorMap[`${building.code}-${floor.level}`]) {
+            return [];
+          }
           const rooms = floorMap[`${building.code}-${floor.level}`].rooms;
-          return Object.values(rooms).filter((room) => room.type == 'dining');
+          // return Object.values(rooms).filter((room) => room.type == 'dining');
+          return Object.values(rooms).filter(
+            (room) =>
+              room.aliases[0] == 'Revolution Noodle' ||
+              room.aliases[0] == 'Schatz Dining Room' ||
+              room.aliases[0] == 'Au Bon Pain at Skibo Café',
+          );
         })
         .flat();
     };
