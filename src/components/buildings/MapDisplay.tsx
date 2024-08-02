@@ -1,12 +1,3 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import BuildingShape from '../../components/buildings/BuildingShape';
-import FloorPlanOverlay, {
-  getFloorCenter,
-  positionOnMap,
-} from '../../components/buildings/FloorPlanOverlay';
-import useMapPosition from '../../hooks/useMapPosition';
-import { isInPolygonCoordinates } from '../../geometry';
-
 import {
   Coordinate,
   FeatureVisibility,
@@ -15,18 +6,29 @@ import {
   PointOfInterestCategory,
   Polyline,
 } from 'mapkit-react';
-import prefersReducedMotion from '@/util/prefersReducedMotion';
-import { AbsoluteCoordinate, Building, FloorMap, Room } from '@/types';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+
+import React, { useEffect, useMemo, useState } from 'react';
+import { isDesktop } from 'react-device-detect';
+
+import { node } from '@/app/api/findPath/route';
+import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
 import {
   claimRoom,
   focusBuilding,
   setFocusedFloor,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
-import { node } from '@/app/api/findPath/route';
-import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
-import { isDesktop } from 'react-device-detect';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { AbsoluteCoordinate, Building, FloorMap, Room } from '@/types';
+import prefersReducedMotion from '@/util/prefersReducedMotion';
+
+import BuildingShape from '../../components/buildings/BuildingShape';
+import FloorPlanOverlay, {
+  getFloorCenter,
+  positionOnMap,
+} from '../../components/buildings/FloorPlanOverlay';
+import { isInPolygonCoordinates } from '../../geometry';
+import useMapPosition from '../../hooks/useMapPosition';
 
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
