@@ -2,13 +2,13 @@ import { Building, FloorMap, FloorPlan } from '@/types';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface DataState {
-  buildings: Building[] | null;
-  floorMap: FloorMap | null;
+  buildings: Building[];
+  floorMap: FloorMap;
 }
 
 const initialState: DataState = {
-  buildings: null,
-  floorMap: null,
+  buildings: [],
+  floorMap: {},
 };
 
 const dataSlice = createSlice({
@@ -17,9 +17,6 @@ const dataSlice = createSlice({
   reducers: {
     setBuildings(state, action) {
       state.buildings = action.payload;
-    },
-    setFloorMap(state, action) {
-      state.floorMap = action.payload;
     },
     addFloorToMap(state, action: { payload: [string, FloorPlan] }) {
       const [floorName, floorPlan] = action.payload;
@@ -34,5 +31,5 @@ const dataSlice = createSlice({
   },
 });
 
-export const { setBuildings, setFloorMap, addFloorToMap } = dataSlice.actions;
+export const { setBuildings, addFloorToMap } = dataSlice.actions;
 export default dataSlice.reducer;

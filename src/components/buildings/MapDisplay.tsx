@@ -15,9 +15,8 @@ import {
   PointOfInterestCategory,
   Polyline,
 } from 'mapkit-react';
-import { useIsDesktop } from '@/hooks/useWindowDimensions';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
-import { AbsoluteCoordinate, Building, Export, FloorMap, Room } from '@/types';
+import { AbsoluteCoordinate, Building, FloorMap, Room } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
   claimRoom,
@@ -27,6 +26,7 @@ import {
 } from '@/lib/features/uiSlice';
 import { node } from '@/app/api/findPath/route';
 import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
+import { isDesktop } from 'react-device-detect';
 
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
@@ -205,8 +205,7 @@ const MapDisplay = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRoom, focusedBuilding, focusedFloor]);
 
-  // Load the data from the API
-
+  // Load the buidling and floor data
   useEffect(() => {
     const getBuildings = async () => {
       // set buildings
@@ -242,48 +241,6 @@ const MapDisplay = ({
 
     getBuildings();
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   fetch(exportFile) // Only use this file for the buildings
-  //     .then((r) => r.json())
-  //     .then((response: Export) => {
-  //       Object.entries(response.floors).forEach(([code, floorPlan]) => {
-  //         const rooms = floorPlan.rooms;
-  //         // Add floor code to room objects
-  //         rooms.forEach((room: Room) => {
-  //           room.floor = code;
-  //         });
-  //       });
-
-  //       const buildings = response.buildings;
-  //       // To improve speed later, we can load the floor data only when needed --
-  //       // but we need to load it all for now to support search
-  //       const promises = buildings
-  //         .map((building) =>
-  //           building.floors.map(async (floor) => {
-  //             if (!['GHC', 'WEH'].includes(building.code)) {
-  //               return [null, null];
-  //             }
-  //             const outlineResp = await fetch(
-  //               `/json/${building.code}/${building.code}-${floor.name}-outline.json`,
-  //             );
-  //             const outlineJson = await outlineResp.json();
-  //             return [`${building.code}-${floor.name}`, outlineJson];
-  //           }),
-  //         )
-  //         .flat(2);
-
-  //       Promise.all(promises).then((responses) => {
-  //         responses.forEach(([code, floorPlan]) => {
-  //           if (code) {
-  //             dispatch(addFloorToMap([code, floorPlan]));
-  //           }
-  //         });
-  //         dispatch(setBuildings(response.buildings));
-  //         zoomOnDefaultBuilding(response.buildings, response.floors); // !TODO: This is probably broken
-  //       });
-  //     });
-  // }, []);
 
   const cameraBoundary = useMemo(
     () => ({
@@ -339,7 +296,6 @@ const MapDisplay = ({
     initialRegion,
   );
 
-  const isDesktop = useIsDesktop();
   return (
     <Map
       ref={mapRef}
