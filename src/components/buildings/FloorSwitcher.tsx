@@ -31,7 +31,8 @@ export default function FloorSwitcher({
   // useEffect(() => setShowFloorPicker(false), [building]);
 
   const renderDefaultView = () => {
-    const floorIndex: number = getFloorIndexAtOrdinal(building, ordinal);
+    console.log(building);
+    console.log(focusedFloor);
 
     return;
 

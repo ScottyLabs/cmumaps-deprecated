@@ -208,7 +208,7 @@ const MapDisplay = ({
     const getBuildings = async () => {
       // set buildings
       const response = await fetch('/json/buildings.json');
-      const buildings: Building[] = (await response.json()).buildings;
+      const buildings: Building[] = await response.json();
       dispatch(setBuildings(buildings));
 
       // set floors
@@ -220,10 +220,10 @@ const MapDisplay = ({
               return [null, null];
             }
             const outlineResponse = await fetch(
-              `/json/${building.code}/${building.code}-${floor.name}-outline.json`,
+              `/json/${building.code}/${building.code}-${floor.level}-outline.json`,
             );
             const outlineJson = await outlineResponse.json();
-            return [`${building.code}-${floor.name}`, outlineJson];
+            return [`${building.code}-${floor.level}`, outlineJson];
           }),
         )
         .flat(2);
