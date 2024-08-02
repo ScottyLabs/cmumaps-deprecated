@@ -81,8 +81,8 @@ const EateryInfo = ({ room, eatingData }: Props) => {
         <p className="font-bold">{eatingData.name}</p>
         <div className="flex items-center justify-between">
           <p className={textColor}>{eatingData.statusMsg}</p>
+          {renderStatusCircle()}
         </div>
-        {renderStatusCircle()}
       </div>
       <div className="ml-3 mt-2 text-sm">{eatingData.shortDescription}</div>
     </>
