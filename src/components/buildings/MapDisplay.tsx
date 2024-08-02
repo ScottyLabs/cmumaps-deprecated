@@ -23,12 +23,12 @@ import { AbsoluteCoordinate, Building, FloorMap, Room } from '@/types';
 import { isInPolygonCoordinates } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
-import BuildingShape from '../../components/buildings/BuildingShape';
+import useMapPosition from '../../hooks/useMapPosition';
+import BuildingShape from './BuildingShape';
 import FloorPlanOverlay, {
   getFloorCenter,
   positionOnMap,
-} from '../../components/buildings/FloorPlanOverlay';
-import useMapPosition from '../../hooks/useMapPosition';
+} from './FloorPlanOverlay';
 
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
@@ -348,7 +348,7 @@ const MapDisplay = ({
       paddingLeft={4}
       paddingRight={4}
       paddingTop={10}
-      showsZoomControl={!!isDesktop}
+      showsZoomControl={isDesktop}
       showsCompass={
         isDesktop ? FeatureVisibility.Adaptive : FeatureVisibility.Hidden
       }

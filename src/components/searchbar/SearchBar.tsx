@@ -1,16 +1,19 @@
+import { Coordinate } from 'mapkit-react';
+
 import React, { useEffect, useRef, useState } from 'react';
-import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
-import QuickSearch from '@/components/searchbar/QuickSearch';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
-import SearchResults from './SearchResults';
-import { IoIosClose } from 'react-icons/io';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
+import { IoIosClose } from 'react-icons/io';
+
+import QuickSearch from '@/components/searchbar/QuickSearch';
 import useEscapeKey from '@/hooks/useEscapeKey';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
-import { getFloorCenter, positionOnMap } from '../buildings/FloorPlanOverlay';
-import { Coordinate } from 'mapkit-react';
+import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
+
+import { getFloorCenter, positionOnMap } from '../buildings/FloorPlanOverlay';
+import SearchResults from './SearchResults';
 
 interface Props {
   mapRef: mapkit.Map | null;

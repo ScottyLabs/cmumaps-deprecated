@@ -1,43 +1,19 @@
-/* eslint-disable no-bitwise */
-import { Building, Floor } from '@/types';
-import React, { useEffect, useState } from 'react';
-import styles from '@/styles/FloorSwitcher.module.css';
 import clsx from 'clsx';
-import Roundel from '../shared/Roundel';
-import { setFloorOrdinal } from '@/lib/features/uiSlice';
-import { useAppDispatch } from '@/lib/hooks';
+
+import React, { useEffect, useState } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { FaArrowUp } from 'react-icons/fa';
 import { FaArrowDown } from 'react-icons/fa';
 
+import { useAppDispatch } from '@/lib/hooks';
+import styles from '@/styles/FloorSwitcher.module.css';
+import { Building, Floor } from '@/types';
+
+import Roundel from '../shared/Roundel';
+
 interface FloorSwitcherProps {
   building: Building;
-  ordinal: number;
-}
-
-export function getFloorIndexAtOrdinal(
-  building: Building,
-  ordinal: number,
-): number {
-  let min = 0;
-  let max = building.floors.length - 1;
-  while (min <= max) {
-    const mid = (min + max) >>> 1; // = Math.floor((min + max) / 2)
-
-    const midFloorOrdinal = building.floors[mid].ordinal;
-    if (midFloorOrdinal === ordinal) {
-      // found
-      return mid;
-    }
-
-    if (midFloorOrdinal > ordinal) {
-      max = mid - 1;
-    } else {
-      min = mid + 1;
-    }
-  }
-
-  return ~min;
+  focusedFloor: Floor;
 }
 
 /**
@@ -46,16 +22,19 @@ export function getFloorIndexAtOrdinal(
  */
 export default function FloorSwitcher({
   building,
-  ordinal,
+  focusedFloor,
 }: FloorSwitcherProps) {
   const [showFloorPicker, setShowFloorPicker] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  // Hide the floor picker if the building or floor changes
-  useEffect(() => setShowFloorPicker(false), [building, ordinal]);
+  // // Hide the floor picker if the building or floor changes
+  // useEffect(() => setShowFloorPicker(false), [building]);
 
   const renderDefaultView = () => {
     const floorIndex: number = getFloorIndexAtOrdinal(building, ordinal);
+
+    return;
+
     const isFloorValid = floorIndex >= 0;
 
     const insertIndex = ~floorIndex;
