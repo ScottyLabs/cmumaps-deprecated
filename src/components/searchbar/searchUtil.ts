@@ -18,13 +18,13 @@ export const findRooms = (
   const lDistCache = new Map();
   // Query for another building
   const roomsList = building.floors.flatMap((floor: Floor) => {
-    if (!floorMap[`${building.code}-${floor.name}`]?.rooms) {
+    if (!floorMap[`${building.code}-${floor.level}`]?.rooms) {
       return [];
     }
     // let roomsObj = Object.entries(floorMap[`${building.code}-${floor.name}`]?.rooms) // for new floors layout
-    const roomsObj = floorMap[`${building.code}-${floor.name}`]?.rooms; // for legacy floors layout
+    const roomsObj = floorMap[`${building.code}-${floor.level}`]?.rooms; // for legacy floors layout
     return (
-      roomsObj
+      Object.values(roomsObj)
         // .filter((roomId: string, room: Room) => { // for new floors layout
         .filter((room: Room) => {
           return (

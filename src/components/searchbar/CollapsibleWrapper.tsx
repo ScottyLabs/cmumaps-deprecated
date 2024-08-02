@@ -17,7 +17,6 @@ const CollapsibleWrapper = ({ title, children }: Props) => {
     <div className="flex items-center justify-between rounded px-2.5 py-2">
       <p className="font-bold">{title}</p>
       <div>
-        <IoIosArrowUp size={15} />
         {open ? <IoIosArrowUp size={15} /> : <IoIosArrowDown size={15} />}
       </div>
     </div>
@@ -26,8 +25,8 @@ const CollapsibleWrapper = ({ title, children }: Props) => {
   return (
     <Collapsible
       trigger={renderTrigger()}
-      className="rounded-xl bg-white"
-      openedClassName="rounded-xl bg-white"
+      className="rounded bg-white"
+      openedClassName="rounded bg-white"
       onOpening={() => {
         setOpen(true);
       }}
