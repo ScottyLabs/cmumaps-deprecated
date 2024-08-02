@@ -1,5 +1,6 @@
-import { Building, Floor, Room } from '@/types';
 import { createSlice } from '@reduxjs/toolkit';
+
+import { Building, Floor, Room } from '@/types';
 
 interface UIState {
   // A room/building is selected iff the user has clicked on it. And has not since clicked on another room, building, or the map.
@@ -9,6 +10,8 @@ interface UIState {
   focusedFloor: Floor | null;
   isSearchOpen: boolean;
   roomImageList: Record<string, string[]>;
+
+  isCardWrapperCollapsed: boolean;
 }
 
 const initialState: UIState = {
@@ -18,6 +21,7 @@ const initialState: UIState = {
   focusedFloor: null,
   isSearchOpen: false,
   roomImageList: {},
+  isCardWrapperCollapsed: true,
 };
 
 const uiSlice = createSlice({
@@ -60,8 +64,15 @@ const uiSlice = createSlice({
     setRoomImageList(state, action) {
       state.roomImageList = action.payload;
     },
+    setIsCardWrapperCollapsed(state, action) {
+      state.isCardWrapperCollapsed = action.payload;
+    },
   },
 });
+
+export const getIsCardOpen = (state: UIState) => {
+  return !!state.selectedBuilding || !!state.selectedRoom;
+};
 
 export const {
   claimRoom,
@@ -72,5 +83,6 @@ export const {
   setFocusedFloor,
   setIsSearchOpen,
   setRoomImageList,
+  setIsCardWrapperCollapsed,
 } = uiSlice.actions;
 export default uiSlice.reducer;
