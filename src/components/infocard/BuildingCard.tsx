@@ -2,7 +2,6 @@ import Image from 'next/image';
 
 import React, { useEffect, useState } from 'react';
 import { isDesktop } from 'react-device-detect';
-import { HiMagnifyingGlass } from 'react-icons/hi2';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -14,6 +13,7 @@ import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
 import ButtonsRow from './ButtonsRow';
 import EateryInfo from './EateryInfo';
+import searchIcon from '/public/assets/icons/search.svg';
 
 interface Props {
   building: Building;
@@ -79,10 +79,10 @@ const BuildingCard = ({ building }: Props) => {
     const renderMiddleButton = () => (
       <button
         type="button"
-        className="flex items-center rounded-lg bg-[#1e86ff] px-2 py-1 text-white"
+        className="flex items-center rounded-lg bg-[#1e86ff] px-3 py-1 text-white gap-2"
       >
-        <HiMagnifyingGlass className="mr-2" />
-        <p className="my-0 text-xs">Find rooms</p>
+        <Image alt="Search Icon" src={searchIcon} className="size-3.5" />
+        <p>Find rooms</p>
       </button>
     );
 
