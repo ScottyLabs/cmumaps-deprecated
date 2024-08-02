@@ -96,7 +96,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
     );
 
     return (
-      <div className="flex items-center rounded bg-white">
+      <div className="flex items-center rounded bg-white w-full">
         <HiMagnifyingGlass className="m-1" size={25} />
 
         <input
@@ -186,7 +186,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   return (
     <div
       id="SearchBar"
-      className="box-shadow fixed top-4 z-10 w-full rounded px-2 sm:w-96"
+      className="box-shadow fixed top-4 z-10 w-full rounded mx-2 sm:w-96"
     >
       {renderSearchQueryInput()}
 

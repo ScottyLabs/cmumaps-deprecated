@@ -69,14 +69,8 @@ const BuildingCard = ({ building }: Props) => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
 
     return (
-      <div className="relative h-36">
-        <Image
-          className="object-cover"
-          fill={true}
-          alt="Room Image"
-          src={url}
-          sizes="100vw"
-        />
+      <div className="relative h-36 object-cover">
+        <Image fill={true} alt="Room Image" src={url} sizes="100vw" />
       </div>
     );
   };
@@ -172,12 +166,12 @@ const BuildingCard = ({ building }: Props) => {
   };
 
   return (
-    <div>
+    <>
       {renderBuildingImage()}
       <h2 className="ml-3 mt-2">{building.name}</h2>
       {renderButtonsRow()}
       {renderEateryCarousel()}
-    </div>
+    </>
   );
 };
 
