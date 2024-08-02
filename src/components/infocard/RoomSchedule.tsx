@@ -11,7 +11,7 @@ import { FaChevronLeft } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa';
 import { Event } from '@prisma/client';
 import { useAppSelector } from '@/lib/hooks';
-import { API_ROUTES } from '@/app/api/apiRoutes';
+import { fetchEvents } from '@/lib/apiRoutes';
 
 const RoomSchedule = () => {
   const today = new Date();
@@ -37,38 +37,13 @@ const RoomSchedule = () => {
     // fetch events for the current day
     setThisWeeksEvents(null);
 
-    const getRoomSchedule = async () => {
-      const response = await fetch(API_ROUTES.GET_ROOM_SCHEDULE, {
-        method: 'POST',
-        body: JSON.stringify({
-          roomName: `${focusedBuilding?.code} ${selectedRoom?.name}`,
-          startDate: startOfCurrentWeek.valueOf().toString(),
-          endDate: endOfCurrentWeek.valueOf().toString(),
-        }),
-      });
-
-      const body = await response.json();
-
-      if (!response.ok) {
-        console.error(body.error);
-        return;
-      }
-
-      console.log(body);
-
-      console.log(body.events);
-
-      // setThisWeeksEvents(data);
-    };
-
-    getRoomSchedule();
-  }, [
-    currentWeek,
-    endOfCurrentWeek,
-    focusedBuilding?.code,
-    selectedRoom?.name,
-    startOfCurrentWeek,
-  ]);
+    fetchEvents(
+      `${focusedBuilding?.code} ${selectedRoom?.name}`,
+      startOfCurrentWeek,
+      endOfCurrentWeek,
+      setThisWeeksEvents,
+    );
+  }, [selectedRoom, currentWeek]);
 
   const renderDatePicker = () => {
     const renderDateRow = () => {
