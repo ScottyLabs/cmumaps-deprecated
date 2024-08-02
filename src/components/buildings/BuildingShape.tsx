@@ -1,9 +1,12 @@
-import React from 'react';
-import { Building } from '@/types';
 import { Annotation, Polygon } from 'mapkit-react';
-import Roundel from '../shared/Roundel';
+
+import React from 'react';
+
 import { claimBuilding, releaseBuilding } from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
+import { Building } from '@/types';
+
+import Roundel from '../shared/Roundel';
 
 interface BuildingShapeProps {
   building: Building;
