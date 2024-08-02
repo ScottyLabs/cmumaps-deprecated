@@ -1,13 +1,10 @@
-import clsx from 'clsx';
-
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { FaArrowUp } from 'react-icons/fa';
 import { FaArrowDown } from 'react-icons/fa';
 
 import { setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
-import styles from '@/styles/FloorSwitcher.module.css';
 import { Building, Floor } from '@/types';
 
 import Roundel from '../shared/Roundel';
@@ -48,26 +45,39 @@ export default function FloorSwitcher({
       );
     }
 
-    return (
-      <div className="flex items-stretch">
-        <p className="mx-2 flex items-center">{building.name}</p>
+    const renderDownArrow = () => (
+      <div className="mr-2 flex items-center border-x border-gray-300 px-2">
+        <button
+          title="Decrement floor"
+          className={canGoDown ? '' : 'text-gray-300'}
+          disabled={!canGoDown}
+          onClick={() =>
+            dispatch(setFocusedFloor(building.floors[floorIndex - 1]))
+          }
+        >
+          <FaArrowDown />
+        </button>
+      </div>
+    );
 
-        <div className="mr-2 flex items-center border-x border-gray-300 px-2">
-          <button
-            title="Decrement floor"
-            className={canGoDown ? '' : 'text-gray-300'}
-            disabled={!canGoDown}
-            onClick={() =>
-              dispatch(setFocusedFloor(building.floors[floorIndex - 1]))
-            }
-          >
-            <FaArrowDown />
-          </button>
+    const renderFloorLevelCell = () => {
+      const renderEllipses = () => (
+        <div className="flex justify-center">
+          {building.floors.map((floor: Floor) => (
+            <div
+              key={floor.level}
+              className={
+                'm-[1px] h-1 w-1 rounded-full ' +
+                (floor.level == focusedFloor.level ? 'bg-black' : 'bg-gray-400')
+              }
+            ></div>
+          ))}
         </div>
+      );
 
+      return (
         <button
           title="Select a floor"
-          className={clsx(styles.button)}
           onClick={() => {
             setShowFloorPicker(true);
           }}
@@ -76,33 +86,32 @@ export default function FloorSwitcher({
           <div className="px-2 text-center">
             {building.floors[floorIndex].level}
           </div>
-          <div className="flex justify-center">
-            {building.floors.map((floor: Floor) => (
-              <div
-                key={floor.level}
-                className={
-                  'm-[1px] h-1 w-1 rounded-full ' +
-                  (floor.level == focusedFloor.level
-                    ? 'bg-black'
-                    : 'bg-gray-400')
-                }
-              ></div>
-            ))}
-          </div>
+          {renderEllipses()}
         </button>
+      );
+    };
 
-        <div className="ml-2 flex items-center border-l border-gray-300 px-2">
-          <button
-            title="Increment floor"
-            className={canGoUp ? '' : 'text-gray-300'}
-            disabled={!canGoUp}
-            onClick={() =>
-              dispatch(setFocusedFloor(building.floors[floorIndex + 1]))
-            }
-          >
-            <FaArrowUp />
-          </button>
-        </div>
+    const renderUpArrow = () => (
+      <div className="ml-2 flex items-center border-l border-gray-300 px-2">
+        <button
+          title="Increment floor"
+          className={canGoUp ? '' : 'text-gray-300'}
+          disabled={!canGoUp}
+          onClick={() =>
+            dispatch(setFocusedFloor(building.floors[floorIndex + 1]))
+          }
+        >
+          <FaArrowUp />
+        </button>
+      </div>
+    );
+
+    return (
+      <div className="flex items-stretch">
+        <p className="mx-2 flex items-center">{building.name}</p>
+        {renderDownArrow()}
+        {renderFloorLevelCell()}
+        {renderUpArrow()}
       </div>
     );
   };
