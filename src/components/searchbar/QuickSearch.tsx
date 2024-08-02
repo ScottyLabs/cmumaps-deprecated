@@ -1,9 +1,11 @@
 import React, { ReactElement, useState } from 'react';
 import Image from 'next/image';
-import toiletIcon from '/public/assets/icons/toilet.svg';
-import coffeeIcon from '/public/assets/icons/coffee.svg';
+import studyIcon from '/public/assets/icons/quick_search/study.svg';
+import foodIcon from '/public/assets/icons/quick_search/food.svg';
+import restroomIcon from '/public/assets/icons/quick_search/restroom.svg';
+
 import fountainIcon from '/public/assets/icons/water.svg';
-import foodIcon from '/public/assets/icons/forkknife.svg';
+
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Collapsible from 'react-collapsible';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
@@ -58,31 +60,30 @@ export default function QuickSearch({
     name: string,
     icon: StaticImport,
     queryText: string,
-    color: string,
+    backgroundColorClass: string,
   ) => {
     return (
       <div
         onClick={() => setQuery(queryText)}
-        className="flex w-full flex-col items-center gap-1 rounded-xl p-2"
+        className="flex flex-col items-center gap-1 p-2"
       >
         <div
-          className="flex h-14 w-14 items-center justify-center rounded-full"
-          style={{ backgroundColor: color }}
+          className={`flex h-14 w-14 items-center justify-center rounded-full ${backgroundColorClass}`}
         >
           <Image alt={name + ' icon'} src={icon} className="h-8 w-8"></Image>
         </div>
-        <p className="m-0 text-sm font-normal text-[#8e8e8e]">{name}</p>
+        <p className="text-sm text-[#8e8e8e]">{name}</p>
       </div>
     );
   };
 
   return (
     <CollapsibleSearch title="Quick Search">
-      <div className="w-var(--search-width-desktop) mx-2.5 mb-3 grid grid-cols-4 gap-2 rounded-xl border border-[#dddddd] bg-white p-2">
-        {renderHelper('Restroom', toiletIcon, 'Restroom', '#efb1f4')}
-        {renderHelper('Coffee', coffeeIcon, 'Cafes', '#ffd66b')}
-        {renderHelper('Food', foodIcon, 'Dining', '#ffbd59')}
-        {renderHelper('Fountain', fountainIcon, 'Fountain', '#52a2ff')}
+      <div className="mx-2.5 mb-3 grid grid-cols-4 gap-2 rounded-xl border bg-white p-2">
+        {renderHelper('Restroom', restroomIcon, 'Restroom', 'bg-[#EFB1F4]')}
+        {renderHelper('Study', studyIcon, 'Study', 'bg-[#A6E08B]')}
+        {renderHelper('Food', foodIcon, 'Dining', 'bg-[#FFBD59]')}
+        {renderHelper('Classes', fountainIcon, 'Fountain', 'bg-[#52a2ff]')}
       </div>
     </CollapsibleSearch>
   );
