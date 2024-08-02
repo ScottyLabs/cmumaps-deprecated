@@ -215,10 +215,15 @@ const MapDisplay = ({
       const promises = buildings
         .map((building) =>
           building.floors.map(async (floor) => {
-            // only loads GHC and WEH for now
-            if (!['GHC', 'WEH'].includes(building.code)) {
+            // only loads GHC, WEH, and CUC for now
+            if (!['GHC', 'WEH', 'CUC'].includes(building.code)) {
               return [null, null];
             }
+
+            if (building.code == 'CUC' && floor.level !== '2') {
+              return [null, null];
+            }
+
             const outlineResponse = await fetch(
               `/json/${building.code}/${building.code}-${floor.level}-outline.json`,
             );

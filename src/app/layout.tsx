@@ -1,11 +1,11 @@
-import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
-import './globals.css';
-import StoreProvider from './StoreProvider';
-
-// https://nextjs.org/docs/app/building-your-application/optimizing/fonts
+import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 
+import StoreProvider from './StoreProvider';
+import './globals.css';
+
+// https://nextjs.org/docs/app/building-your-application/optimizing/fonts
 const lato = Lato({
   weight: ['400', '700'],
   subsets: ['latin'],

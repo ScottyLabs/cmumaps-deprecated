@@ -36,24 +36,22 @@ export default function SearchResults({
 }: SearchResultsProps) {
   const dispatch = useAppDispatch();
 
-  let floorMap = useAppSelector((state) => state.data.floorMap);
-  floorMap = floorMap ? { ...floorMap } : {};
-  let buildings = useAppSelector((state) => state.data.buildings);
-  buildings = buildings ? [...buildings] : [];
+  const floorMap = useAppSelector((state) => state.data.floorMap);
+  const buildings = useAppSelector((state) => state.data.buildings);
 
-  if (userPosition) {
-    buildings.sort(
-      (b, a) =>
-        distance(
-          [b.labelPosition.longitude, b.labelPosition.latitude],
-          userPosition,
-        ) -
-        distance(
-          [a.labelPosition.longitude, a.labelPosition.latitude],
-          userPosition,
-        ),
-    );
-  }
+  // if (userPosition) {
+  //   buildings.sort(
+  //     (b, a) =>
+  //       distance(
+  //         [b.labelPosition.longitude, b.labelPosition.latitude],
+  //         userPosition,
+  //       ) -
+  //       distance(
+  //         [a.labelPosition.longitude, a.labelPosition.latitude],
+  //         userPosition,
+  //       ),
+  //   );
+  // }
 
   const searchResult = buildings
     .map((building: Building) => ({
