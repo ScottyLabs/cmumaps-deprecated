@@ -5,9 +5,9 @@ import { start } from 'repl';
 const prisma = new PrismaClient();
 
 export async function retrieveEvents(
-  roomName: string,
-  startDate: Date,
-  endDate: Date,
+  roomName: string | undefined,
+  startDate: string,
+  endDate: string,
 ) {
   const events = await prisma.event.findMany({
     orderBy: [{ startTime: 'asc' }],
@@ -24,12 +24,16 @@ export async function retrieveEvents(
 }
 
 export async function GET(req: NextRequest) {
-  const roomName = req.headers.get('roomName');
-
-  const startDate = new Date(
-    parseInt(req.headers.get('startDate')),
-  ).toISOString();
-  const endDate = new Date(parseInt(req.headers.get('endDate'))).toISOString();
+  const [roomName, _startDate, _endDate] = [
+    req.headers.get('roomName') || undefined,
+    req.headers.get('startDate'),
+    req.headers.get('endDate'),
+  ];
+  if (!_startDate || !_endDate) {
+    return Response.error();
+  }
+  const startDate = new Date(parseInt(_startDate)).toISOString();
+  const endDate = new Date(parseInt(_endDate)).toISOString();
 
   const events = await retrieveEvents(roomName, startDate, endDate);
   const groupedEvents = [];
@@ -41,6 +45,6 @@ export async function GET(req: NextRequest) {
     );
     groupedEvents.push(dateEvents);
   }
-  console.log(events, groupedEvents);
+
   return Response.json(groupedEvents);
 }
