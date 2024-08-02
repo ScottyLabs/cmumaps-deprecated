@@ -1,6 +1,4 @@
-import { ChevronRightIcon } from '@heroicons/react/20/solid';
-
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 import { claimBuilding, claimRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -68,11 +66,14 @@ export default function SearchResults({
     );
   }
 
+  const searchResultClassNames =
+    'flex h-14 w-full justify-between gap-2 p-1 hover:bg-[#efefef] bg-gray-50 transition duration-150 ease-out';
+
   const renderBuildingResults = (building: Building) => {
     return (
       <button
         type="button"
-        className="flex h-14 w-full justify-between gap-2 p-1"
+        className={searchResultClassNames}
         onClick={() => {
           dispatch(claimBuilding(building));
           // dispatch(setFloorOrdinal(null));
@@ -80,9 +81,8 @@ export default function SearchResults({
       >
         <div className="flex items-center gap-3">
           <Roundel code={building.code} />
-          <p className="">{building.name}</p>
+          <h4 className="">{building.name}</h4>
         </div>
-        <ChevronRightIcon className="h-5 w-5" />
       </button>
     );
   };
@@ -90,22 +90,24 @@ export default function SearchResults({
   const renderRoomResults = (rooms: Room[], building: Building) => {
     const renderText = (room: Room) => (
       <div className="flex flex-col text-left">
-        <div>
-          <span>
-            {building.code} {room.name}
-          </span>
-          {room.type !== 'default' && (
-            <span>{` • ${titleCase(roomType(room))}`}</span>
-          )}
-        </div>
-        {room.aliases[0] && <div className="truncate">{room.aliases[0]}</div>}
+        <p>
+          <div>
+            <span>
+              {building.code} {room.name}
+            </span>
+            {room.type !== 'default' && (
+              <span>{` • ${titleCase(roomType(room))}`}</span>
+            )}
+          </div>
+          {room.aliases[0] && <div className="truncate">{room.aliases[0]}</div>}
+        </p>
       </div>
     );
 
     return rooms.map((room: Room) => (
       <button
         type="button"
-        className="flex h-14 w-full justify-between gap-2 p-1 pl-6"
+        className={`${searchResultClassNames} pl-8`}
         key={room.id}
         onClick={() => {
           // dispatch(claimBuilding(building));
@@ -116,7 +118,6 @@ export default function SearchResults({
           <RoomPin room={room} />
           {renderText(room)}
         </div>
-        <ChevronRightIcon className="h-5 w-5" />
       </button>
     ));
   };
