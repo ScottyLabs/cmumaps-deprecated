@@ -121,20 +121,20 @@ export default function FloorSwitcher({
       <div className="ml-2 flex items-stretch">
         {building.floors.map((floor: Floor) => (
           <div
-            key={floor.ordinal}
+            key={floor.level}
             className="flex items-center border-l border-gray-300"
           >
             <div
               className={
                 'cursor-pointer px-4 ' +
-                (floor.ordinal === ordinal ? 'font-bold' : '')
+                (floor.level === focusedFloor.level ? 'font-bold' : '')
               }
               onClick={() => {
                 setShowFloorPicker(false);
-                dispatch(setFloorOrdinal(floor.ordinal));
+                dispatch(setFocusedFloor(floor));
               }}
             >
-              {floor.name}
+              {floor.level}
             </div>
           </div>
         ))}
