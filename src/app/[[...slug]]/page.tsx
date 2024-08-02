@@ -4,6 +4,7 @@ import { UserButton } from '@clerk/nextjs';
 import Head from 'next/head';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { isDesktop } from 'react-device-detect';
 
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
@@ -69,6 +70,22 @@ export default function Home() {
   }
   title += 'CMU Map';
 
+  const renderClerkIcon = () => {
+    if (isDesktop) {
+      return (
+        <div className="fixed right-2 top-2">
+          <UserButton />
+        </div>
+      );
+    } else {
+      return (
+        <div className="fixed right-2 bottom-10">
+          <UserButton />
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <Head>
@@ -98,9 +115,7 @@ export default function Home() {
             ]}
           />
 
-          <div className="fixed right-2 top-2">
-            <UserButton />
-          </div>
+          {renderClerkIcon()}
         </div>
 
         <MapDisplay
