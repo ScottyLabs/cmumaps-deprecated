@@ -85,7 +85,7 @@ const BuildingCard = ({ building }: Props) => {
     const renderMiddleButton = () => (
       <button
         type="button"
-        className="flex rounded-lg bg-[#1e86ff] px-2 py-1 text-white"
+        className="flex items-center rounded-lg bg-[#1e86ff] px-2 py-1 text-white"
       >
         <HiMagnifyingGlass className="mr-2" />
         <p className="my-0 text-xs">Find rooms</p>

@@ -1,12 +1,13 @@
+import React from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { MdIosShare } from 'react-icons/md';
-import React from 'react';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+
 import {
   setEndRoom,
   setIsNavOpen,
   setStartRoom,
 } from '@/lib/features/navSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 interface Props {
   middleButton: React.JSX.Element;
@@ -35,7 +36,7 @@ const ButtonsRow = ({ middleButton }: Props) => {
       </div>
       <div>
         <button type="button" className="rounded-full bg-[#b5b5b5] p-1">
-          <MdIosShare size={15} />
+          <MdIosShare size={20} />
         </button>
       </div>
     </div>
