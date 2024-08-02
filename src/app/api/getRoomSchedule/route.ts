@@ -21,8 +21,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log(events);
-
     // good response
     return new NextResponse(JSON.stringify({ events }), {
       status: 200,
