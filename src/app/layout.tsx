@@ -3,6 +3,15 @@ import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 import StoreProvider from './StoreProvider';
 
+// https://nextjs.org/docs/app/building-your-application/optimizing/fonts
+import { Lato } from 'next/font/google';
+
+const lato = Lato({
+  weight: '400',
+  subsets: ['latin'],
+});
+
+// https://nextjs.org/docs/app/building-your-application/optimizing/metadata
 export const metadata: Metadata = {
   title: 'CMU Maps',
   description: 'Explore the CMU Maps',
@@ -21,7 +30,7 @@ export default function RootLayout({
       <ClerkProvider
         publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
       >
-        <html lang="en">
+        <html lang="en" className={lato.className}>
           <head>
             <script>const global = globalThis;</script>
           </head>

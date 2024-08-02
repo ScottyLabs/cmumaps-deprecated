@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -23,6 +23,8 @@ interface Props {
 
 const SearchBar = ({ mapRef, userPosition }: Props) => {
   const dispatch = useAppDispatch();
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const buildings = useAppSelector((state) => state.data.buildings);
@@ -68,6 +70,16 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
     dispatch(setIsSearchOpen(false));
   });
 
+  // blur the input field when not searching
+  // mainly used for clicking on the map to close search
+  useEffect(() => {
+    if (!isSearchOpen) {
+      if (inputRef.current) {
+        inputRef.current.blur();
+      }
+    }
+  }, [isSearchOpen]);
+
   const renderSearchQueryInput = () => {
     const renderCloseButton = () => (
       <IoIosClose
@@ -92,6 +104,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
           type="text"
           className="w-full rounded p-2"
           placeholder="Search"
+          ref={inputRef}
           value={searchQuery}
           onChange={(event) => {
             setSearchQuery(event.target.value);
@@ -174,7 +187,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   return (
     <div
       id="SearchBar"
-      className="box-shadow fixed left-2 right-2 top-4 z-10 w-full rounded sm:w-96"
+      className="box-shadow fixed top-4 z-10 w-full rounded px-2 sm:w-96"
     >
       {renderSearchQueryInput()}
       {searchQuery == '' && <QuickSearch setQuery={setSearchQuery} />}
