@@ -22,7 +22,6 @@ export default function Home() {
 
   const mapRef = useRef<mapkit.Map | null>(null);
 
-  const [showFloor, setShowFloor] = useState(false);
   const [showRoomNames, setShowRoomNames] = useState(false);
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
@@ -103,9 +102,7 @@ export default function Home() {
         <MapDisplay
           mapRef={mapRef}
           points={points}
-          setShowFloor={setShowFloor}
           setShowRoomNames={setShowRoomNames}
-          showFloor={showFloor}
           showRoomNames={showRoomNames}
         />
       </main>

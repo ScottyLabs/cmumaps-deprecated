@@ -31,21 +31,17 @@ import { isDesktop } from 'react-device-detect';
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
   points: number[][];
-  setShowFloor: (show: boolean) => void;
   setShowRoomNames: (show: boolean) => void;
-  showFloor: boolean;
   showRoomNames: boolean;
 }
 
 const MapDisplay = ({
   mapRef,
-  points,
-  setShowFloor,
   setShowRoomNames,
-  showFloor,
   showRoomNames,
 }: MapDisplayProps) => {
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
+  const [showFloor, setShowFloor] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
@@ -296,10 +292,49 @@ const MapDisplay = ({
     initialRegion,
   );
 
+  // render functions
+  const renderBuildings = () =>
+    buildings.map((building) => (
+      <BuildingShape
+        key={building.code}
+        building={building}
+        showName={!showFloor}
+      />
+    ));
+
+  const renderFloors = () =>
+    showFloor &&
+    !!buildings &&
+    !!floors &&
+    buildings.flatMap((building: Building) =>
+      building.floors.map((floor: { name: string; ordinal: number }) => {
+        if (floor.name !== focusedFloor?.level) {
+          // TODO: update this after update nicolas export
+          return null;
+        }
+
+        const code = `${building.code}-${floor.name}`;
+        if (code.substring(0, 3) != 'GHC' && code.substring(0, 3) != 'WEH') {
+          return null;
+        }
+        const floorPlan = floors[code];
+        return (
+          floorPlan && (
+            <FloorPlanOverlay
+              key={code}
+              floorPlan={floorPlan}
+              showRoomNames={showRoomNames}
+              isBackground={building.code !== focusedBuilding?.code}
+            />
+          )
+        );
+      }),
+    );
+
   return (
     <Map
       ref={mapRef}
-      token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN!}
+      token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN || ''}
       initialRegion={initialRegion}
       includedPOICategories={[PointOfInterestCategory.Restaurant]}
       cameraBoundary={cameraBoundary}
@@ -324,45 +359,10 @@ const MapDisplay = ({
       onRegionChangeEnd={onRegionChangeEnd}
       onClick={() => dispatch(setIsSearchOpen(false))}
     >
-      {buildings &&
-        buildings.map((building) => (
-          <BuildingShape
-            key={building.code}
-            building={building}
-            showName={!showFloor}
-          />
-        ))}
+      {renderBuildings()}
 
-      {showFloor &&
-        !!buildings &&
-        !!floors &&
-        buildings.flatMap((building: Building) =>
-          building.floors.map((floor: { name: string; ordinal: number }) => {
-            if (floor.name !== focusedFloor?.level) {
-              // TODO: update this after update nicolas export
-              return null;
-            }
+      {renderFloors()}
 
-            const code = `${building.code}-${floor.name}`;
-            if (
-              code.substring(0, 3) != 'GHC' &&
-              code.substring(0, 3) != 'WEH'
-            ) {
-              return null;
-            }
-            const floorPlan = floors[code];
-            return (
-              floorPlan && (
-                <FloorPlanOverlay
-                  key={code}
-                  floorPlan={floorPlan}
-                  showRoomNames={showRoomNames}
-                  isBackground={building.code !== focusedBuilding?.code}
-                />
-              )
-            );
-          }),
-        )}
       {recommendedPath && ( // This will be its own component at some point
         <Polyline
           points={(recommendedPath || []).map((n: node) =>
