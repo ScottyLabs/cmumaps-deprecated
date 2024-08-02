@@ -1,13 +1,16 @@
-import React from 'react';
-import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
-import { distance } from '@/geometry';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
-import Roundel from '../shared/Roundel';
+
+import React from 'react';
+
 import { claimBuilding, claimRoom } from '@/lib/features/uiSlice';
-import RoomPin from '../buildings/RoomPin';
-import { findRooms } from './searchUtil';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
+import { distance } from '@/util/geometry';
 import titleCase from '@/util/titleCase';
+
+import RoomPin from '../buildings/RoomPin';
+import Roundel from '../shared/Roundel';
+import { findRooms } from './searchUtil';
 
 export interface SearchResultsProps {
   query: string;

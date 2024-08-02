@@ -20,6 +20,7 @@ import {
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, FloorMap, Room } from '@/types';
+import { isInPolygonCoordinates } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 import BuildingShape from '../../components/buildings/BuildingShape';
@@ -27,7 +28,6 @@ import FloorPlanOverlay, {
   getFloorCenter,
   positionOnMap,
 } from '../../components/buildings/FloorPlanOverlay';
-import { isInPolygonCoordinates } from '../../geometry';
 import useMapPosition from '../../hooks/useMapPosition';
 
 interface MapDisplayProps {
@@ -42,9 +42,6 @@ const MapDisplay = ({
   setShowRoomNames,
   showRoomNames,
 }: MapDisplayProps) => {
-  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
-  const [showFloor, setShowFloor] = useState<boolean>(false);
-
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
@@ -53,6 +50,9 @@ const MapDisplay = ({
   const floors = useAppSelector((state) => state.data.floorMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+
+  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
+  const [showFloor, setShowFloor] = useState<boolean>(false);
 
   function zoomOnObject(points: Coordinate[]) {
     const allLat = points.map((p) => p.latitude);
