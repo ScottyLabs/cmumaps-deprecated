@@ -159,7 +159,7 @@ export interface Room {
   /**
    * Another name under which the room is known (e.g. 'McConomy Auditorium')
    */
-  alias?: string;
+  aliases: string[];
 
   type: RoomType;
 
