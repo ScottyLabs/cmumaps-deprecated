@@ -101,7 +101,7 @@ export default function Home() {
           {!isNavOpen && <InfoCard />}
           {isNavOpen && <NavCard />}
 
-          {focusedBuilding && !!focusedFloor && (
+          {focusedBuilding && (
             <FloorSwitcher
               building={focusedBuilding}
               focusedFloor={focusedFloor}

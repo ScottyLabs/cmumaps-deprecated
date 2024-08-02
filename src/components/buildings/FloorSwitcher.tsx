@@ -12,7 +12,7 @@ import Roundel from '../shared/Roundel';
 
 interface FloorSwitcherProps {
   building: Building;
-  focusedFloor: Floor;
+  focusedFloor: Floor | null;
 }
 
 /**
@@ -40,21 +40,21 @@ export default function FloorSwitcher({
   // useEffect(() => setShowFloorPicker(false), [building]);
 
   const renderDefaultView = () => {
+    if (building.floors.length === 0 || !focusedFloor) {
+      return (
+        <div className="flex items-center">
+          <p className="mx-2">{building.name}</p>
+          {/* <AiOutlineExclamationCircle size={30} className="mr-2" />
+          <p className="p-1">Floor plan not available</p> */}
+        </div>
+      );
+    }
+
     const floorLevels = building.floors.map((floor) => floor.level);
     const floorIndex = floorLevels.indexOf(focusedFloor.level);
 
     const canGoDown = floorIndex > 0;
     const canGoUp = floorIndex < floorLevels.length - 1;
-
-    if (building.floors.length === 0) {
-      return (
-        <div className="flex items-center">
-          <p className="mx-2">{building.name}</p>
-          <AiOutlineExclamationCircle size={30} className="mr-2" />
-          <p className="p-1">Floor plan not available</p>
-        </div>
-      );
-    }
 
     const renderDownArrow = () => (
       <div className="mr-2 flex items-center border-x border-gray-300 px-2">
