@@ -1,6 +1,7 @@
-import { AbsoluteCoordinate, Building, Floor, FloorMap, Room } from '@/types';
 import { distance as levenDist } from 'fastest-levenshtein';
-import { distance } from '@/geometry';
+
+import { AbsoluteCoordinate, Building, Floor, FloorMap, Room } from '@/types';
+import { distance } from '@/util/geometry';
 
 function fullRoomName(room: Room, building: Building, abbrev = false): string {
   const buildingName = abbrev ? building.code : building.name;

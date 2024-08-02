@@ -1,16 +1,17 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import { UserButton } from '@clerk/nextjs';
 import Head from 'next/head';
 
-import { UserButton } from '@clerk/nextjs';
+import React, { useEffect, useRef, useState } from 'react';
+
+import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setRoomImageList } from '@/lib/features/uiSlice';
-import SearchBar from '@/components/searchbar/SearchBar';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
-import FloorSwitcher from '@/components/buildings/FloorSwitcher';
+import SearchBar from '@/components/searchbar/SearchBar';
+import { setRoomImageList } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -82,9 +83,12 @@ export default function Home() {
           {!isNavOpen && <InfoCard />}
           {isNavOpen && <NavCard />}
 
-          {/* {focusedBuilding && !!focusedFloor && (
-            <FloorSwitcher building={focusedBuilding} focusedFloor={focusedFloor} />
-          )} */}
+          {focusedBuilding && !!focusedFloor && (
+            <FloorSwitcher
+              building={focusedBuilding}
+              focusedFloor={focusedFloor}
+            />
+          )}
 
           <SearchBar
             mapRef={mapRef.current}
