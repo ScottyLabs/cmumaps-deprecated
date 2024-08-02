@@ -223,6 +223,11 @@ const MapDisplay = ({
               `/json/${building.code}/${building.code}-${floor.level}-outline.json`,
             );
             const outlineJson = await outlineResponse.json();
+
+            for (const roomId in outlineJson['rooms']) {
+              outlineJson['rooms'][roomId]['id'] = roomId;
+            }
+
             return [`${building.code}-${floor.level}`, outlineJson];
           }),
         )

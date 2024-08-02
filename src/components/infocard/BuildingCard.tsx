@@ -158,8 +158,7 @@ const BuildingCard = ({ building }: Props) => {
       <div className="mx-2 mb-3 space-y-3">
         {eatingData.map(([eatery, eatingData]) => (
           <div
-            // replace with id when possible!
-            key={eatery.name}
+            key={eatery.id}
             className="cursor-pointer rounded border p-1"
             onClick={() => dispatch(claimRoom(eatery))}
           >

@@ -1,11 +1,14 @@
-import { Room } from '@/types';
 import Image from 'next/image';
-import ButtonsRow from './ButtonsRow';
-import { ImSpoonKnife } from 'react-icons/im';
-import EateryInfo from './EateryInfo';
+
 import React, { useEffect, useState } from 'react';
-import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
+import { ImSpoonKnife } from 'react-icons/im';
+
+import { Room } from '@/types';
 import { getEatingData } from '@/util/cmueats/getEatingData';
+import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
+
+import ButtonsRow from './ButtonsRow';
+import EateryInfo from './EateryInfo';
 
 interface Props {
   room: Room;
@@ -17,11 +20,11 @@ const Eaterycard = ({ room }: Props) => {
 
   useEffect(() => {
     const fetchEatingData = async () => {
-      const newEatingData = await getEatingData(room.alias);
+      const newEatingData = await getEatingData(room.aliases[0]);
       setEatingData(newEatingData);
     };
     fetchEatingData();
-  }, [room.alias]);
+  }, [room.aliases]);
 
   const renderEateryImage = () => {
     if (eatingData) {

@@ -100,7 +100,7 @@ export default function SearchResults({
             <span>{` • ${titleCase(roomType(room))}`}</span>
           )}
         </div>
-        {room.alias && <div className="truncate">{room.alias}</div>}
+        {room.aliases[0] && <div className="truncate">{room.aliases[0]}</div>}
       </div>
     );
 
@@ -108,8 +108,7 @@ export default function SearchResults({
       <button
         type="button"
         className="flex h-14 w-full justify-between gap-2 p-1 pl-6"
-        // replace with id when possible !!!
-        key={room.name + room.floor}
+        key={room.id}
         onClick={() => {
           // dispatch(claimBuilding(building));
           dispatch(claimRoom(room));
