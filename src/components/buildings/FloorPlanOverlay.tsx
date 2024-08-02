@@ -8,7 +8,6 @@ import {
 } from '@/types';
 import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 import React, { useMemo, useRef } from 'react';
-import clsx from 'clsx';
 import styles from '../../styles/FloorPlanOverlay.module.css';
 import RoomPin, { hasIcon } from './RoomPin';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';

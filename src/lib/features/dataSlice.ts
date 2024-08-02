@@ -4,13 +4,11 @@ import { createSlice } from '@reduxjs/toolkit';
 interface DataState {
   buildings: Building[] | null;
   floorMap: FloorMap | null;
-  legacyFloorMap: FloorMap | null;
 }
 
 const initialState: DataState = {
   buildings: null,
   floorMap: null,
-  legacyFloorMap: null,
 };
 
 const dataSlice = createSlice({
@@ -33,12 +31,8 @@ const dataSlice = createSlice({
       }
       state.floorMap[floorName] = floorPlan;
     },
-    setLegacyFloorMap(state, action) {
-      state.legacyFloorMap = action.payload;
-    },
   },
 });
 
-export const { setBuildings, setFloorMap, setLegacyFloorMap, addFloorToMap } =
-  dataSlice.actions;
+export const { setBuildings, setFloorMap, addFloorToMap } = dataSlice.actions;
 export default dataSlice.reducer;

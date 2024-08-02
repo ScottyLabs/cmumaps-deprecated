@@ -1,7 +1,6 @@
 import React from 'react';
 import { Building } from '@/types';
 import { Annotation, Polygon } from 'mapkit-react';
-import styles from '../../styles/BuildingShape.module.css';
 import Roundel from '../shared/Roundel';
 import { claimBuilding, releaseBuilding } from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
