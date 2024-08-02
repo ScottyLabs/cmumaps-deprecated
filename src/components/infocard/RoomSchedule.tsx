@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   format,
   addWeeks,
@@ -9,6 +9,8 @@ import {
 } from 'date-fns';
 import { FaChevronLeft } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa';
+import { Event } from '@prisma/client';
+import { useAppSelector } from '@/lib/hooks';
 
 const RoomSchedule = () => {
   const today = new Date();
@@ -16,6 +18,12 @@ const RoomSchedule = () => {
 
   const [currentWeek, setCurrentWeek] = useState<Date>(today);
   const [dayOfWeek, setDayOfWeek] = useState<number>(today.getDay());
+  const [thisWeeksEvents, setThisWeeksEvents] = useState<Event[][] | null>(
+    null,
+  );
+
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
 
   const startOfCurrentWeek = startOfWeek(currentWeek, { weekStartsOn: 0 });
   const endOfCurrentWeek = endOfWeek(currentWeek, { weekStartsOn: 0 });
@@ -23,6 +31,23 @@ const RoomSchedule = () => {
     start: startOfCurrentWeek,
     end: endOfCurrentWeek,
   });
+
+  useEffect(() => {
+    // fetch events for the current day
+    setThisWeeksEvents(null);
+    fetch('/api/events', {
+      method: 'GET',
+      headers: {
+        roomName: `${focusedBuilding?.code} ${selectedRoom?.name}`,
+        startDate: startOfCurrentWeek.valueOf().toString(),
+        endDate: endOfCurrentWeek.valueOf().toString(),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setThisWeeksEvents(data);
+      });
+  }, [currentWeek]);
 
   const renderDatePicker = () => {
     const renderDateRow = () => {
@@ -80,7 +105,8 @@ const RoomSchedule = () => {
     const renderContent = () => {
       return (
         <p>
-          Theo, please give me the events for {daysOfWeek[dayOfWeek].toString()}
+          Yuxiang, please use the events returned by thisWeeksEvents ?
+          thisWeeksEvents[dayOfWeek] : null to populate
         </p>
       );
     };

@@ -17,7 +17,6 @@ export default function NavCard(): ReactElement {
   const startRoom = useAppSelector((state) => state.ui.selectedRoom);
   const endRoom = useAppSelector((state) => state.nav.endRoom);
   useEffect(() => {
-    console.log(startRoom, endRoom);
     fetch('/api/findPath', {
       method: 'POST',
       headers: {
