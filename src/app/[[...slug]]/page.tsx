@@ -1,7 +1,6 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
-import Head from 'next/head';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
@@ -45,7 +44,7 @@ const Page = ({ searchParams }: Props) => {
     dispatch(setIsMobile(isMobile));
   }, [userAgent, dispatch]);
 
-  // loads the list of images of the rooms
+  // load the list of images of the rooms
   useEffect(() => {
     const getRoomImageList = async () => {
       const res = await fetch('/assets/location_images/list_of_files.txt');
@@ -73,7 +72,7 @@ const Page = ({ searchParams }: Props) => {
     getRoomImageList();
   }, [dispatch]);
 
-  // Load the buidling and floor data
+  // load the buidling and floor data
   useEffect(() => {
     const getBuildings = async () => {
       // set buildings
@@ -123,18 +122,20 @@ const Page = ({ searchParams }: Props) => {
     getBuildings();
   }, [dispatch]);
 
-  const currentFloorName = focusedFloor?.level;
-
-  // Compute the current page title
-  let title = '';
-  if (focusedBuilding) {
-    title += focusedBuilding.name;
-    if (currentFloorName) {
-      title += ` ${currentFloorName}`;
+  // compute the current page title
+  useEffect(() => {
+    let title = '';
+    if (focusedBuilding) {
+      title += focusedBuilding.name;
+      const currentFloorName = focusedFloor?.level;
+      if (currentFloorName) {
+        title += ` ${currentFloorName}`;
+      }
+      title += ' — ';
     }
-    title += ' — ';
-  }
-  title += 'CMU Map';
+    title += 'CMU Maps';
+    document.title = title;
+  }, [focusedBuilding, focusedFloor?.level]);
 
   const renderClerkIcon = () => {
     if (isMobile) {
@@ -153,43 +154,36 @@ const Page = ({ searchParams }: Props) => {
   };
 
   return (
-    <>
-      <Head>
-        <title>{title}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Interactive map of the CMU campus" />
-      </Head>
-      <main className="relative h-screen">
-        <div className="absolute z-10">
-          {!isNavOpen && <InfoCard />}
-          {isNavOpen && <NavCard />}
+    <main className="relative h-screen">
+      <div className="absolute z-10">
+        {!isNavOpen && <InfoCard />}
+        {isNavOpen && <NavCard />}
 
-          {focusedBuilding && (
-            <FloorSwitcher
-              building={focusedBuilding}
-              focusedFloor={focusedFloor}
-            />
-          )}
-
-          <SearchBar
-            mapRef={mapRef.current}
-            userPosition={{
-              x: points[points.length - 1][0],
-              y: points[points.length - 1][1],
-            }}
+        {focusedBuilding && (
+          <FloorSwitcher
+            building={focusedBuilding}
+            focusedFloor={focusedFloor}
           />
+        )}
 
-          {renderClerkIcon()}
-        </div>
-
-        <MapDisplay
-          mapRef={mapRef}
-          points={points}
-          setShowRoomNames={setShowRoomNames}
-          showRoomNames={showRoomNames}
+        <SearchBar
+          mapRef={mapRef.current}
+          userPosition={{
+            x: points[points.length - 1][0],
+            y: points[points.length - 1][1],
+          }}
         />
-      </main>
-    </>
+
+        {renderClerkIcon()}
+      </div>
+
+      <MapDisplay
+        mapRef={mapRef}
+        points={points}
+        setShowRoomNames={setShowRoomNames}
+        showRoomNames={showRoomNames}
+      />
+    </main>
   );
 };
 

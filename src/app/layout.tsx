@@ -14,7 +14,7 @@ const lato = Lato({
 // https://nextjs.org/docs/app/building-your-application/optimizing/metadata
 export const metadata: Metadata = {
   title: 'CMU Maps',
-  description: 'Explore the CMU Maps',
+  description: 'Interactive map of the CMU campus',
   icons: {
     icon: '/favicons/smapslogo.png',
   },
