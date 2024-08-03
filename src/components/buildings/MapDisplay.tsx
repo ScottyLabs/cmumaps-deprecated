@@ -8,7 +8,6 @@ import {
 } from 'mapkit-react';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { isDesktop } from 'react-device-detect';
 
 import { node } from '@/app/api/findPath/route';
 import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
@@ -50,6 +49,8 @@ const MapDisplay = ({
   const floors = useAppSelector((state) => state.data.floorMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
 
   const [mapLoaded, setMapLoaded] = useState<boolean>(false);
   const [showFloor, setShowFloor] = useState<boolean>(false);
@@ -354,13 +355,13 @@ const MapDisplay = ({
       maxCameraDistance={1500}
       showsUserLocationControl
       mapType={MapType.MutedStandard}
-      paddingBottom={isDesktop ? 0 : 72}
+      paddingBottom={isMobile ? 72 : 0}
       paddingLeft={4}
       paddingRight={4}
       paddingTop={10}
-      showsZoomControl={isDesktop}
+      showsZoomControl={!isMobile}
       showsCompass={
-        isDesktop ? FeatureVisibility.Adaptive : FeatureVisibility.Hidden
+        isMobile ? FeatureVisibility.Hidden : FeatureVisibility.Adaptive
       }
       allowWheelToZoom
       onLoad={() => {
