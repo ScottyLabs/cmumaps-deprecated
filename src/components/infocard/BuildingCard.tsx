@@ -1,7 +1,6 @@
 import Image from 'next/image';
 
 import React, { useEffect, useState } from 'react';
-import { isDesktop } from 'react-device-detect';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -22,6 +21,7 @@ interface Props {
 const BuildingCard = ({ building }: Props) => {
   const dispatch = useAppDispatch();
 
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
   const floorMap = useAppSelector((state) => state.data.floorMap);
 
   const [eatingData, setEatingData] = useState<
@@ -90,21 +90,7 @@ const BuildingCard = ({ building }: Props) => {
   };
 
   const renderEateryCarousel = () => {
-    if (isDesktop) {
-      return (
-        <div className="mx-2 mb-3 space-y-3">
-          {eatingData.map(([eatery, eatingData]) => (
-            <div
-              key={eatery.id}
-              className="cursor-pointer rounded border p-1"
-              onClick={() => dispatch(claimRoom(eatery))}
-            >
-              <EateryInfo room={eatery} eatingData={eatingData} />
-            </div>
-          ))}
-        </div>
-      );
-    } else {
+    if (isMobile) {
       const responsive = {
         superLargeDesktop: {
           breakpoint: { max: 4000, min: 3000 },
@@ -160,6 +146,20 @@ const BuildingCard = ({ building }: Props) => {
               </div>
             ))}
           </Carousel>
+        </div>
+      );
+    } else {
+      return (
+        <div className="mx-2 mb-3 space-y-3">
+          {eatingData.map(([eatery, eatingData]) => (
+            <div
+              key={eatery.id}
+              className="cursor-pointer rounded border p-1"
+              onClick={() => dispatch(claimRoom(eatery))}
+            >
+              <EateryInfo room={eatery} eatingData={eatingData} />
+            </div>
+          ))}
         </div>
       );
     }
