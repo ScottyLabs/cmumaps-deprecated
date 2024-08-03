@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { isDesktop } from 'react-device-detect';
-import { AiOutlineExclamationCircle } from 'react-icons/ai';
+// import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { FaArrowUp } from 'react-icons/fa';
 import { FaArrowDown } from 'react-icons/fa';
 
@@ -27,12 +26,14 @@ export default function FloorSwitcher({
 
   const dispatch = useAppDispatch();
 
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
   const isCardWrapperCollapsed = useAppSelector(
     (state) => state.ui.isCardWrapperCollapsed,
   );
 
-  if (!isDesktop && isCardOpen && !isCardWrapperCollapsed) {
+  // don't render the floor switcher if on mobile and the card covers the floor switcher
+  if (isMobile && isCardOpen && !isCardWrapperCollapsed) {
     return <></>;
   }
 
@@ -128,6 +129,10 @@ export default function FloorSwitcher({
   };
 
   const renderFloorPicker = () => {
+    if (!focusedFloor) {
+      return;
+    }
+
     return (
       <div className="ml-2 flex items-stretch">
         {building.floors.map((floor: Floor) => (
@@ -154,21 +159,22 @@ export default function FloorSwitcher({
   };
 
   const wrapper = (children: ReactElement) => {
-    if (isDesktop) {
-      return (
-        <div className="fixed bottom-2 left-1/2 z-10 px-2 -translate-x-1/2 w-fit">
-          <div className="flex items-stretch justify-center rounded bg-white">
-            {children}
-          </div>
-        </div>
-      );
-    } else {
+    if (isMobile) {
+      // different distance from the bottom of the page when on mobile depending on if the card is open
       const bottomClass = isCardOpen ? 'bottom-10' : 'bottom-2';
 
       return (
         <div
           className={`fixed left-1/2 z-10 px-2 -translate-x-1/2 w-fit ${bottomClass}`}
         >
+          <div className="flex items-stretch justify-center rounded bg-white">
+            {children}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="fixed bottom-2 left-1/2 z-10 px-2 -translate-x-1/2 w-fit">
           <div className="flex items-stretch justify-center rounded bg-white">
             {children}
           </div>

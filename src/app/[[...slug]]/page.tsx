@@ -11,7 +11,7 @@ import MapDisplay from '@/components/buildings/MapDisplay';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
-import { setRoomImageList } from '@/lib/features/uiSlice';
+import { setIsMobile, setRoomImageList } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 const points = [[40.44249719447571, -79.94314319195851]];
@@ -28,16 +28,21 @@ interface Props {
 const Page = ({ searchParams }: Props) => {
   const dispatch = useAppDispatch();
 
-  // determine the device type
-  const userAgent = searchParams.userAgent || '';
-  const { isMobile } = getSelectorsByUserAgent(userAgent);
-
   const mapRef = useRef<mapkit.Map | null>(null);
 
   const [showRoomNames, setShowRoomNames] = useState(false);
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+
+  // determine the device type
+  const userAgent = searchParams.userAgent || '';
+  const { isMobile } = getSelectorsByUserAgent(userAgent);
+
+  useEffect(() => {
+    const { isMobile } = getSelectorsByUserAgent(userAgent);
+    dispatch(setIsMobile(isMobile));
+  }, [userAgent, dispatch]);
 
   // loads the list of images of the rooms
   useEffect(() => {
@@ -105,8 +110,6 @@ const Page = ({ searchParams }: Props) => {
       </Head>
       <main className="relative h-screen">
         <div className="absolute z-10">
-          <h1 className="hidden">CMU Map</h1>
-
           {!isNavOpen && <InfoCard />}
           {isNavOpen && <NavCard />}
 
