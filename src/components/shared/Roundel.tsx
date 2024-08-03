@@ -9,8 +9,6 @@ interface Props {
  * The roundel displaying a building’s code.
  */
 export default function Roundel({ code }: Props) {
-  console.log('rendered');
-
   return (
     <div
       className={
