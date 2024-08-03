@@ -7,7 +7,7 @@ import {
   Polyline,
 } from 'mapkit-react';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { node } from '@/app/api/findPath/route';
 import {
@@ -25,7 +25,6 @@ import {
   Room,
 } from '@/types';
 import { isInPolygonCoordinates } from '@/util/geometry';
-import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import BuildingShape from './BuildingShape';
@@ -33,6 +32,7 @@ import FloorPlanOverlay, {
   getFloorCenter,
   positionOnMap,
 } from './FloorPlanOverlay';
+import { zoomOnObject } from './mapUtils';
 
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
@@ -61,23 +61,6 @@ const MapDisplay = ({
 
   const [mapLoaded, setMapLoaded] = useState<boolean>(false);
   const [showFloor, setShowFloor] = useState<boolean>(false);
-
-  const zoomOnObject = useCallback(
-    (points: Coordinate[]) => {
-      const allLat = points.map((p) => p.latitude);
-      const allLon = points.map((p) => p.longitude);
-      mapRef.current?.setRegionAnimated(
-        new mapkit.BoundingRegion(
-          Math.max(...allLat),
-          Math.max(...allLon),
-          Math.min(...allLat),
-          Math.min(...allLon),
-        ).toCoordinateRegion(),
-        !prefersReducedMotion(),
-      );
-    },
-    [mapRef],
-  );
 
   const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
     dispatch(focusBuilding(newBuilding));
@@ -126,11 +109,12 @@ const MapDisplay = ({
     }
   };
 
+  // zoom on the selected building
   useEffect(() => {
     if (selectedBuilding) {
-      zoomOnObject(selectedBuilding?.shapes.flat());
+      zoomOnObject(mapRef, selectedBuilding?.shapes.flat());
     }
-  }, [selectedBuilding, zoomOnObject]);
+  }, [mapRef, selectedBuilding]);
 
   const zoomOnDefaultBuilding = (
     newBuildings: Record<BuildingCode, Building>,
@@ -258,7 +242,7 @@ const MapDisplay = ({
           longitude: region.centerLongitude,
         };
         const centerBuilding =
-          buildings.find(
+          Object.values(buildings).find(
             (building: Building) =>
               building.hitbox &&
               isInPolygonCoordinates(building.hitbox, center),
@@ -289,7 +273,7 @@ const MapDisplay = ({
     showFloor &&
     !!buildings &&
     !!floors &&
-    buildings.flatMap((building: Building) =>
+    Object.values(buildings).flatMap((building: Building) =>
       building.floors.map((floor: { name: string; ordinal: number }) => {
         if (floor.name !== focusedFloor?.level) {
           // TODO: update this after update nicolas export
