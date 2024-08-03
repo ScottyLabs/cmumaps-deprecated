@@ -1,5 +1,5 @@
-[
-    {
+{
+    "AH": {
         "code": "AH",
         "name": "Alumni House",
         "osmId": "27630034",
@@ -64,7 +64,7 @@
             }
         ]
     },
-    {
+    "AN": {
         "code": "AN",
         "name": "ANSYS Hall",
         "osmId": "1001941217",
@@ -190,7 +190,7 @@
             }
         ]
     },
-    {
+    "BH": {
         "code": "BH",
         "name": "Baker Hall",
         "osmId": "27590907",
@@ -416,7 +416,7 @@
             }
         ]
     },
-    {
+    "PH": {
         "code": "PH",
         "name": "Porter Hall",
         "osmId": "27549961",
@@ -610,7 +610,7 @@
             }
         ]
     },
-    {
+    "BR": {
         "code": "BR",
         "name": "Bramer House",
         "osmId": "27643509",
@@ -675,7 +675,7 @@
             }
         ]
     },
-    {
+    "CIC": {
         "code": "CIC",
         "name": "Collaborative Innovation Center",
         "osmId": "27591069",
@@ -772,7 +772,7 @@
             }
         ]
     },
-    {
+    "CUC": {
         "code": "CUC",
         "name": "Cohon University Center",
         "osmId": "27574394",
@@ -1058,7 +1058,7 @@
             }
         ]
     },
-    {
+    "CFA": {
         "code": "CFA",
         "name": "College of Fine Arts",
         "osmId": "27591225",
@@ -1156,7 +1156,7 @@
             }
         ]
     },
-    {
+    "CYH": {
         "code": "CYH",
         "name": "Cyert Hall",
         "osmId": "27574718",
@@ -1310,7 +1310,7 @@
             }
         ]
     },
-    {
+    "DH": {
         "code": "DH",
         "name": "Doherty Hall",
         "osmId": "27574545",
@@ -1496,7 +1496,7 @@
             }
         ]
     },
-    {
+    "FM": {
         "code": "FM",
         "name": "Facilities Management Services Building",
         "osmId": "27590940",
@@ -1634,7 +1634,7 @@
             }
         ]
     },
-    {
+    "GHC": {
         "code": "GHC",
         "name": "Gates & Hillman Centers",
         "osmId": "27623372",
@@ -1928,7 +1928,7 @@
             }
         ]
     },
-    {
+    "HOA": {
         "code": "HOA",
         "name": "Hall of the Arts",
         "osmId": "1002857138",
@@ -2058,7 +2058,7 @@
             }
         ]
     },
-    {
+    "HBH": {
         "code": "HBH",
         "name": "Hamburg Hall",
         "osmId": "27591096",
@@ -2236,7 +2236,7 @@
             }
         ]
     },
-    {
+    "HH": {
         "code": "HH",
         "name": "Hamerschlag Hall",
         "osmId": "27551077",
@@ -2434,7 +2434,7 @@
             }
         ]
     },
-    {
+    "HL": {
         "code": "HL",
         "name": "Hunt Library",
         "osmId": "27574204",
@@ -2520,7 +2520,7 @@
             }
         ]
     },
-    {
+    "III": {
         "code": "III",
         "name": "Integrated Innovation Institute",
         "osmId": "171450767",
@@ -2601,7 +2601,7 @@
             }
         ]
     },
-    {
+    "MM": {
         "code": "MM",
         "name": "Margaret Morrison Carnegie Hall",
         "osmId": "27591314",
@@ -2843,7 +2843,7 @@
             }
         ]
     },
-    {
+    "MI": {
         "code": "MI",
         "name": "Mellon Institute",
         "osmId": "25795368",
@@ -2916,7 +2916,7 @@
             }
         ]
     },
-    {
+    "NSH": {
         "code": "NSH",
         "name": "Newell-Simon Hall",
         "osmId": "27551590",
@@ -3058,7 +3058,7 @@
             }
         ]
     },
-    {
+    "PC": {
         "code": "PC",
         "name": "Posner Center",
         "osmId": "27591276",
@@ -3124,7 +3124,7 @@
             }
         ]
     },
-    {
+    "POS": {
         "code": "POS",
         "name": "Posner Hall",
         "osmId": "27591241",
@@ -3230,7 +3230,7 @@
             }
         ]
     },
-    {
+    "PCA": {
         "code": "PCA",
         "name": "Purnell Center for the Arts",
         "osmId": "27574406",
@@ -3388,7 +3388,7 @@
             }
         ]
     },
-    {
+    "REH": {
         "code": "REH",
         "name": "Roberts Engineering Hall",
         "osmId": "27590641",
@@ -3506,7 +3506,7 @@
             }
         ]
     },
-    {
+    "SC": {
         "code": "SC",
         "name": "Scott Hall",
         "osmId": null,
@@ -3694,7 +3694,7 @@
             }
         ]
     },
-    {
+    "EDS": {
         "code": "EDS",
         "name": "Smith Hall",
         "osmId": "27591104",
@@ -3768,7 +3768,7 @@
             }
         ]
     },
-    {
+    "TCS": {
         "code": "TCS",
         "name": "TCS Hall",
         "osmId": "946491335",
@@ -3902,7 +3902,7 @@
             }
         ]
     },
-    {
+    "TEP": {
         "code": "TEP",
         "name": "Tepper Building",
         "osmId": "583510520",
@@ -4084,7 +4084,7 @@
             }
         ]
     },
-    {
+    "WH": {
         "code": "WH",
         "name": "Warner Hall",
         "osmId": "27574704",
@@ -4145,7 +4145,7 @@
             }
         ]
     },
-    {
+    "WEH": {
         "code": "WEH",
         "name": "Wean Hall",
         "osmId": "27551364",
@@ -4383,7 +4383,7 @@
             }
         ]
     },
-    {
+    "WWG": {
         "code": "WWG",
         "name": "West Wing",
         "osmId": "27591351",
@@ -4472,7 +4472,7 @@
             }
         ]
     },
-    {
+    "WF": {
         "code": "WF",
         "name": "Whitfield Hall",
         "osmId": "44157441",
@@ -4529,7 +4529,7 @@
             }
         ]
     },
-    {
+    "WQ": {
         "code": "WQ",
         "name": "WQED Building",
         "osmId": "544174673",
@@ -4739,7 +4739,7 @@
             }
         ]
     },
-    {
+    "2SC": {
         "code": "2SC",
         "name": "205 S. Craig",
         "osmId": "172944549",
@@ -4796,7 +4796,7 @@
             }
         ]
     },
-    {
+    "3SC": {
         "code": "3SC",
         "name": "300 S. Craig (Police)",
         "osmId": "34262288",
@@ -4873,7 +4873,7 @@
             }
         ]
     },
-    {
+    "4SC": {
         "code": "4SC",
         "name": "407 S. Craig",
         "osmId": "44157443",
@@ -4955,7 +4955,7 @@
             }
         ]
     },
-    {
+    "CC": {
         "code": "CC",
         "name": "417 S. Craig",
         "osmId": "172661493",
@@ -5020,7 +5020,7 @@
             }
         ]
     },
-    {
+    "UT": {
         "code": "UT",
         "name": "4516 Henry (UTDC)",
         "osmId": "29094259",
@@ -5077,7 +5077,7 @@
             }
         ]
     },
-    {
+    "FRB": {
         "code": "FRB",
         "name": "4615 Forbes (CTTEC)",
         "osmId": "44157444",
@@ -5166,7 +5166,7 @@
             }
         ]
     },
-    {
+    "INI": {
         "code": "INI",
         "name": "4616 Henry",
         "osmId": "44156184",
@@ -5223,7 +5223,7 @@
             }
         ]
     },
-    {
+    "PO": {
         "code": "PO",
         "name": "620 Henry",
         "osmId": "543159704",
@@ -5280,7 +5280,7 @@
             }
         ]
     },
-    {
+    "MC": {
         "code": "MC",
         "name": "4721 Fifth Ave (CDFD)",
         "osmId": "545283494",
@@ -5353,4 +5353,4 @@
             }
         ]
     }
-]
+}
