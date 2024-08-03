@@ -44,6 +44,7 @@ const Page = ({ params, searchParams }: Props) => {
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const buildings = useAppSelector((state) => state.data.buildings);
+  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
 
   // initial load of the url
   useEffect(() => {
@@ -177,7 +178,7 @@ const Page = ({ params, searchParams }: Props) => {
   return (
     <main className="relative h-screen">
       <div className="absolute z-10">
-        {!isNavOpen && <InfoCard />}
+        {!isNavOpen && !isSearchOpen && <InfoCard />}
         {isNavOpen && <NavCard />}
 
         {focusedBuilding && (
