@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Building, FloorMap, FloorPlan } from '@/types';
+import { Building, BuildingCode, FloorMap, FloorPlan } from '@/types';
 
 interface DataState {
-  buildings: Building[];
+  buildings: Record<BuildingCode, Building>;
   floorMap: FloorMap;
 }
 
 const initialState: DataState = {
-  buildings: [],
+  buildings: {},
   floorMap: {},
 };
 

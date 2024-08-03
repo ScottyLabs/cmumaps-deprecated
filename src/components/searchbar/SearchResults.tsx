@@ -9,15 +9,12 @@ import RoomPin from '../buildings/RoomPin';
 import Roundel from '../shared/Roundel';
 import { findRooms } from './searchUtil';
 
-interface SearchResultWrapperProps {
+interface WrapperProps {
   children: ReactElement;
   handleClick: () => void;
 }
 
-const SearchResultWrapper = ({
-  children,
-  handleClick,
-}: SearchResultWrapperProps) => {
+const SearchResultWrapper = ({ children, handleClick }: WrapperProps) => {
   return (
     <button
       type="button"
@@ -73,7 +70,7 @@ export default function SearchResults({
   //   );
   // }
 
-  const searchResult = buildings
+  const searchResult = Object.values(buildings)
     .map((building: Building) => ({
       Building: building,
       Rooms: findRooms(query, building, floorMap, userPosition),
