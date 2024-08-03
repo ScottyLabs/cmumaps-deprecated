@@ -11,6 +11,7 @@ import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
 import { getFloorCenter, positionOnMap } from '../buildings/FloorPlanOverlay';
 import { Coordinate } from 'mapkit-react';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
+import { searchEvents } from '@/lib/apiRoutes';
 
 interface Props {
   mapRef: mapkit.Map | null;
@@ -33,6 +34,8 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<JSX.Element | null>(null);
+  const [eventsResults, setEventsResults] = useState<Event[]>([]);
+
   // set the search query using room and building
   useEffect(() => {
     // return the building name if a building is selected
@@ -176,28 +179,30 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   };
 
   useEffect(() => {
-    setTimeout(() => setSearchResults(renderSearchResults()), 500);
+    setTimeout(() => {
+      setSearchResults(renderSearchResults());
+      searchEvents(searchQuery).then(setEventsResults);
+    }, 500);
   }, [searchQuery]);
 
   // don't display anything before the buildings are loaded
   if (!buildings) {
     return;
   }
-
   return (
     <div
       id="SearchBar"
       className="box-shadow fixed top-4 z-10 w-full rounded px-2 sm:w-96"
     >
       {renderSearchQueryInput()}
-
       {searchQuery == '' && (
         <div className="mt-3">
           <QuickSearch setQuery={setSearchQuery} />
         </div>
       )}
-
       {searchResults}
+      Yuxiang please make the UI for events given here{' '}
+      <p> ({eventsResults.toString()})</p>
     </div>
   );
 };
