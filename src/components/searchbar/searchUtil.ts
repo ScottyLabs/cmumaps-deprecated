@@ -1,18 +1,42 @@
-import { AbsoluteCoordinate, Building, Floor, FloorMap, Room } from '@/types';
+import {
+  AbsoluteCoordinate,
+  Building,
+  Floor,
+  FloorMap,
+  Room,
+  SearchRoom,
+} from '@/types';
 import { distance as levenDist } from 'fastest-levenshtein';
 import { distance } from '@/geometry';
 
-function fullRoomName(room: Room, building: Building, abbrev = false): string {
-  const buildingName = abbrev ? building.code : building.name;
-  return room.alias ? buildingName + room.alias : buildingName + room.name;
+function getRoomTokens(room: SearchRoom, building: Building): string[] {
+  let tokens = [room.name, building.code, building.name];
+  if (room.alias) {
+    tokens = tokens.concat(room.alias.split(' '));
+  }
+  return tokens
+    .filter((token) => token.length > 0)
+    .map((token) => token.toLowerCase());
 }
 
+/*
+For search, we assume each user's word (query tokens taken by whitespace tokenization) is a part of 
+either a building name, a room name, or a room alias (call these target tokens). Then, for each target,
+we get it's tokens and compute a score for the compatibility of each target token for each query token.
+Since we assume that each query word does not correspond to more than one type of target token, we can
+estimate the distance between query and target by taking the maximum of the scores for each query token.
+Effectively, this computes the distance between the query token and it's most likely meaning. We then
+sum those distances to get a total distance for the query and target.
+*/
 export const findRooms = (
   query: string,
   building: Building,
   floorMap: FloorMap,
   userPosition: AbsoluteCoordinate,
-): Room[] => {
+): [SearchRoom[], number] => {
+  if (query.length < 3) {
+    return [[], -1];
+  }
   // No query: only show building names
   const lDistCache = new Map();
   // Query for another building
@@ -22,36 +46,44 @@ export const findRooms = (
     }
     // let roomsObj = Object.entries(floorMap[`${building.code}-${floor.name}`]?.rooms) // for new floors layout
     const roomsObj = floorMap[`${building.code}-${floor.name}`]?.rooms; // for legacy floors layout
+    const queryTokens = query
+      .toLowerCase()
+      .split(' ')
+      .filter((token) => token.length > 0);
     return (
       roomsObj
         // .filter((roomId: string, room: Room) => { // for new floors layout
-        .filter((room: Room) => {
-          return (
-            fullRoomName(room, building).includes(query) ||
-            (room.alias && room.alias.includes(query))
-          );
-
-          // legacy floors layout
-          const fullName = fullRoomName(room, building);
-          const fullCodeName = fullRoomName(room, building, true);
-          const a = levenDist(query.toLowerCase(), fullName.toLowerCase());
-          const b = levenDist(query.toLowerCase(), fullCodeName.toLowerCase());
-          const c =
-            !!room.alias &&
-            levenDist(query.toLowerCase(), room.alias.toLowerCase());
-          const d =
-            !!room.type &&
-            levenDist(query.toLowerCase(), room.type.toLowerCase());
-          // lDistCache.set(roomId, (a + b + c + d) / 4); // new
-          lDistCache.set(room.id, (a + b + c + d) / 4); // legacy
-
-          return (
-            a < fullName.length / 3 ||
-            b < fullCodeName.length / 3 ||
-            (room.alias && c < room.alias.length / 3) ||
-            (room.type && d < room.type.length / 3)
-          );
+        .filter((room: SearchRoom) => {
+          const roomTokens = getRoomTokens(room, building);
+          let score = 0;
+          for (const queryToken of queryTokens) {
+            let bestScore = 999;
+            for (const roomToken of roomTokens) {
+              bestScore = Math.min(
+                bestScore,
+                levenDist(
+                  queryToken,
+                  roomToken.substring(0, queryToken.length),
+                ),
+              );
+            }
+            if (bestScore > 2) {
+              // If there is a query token that dosen't have a reasonable match
+              score = 999;
+              break;
+            }
+            score += bestScore;
+          }
+          if (score < queryTokens.length) {
+            lDistCache.set(room.id, score);
+          }
+          return score < queryTokens.length;
         })
+        // .map(([roomId, room]) => ({ // new
+        .map((room) => ({
+          ...room,
+          floor,
+        })) ?? []
     );
   });
 
@@ -63,25 +95,9 @@ export const findRooms = (
     );
   }
 
-  roomsList.sort((a, b) => lDistCache.get(a.id) - lDistCache.get(b.id));
-
-  if (!roomsList) {
-    return [];
+  if (!roomsList || roomsList.length == 0) {
+    return [[], -1];
   }
-
-  return roomsList;
-
-  // if (
-  //   filteredRooms.length == 0 &&
-  //   levenDist(
-  //     building.name.substring(0, query.length).toLowerCase(),
-  //     query.toLowerCase(),
-  //   ) > 2 &&
-  //   levenDist(
-  //     building.code.substring(0, query.length).toLowerCase(),
-  //     query.toLowerCase(),
-  //   ) > 2
-  // ) {
-  //   return null;
-  // }
+  console.log(roomsList);
+  return [roomsList, lDistCache.get(roomsList[0].id)];
 };
