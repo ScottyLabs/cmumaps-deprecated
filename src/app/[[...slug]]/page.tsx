@@ -35,13 +35,15 @@ const Page = ({ searchParams }: Props) => {
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
-  const { isMobile } = getSelectorsByUserAgent(userAgent);
   useEffect(() => {
-    const { isMobile } = getSelectorsByUserAgent(userAgent);
-    dispatch(setIsMobile(isMobile));
+    if (userAgent) {
+      const { isMobile } = getSelectorsByUserAgent(userAgent);
+      dispatch(setIsMobile(isMobile));
+    }
   }, [userAgent, dispatch]);
 
   // load the list of images of the rooms

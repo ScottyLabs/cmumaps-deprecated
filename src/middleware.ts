@@ -24,10 +24,11 @@ export const config = {
 };
 
 // for detecting the type of device
-export function middleware(request: NextRequest) {
+export const middleware = (request: NextRequest) => {
   const userAgent = request.headers.get('user-agent') || '';
   const url = new URL(request.url);
+
   url.searchParams.set('userAgent', userAgent);
 
   return NextResponse.rewrite(url);
-}
+};
