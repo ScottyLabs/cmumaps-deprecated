@@ -7,7 +7,7 @@ import {
   Polyline,
 } from 'mapkit-react';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { node } from '@/app/api/findPath/route';
 import {
@@ -53,26 +53,31 @@ const MapDisplay = ({
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const floors = useAppSelector((state) => state.data.floorMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+  const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
   const [mapLoaded, setMapLoaded] = useState<boolean>(false);
   const [showFloor, setShowFloor] = useState<boolean>(false);
 
-  function zoomOnObject(points: Coordinate[]) {
-    const allLat = points.map((p) => p.latitude);
-    const allLon = points.map((p) => p.longitude);
-    mapRef.current?.setRegionAnimated(
-      new mapkit.BoundingRegion(
-        Math.max(...allLat),
-        Math.max(...allLon),
-        Math.min(...allLat),
-        Math.min(...allLon),
-      ).toCoordinateRegion(),
-      !prefersReducedMotion(),
-    );
-  }
+  const zoomOnObject = useCallback(
+    (points: Coordinate[]) => {
+      const allLat = points.map((p) => p.latitude);
+      const allLon = points.map((p) => p.longitude);
+      mapRef.current?.setRegionAnimated(
+        new mapkit.BoundingRegion(
+          Math.max(...allLat),
+          Math.max(...allLon),
+          Math.min(...allLat),
+          Math.min(...allLon),
+        ).toCoordinateRegion(),
+        !prefersReducedMotion(),
+      );
+    },
+    [mapRef],
+  );
 
   const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
     dispatch(focusBuilding(newBuilding));
@@ -120,6 +125,12 @@ const MapDisplay = ({
       setShowRoomNames(true);
     }
   };
+
+  useEffect(() => {
+    if (selectedBuilding) {
+      zoomOnObject(selectedBuilding?.shapes.flat());
+    }
+  }, [selectedBuilding, zoomOnObject]);
 
   const zoomOnDefaultBuilding = (
     newBuildings: Record<BuildingCode, Building>,
@@ -324,7 +335,6 @@ const MapDisplay = ({
       }
       allowWheelToZoom
       onLoad={() => {
-        zoomOnDefaultBuilding(buildings, null);
         setMapLoaded(true);
       }}
       onRegionChangeStart={onRegionChangeStart}
