@@ -1,9 +1,8 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 import { claimBuilding, claimRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
-import { distance } from '@/util/geometry';
 import titleCase from '@/util/titleCase';
 
 import RoomPin from '../buildings/RoomPin';
@@ -37,6 +36,7 @@ export default function SearchResults({
   const floorMap = useAppSelector((state) => state.data.floorMap);
   const buildings = useAppSelector((state) => state.data.buildings);
 
+  // sort building by distance
   // if (userPosition) {
   //   buildings.sort(
   //     (b, a) =>
@@ -91,15 +91,15 @@ export default function SearchResults({
     const renderText = (room: Room) => (
       <div className="flex flex-col text-left">
         <p>
-          <div>
-            <span>
-              {building.code} {room.name}
-            </span>
-            {room.type !== 'default' && (
-              <span>{` • ${titleCase(roomType(room))}`}</span>
-            )}
-          </div>
-          {room.aliases[0] && <div className="truncate">{room.aliases[0]}</div>}
+          <span>
+            {building.code} {room.name}
+          </span>
+          {room.type !== 'default' && (
+            <span>{` • ${titleCase(roomType(room))}`}</span>
+          )}
+          {room.aliases[0] && (
+            <span className="truncate">{room.aliases[0]}</span>
+          )}
         </p>
       </div>
     );
