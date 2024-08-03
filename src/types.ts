@@ -123,6 +123,11 @@ export interface SearchRoom {
   name: string;
 
   /**
+   * Building-Floor code (e.g. 'WEH-4')
+   */
+  floor: string;
+
+  /**
    * Another name under which the room is known (e.g. 'McConomy Auditorium')
    */
   alias?: string;

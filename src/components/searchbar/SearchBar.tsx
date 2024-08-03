@@ -32,7 +32,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
 
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
+  const [searchResults, setSearchResults] = useState<JSX.Element | null>(null);
   // set the search query using room and building
   useEffect(() => {
     // return the building name if a building is selected
@@ -175,6 +175,10 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
     );
   };
 
+  useEffect(() => {
+    setTimeout(() => setSearchResults(renderSearchResults()), 500);
+  }, [searchQuery]);
+
   // don't display anything before the buildings are loaded
   if (!buildings) {
     return;
@@ -193,7 +197,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         </div>
       )}
 
-      {renderSearchResults()}
+      {searchResults}
     </div>
   );
 };
