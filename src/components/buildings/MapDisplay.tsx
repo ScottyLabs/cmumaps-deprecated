@@ -17,7 +17,13 @@ import {
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate, Building, FloorMap, Room } from '@/types';
+import {
+  AbsoluteCoordinate,
+  Building,
+  BuildingCode,
+  FloorMap,
+  Room,
+} from '@/types';
 import { isInPolygonCoordinates } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
@@ -116,7 +122,7 @@ const MapDisplay = ({
   };
 
   const zoomOnDefaultBuilding = (
-    newBuildings: Building[],
+    newBuildings: Record<BuildingCode, Building>,
     newFloors: FloorMap | null,
   ) => {
     // Gets from URL and sets the default building and floor and room
@@ -129,7 +135,9 @@ const MapDisplay = ({
     // Get defaults from URL
     const [_, floor, roomid] = (window?.location?.pathname || '').split('/');
     const r = new RegExp('-|#');
-    let [buildingCode, floorLevel] = floor.toUpperCase().split(r);
+    let [buildingCode, floorLevel]: [BuildingCode, any] = floor
+      .toUpperCase()
+      .split(r);
     console.log(
       'searchme',
       window?.location?.pathname,
@@ -138,9 +146,8 @@ const MapDisplay = ({
       roomid,
     );
     // If building is not found, do nothing
-    const building: Building | undefined = newBuildings.find(
-      (b) => b.code === buildingCode,
-    );
+    const building: Building | undefined = newBuildings[buildingCode];
+
     if (!building) {
       window.history.pushState({}, '', window.location.origin);
       return;
@@ -259,7 +266,7 @@ const MapDisplay = ({
 
   // render functions
   const renderBuildings = () =>
-    buildings.map((building) => (
+    Object.values(buildings).map((building) => (
       <BuildingShape
         key={building.code}
         building={building}

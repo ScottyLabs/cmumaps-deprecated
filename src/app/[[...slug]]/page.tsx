@@ -11,13 +11,20 @@ import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
 import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
-import { setIsMobile, setRoomImageList } from '@/lib/features/uiSlice';
+import {
+  claimBuilding,
+  setIsMobile,
+  setRoomImageList,
+} from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, ID, Room } from '@/types';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
 interface Props {
+  params: {
+    slug?: string[];
+  };
   searchParams: {
     userAgent?: string;
   };
@@ -26,7 +33,7 @@ interface Props {
 /**
  * The main page of the CMU Map website.
  */
-const Page = ({ searchParams }: Props) => {
+const Page = ({ params, searchParams }: Props) => {
   const dispatch = useAppDispatch();
 
   const mapRef = useRef<mapkit.Map | null>(null);
@@ -36,6 +43,18 @@ const Page = ({ searchParams }: Props) => {
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
+  const buildings = useAppSelector((state) => state.data.buildings);
+
+  // initial load of the url
+  useEffect(() => {
+    // first slug is the building code
+    if (params.slug && params.slug.length > 0) {
+      if (buildings) {
+        const buildingCode = params.slug[0];
+        dispatch(claimBuilding(buildings[buildingCode]));
+      }
+    }
+  }, [buildings, dispatch, params]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -83,7 +102,7 @@ const Page = ({ searchParams }: Props) => {
       dispatch(setBuildings(buildings));
 
       // set floors
-      const promises = buildings
+      const promises = Object.values(buildings)
         .map((building) =>
           building.floors.map(async (floor) => {
             // only loads GHC, WEH, and CUC for now
