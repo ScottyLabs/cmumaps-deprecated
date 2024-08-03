@@ -10,7 +10,6 @@ import {
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { node } from '@/app/api/findPath/route';
-import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
 import {
   claimRoom,
   focusBuilding,
@@ -203,53 +202,6 @@ const MapDisplay = ({
     window.history.pushState({}, '', url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRoom, focusedBuilding, focusedFloor]);
-
-  // Load the buidling and floor data
-  useEffect(() => {
-    const getBuildings = async () => {
-      // set buildings
-      const response = await fetch('/json/buildings.json');
-      const buildings: Building[] = await response.json();
-      dispatch(setBuildings(buildings));
-
-      // set floors
-      const promises = buildings
-        .map((building) =>
-          building.floors.map(async (floor) => {
-            // only loads GHC, WEH, and CUC for now
-            if (!['GHC', 'WEH', 'CUC'].includes(building.code)) {
-              return [null, null];
-            }
-
-            if (building.code == 'CUC' && floor.level !== '2') {
-              return [null, null];
-            }
-
-            const outlineResponse = await fetch(
-              `/json/${building.code}/${building.code}-${floor.level}-outline.json`,
-            );
-            const outlineJson = await outlineResponse.json();
-
-            for (const roomId in outlineJson['rooms']) {
-              outlineJson['rooms'][roomId]['id'] = roomId;
-            }
-
-            return [`${building.code}-${floor.level}`, outlineJson];
-          }),
-        )
-        .flat(2);
-
-      Promise.all(promises).then((responses) => {
-        responses.forEach(([code, floorPlan]) => {
-          if (code) {
-            dispatch(addFloorToMap([code, floorPlan]));
-          }
-        });
-      });
-    };
-
-    getBuildings();
-  }, [dispatch]);
 
   const cameraBoundary = useMemo(
     () => ({

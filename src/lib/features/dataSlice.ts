@@ -1,5 +1,6 @@
-import { Building, FloorMap, FloorPlan } from '@/types';
 import { createSlice } from '@reduxjs/toolkit';
+
+import { Building, FloorMap, FloorPlan } from '@/types';
 
 interface DataState {
   buildings: Building[];
@@ -20,12 +21,6 @@ const dataSlice = createSlice({
     },
     addFloorToMap(state, action: { payload: [string, FloorPlan] }) {
       const [floorName, floorPlan] = action.payload;
-      Object.values(floorPlan.rooms).forEach((room) => {
-        room.floor = floorName;
-      });
-      if (!state.floorMap) {
-        state.floorMap = {};
-      }
       state.floorMap[floorName] = floorPlan;
     },
   },
