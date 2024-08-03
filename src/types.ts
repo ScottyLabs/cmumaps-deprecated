@@ -1,3 +1,5 @@
+import { Polygon } from 'geojson';
+
 /**
  * Contains TypeScript type definitions used in the project.
  */
@@ -6,7 +8,7 @@ import { Coordinate } from 'mapkit-react';
 /**
  * An absolute coordinate.
  */
-export type AbsoluteCoordinate = [number, number];
+export type AbsoluteCoordinate = { x: number; y: number };
 
 /**
  * Room types
@@ -109,10 +111,6 @@ export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
       return { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' };
   }
 }
-export interface Polygon {
-  coordinates: AbsoluteCoordinate[][];
-  type: string;
-}
 
 export interface SearchRoom {
   /**
@@ -143,7 +141,7 @@ export interface Room {
   /**
    * Building-Floor code (e.g. 'WEH-4')
    */
-  floor: string;
+  floor: Floor;
 
   /**
    * even-odd included-not-included 2darray of coordinates to polygon

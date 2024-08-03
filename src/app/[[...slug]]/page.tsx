@@ -122,10 +122,10 @@ const Page = ({ searchParams }: Props) => {
 
           <SearchBar
             mapRef={mapRef.current}
-            userPosition={[
-              points[points.length - 1][0],
-              points[points.length - 1][1],
-            ]}
+            userPosition={{
+              x: points[points.length - 1][0],
+              y: points[points.length - 1][1],
+            }}
           />
 
           {renderClerkIcon()}
