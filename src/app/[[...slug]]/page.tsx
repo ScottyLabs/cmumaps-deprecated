@@ -4,7 +4,7 @@ import { UserButton } from '@clerk/nextjs';
 import Head from 'next/head';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { isDesktop } from 'react-device-detect';
+import { getSelectorsByUserAgent } from 'react-device-detect';
 
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
@@ -16,11 +16,21 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
+interface Props {
+  searchParams: {
+    userAgent?: string;
+  };
+}
+
 /**
  * The main page of the CMU Map website.
  */
-export default function Home() {
+const Page = ({ searchParams }: Props) => {
   const dispatch = useAppDispatch();
+
+  // determine the device type
+  const userAgent = searchParams.userAgent || '';
+  const { isMobile } = getSelectorsByUserAgent(userAgent);
 
   const mapRef = useRef<mapkit.Map | null>(null);
 
@@ -71,8 +81,7 @@ export default function Home() {
   title += 'CMU Map';
 
   const renderClerkIcon = () => {
-    if (isDesktop) {
-      // <div className="fixed right-2 top-2">
+    if (isMobile) {
       return (
         <div className="fixed right-2 bottom-10">
           <UserButton />
@@ -80,7 +89,7 @@ export default function Home() {
       );
     } else {
       return (
-        <div className="fixed right-2 bottom-10">
+        <div className="fixed right-2 top-2">
           <UserButton />
         </div>
       );
@@ -128,4 +137,6 @@ export default function Home() {
       </main>
     </>
   );
-}
+};
+
+export default Page;
