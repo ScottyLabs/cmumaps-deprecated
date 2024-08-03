@@ -158,7 +158,7 @@ export default function FloorSwitcher({
     );
   };
 
-  const wrapper = (children: ReactElement) => {
+  const Wrapper = ({ children }: { children: ReactElement }) => {
     if (isMobile) {
       // different distance from the bottom of the page when on mobile depending on if the card is open
       const bottomClass = isCardOpen ? 'bottom-10' : 'bottom-2';
@@ -183,12 +183,14 @@ export default function FloorSwitcher({
     }
   };
 
-  return wrapper(
-    <>
-      <div className="p-1">
-        <Roundel code={building.code} />
-      </div>
-      {showFloorPicker ? renderFloorPicker() : renderDefaultView()}
-    </>,
+  return (
+    <Wrapper>
+      <>
+        <div className="p-1">
+          <Roundel code={building.code} />
+        </div>
+        {showFloorPicker ? renderFloorPicker() : renderDefaultView()}
+      </>
+    </Wrapper>
   );
 }
