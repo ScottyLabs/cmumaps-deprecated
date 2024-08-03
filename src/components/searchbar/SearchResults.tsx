@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 import { claimBuilding, claimRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -9,7 +9,29 @@ import RoomPin from '../buildings/RoomPin';
 import Roundel from '../shared/Roundel';
 import { findRooms } from './searchUtil';
 
-export interface SearchResultsProps {
+interface SearchResultWrapperProps {
+  children: ReactElement;
+  handleClick: () => void;
+}
+
+const SearchResultWrapper = ({
+  children,
+  handleClick,
+}: SearchResultWrapperProps) => {
+  return (
+    <button
+      type="button"
+      className={
+        'flex h-14 w-full justify-between items-center gap-2 p-1 hover:bg-[#efefef] bg-gray-50 transition duration-150 ease-out'
+      }
+      onClick={handleClick}
+    >
+      {children}
+    </button>
+  );
+};
+
+interface SearchResultsProps {
   query: string;
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   userPosition: AbsoluteCoordinate;
@@ -66,24 +88,18 @@ export default function SearchResults({
     );
   }
 
-  const searchResultClassNames =
-    'flex h-14 w-full justify-between gap-2 p-1 hover:bg-[#efefef] bg-gray-50 transition duration-150 ease-out';
-
   const renderBuildingResults = (building: Building) => {
+    const handleClick = () => {
+      dispatch(claimBuilding(building));
+    };
+
     return (
-      <button
-        type="button"
-        className={searchResultClassNames}
-        onClick={() => {
-          dispatch(claimBuilding(building));
-          // dispatch(setFloorOrdinal(null));
-        }}
-      >
+      <SearchResultWrapper handleClick={handleClick}>
         <div className="flex items-center gap-3">
           <Roundel code={building.code} />
           <h4 className="">{building.name}</h4>
         </div>
-      </button>
+      </SearchResultWrapper>
     );
   };
 
@@ -104,21 +120,21 @@ export default function SearchResults({
       </div>
     );
 
+    const handleClick = (room: Room) => () => {
+      // dispatch(claimBuilding(building));
+      dispatch(claimRoom(room));
+    };
+
     return rooms.map((room: Room) => (
-      <button
-        type="button"
-        className={`${searchResultClassNames} pl-8`}
-        key={room.id}
-        onClick={() => {
-          // dispatch(claimBuilding(building));
-          dispatch(claimRoom(room));
-        }}
+      <SearchResultWrapper
+        key={room.name + room.floor}
+        handleClick={handleClick(room)}
       >
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 pl-8">
           <RoomPin room={room} />
           {renderText(room)}
         </div>
-      </button>
+      </SearchResultWrapper>
     ));
   };
 
