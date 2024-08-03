@@ -11,8 +11,10 @@ import MapDisplay from '@/components/buildings/MapDisplay';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
+import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
 import { setIsMobile, setRoomImageList } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { Building, ID, Room } from '@/types';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -38,7 +40,6 @@ const Page = ({ searchParams }: Props) => {
   // determine the device type
   const userAgent = searchParams.userAgent || '';
   const { isMobile } = getSelectorsByUserAgent(userAgent);
-
   useEffect(() => {
     const { isMobile } = getSelectorsByUserAgent(userAgent);
     dispatch(setIsMobile(isMobile));
@@ -70,6 +71,56 @@ const Page = ({ searchParams }: Props) => {
       dispatch(setRoomImageList(roomImageList));
     };
     getRoomImageList();
+  }, [dispatch]);
+
+  // Load the buidling and floor data
+  useEffect(() => {
+    const getBuildings = async () => {
+      // set buildings
+      const response = await fetch('/json/buildings.json');
+      const buildings: Building[] = await response.json();
+      dispatch(setBuildings(buildings));
+
+      // set floors
+      const promises = buildings
+        .map((building) =>
+          building.floors.map(async (floor) => {
+            // only loads GHC, WEH, and CUC for now
+            if (!['GHC', 'WEH', 'CUC'].includes(building.code)) {
+              return [null, null];
+            }
+
+            if (building.code == 'CUC' && floor.level !== '2') {
+              return [null, null];
+            }
+
+            const outlineResponse = await fetch(
+              `/json/${building.code}/${building.code}-${floor.level}-outline.json`,
+            );
+            const outlineJson = await outlineResponse.json();
+
+            const rooms: Record<ID, Room> = outlineJson['rooms'];
+
+            for (const roomId in rooms) {
+              rooms[roomId]['id'] = roomId;
+              rooms[roomId]['floor'] = floor;
+            }
+
+            return [`${building.code}-${floor.level}`, outlineJson];
+          }),
+        )
+        .flat(2);
+
+      Promise.all(promises).then((responses) => {
+        responses.forEach(([code, floorPlan]) => {
+          if (code) {
+            dispatch(addFloorToMap([code, floorPlan]));
+          }
+        });
+      });
+    };
+
+    getBuildings();
   }, [dispatch]);
 
   const currentFloorName = focusedFloor?.level;

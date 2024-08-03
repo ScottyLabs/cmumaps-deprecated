@@ -49,11 +49,11 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
     // the room alias if the room has an alias,
     // otherwise it is the room floor name + the room name
     if (room) {
-      if (room?.alias) {
-        setSearchQuery(room.alias);
+      if (room?.aliases[0]) {
+        setSearchQuery(room.aliases[0]);
         return;
       } else {
-        setSearchQuery(room.floor.split('-')[0] + ' ' + room.name);
+        setSearchQuery(room.floor.buildingCode + ' ' + room.name);
         return;
       }
     }

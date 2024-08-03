@@ -1,9 +1,13 @@
-import React from 'react';
 import Image from 'next/image';
-import { Room } from '@/types';
-import ButtonsRow from './ButtonsRow';
+
+import React from 'react';
+
 import { useAppSelector } from '@/lib/hooks';
-import RoomSchedule from './RoomSchedule';
+import { Room } from '@/types';
+
+import ButtonsRow from './ButtonsRow';
+
+// import RoomSchedule from './RoomSchedule';
 
 interface Props {
   room: Room;
@@ -13,11 +17,12 @@ const RoomCard = ({ room }: Props) => {
   const roomImageList = useAppSelector((state) => state.ui.roomImageList);
 
   const renderRoomImage = () => {
-    const buildingCode = room.floor.split('-')[0];
+    const buildingCode = room.floor.buildingCode;
 
     // the default image is the building image
-    // but get the room image if it exists
     let url = `/assets/location_images/building_room_images/${buildingCode}/${buildingCode}.jpg`;
+
+    // but get the room image if it exists
     if (roomImageList[buildingCode].includes(room.name + '.jpg')) {
       url = `/assets/location_images/building_room_images/${buildingCode}/${room.name}.jpg`;
     }
@@ -29,6 +34,7 @@ const RoomCard = ({ room }: Props) => {
           fill={true}
           alt="Room Image"
           src={url}
+          sizes="100vw"
         />
       </div>
     );
@@ -46,7 +52,7 @@ const RoomCard = ({ room }: Props) => {
         No Room Schedule Available
       </div>
       {renderButtonsRow()}
-      <RoomSchedule />
+      {/* <RoomSchedule /> */}
     </div>
   );
 };

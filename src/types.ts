@@ -1,9 +1,10 @@
-import { Polygon } from 'geojson';
-
 /**
  * Contains TypeScript type definitions used in the project.
  */
+import { Polygon } from 'geojson';
 import { Coordinate } from 'mapkit-react';
+
+export type ID = string;
 
 /**
  * An absolute coordinate.
