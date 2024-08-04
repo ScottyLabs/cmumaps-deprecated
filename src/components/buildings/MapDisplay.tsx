@@ -56,7 +56,6 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
-  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
   const [showFloor, setShowFloor] = useState<boolean>(false);
   const [showRoomNames, setShowRoomNames] = useState(false);
 
@@ -314,10 +313,7 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
         isMobile ? FeatureVisibility.Hidden : FeatureVisibility.Adaptive
       }
       allowWheelToZoom
-      onLoad={() => {
-        handleLoad();
-        setMapLoaded(true);
-      }}
+      onLoad={handleLoad}
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={onRegionChangeEnd}
       onClick={() => dispatch(setIsSearchOpen(false))}
