@@ -55,8 +55,6 @@ export default function SearchResults({
   const searchMap = useAppSelector((state) => state.data.searchMap);
   const buildings = useAppSelector((state) => state.data.buildings);
 
-  console.log(searchMap);
-
   // sort building by distance
   // if (userPosition) {
   //   buildings.sort(

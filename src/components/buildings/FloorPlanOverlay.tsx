@@ -1,11 +1,12 @@
 import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
   AbsoluteCoordinate,
+  Floor,
   FloorPlan,
   getRoomTypeDetails,
   Placement,
@@ -62,19 +63,60 @@ export function positionOnMap(
 }
 
 interface FloorPlanOverlayProps {
-  floorPlan: FloorPlan;
+  floor: Floor;
   showRoomNames: boolean;
-  isBackground: boolean;
 }
 
 /**
  * The contents of a floor displayed on the map.
  */
 export default function FloorPlanOverlay({
-  floorPlan,
+  floor,
   showRoomNames,
-  isBackground,
 }: FloorPlanOverlayProps) {
+  const [floorPlan, setFloorPlan] = useState<FloorPlan | null>(null);
+
+  useEffect(() => {
+    fetch(`/json/${floor.buildingCode}/`).then((response) => {
+      console.log(response);
+      console.log(response.ok);
+      response.json().then((floorPlan) => {
+        const rooms = floorPlan['rooms'];
+
+        for (const roomId in rooms) {
+          rooms[roomId]['id'] = roomId;
+        }
+
+        console.log(floorPlan);
+
+        setFloorPlan(floorPlan);
+      });
+    });
+
+    fetch(
+      `/json/${floor.buildingCode}/${floor.buildingCode}-${floor.level}-outline.json`,
+    ).then((response) => {
+      console.log(response);
+      response.text().then((err) => console.log(err));
+      console.log(response.ok);
+      response.json().then((floorPlan) => {
+        const rooms = floorPlan['rooms'];
+
+        for (const roomId in rooms) {
+          rooms[roomId]['id'] = roomId;
+        }
+
+        console.log(floorPlan);
+
+        setFloorPlan(floorPlan);
+      });
+    });
+  }, [floor]);
+
+  if (floorPlan) {
+    console.log(floorPlan);
+  }
+
   const { placement, rooms } = floorPlan;
 
   // Compute the center position of the bounding box of the current floor

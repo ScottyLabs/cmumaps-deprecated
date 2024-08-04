@@ -47,12 +47,8 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
-  const floors = useAppSelector((state) => state.data.floorMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
-
-  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
-
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
   const [showFloor, setShowFloor] = useState<boolean>(false);
@@ -243,51 +239,6 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
     initialRegion,
   );
 
-  // render functions
-  const renderBuildings = () =>
-    Object.values(buildings).map((building) => (
-      <BuildingShape
-        key={building.code}
-        building={building}
-        showName={!showFloor}
-      />
-    ));
-
-  const renderFloors = () => {
-    // console.log(showFloor);
-    // console.log(focusedFloor);
-
-    return (
-      showFloor &&
-      !!buildings &&
-      !!floors &&
-      Object.values(buildings).flatMap((building: Building) =>
-        building.floors.map((floor: { name: string; ordinal: number }) => {
-          if (floor.name !== focusedFloor?.level) {
-            // TODO: update this after update nicolas export
-            return null;
-          }
-
-          const code = `${building.code}-${floor.name}`;
-          if (code.substring(0, 3) != 'GHC' && code.substring(0, 3) != 'WEH') {
-            return null;
-          }
-          const floorPlan = floors[code];
-          return (
-            floorPlan && (
-              <FloorPlanOverlay
-                key={code}
-                floorPlan={floorPlan}
-                showRoomNames={showRoomNames}
-                isBackground={building.code !== focusedBuilding?.code}
-              />
-            )
-          );
-        }),
-      )
-    );
-  };
-
   const handleLoad = () => {
     // extract data from the url
     // first slug is the building code
@@ -332,9 +283,17 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
       onRegionChangeEnd={onRegionChangeEnd}
       onClick={() => dispatch(setIsSearchOpen(false))}
     >
-      {renderBuildings()}
+      {Object.values(buildings).map((building) => (
+        <BuildingShape
+          key={building.code}
+          building={building}
+          showName={!showFloor}
+        />
+      ))}
 
-      {renderFloors()}
+      {focusedFloor && (
+        <FloorPlanOverlay floor={focusedFloor} showRoomNames={showRoomNames} />
+      )}
 
       {recommendedPath && ( // This will be its own component at some point
         <Polyline
