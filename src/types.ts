@@ -7,6 +7,7 @@ import { Coordinate } from 'mapkit-react';
 export type ID = string;
 
 export type BuildingCode = string;
+export type FloorLevel = string;
 
 /**
  * An absolute coordinate.
@@ -192,7 +193,7 @@ export interface Placement {
  */
 export interface Floor {
   buildingCode: string;
-  level: string;
+  level: FloorLevel;
 }
 
 /**
@@ -244,6 +245,12 @@ export interface Building {
 }
 
 /**
- * A map from floor identifiers (e.g. 'WEH-4') to floor plans.
+ * A map from building code to a map of floor leve to floor plans.
  */
-export type FloorMap = { [code: string]: FloorPlan };
+export type FloorMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;
+
+/**
+ * A map from building code to a map of floor levels to a list of search rooms
+ * Used for searching purposes
+ */
+export type SearchMap = Record<BuildingCode, Record<FloorLevel, SearchRoom[]>>;
