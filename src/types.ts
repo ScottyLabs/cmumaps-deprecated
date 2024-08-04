@@ -130,7 +130,7 @@ export interface SearchRoom {
   /**
    * A list of names under which the room is known for searching purposes (e.g. 'ABP vs Au Bon Pain')
    */
-  aliases: string[];
+  es: string[];
 
   type: RoomType;
 }

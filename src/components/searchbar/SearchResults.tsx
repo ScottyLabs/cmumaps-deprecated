@@ -75,7 +75,11 @@ export default function SearchResults({
       Building: building,
       Rooms: findRooms(query, building, floorMap, userPosition),
     }))
-    .filter((buildingResult) => buildingResult['Rooms'].length > 0);
+    .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
+    .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
+    .map(({ Building: building, Rooms: rooms }) => {
+      return { Building: building, Rooms: rooms[0] };
+    });
 
   if (searchResult.length == 0) {
     return (
@@ -140,7 +144,7 @@ export default function SearchResults({
         return (
           <div key={building.code}>
             {renderBuildingResults(building)}
-            {renderRoomResults(buildingResult['Rooms'], building)}
+            {renderRoomResults(buildingResult['Rooms'].slice(0, 20), building)}
           </div>
         );
       })}
