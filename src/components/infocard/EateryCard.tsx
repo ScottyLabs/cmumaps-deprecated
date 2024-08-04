@@ -20,7 +20,7 @@ const Eaterycard = ({ room }: Props) => {
 
   useEffect(() => {
     const fetchEatingData = async () => {
-      const newEatingData = await getEatingData(room.aliases[0]);
+      const newEatingData = await getEatingData(room.alias);
       setEatingData(newEatingData);
     };
     fetchEatingData();

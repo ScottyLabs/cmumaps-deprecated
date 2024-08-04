@@ -13,7 +13,7 @@ interface Props {
 
 const EateryInfo = ({ room, eatingData }: Props) => {
   if (!eatingData) {
-    return <div className="ml-3 mt-2 font-bold"> {room.aliases[0]}</div>;
+    return <div className="ml-3 mt-2 font-bold"> {room.alias}</div>;
   }
 
   const getLocationState = () => {
@@ -98,7 +98,7 @@ const EateryInfo = ({ room, eatingData }: Props) => {
 
   return (
     <div className="px-4 pt-2 pb-3 font-[500]">
-      <h3 className="font-bold">{room.aliases[0]}</h3>
+      <h3 className="font-bold">{room.alias}</h3>
       {renderLocationTimeInfo()}
       <p className="mt-2 leading-4">{eatingData.shortDescription}</p>
     </div>

@@ -29,7 +29,7 @@ export const findRooms = (
         .filter((room: Room) => {
           return (
             fullRoomName(room, building).includes(query) ||
-            (room.aliases[0] && room.aliases[0].includes(query))
+            (room.alias && room.alias.includes(query))
           );
 
           // legacy floors layout

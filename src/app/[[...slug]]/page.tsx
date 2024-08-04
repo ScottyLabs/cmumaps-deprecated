@@ -104,11 +104,14 @@ const Page = ({ params, searchParams }: Props) => {
             );
             const outlineJson = await outlineResponse.json();
 
-            const rooms: Record<ID, Room> = outlineJson['rooms'];
+            const rooms = outlineJson['rooms'];
 
             for (const roomId in rooms) {
               rooms[roomId]['id'] = roomId;
               rooms[roomId]['floor'] = floor;
+              rooms[roomId]['floor'] = floor;
+              rooms[roomId]['alias'] = rooms[roomId]['aliases'][0];
+              delete rooms[roomId]['aliases'];
             }
 
             return [`${building.code}-${floor.level}`, outlineJson];
