@@ -7,6 +7,7 @@ import { IoIosClose } from 'react-icons/io';
 
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import useEscapeKey from '@/hooks/useEscapeKey';
+import { searchEvents } from '@/lib/apiRoutes';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
 import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -36,6 +37,8 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
 
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<JSX.Element | null>(null);
+  const [eventsResults, setEventsResults] = useState<Event[]>([]);
 
   // set the search query using room and building
   useEffect(() => {
@@ -183,25 +186,31 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
     );
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setSearchResults(renderSearchResults());
+      searchEvents(searchQuery).then(setEventsResults);
+    }, 500);
+  }, [searchQuery]);
+
   // don't display anything before the buildings are loaded
   if (!buildings) {
     return;
   }
-
   return (
     <div
       id="SearchBar"
       className="box-shadow fixed top-4 z-10 w-full rounded mx-2 sm:w-96"
     >
       {renderSearchQueryInput()}
-
       {searchQuery == '' && (
         <div className="mt-3">
           <QuickSearch setQuery={setSearchQuery} />
         </div>
       )}
-
-      {renderSearchResults()}
+      {searchResults}
+      Yuxiang please make the UI for events given here{' '}
+      <p> ({eventsResults.toString()})</p>
     </div>
   );
 };
