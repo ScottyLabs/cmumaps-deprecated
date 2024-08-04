@@ -2,7 +2,7 @@
 
 import { UserButton } from '@clerk/nextjs';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
 
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
@@ -11,11 +11,7 @@ import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
 import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
-import {
-  claimBuilding,
-  setIsMobile,
-  setRoomImageList,
-} from '@/lib/features/uiSlice';
+import { setIsMobile, setRoomImageList } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, ID, Room } from '@/types';
 
@@ -38,24 +34,11 @@ const Page = ({ params, searchParams }: Props) => {
 
   const mapRef = useRef<mapkit.Map | null>(null);
 
-  const [showRoomNames, setShowRoomNames] = useState(false);
   const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
-  const buildings = useAppSelector((state) => state.data.buildings);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
-
-  // initial load of the url
-  useEffect(() => {
-    // first slug is the building code
-    if (params.slug && params.slug.length > 0) {
-      if (buildings) {
-        const buildingCode = params.slug[0];
-        dispatch(claimBuilding(buildings[buildingCode]));
-      }
-    }
-  }, [buildings, dispatch, params]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -199,12 +182,7 @@ const Page = ({ params, searchParams }: Props) => {
         {renderClerkIcon()}
       </div>
 
-      <MapDisplay
-        mapRef={mapRef}
-        points={points}
-        setShowRoomNames={setShowRoomNames}
-        showRoomNames={showRoomNames}
-      />
+      <MapDisplay params={params} mapRef={mapRef} points={points} />
     </main>
   );
 };

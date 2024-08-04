@@ -124,7 +124,7 @@ export default function SearchResults({
 
     return rooms.map((room: Room) => (
       <SearchResultWrapper
-        key={room.name + room.floor}
+        key={room.name + room.floor.level}
         handleClick={handleClick(room)}
       >
         <div className="flex items-center space-x-3 pl-8">

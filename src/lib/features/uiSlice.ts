@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { Building, Floor, Room } from '@/types';
 
@@ -43,11 +43,19 @@ const uiSlice = createSlice({
         state.selectedBuilding = null;
       }
     },
+
     claimBuilding(state, action) {
-      if (state.selectedBuilding?.code !== action.payload?.code) {
-        state.selectedBuilding = action.payload;
-        state.focusedBuilding = action.payload;
+      const building = action.payload;
+
+      if (state.selectedBuilding?.code !== building?.code) {
+        state.selectedBuilding = building;
+        state.focusedBuilding = building;
+        state.focusedFloor = {
+          buildingCode: building.code,
+          level: building.defaultFloor,
+        };
       }
+
       state.isSearchOpen = false;
     },
     releaseBuilding(state, action) {
@@ -58,16 +66,21 @@ const uiSlice = createSlice({
     focusBuilding(state, action) {
       state.focusedBuilding = action.payload;
     },
+    selectBuilding(state, action) {
+      state.selectedBuilding = action.payload;
+    },
+
     setFocusedFloor(state, action) {
       state.focusedFloor = action.payload;
     },
+
     setIsSearchOpen(state, action) {
       state.isSearchOpen = action.payload;
     },
     setRoomImageList(state, action) {
       state.roomImageList = action.payload;
     },
-    setIsCardWrapperCollapsed(state, action) {
+    setIsCardWrapperCollapsed(state, action: PayloadAction<boolean>) {
       state.isCardWrapperCollapsed = action.payload;
     },
     setIsMobile(state, action) {
@@ -86,6 +99,7 @@ export const {
   claimBuilding,
   releaseBuilding,
   focusBuilding,
+  selectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
   setRoomImageList,

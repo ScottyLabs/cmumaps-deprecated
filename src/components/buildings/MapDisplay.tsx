@@ -11,6 +11,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { node } from '@/app/api/findPath/route';
 import {
+  claimBuilding,
   claimRoom,
   focusBuilding,
   setFocusedFloor,
@@ -35,17 +36,14 @@ import FloorPlanOverlay, {
 import { zoomOnObject } from './mapUtils';
 
 interface MapDisplayProps {
+  params: {
+    slug?: string[];
+  };
   mapRef: React.RefObject<mapkit.Map | null>;
   points: number[][];
-  setShowRoomNames: (show: boolean) => void;
-  showRoomNames: boolean;
 }
 
-const MapDisplay = ({
-  mapRef,
-  setShowRoomNames,
-  showRoomNames,
-}: MapDisplayProps) => {
+const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
@@ -61,6 +59,7 @@ const MapDisplay = ({
 
   const [mapLoaded, setMapLoaded] = useState<boolean>(false);
   const [showFloor, setShowFloor] = useState<boolean>(false);
+  const [showRoomNames, setShowRoomNames] = useState(false);
 
   const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
     dispatch(focusBuilding(newBuilding));
@@ -200,6 +199,12 @@ const MapDisplay = ({
       if (focusedFloor) {
         url += `-${focusedFloor.level}`;
       }
+    } else if (selectedBuilding) {
+      url += `${selectedBuilding.code}`;
+
+      if (focusedFloor) {
+        url += `-${focusedFloor.level}`;
+      }
     }
     window.history.pushState({}, '', url);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -298,6 +303,25 @@ const MapDisplay = ({
       }),
     );
 
+  const handleLoad = () => {
+    // extract data from the url
+    // first slug is the building code
+    if (params.slug && params.slug.length > 0) {
+      if (buildings) {
+        const code = params.slug[0];
+        if (code.includes('-')) {
+          const buildingCode = code.split('-')[0];
+          const floorLevel = code.split('-')[1];
+          dispatch(claimBuilding(buildings[buildingCode]));
+          dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
+        } else {
+          const buildingCode = code;
+          dispatch(claimBuilding(buildings[buildingCode]));
+        }
+      }
+    }
+  };
+
   return (
     <Map
       ref={mapRef}
@@ -319,6 +343,7 @@ const MapDisplay = ({
       }
       allowWheelToZoom
       onLoad={() => {
+        handleLoad();
         setMapLoaded(true);
       }}
       onRegionChangeStart={onRegionChangeStart}
