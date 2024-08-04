@@ -1,19 +1,12 @@
 import { Position } from 'geojson';
 import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { getFloorPlan } from '@/lib/apiRoutes';
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import {
-  AbsoluteCoordinate,
-  Floor,
-  FloorPlan,
-  getRoomTypeDetails,
-  Placement,
-  Room,
-} from '@/types';
+import { Floor, FloorPlan, getRoomTypeDetails, Placement, Room } from '@/types';
 import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
 
 import styles from '../../styles/FloorPlanOverlay.module.css';
@@ -72,6 +65,7 @@ export default function FloorPlanOverlay({
 
   const [floorPlan, setFloorPlan] = useState<FloorPlan | null>(null);
 
+  // fetch the floor plan from floor
   useEffect(() => {
     getFloorPlan(floor).then((floorPlan) => {
       // be careful of pre-rotated floor plans that doesn't have placements
@@ -97,22 +91,15 @@ export default function FloorPlanOverlay({
     positionOnMap(absolute, placement, center);
 
   return Object.entries(rooms).map(([roomId, room]) => {
-    const pointsSrcAbs = room?.polygon?.coordinates.map((shape) =>
-      shape.filter((e) => !!e),
-    );
-
     const pointsSrc = room.polygon.coordinates.map((shape) =>
       shape.map(convertToMap),
     );
 
     const roomColors = getRoomTypeDetails(room.type);
 
-    const roomCenter = room.labelPosition || [
-      pointsSrcAbs[0].reduce((a, b) => a + b[0], 0) / pointsSrcAbs[0].length,
-      pointsSrcAbs[0].reduce((a, b) => a + b[1], 0) / pointsSrcAbs[0].length,
-    ];
+    const roomCenter = [room.labelPosition.x, room.labelPosition.y];
 
-    // const labelPos = convertToMap(roomCenter);
+    const labelPos = convertToMap(roomCenter);
 
     // const opacity = isBackground ? 0.7 : 1;
     const opacity = 1;
@@ -145,7 +132,7 @@ export default function FloorPlanOverlay({
           fillRule="nonzero"
         />
 
-        {/* {!isBackground && (showRoomNames || showIcon) && (
+        {(showRoomNames || showIcon) && (
           <Annotation
             latitude={labelPos.latitude}
             longitude={labelPos.longitude}
@@ -168,7 +155,7 @@ export default function FloorPlanOverlay({
               )}
             </div>
           </Annotation>
-        )} */}
+        )}
       </React.Fragment>
     );
   });
