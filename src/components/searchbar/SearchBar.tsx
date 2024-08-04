@@ -1,4 +1,5 @@
 import searchIcon from '@icons/search.svg';
+import { Position } from 'geojson';
 import { Coordinate } from 'mapkit-react';
 import Image from 'next/image';
 
@@ -7,14 +8,14 @@ import { IoIosClose } from 'react-icons/io';
 
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import useEscapeKey from '@/hooks/useEscapeKey';
-import { searchEvents } from '@/lib/apiRoutes';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
 import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
-import { getFloorCenter, positionOnMap } from '../buildings/FloorPlanOverlay';
+import { getFloorCenter } from '../buildings/FloorPlanOverlay';
+import { positionOnMap } from '../buildings/mapUtils';
 import SearchResults from './SearchResults';
 
 interface Props {
@@ -33,12 +34,10 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
 
-  const floors = useAppSelector((state) => state.data.floorMap);
-
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<JSX.Element | null>(null);
-  const [eventsResults, setEventsResults] = useState<Event[]>([]);
+  // const [eventsResults, setEventsResults] = useState<Event[]>([]);
 
   // set the search query using room and building
   useEffect(() => {
@@ -132,6 +131,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   };
 
   const onSelectRoom = (room: Room, building: Building, floor: Floor) => {
+    return;
     if (!floors) {
       console.error('floors is null, but how?');
       return;
@@ -141,11 +141,9 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
 
     const { placement, rooms } = floors[`${building.code}-${floor.name}`];
     const center = getFloorCenter(rooms);
-    const points: Coordinate[] = room.shapes
+    const points: Coordinate[] = room.polygon.coordinates
       .flat()
-      .map((point: AbsoluteCoordinate) =>
-        positionOnMap(point, placement, center),
-      );
+      .map((point: Position) => positionOnMap(point, placement, center));
     const allLat = points.map((p) => p.latitude);
     const allLon = points.map((p) => p.longitude);
 
