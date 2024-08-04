@@ -1,6 +1,6 @@
 import { Event } from '@prisma/client';
 
-import { Floor } from '@/types';
+import { Floor, FloorPlan } from '@/types';
 
 export async function fetchEvents(
   roomName: string | undefined,
@@ -44,7 +44,7 @@ export async function searchEvents(query: string) {
   }
 }
 
-export const getFloorPlan = async function (floor: Floor) {
+export const getFloorPlan = async (floor: Floor): Promise<FloorPlan | null> => {
   const response = await fetch('/api/getFloorPlan', {
     method: 'GET',
     headers: {
@@ -59,14 +59,12 @@ export const getFloorPlan = async function (floor: Floor) {
     if (!response.ok) {
       console.error(body.error);
 
-      return;
+      return null;
     }
 
-    if (body.floorPlan) {
-      return body.floorPlan;
-    }
+    return body.floorPlan || null;
   } catch (e) {
     console.error('Failed to get floor plan', response);
-    return;
+    return null;
   }
 };
