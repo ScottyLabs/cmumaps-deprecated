@@ -189,7 +189,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   useEffect(() => {
     setTimeout(() => {
       setSearchResults(renderSearchResults());
-      searchEvents(searchQuery).then(setEventsResults);
+      // searchEvents(searchQuery).then(setEventsResults);
     }, 500);
   }, [searchQuery]);
 
@@ -209,7 +209,6 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         </div>
       )}
       {searchResults}
-      Yuxiang please make the UI for events given here{' '}
       {/* <p> ({eventsResults.toString()})</p> */}
     </div>
   );

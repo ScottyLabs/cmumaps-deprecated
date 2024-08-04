@@ -10,10 +10,10 @@ import MapDisplay from '@/components/buildings/MapDisplay';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
-import { addFloorToMap, setBuildings } from '@/lib/features/dataSlice';
+import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
 import { setIsMobile, setRoomImageList } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, ID, Room } from '@/types';
+import { Building } from '@/types';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -92,11 +92,11 @@ const Page = ({ params, searchParams }: Props) => {
           building.floors.map(async (floor) => {
             // only loads GHC, WEH, and CUC for now
             if (!['GHC', 'WEH', 'CUC'].includes(building.code)) {
-              return [null, null];
+              return [null, null, null];
             }
 
             if (building.code == 'CUC' && floor.level !== '2') {
-              return [null, null];
+              return [null, null, null];
             }
 
             const outlineResponse = await fetch(
@@ -104,25 +104,25 @@ const Page = ({ params, searchParams }: Props) => {
             );
             const outlineJson = await outlineResponse.json();
 
-            const rooms = outlineJson['rooms'];
+            const searchRooms = outlineJson['rooms'];
 
-            for (const roomId in rooms) {
-              rooms[roomId]['id'] = roomId;
-              rooms[roomId]['floor'] = floor;
-              rooms[roomId]['floor'] = floor;
-              rooms[roomId]['alias'] = rooms[roomId]['aliases'][0];
-              delete rooms[roomId]['aliases'];
+            for (const roomId in searchRooms) {
+              searchRooms[roomId]['id'] = roomId;
+              delete searchRooms[roomId]['polygon'];
+              delete searchRooms[roomId]['labelPosition'];
             }
 
-            return [`${building.code}-${floor.level}`, outlineJson];
+            return [building.code, floor.level, searchRooms];
           }),
         )
         .flat(2);
 
       Promise.all(promises).then((responses) => {
-        responses.forEach(([code, floorPlan]) => {
-          if (code) {
-            dispatch(addFloorToMap([code, floorPlan]));
+        responses.forEach(([buildingCode, floorLevel, searchRooms]) => {
+          if (buildingCode) {
+            dispatch(
+              addFloorToSearchMap([buildingCode, floorLevel, searchRooms]),
+            );
           }
         });
       });
