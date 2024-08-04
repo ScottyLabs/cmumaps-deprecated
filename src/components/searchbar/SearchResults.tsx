@@ -110,9 +110,7 @@ export default function SearchResults({
           {room.type !== 'default' && (
             <span>{` • ${titleCase(roomType(room))}`}</span>
           )}
-          {room.aliases[0] && (
-            <span className="truncate">{room.aliases[0]}</span>
-          )}
+          {room.alias && <span className="truncate">{room.alias}</span>}
         </p>
       </div>
     );

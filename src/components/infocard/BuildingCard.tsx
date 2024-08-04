@@ -40,9 +40,9 @@ const BuildingCard = ({ building }: Props) => {
           // return Object.values(rooms).filter((room) => room.type == 'dining');
           return Object.values(rooms).filter(
             (room) =>
-              room.aliases[0] == 'Revolution Noodle' ||
-              room.aliases[0] == 'Schatz Dining Room' ||
-              room.aliases[0] == 'Au Bon Pain at Skibo Café',
+              room.alias == 'Revolution Noodle' ||
+              room.alias == 'Schatz Dining Room' ||
+              room.alias == 'Au Bon Pain at Skibo Café',
           );
         })
         .flat();
@@ -54,7 +54,7 @@ const BuildingCard = ({ building }: Props) => {
       const newEatingData: [Room, IReadOnlyExtendedLocation | null][] =
         await Promise.all(
           eateries.map(async (eatery) => {
-            const data = await getEatingData(eatery.aliases[0]);
+            const data = await getEatingData(eatery.alias);
             return [eatery, data];
           }),
         );
