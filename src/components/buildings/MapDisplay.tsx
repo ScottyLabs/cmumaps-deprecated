@@ -48,7 +48,6 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
-  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const floors = useAppSelector((state) => state.data.floorMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 
@@ -182,33 +181,6 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
       showBuilding(building, true);
     }
   };
-
-  // Update the URL from the current floor
-  useEffect(() => {
-    if (!buildings) {
-      return;
-    }
-
-    let url = window.location.origin + '/';
-    if (selectedRoom) {
-      console.log(selectedRoom);
-      url += `${selectedRoom.floor}/${selectedRoom.id}`;
-    } else if (focusedBuilding) {
-      url += `${focusedBuilding.code}`;
-
-      if (focusedFloor) {
-        url += `-${focusedFloor.level}`;
-      }
-    } else if (selectedBuilding) {
-      url += `${selectedBuilding.code}`;
-
-      if (focusedFloor) {
-        url += `-${focusedFloor.level}`;
-      }
-    }
-    window.history.pushState({}, '', url);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedRoom, focusedBuilding, focusedFloor]);
 
   const cameraBoundary = useMemo(
     () => ({

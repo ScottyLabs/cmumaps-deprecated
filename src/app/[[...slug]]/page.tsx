@@ -39,6 +39,7 @@ const Page = ({ params, searchParams }: Props) => {
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -127,7 +128,7 @@ const Page = ({ params, searchParams }: Props) => {
     getBuildings();
   }, [dispatch]);
 
-  // compute the current page title
+  // update the page title
   useEffect(() => {
     let title = '';
     if (focusedBuilding) {
@@ -141,6 +142,21 @@ const Page = ({ params, searchParams }: Props) => {
     title += 'CMU Maps';
     document.title = title;
   }, [focusedBuilding, focusedFloor?.level]);
+
+  // update the url
+  useEffect(() => {
+    let url = window.location.origin + '/';
+    if (selectedRoom) {
+      url += `${selectedRoom.floor}/${selectedRoom.id}`;
+    } else if (focusedBuilding) {
+      url += `${focusedBuilding.code}`;
+
+      if (focusedFloor) {
+        url += `-${focusedFloor.level}`;
+      }
+    }
+    window.history.pushState({}, '', url);
+  }, [selectedRoom, focusedBuilding, focusedFloor]);
 
   const renderClerkIcon = () => {
     if (isMobile) {
