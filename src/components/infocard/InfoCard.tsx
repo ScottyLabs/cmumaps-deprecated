@@ -1,9 +1,11 @@
 import React, { ReactElement } from 'react';
+
 import { useAppSelector } from '@/lib/hooks';
+
 import BuildingCard from './BuildingCard';
+import CardWrapper from './CardWrapper';
 import EateryCard from './EateryCard';
 import RoomCard from './RoomCard';
-import CardWrapper from './CardWrapper';
 
 export default function InfoCard(): ReactElement {
   const room = useAppSelector((state) => state.ui.selectedRoom);

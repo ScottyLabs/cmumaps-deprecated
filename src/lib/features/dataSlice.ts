@@ -1,16 +1,21 @@
-import { Building, FloorMap, FloorPlan } from '@/types';
 import { createSlice } from '@reduxjs/toolkit';
 
+import {
+  Building,
+  BuildingCode,
+  FloorLevel,
+  SearchMap,
+  SearchRoom,
+} from '@/types';
+
 interface DataState {
-  buildings: Building[] | null;
-  floorMap: FloorMap | null;
-  legacyFloorMap: FloorMap | null;
+  buildings: Record<BuildingCode, Building>;
+  searchMap: SearchMap;
 }
 
 const initialState: DataState = {
-  buildings: null,
-  floorMap: null,
-  legacyFloorMap: null,
+  buildings: {},
+  searchMap: {},
 };
 
 const dataSlice = createSlice({
@@ -20,25 +25,18 @@ const dataSlice = createSlice({
     setBuildings(state, action) {
       state.buildings = action.payload;
     },
-    setFloorMap(state, action) {
-      state.floorMap = action.payload;
-    },
-    addFloorToMap(state, action: { payload: [string, FloorPlan] }) {
-      const [floorName, floorPlan] = action.payload;
-      Object.values(floorPlan.rooms).forEach((room) => {
-        room.floor = floorName;
-      });
-      if (!state.floorMap) {
-        state.floorMap = {};
+    addFloorToSearchMap(
+      state,
+      action: { payload: [BuildingCode, FloorLevel, SearchRoom[]] },
+    ) {
+      const [buidlingCode, floorLevel, floorPlan] = action.payload;
+      if (!state.searchMap[buidlingCode]) {
+        state.searchMap[buidlingCode] = {};
       }
-      state.floorMap[floorName] = floorPlan;
-    },
-    setLegacyFloorMap(state, action) {
-      state.legacyFloorMap = action.payload;
+      state.searchMap[buidlingCode][String(floorLevel)] = floorPlan;
     },
   },
 });
 
-export const { setBuildings, setFloorMap, setLegacyFloorMap, addFloorToMap } =
-  dataSlice.actions;
+export const { setBuildings, addFloorToSearchMap } = dataSlice.actions;
 export default dataSlice.reducer;

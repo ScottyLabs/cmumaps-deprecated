@@ -3,6 +3,7 @@ import { date } from 'joi';
 import { NextRequest } from 'next/server';
 import { start } from 'repl';
 import { pipeline } from 'stream';
+
 const prisma = new PrismaClient();
 
 export async function searchEvents(query: string) {

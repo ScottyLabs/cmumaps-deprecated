@@ -1,34 +1,56 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import Head from 'next/head';
-
 import { UserButton } from '@clerk/nextjs';
+
+import React, { useEffect, useRef } from 'react';
+import { getSelectorsByUserAgent } from 'react-device-detect';
+
+import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setRoomImageList } from '@/lib/features/uiSlice';
-import SearchBar from '@/components/searchbar/SearchBar';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
-import FloorSwitcher from '@/components/buildings/FloorSwitcher';
+import SearchBar from '@/components/searchbar/SearchBar';
+import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
+import { setIsMobile, setRoomImageList } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { Building } from '@/types';
 
 const points = [[40.44249719447571, -79.94314319195851]];
+
+interface Props {
+  params: {
+    slug?: string[];
+  };
+  searchParams: {
+    userAgent?: string;
+  };
+}
 
 /**
  * The main page of the CMU Map website.
  */
-export default function Home() {
+const Page = ({ params, searchParams }: Props) => {
   const dispatch = useAppDispatch();
 
   const mapRef = useRef<mapkit.Map | null>(null);
 
-  const [showFloor, setShowFloor] = useState(false);
-  const [showRoomNames, setShowRoomNames] = useState(false);
-  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+  const buildings = useAppSelector((state) => state.data.buildings);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
+  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
 
-  // loads the list of images of the rooms
+  // determine the device type
+  const userAgent = searchParams.userAgent || '';
+  useEffect(() => {
+    if (userAgent) {
+      const { isMobile } = getSelectorsByUserAgent(userAgent);
+      dispatch(setIsMobile(isMobile));
+    }
+  }, [userAgent, dispatch]);
+
+  // load the list of images of the rooms
   useEffect(() => {
     const getRoomImageList = async () => {
       const res = await fetch('/assets/location_images/list_of_files.txt');
@@ -56,59 +78,128 @@ export default function Home() {
     getRoomImageList();
   }, [dispatch]);
 
-  const currentFloorName = focusedFloor?.level;
-
-  // Compute the current page title
-  let title = '';
-  if (focusedBuilding) {
-    title += focusedBuilding.name;
-    if (currentFloorName) {
-      title += ` ${currentFloorName}`;
+  // load the buidling and floor data
+  useEffect(() => {
+    if (!dispatch) {
+      return;
     }
-    title += ' — ';
-  }
-  title += 'CMU Map';
+
+    const getBuildings = async () => {
+      // set buildings
+      const response = await fetch('/json/buildings.json');
+      const buildings: Building[] = await response.json();
+      dispatch(setBuildings(buildings));
+
+      // set floors
+      const promises = Object.values(buildings)
+        .map((building) =>
+          building.floors.map(async (floor) => {
+            // only loads GHC, WEH, and NSH for now
+            if (!['GHC', 'WEH', 'NSH'].includes(building.code)) {
+              return [null, null, null];
+            }
+
+            if (building.code == 'CUC' && floor.level !== '2') {
+              return [null, null, null];
+            }
+
+            const outlineResponse = await fetch(
+              `/json/${building.code}/${building.code}-${floor.level}-outline.json`,
+            );
+            const outlineJson = await outlineResponse.json();
+
+            const searchRooms = outlineJson['rooms'];
+
+            for (const roomId in searchRooms) {
+              searchRooms[roomId]['id'] = roomId;
+              delete searchRooms[roomId]['polygon'];
+              delete searchRooms[roomId]['labelPosition'];
+            }
+
+            return [building.code, floor.level, searchRooms];
+          }),
+        )
+        .flat(2);
+
+      Promise.all(promises).then((responses) => {
+        responses.forEach(([buildingCode, floorLevel, searchRooms]) => {
+          if (buildingCode) {
+            dispatch(
+              addFloorToSearchMap([buildingCode, floorLevel, searchRooms]),
+            );
+          }
+        });
+      });
+    };
+
+    getBuildings();
+  }, [dispatch]);
+
+  // update the page title
+  useEffect(() => {
+    let title = '';
+    if (focusedFloor) {
+      title += buildings[focusedFloor.buildingCode].name;
+      title += ` ${focusedFloor.level}`;
+      title += ' — ';
+    }
+    title += 'CMU Maps';
+    document.title = title;
+  }, [buildings, focusedFloor, focusedFloor?.level]);
+
+  // update the url
+  useEffect(() => {
+    let url = window.location.origin + '/';
+    if (selectedRoom) {
+      url += `${selectedRoom.floor}/${selectedRoom.id}`;
+    } else if (focusedFloor) {
+      url += `${focusedFloor.buildingCode}`;
+
+      if (focusedFloor) {
+        url += `-${focusedFloor.level}`;
+      }
+    }
+    window.history.pushState({}, '', url);
+  }, [selectedRoom, focusedFloor]);
+
+  const renderClerkIcon = () => {
+    if (isMobile) {
+      return (
+        <div className="fixed right-2 bottom-10">
+          <UserButton />
+        </div>
+      );
+    } else {
+      return (
+        <div className="fixed right-2 top-2">
+          <UserButton />
+        </div>
+      );
+    }
+  };
 
   return (
-    <>
-      <Head>
-        <title>{title}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Interactive map of the CMU campus" />
-      </Head>
-      <main className="relative h-screen">
-        <div className="absolute z-10">
-          <h1 className="hidden">CMU Map</h1>
+    <main className="relative h-screen">
+      <div className="absolute z-10">
+        {!isNavOpen && !isSearchOpen && <InfoCard />}
+        {isNavOpen && <NavCard />}
 
-          {!isNavOpen && <InfoCard />}
-          {isNavOpen && <NavCard />}
+        {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
 
-          {/* {focusedBuilding && !!focusedFloor && (
-            <FloorSwitcher building={focusedBuilding} focusedFloor={focusedFloor} />
-          )} */}
-
-          <SearchBar
-            mapRef={mapRef.current}
-            userPosition={[
-              points[points.length - 1][0],
-              points[points.length - 1][1],
-            ]}
-          />
-
-          <div className="fixed right-2 top-2">
-            <UserButton />
-          </div>
-        </div>
-
-        <MapDisplay
-          mapRef={mapRef}
-          points={points}
-          setShowFloor={setShowFloor}
-          setShowRoomNames={setShowRoomNames}
-          showFloor={showFloor}
-          showRoomNames={showRoomNames}
+        <SearchBar
+          mapRef={mapRef.current}
+          userPosition={{
+            x: points[points.length - 1][0],
+            y: points[points.length - 1][1],
+          }}
         />
-      </main>
-    </>
+
+        {renderClerkIcon()}
+      </div>
+
+      <MapDisplay params={params} mapRef={mapRef} points={points} />
+    </main>
   );
-}
+};
+
+export default Page;

@@ -1,99 +1,50 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import BuildingShape from '../../components/buildings/BuildingShape';
-import FloorPlanOverlay, {
-  getFloorCenter,
-  positionOnMap,
-} from '../../components/buildings/FloorPlanOverlay';
-import useMapPosition from '../../hooks/useMapPosition';
-import { isInPolygonCoordinates } from '../../geometry';
-
 import {
   Coordinate,
   FeatureVisibility,
   Map,
   MapType,
   PointOfInterestCategory,
-  Polyline,
 } from 'mapkit-react';
-import { useIsDesktop } from '@/hooks/useWindowDimensions';
-import prefersReducedMotion from '@/util/prefersReducedMotion';
+
+import React, { useEffect, useMemo, useState } from 'react';
+
 import {
-  AbsoluteCoordinate,
-  Building,
-  Export,
-  Floor,
-  FloorMap,
-  FloorPlan,
-  Room,
-} from '@/types';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import {
+  claimBuilding,
   claimRoom,
-  focusBuilding,
   setFocusedFloor,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
-import { node } from '@/app/api/findPath/route';
-import {
-  addFloorToMap,
-  setBuildings,
-  setLegacyFloorMap,
-} from '@/lib/features/dataSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { AbsoluteCoordinate, Building, BuildingCode, Room } from '@/types';
+import { isInPolygonCoordinates } from '@/util/geometry';
 
-/**
- * The JSON file at this address contains all the map data used by the project.
- */
-const exportFile = 'https://nicolapps.github.io/cmumap-data-mirror/export.json';
+import useMapPosition from '../../hooks/useMapPosition';
+import NavLine from '../navigation/NavLine';
+import BuildingShape from './BuildingShape';
+import FloorPlanOverlay, { getFloorCenter } from './FloorPlanOverlay';
+import { getBuildingDefaultFloorToFocus, zoomOnObject } from './mapUtils';
 
-const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
 interface MapDisplayProps {
+  params: {
+    slug?: string[];
+  };
   mapRef: React.RefObject<mapkit.Map | null>;
   points: number[][];
-  setShowFloor: (show: boolean) => void;
-  setShowRoomNames: (show: boolean) => void;
-  showFloor: boolean;
-  showRoomNames: boolean;
 }
 
-const MapDisplay = ({
-  mapRef,
-  points,
-  setShowFloor,
-  setShowRoomNames,
-  showFloor,
-  showRoomNames,
-}: MapDisplayProps) => {
-  const [mapLoaded, setMapLoaded] = useState(false);
-
+const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
-  const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
-  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-  const floors = useAppSelector((state) => state.data.floorMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
-  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+  const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
 
-  function zoomOnObject(points: Coordinate[]) {
-    const allLat = points.map((p) => p.latitude);
-    const allLon = points.map((p) => p.longitude);
-    mapRef.current?.setRegionAnimated(
-      new mapkit.BoundingRegion(
-        Math.max(...allLat),
-        Math.max(...allLon),
-        Math.min(...allLat),
-        Math.min(...allLon),
-      ).toCoordinateRegion(),
-      !prefersReducedMotion(),
-    );
-  }
+  const [showFloor, setShowFloor] = useState<boolean>(false);
+  const [showRoomNames, setShowRoomNames] = useState(false);
 
   const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
-    dispatch(focusBuilding(newBuilding));
+    // dispatch(focusBuilding(newBuilding));
     if (newBuilding === null) {
       return;
     }
@@ -139,8 +90,15 @@ const MapDisplay = ({
     }
   };
 
+  // zoom on the selected building
+  useEffect(() => {
+    if (selectedBuilding) {
+      zoomOnObject(mapRef, selectedBuilding?.shapes.flat());
+    }
+  }, [mapRef, selectedBuilding]);
+
   const zoomOnDefaultBuilding = (
-    newBuildings: Building[],
+    newBuildings: Record<BuildingCode, Building>,
     newFloors: FloorMap | null,
   ) => {
     // Gets from URL and sets the default building and floor and room
@@ -153,7 +111,9 @@ const MapDisplay = ({
     // Get defaults from URL
     const [_, floor, roomid] = (window?.location?.pathname || '').split('/');
     const r = new RegExp('-|#');
-    let [buildingCode, floorLevel] = floor.toUpperCase().split(r);
+    let [buildingCode, floorLevel]: [BuildingCode, any] = floor
+      .toUpperCase()
+      .split(r);
     console.log(
       'searchme',
       window?.location?.pathname,
@@ -162,9 +122,8 @@ const MapDisplay = ({
       roomid,
     );
     // If building is not found, do nothing
-    const building: Building | undefined = newBuildings.find(
-      (b) => b.code === buildingCode,
-    );
+    const building: Building | undefined = newBuildings[buildingCode];
+
     if (!building) {
       window.history.pushState({}, '', window.location.origin);
       return;
@@ -179,7 +138,7 @@ const MapDisplay = ({
     dispatch(
       setFocusedFloor({ buildingCode: building.code, level: floorLevel }),
     );
-    dispatch(focusBuilding(building));
+    // dispatch(focusBuilding(building));
 
     if (newFloors) {
       const floor = building.floors.find(({ name }) => name == floorLevel)!; // .find({ level } => level == floorLevel)! once replace file format
@@ -206,70 +165,6 @@ const MapDisplay = ({
     }
   };
 
-  // Update the URL from the current floor
-  useEffect(() => {
-    if (!buildings) {
-      return;
-    }
-
-    let url = window.location.origin + '/';
-    if (selectedRoom) {
-      console.log(selectedRoom);
-      url += `${selectedRoom.floor}/${selectedRoom.id}`;
-    } else if (focusedBuilding) {
-      url += `${focusedBuilding.code}`;
-
-      if (focusedFloor) {
-        url += `-${focusedFloor.level}`;
-      }
-    }
-    window.history.pushState({}, '', url);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedRoom, focusedBuilding, focusedFloor]);
-
-  // Load the data from the API
-  useEffect(() => {
-    fetch(exportFile) // Only use this file for the buildings
-      .then((r) => r.json())
-      .then((response: Export) => {
-        Object.entries(response.floors).forEach(([code, floorPlan]) => {
-          const rooms = floorPlan.rooms;
-          // Add floor code to room objects
-          rooms.forEach((room: Room) => {
-            room.floor = code;
-          });
-        });
-
-        const buildings = response.buildings;
-        // To improve speed later, we can load the floor data only when needed --
-        // but we need to load it all for now to support search
-        const promises = buildings
-          .map((building) =>
-            building.floors.map(async (floor) => {
-              if (!['GHC', 'WEH', 'NSH'].includes(building.code)) {
-                return [null, null];
-              }
-              const outlineResp = await fetch(
-                `/json/${building.code}/${building.code}-${floor.name}-outline.json`,
-              );
-              const outlineJson = await outlineResp.json();
-              return [`${building.code}-${floor.name}`, outlineJson];
-            }),
-          )
-          .flat(2);
-        Promise.all(promises).then((responses) => {
-          responses.forEach(([code, floorPlan]) => {
-            if (code) {
-              dispatch(addFloorToMap([code, floorPlan]));
-            }
-          });
-          dispatch(setBuildings(response.buildings));
-          dispatch(setLegacyFloorMap(response.floors));
-          zoomOnDefaultBuilding(response.buildings, response.floors); // !TODO: This is probably broken
-        });
-      });
-  }, []);
-
   const cameraBoundary = useMemo(
     () => ({
       centerLatitude: 40.44533940432823,
@@ -293,42 +188,69 @@ const MapDisplay = ({
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
     (region, density) => {
-      if (!buildings) {
-        return;
-      }
-
       const newShowFloors = density >= 200_000;
       setShowFloor(newShowFloors);
       setShowRoomNames(density >= 750_000);
 
-      if (newShowFloors) {
+      // if not show floor then set focused floor to null
+      if (!newShowFloors) {
+        dispatch(setFocusedFloor(null));
+      }
+      // if show floor then show the default floor of the centered building
+      else {
         const center = {
           latitude: region.centerLatitude,
           longitude: region.centerLongitude,
         };
+
         const centerBuilding =
-          buildings.find(
+          Object.values(buildings).find(
             (building: Building) =>
               building.hitbox &&
               isInPolygonCoordinates(building.hitbox, center),
           ) ?? null;
 
-        showBuilding(centerBuilding, false);
-      } else {
-        dispatch(focusBuilding(null));
-        console.log('searchme2', null);
-        dispatch(setFocusedFloor(null));
+        if (centerBuilding) {
+          // only focus on the default floor of the center building if
+          // either no floor is selected or we are focusing on a different building
+          if (
+            !focusedFloor ||
+            buildings[focusedFloor.buildingCode].code != centerBuilding.code
+          ) {
+            dispatch(
+              setFocusedFloor(getBuildingDefaultFloorToFocus(centerBuilding)),
+            );
+          }
+        }
       }
     },
     mapRef,
     initialRegion,
   );
 
-  const isDesktop = useIsDesktop();
+  const handleLoad = () => {
+    // extract data from the url
+    // first slug is the building code
+    if (params.slug && params.slug.length > 0) {
+      if (buildings) {
+        const code = params.slug[0];
+        if (code.includes('-')) {
+          const buildingCode = code.split('-')[0];
+          const floorLevel = code.split('-')[1];
+          dispatch(claimBuilding(buildings[buildingCode]));
+          dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
+        } else {
+          const buildingCode = code;
+          dispatch(claimBuilding(buildings[buildingCode]));
+        }
+      }
+    }
+  };
+
   return (
     <Map
       ref={mapRef}
-      token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN!}
+      token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN || ''}
       initialRegion={initialRegion}
       includedPOICategories={[PointOfInterestCategory.Restaurant]}
       cameraBoundary={cameraBoundary}
@@ -336,86 +258,31 @@ const MapDisplay = ({
       maxCameraDistance={1500}
       showsUserLocationControl
       mapType={MapType.MutedStandard}
-      paddingBottom={isDesktop ? 0 : 72}
+      paddingBottom={isMobile ? 72 : 0}
       paddingLeft={4}
       paddingRight={4}
       paddingTop={10}
-      showsZoomControl={!!isDesktop}
+      showsZoomControl={!isMobile}
       showsCompass={
-        isDesktop ? FeatureVisibility.Adaptive : FeatureVisibility.Hidden
+        isMobile ? FeatureVisibility.Hidden : FeatureVisibility.Adaptive
       }
       allowWheelToZoom
-      onLoad={() => {
-        zoomOnDefaultBuilding(buildings, null);
-        setMapLoaded(true);
-      }}
+      onLoad={handleLoad}
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={onRegionChangeEnd}
       onClick={() => dispatch(setIsSearchOpen(false))}
     >
-      {buildings &&
-        buildings.map((building) => (
-          <BuildingShape
-            key={building.code}
-            building={building}
-            showName={!showFloor}
-          />
-        ))}
+      {Object.values(buildings).map((building) => (
+        <BuildingShape
+          key={building.code}
+          building={building}
+          showName={!showFloor}
+        />
+      ))}
 
-      {showFloor &&
-        !!buildings &&
-        !!floors &&
-        buildings.flatMap((building: Building) =>
-          building.floors.map((floor: { name: string; ordinal: number }) => {
-            if (floor.name !== focusedFloor?.level) {
-              // TODO: update this after update nicolas export
-              return null;
-            }
+      {focusedFloor && <FloorPlanOverlay showRoomNames={showRoomNames} />}
 
-            const code = `${building.code}-${floor.name}`;
-            if (
-              code.substring(0, 3) != 'GHC' &&
-              code.substring(0, 3) != 'WEH' &&
-              code.substring(0, 3) != 'NSH'
-            ) {
-              return null;
-            }
-            const floorPlan = floors[code];
-            return (
-              floorPlan && (
-                <FloorPlanOverlay
-                  key={code}
-                  floorPlan={floorPlan}
-                  showRoomNames={showRoomNames}
-                  isBackground={building.code !== focusedBuilding?.code}
-                />
-              )
-            );
-          }),
-        )}
-      {recommendedPath && ( // This will be its own component at some point
-        <Polyline
-          points={(recommendedPath || []).map((n: node) =>
-            positionOnMap(
-              [n.pos.x, n.pos.y],
-              {
-                center: {
-                  latitude: 40.44367399601104,
-                  longitude: -79.94452069407168,
-                },
-                scale: 5.85,
-                angle: 254,
-              },
-              [332.58, 327.18],
-            ),
-          )}
-          selected={false}
-          enabled={true}
-          strokeColor={'red'}
-          strokeOpacity={1}
-          lineWidth={5}
-        ></Polyline>
-      )}
+      <NavLine />
     </Map>
   );
 };

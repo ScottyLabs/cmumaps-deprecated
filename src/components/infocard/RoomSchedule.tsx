@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { Event } from '@prisma/client';
 import {
   format,
   addWeeks,
@@ -7,11 +7,13 @@ import {
   endOfWeek,
   eachDayOfInterval,
 } from 'date-fns';
+
+import React, { useEffect, useState } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa';
-import { Event } from '@prisma/client';
-import { useAppSelector } from '@/lib/hooks';
+
 import { fetchEvents } from '@/lib/apiRoutes';
+import { useAppSelector } from '@/lib/hooks';
 
 const RoomSchedule = () => {
   const today = new Date();

@@ -1,5 +1,6 @@
-import { Room } from '@/types';
 import React from 'react';
+
+import { Room } from '@/types';
 import {
   IReadOnlyExtendedLocation,
   LocationState,
@@ -44,7 +45,7 @@ const EateryInfo = ({ room, eatingData }: Props) => {
   // reason for two dictionaries: https://tailwindcss.com/docs/content-configuration#class-detection-in-depth
   // "Don’t construct class names dynamically"
   const textColors: Record<LocationState, string> = {
-    [LocationState.OPEN]: 'text-[#19b875]',
+    [LocationState.OPEN]: 'text-[#31B777]',
     [LocationState.CLOSED]: 'text-[#dd3c18]',
     [LocationState.CLOSED_LONG_TERM]: 'text-[#dd3c18]',
     [LocationState.OPENS_SOON]: 'text-[#f6cc5d]',
@@ -69,23 +70,38 @@ const EateryInfo = ({ room, eatingData }: Props) => {
   const renderStatusCircle = () => (
     <div
       className={
-        `${bgColor} h-3 w-3 rounded-full ` +
+        `${bgColor} h-2 w-2 rounded-full ` +
         (changesSoon ? 'animate-blinking' : 'opacity-100')
       }
     />
   );
 
-  return (
-    <>
-      <div className="mx-3 mt-2">
-        <p className="font-bold">{eatingData.name}</p>
-        <div className="flex items-center justify-between">
-          <p className={textColor}>{eatingData.statusMsg}</p>
+  const renderLocationTimeInfo = () => {
+    const floor = 'Second Floor';
+
+    return (
+      <div className="flex items-center justify-between">
+        <p className="text-gray-500">{floor}</p>
+        <div className="flex items-center gap-2">
           {renderStatusCircle()}
+          <p className={`${textColor}`}>
+            {trimStatusMsg(eatingData.statusMsg)}
+          </p>
         </div>
       </div>
-      <div className="ml-3 mt-2 text-sm">{eatingData.shortDescription}</div>
-    </>
+    );
+  };
+
+  const trimStatusMsg = (msg: string) => {
+    return msg.substring(0, msg.indexOf('('));
+  };
+
+  return (
+    <div className="px-4 pt-2 pb-3 font-[500]">
+      <h3 className="font-bold">{room.alias}</h3>
+      {renderLocationTimeInfo()}
+      <p className="mt-2 leading-4">{eatingData.shortDescription}</p>
+    </div>
   );
 };
 
