@@ -37,9 +37,6 @@ export default function FloorSwitcher({
     return <></>;
   }
 
-  // // Hide the floor picker if the building or floor changes
-  // useEffect(() => setShowFloorPicker(false), [building]);
-
   const renderDefaultView = () => {
     if (building.floors.length === 0 || !focusedFloor) {
       return (
