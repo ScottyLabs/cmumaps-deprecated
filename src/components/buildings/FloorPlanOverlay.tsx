@@ -2,6 +2,7 @@ import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { getFloorPlan } from '@/lib/apiRoutes';
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import {
@@ -77,39 +78,8 @@ export default function FloorPlanOverlay({
   const [floorPlan, setFloorPlan] = useState<FloorPlan | null>(null);
 
   useEffect(() => {
-    fetch(`/json/${floor.buildingCode}/`).then((response) => {
-      console.log(response);
-      console.log(response.ok);
-      response.json().then((floorPlan) => {
-        const rooms = floorPlan['rooms'];
-
-        for (const roomId in rooms) {
-          rooms[roomId]['id'] = roomId;
-        }
-
-        console.log(floorPlan);
-
-        setFloorPlan(floorPlan);
-      });
-    });
-
-    fetch(
-      `/json/${floor.buildingCode}/${floor.buildingCode}-${floor.level}-outline.json`,
-    ).then((response) => {
-      console.log(response);
-      response.text().then((err) => console.log(err));
-      console.log(response.ok);
-      response.json().then((floorPlan) => {
-        const rooms = floorPlan['rooms'];
-
-        for (const roomId in rooms) {
-          rooms[roomId]['id'] = roomId;
-        }
-
-        console.log(floorPlan);
-
-        setFloorPlan(floorPlan);
-      });
+    getFloorPlan(floor).then((floorPlan) => {
+      setFloorPlan(floorPlan);
     });
   }, [floor]);
 
