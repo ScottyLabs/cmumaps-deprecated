@@ -229,6 +229,11 @@ export interface Building {
   defaultFloor: string;
 
   /**
+   * The ordinal of the default floor (the ordinal of the Cut is 0)
+   */
+  defaultOrdinal: string;
+
+  /**
    * The position of the label for the building's code.
    */
   labelPosition: Coordinate;
