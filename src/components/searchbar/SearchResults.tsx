@@ -52,8 +52,10 @@ export default function SearchResults({
 }: SearchResultsProps) {
   const dispatch = useAppDispatch();
 
-  const floorMap = useAppSelector((state) => state.data.floorMap);
+  const searchMap = useAppSelector((state) => state.data.searchMap);
   const buildings = useAppSelector((state) => state.data.buildings);
+
+  console.log(searchMap);
 
   // sort building by distance
   // if (userPosition) {
@@ -73,7 +75,7 @@ export default function SearchResults({
   const searchResult = Object.values(buildings)
     .map((building: Building) => ({
       Building: building,
-      Rooms: findRooms(query, building, floorMap, userPosition),
+      Rooms: findRooms(query, building, searchMap, userPosition),
     }))
     .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
     .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])

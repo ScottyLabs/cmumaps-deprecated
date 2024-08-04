@@ -120,7 +120,7 @@ export interface SearchRoom {
   /**
    * Unique ID (UUID)
    */
-  id?: string;
+  id: string;
 
   /**
    * The short name of the room, without the building name but including the
@@ -131,7 +131,7 @@ export interface SearchRoom {
   /**
    * A list of names under which the room is known for searching purposes (e.g. 'ABP vs Au Bon Pain')
    */
-  es: string[];
+  aliases: string[];
 
   type: RoomType;
 }
@@ -165,7 +165,7 @@ export interface Room {
 
   type: RoomType;
 
-  labelPosition?: AbsoluteCoordinate;
+  labelPosition: AbsoluteCoordinate;
 }
 
 /**
