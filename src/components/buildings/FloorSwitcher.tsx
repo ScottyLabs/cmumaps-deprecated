@@ -5,32 +5,31 @@ import { FaArrowDown } from 'react-icons/fa';
 
 import { getIsCardOpen, setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, Floor } from '@/types';
+import { Floor } from '@/types';
 
 import Roundel from '../shared/Roundel';
 
 interface FloorSwitcherProps {
-  building: Building;
-  focusedFloor: Floor | null;
+  focusedFloor: Floor;
 }
 
 /**
  * The interface component allowing an user to see the current building
  * and switch floors.
  */
-export default function FloorSwitcher({
-  building,
-  focusedFloor,
-}: FloorSwitcherProps) {
+export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
   const [showFloorPicker, setShowFloorPicker] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
+  const buildings = useAppSelector((state) => state.data.buildings);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
   const isCardWrapperCollapsed = useAppSelector(
     (state) => state.ui.isCardWrapperCollapsed,
   );
+
+  const building = buildings[focusedFloor.buildingCode];
 
   // don't render the floor switcher if on mobile and the card covers the floor switcher
   if (isMobile && isCardOpen && !isCardWrapperCollapsed) {

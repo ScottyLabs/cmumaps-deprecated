@@ -1,6 +1,11 @@
 import { Coordinate } from 'mapkit-react';
 
+import { Building, Floor } from '@/types';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
+
+export const getBuildingDefaultFloorToFocus = (building: Building): Floor => {
+  return { buildingCode: building.code, level: building.defaultFloor };
+};
 
 export const zoomOnObject = (
   mapRef: React.RefObject<mapkit.Map | null>,

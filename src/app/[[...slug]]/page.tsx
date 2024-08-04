@@ -34,7 +34,7 @@ const Page = ({ params, searchParams }: Props) => {
 
   const mapRef = useRef<mapkit.Map | null>(null);
 
-  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+  const buildings = useAppSelector((state) => state.data.buildings);
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
@@ -134,32 +134,29 @@ const Page = ({ params, searchParams }: Props) => {
   // update the page title
   useEffect(() => {
     let title = '';
-    if (focusedBuilding) {
-      title += focusedBuilding.name;
-      const currentFloorName = focusedFloor?.level;
-      if (currentFloorName) {
-        title += ` ${currentFloorName}`;
-      }
+    if (focusedFloor) {
+      title += buildings[focusedFloor.buildingCode].name;
+      title += ` ${focusedFloor.level}`;
       title += ' — ';
     }
     title += 'CMU Maps';
     document.title = title;
-  }, [focusedBuilding, focusedFloor?.level]);
+  }, [buildings, focusedFloor, focusedFloor?.level]);
 
   // update the url
   useEffect(() => {
     let url = window.location.origin + '/';
     if (selectedRoom) {
       url += `${selectedRoom.floor}/${selectedRoom.id}`;
-    } else if (focusedBuilding) {
-      url += `${focusedBuilding.code}`;
+    } else if (focusedFloor) {
+      url += `${focusedFloor.buildingCode}`;
 
       if (focusedFloor) {
         url += `-${focusedFloor.level}`;
       }
     }
     window.history.pushState({}, '', url);
-  }, [selectedRoom, focusedBuilding, focusedFloor]);
+  }, [selectedRoom, focusedFloor]);
 
   const renderClerkIcon = () => {
     if (isMobile) {
@@ -183,12 +180,7 @@ const Page = ({ params, searchParams }: Props) => {
         {!isNavOpen && !isSearchOpen && <InfoCard />}
         {isNavOpen && <NavCard />}
 
-        {focusedBuilding && (
-          <FloorSwitcher
-            building={focusedBuilding}
-            focusedFloor={focusedFloor}
-          />
-        )}
+        {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
 
         <SearchBar
           mapRef={mapRef.current}
