@@ -128,9 +128,9 @@ export interface SearchRoom {
   name: string;
 
   /**
-   * Another name under which the room is known (e.g. 'McConomy Auditorium')
+   * A list of names under which the room is known for searching purposes (e.g. 'ABP vs Au Bon Pain')
    */
-  alias?: string;
+  aliases: string[];
 
   type: RoomType;
 }
@@ -160,7 +160,7 @@ export interface Room {
   /**
    * Another name under which the room is known (e.g. 'McConomy Auditorium')
    */
-  aliases: string[];
+  alias: string;
 
   type: RoomType;
 
