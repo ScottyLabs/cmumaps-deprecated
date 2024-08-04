@@ -1,17 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
-import QuickSearch from '@/components/searchbar/QuickSearch';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
-import SearchResults from './SearchResults';
-import { IoIosClose } from 'react-icons/io';
-import { HiMagnifyingGlass } from 'react-icons/hi2';
-import useEscapeKey from '@/hooks/useEscapeKey';
-import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
-import { getFloorCenter, positionOnMap } from '../buildings/FloorPlanOverlay';
+import searchIcon from '@icons/search.svg';
 import { Coordinate } from 'mapkit-react';
-import prefersReducedMotion from '@/util/prefersReducedMotion';
+import Image from 'next/image';
+
+import React, { useEffect, useRef, useState } from 'react';
+import { IoIosClose } from 'react-icons/io';
+
+import QuickSearch from '@/components/searchbar/QuickSearch';
+import useEscapeKey from '@/hooks/useEscapeKey';
 import { searchEvents } from '@/lib/apiRoutes';
+import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
+import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
+import prefersReducedMotion from '@/util/prefersReducedMotion';
+
+import { getFloorCenter } from '../buildings/FloorPlanOverlay';
+import { positionOnMap } from '../buildings/mapUtils';
+import SearchResults from './SearchResults';
 
 interface Props {
   mapRef: mapkit.Map | null;
@@ -52,7 +57,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         setSearchQuery(room.alias);
         return;
       } else {
-        setSearchQuery(room.floor.split('-')[0] + ' ' + room.name);
+        setSearchQuery(room.floor.buildingCode + ' ' + room.name);
         return;
       }
     }
@@ -84,7 +89,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
       <IoIosClose
         title="Close"
         size={25}
-        className="absolute right-2"
+        className="absolute right-1"
         onPointerDown={() => {
           dispatch(setIsSearchOpen(false));
           dispatch(setIsNavOpen(false));
@@ -96,12 +101,16 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
     );
 
     return (
-      <div className="flex items-center rounded bg-white">
-        <HiMagnifyingGlass className="m-1" size={25} />
+      <div className="flex items-center rounded bg-white w-full p-1">
+        <Image
+          alt="Search Icon"
+          src={searchIcon}
+          className="size-4.5 invert ml-4 opacity-60"
+        />
 
         <input
           type="text"
-          className="w-full rounded p-2"
+          className="w-full rounded p-2 outline-none"
           placeholder="Search"
           ref={inputRef}
           value={searchQuery}
@@ -181,7 +190,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   useEffect(() => {
     setTimeout(() => {
       setSearchResults(renderSearchResults());
-      searchEvents(searchQuery).then(setEventsResults);
+      // searchEvents(searchQuery).then(setEventsResults);
     }, 500);
   }, [searchQuery]);
 
@@ -192,7 +201,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   return (
     <div
       id="SearchBar"
-      className="box-shadow fixed top-4 z-10 w-full rounded px-2 sm:w-96"
+      className="box-shadow fixed top-4 z-10 w-full rounded mx-2 sm:w-96"
     >
       {renderSearchQueryInput()}
       {searchQuery == '' && (
@@ -201,7 +210,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         </div>
       )}
       {searchResults}
-      Yuxiang please make the UI for events given here{' '}
+      Yuxiang please make the UI for events given here
       {/* <p> ({eventsResults.toString()})</p> */}
     </div>
   );

@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Sheet, SheetRef } from 'react-modal-sheet';
+import React, { useEffect, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
+import { Sheet, SheetRef } from 'react-modal-sheet';
+
+import { setIsCardWrapperCollapsed } from '@/lib/features/uiSlice';
+import { useAppDispatch } from '@/lib/hooks';
 
 interface CardWrapperProps {
   snapPoint: number;
@@ -8,17 +11,23 @@ interface CardWrapperProps {
 }
 
 const CardWrapper = ({ snapPoint, children }: CardWrapperProps) => {
-  const [isOpen, setOpen] = useState(true);
-  const ref = useRef<SheetRef>();
-  const snapPoints = [snapPoint, 32];
-  const snapTo = (i: number) => ref.current?.snapTo(i);
+  const dispatch = useAppDispatch();
 
+  const [isOpen, setOpen] = useState(true);
+  const snapPoints = [snapPoint, 32];
+
+  const ref = useRef<SheetRef>();
+  const snapTo = (i: number) => ref.current?.snapTo(i);
   useEffect(() => {
     if (!isOpen) {
       setOpen(true);
-      snapTo(3);
+      snapTo(0);
     }
   }, [isOpen]);
+
+  const handleSnapChange = (position: number) => {
+    dispatch(setIsCardWrapperCollapsed(position == snapPoints.length - 1));
+  };
 
   if (isMobile) {
     return (
@@ -27,6 +36,7 @@ const CardWrapper = ({ snapPoint, children }: CardWrapperProps) => {
         onClose={() => setOpen(false)}
         onOpenEnd={() => setOpen(true)}
         snapPoints={snapPoints}
+        onSnap={handleSnapChange}
       >
         <Sheet.Container className="!rounded-t-2xl">
           <Sheet.Header className="h-9" />
@@ -38,7 +48,7 @@ const CardWrapper = ({ snapPoint, children }: CardWrapperProps) => {
     );
   } else {
     return (
-      <div className="fixed left-2 top-16 z-10 w-96 rounded bg-white">
+      <div className="fixed left-2 top-20 z-10 w-96 rounded-lg bg-white overflow-clip">
         {children}
       </div>
     );

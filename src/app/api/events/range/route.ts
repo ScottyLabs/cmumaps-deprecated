@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { date } from 'joi';
 import { NextRequest } from 'next/server';
 import { start } from 'repl';
+
 const prisma = new PrismaClient();
 
 export async function retrieveEvents(

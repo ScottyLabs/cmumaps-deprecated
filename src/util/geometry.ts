@@ -1,10 +1,9 @@
 /**
  * Contains a few functions useful to do geometry computations.
  */
-
 import { Coordinate } from 'mapkit-react';
-import { AbsoluteCoordinate } from './types';
 
+import { AbsoluteCoordinate } from './types';
 
 // The number of meters in a degree.
 // Values computed for the Pittsburgh region using https://stackoverflow.com/a/51765950/4652564
@@ -15,16 +14,22 @@ export const longitudeRatio = 84719.3945182816;
  * Returns the distance in meters between two points
  */
 export function mapDistance(a: Coordinate, b: Coordinate) {
-  const squareSum = ((a.latitude - b.latitude) * latitudeRatio) ** 2
-    + ((a.longitude - b.longitude) * longitudeRatio) ** 2;
+  const squareSum =
+    ((a.latitude - b.latitude) * latitudeRatio) ** 2 +
+    ((a.longitude - b.longitude) * longitudeRatio) ** 2;
   return Math.sqrt(squareSum);
 }
 
 /**
  * Returns the distance between two absolute coordinates.
  */
-export function distance(a: AbsoluteCoordinate | undefined, b: AbsoluteCoordinate) {
-  if (!a) return 9999999
+export function distance(
+  a: AbsoluteCoordinate | undefined,
+  b: AbsoluteCoordinate,
+) {
+  if (!a) {
+    return 9999999;
+  }
   const squareSum = (a.x - b.x) ** 2 + (a.y - b.y) ** 2;
   return Math.sqrt(squareSum);
 }
@@ -64,7 +69,12 @@ export function hasOverlap(
  * @param bMax The maximum value of the first range
  * @returns true if there is an overlap; false otherwise
  */
-export function rangeOverlap(aMin: number, aMax: number, bMin: number, bMax: number) {
+export function rangeOverlap(
+  aMin: number,
+  aMax: number,
+  bMin: number,
+  bMax: number,
+) {
   return bMin < aMin ? bMax > aMin : bMin < aMax;
 }
 
@@ -75,7 +85,10 @@ export function rangeOverlap(aMin: number, aMax: number, bMin: number, bMax: num
  * @param point The point
  * @returns true if the point is in the polygon; false otherwise
  */
-export function isInPolygon(vertices: AbsoluteCoordinate[], point: AbsoluteCoordinate) {
+export function isInPolygon(
+  vertices: AbsoluteCoordinate[],
+  point: AbsoluteCoordinate,
+) {
   const { x, y } = point;
 
   let inside = false;
@@ -86,8 +99,11 @@ export function isInPolygon(vertices: AbsoluteCoordinate[], point: AbsoluteCoord
     const xj = vertices[j].x;
     const yj = vertices[j].y;
 
-    const intersect = ((yi > y) !== (yj > y)) && (x < ((xj - xi) * (y - yi)) / (yj - yi) + xi);
-    if (intersect) inside = !inside;
+    const intersect =
+      yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+    if (intersect) {
+      inside = !inside;
+    }
   }
 
   return inside;
@@ -101,7 +117,10 @@ export function isInPolygon(vertices: AbsoluteCoordinate[], point: AbsoluteCoord
  * @param point The point
  * @returns true if the point is in the polygon; false otherwise
  */
-export function isInPolygonCoordinates(vertices: Coordinate[], point: Coordinate) {
+export function isInPolygonCoordinates(
+  vertices: Coordinate[],
+  point: Coordinate,
+) {
   const x = point.longitude;
   const y = point.latitude;
 
@@ -113,8 +132,11 @@ export function isInPolygonCoordinates(vertices: Coordinate[], point: Coordinate
     const xj = vertices[j].longitude;
     const yj = vertices[j].latitude;
 
-    const intersect = ((yi > y) !== (yj > y)) && (x < ((xj - xi) * (y - yi)) / (yj - yi) + xi);
-    if (intersect) inside = !inside;
+    const intersect =
+      yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+    if (intersect) {
+      inside = !inside;
+    }
   }
 
   return inside;
@@ -141,7 +163,7 @@ export function rotate(x: number, y: number, angle: number): number[] {
   const radians = (Math.PI / 180) * angle;
   const cos = Math.cos(radians);
   const sin = Math.sin(radians);
-  const nx = (cos * x) + (sin * y);
-  const ny = (cos * y) - (sin * x);
+  const nx = cos * x + sin * y;
+  const ny = cos * y - sin * x;
   return [nx, ny];
 }

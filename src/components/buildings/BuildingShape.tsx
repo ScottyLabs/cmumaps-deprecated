@@ -1,10 +1,16 @@
-import React from 'react';
-import { Building } from '@/types';
 import { Annotation, Polygon } from 'mapkit-react';
-import styles from '../../styles/BuildingShape.module.css';
-import Roundel from '../shared/Roundel';
-import { claimBuilding, releaseBuilding } from '@/lib/features/uiSlice';
+
+import React from 'react';
+
+import {
+  claimBuilding,
+  releaseBuilding,
+  selectBuilding,
+} from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
+import { Building } from '@/types';
+
+import Roundel from '../shared/Roundel';
 
 interface BuildingShapeProps {
   building: Building;
@@ -37,7 +43,7 @@ export default function BuildingShape({
         <Annotation
           latitude={building.labelPosition.latitude}
           longitude={building.labelPosition.longitude}
-          onSelect={() => dispatch(claimBuilding(building))}
+          onSelect={() => dispatch(selectBuilding(building))}
           onDeselect={() => dispatch(releaseBuilding(building))}
         >
           <div className="translate-y-1/2 scale-[0.8]">

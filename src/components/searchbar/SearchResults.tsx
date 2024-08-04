@@ -1,15 +1,34 @@
-import React, { useMemo } from 'react';
-import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
-import { distance } from '@/geometry';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { ChevronRightIcon } from '@heroicons/react/20/solid';
-import Roundel from '../shared/Roundel';
+import React, { ReactElement } from 'react';
+
 import { claimBuilding, claimRoom } from '@/lib/features/uiSlice';
-import RoomPin from '../buildings/RoomPin';
-import { findRooms } from './searchUtil';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import titleCase from '@/util/titleCase';
 
-export interface SearchResultsProps {
+import RoomPin from '../buildings/RoomPin';
+import Roundel from '../shared/Roundel';
+import { findRooms } from './searchUtil';
+
+interface WrapperProps {
+  children: ReactElement;
+  handleClick: () => void;
+}
+
+const SearchResultWrapper = ({ children, handleClick }: WrapperProps) => {
+  return (
+    <button
+      type="button"
+      className={
+        'flex h-14 w-full justify-between items-center gap-2 p-1 hover:bg-[#efefef] bg-gray-50 transition duration-150 ease-out'
+      }
+      onClick={handleClick}
+    >
+      {children}
+    </button>
+  );
+};
+
+interface SearchResultsProps {
   query: string;
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   userPosition: AbsoluteCoordinate;
@@ -33,29 +52,28 @@ export default function SearchResults({
 }: SearchResultsProps) {
   const dispatch = useAppDispatch();
 
-  let floorMap = useAppSelector((state) => state.data.legacyFloorMap); // for legacy floors layout (use state.data.floorMap for new floors layout)
-  floorMap = floorMap ? { ...floorMap } : {};
-  let buildings = useAppSelector((state) => state.data.buildings);
-  buildings = buildings ? [...buildings] : [];
+  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const buildings = useAppSelector((state) => state.data.buildings);
 
-  if (userPosition) {
-    buildings.sort(
-      (b, a) =>
-        distance(
-          [b.labelPosition.longitude, b.labelPosition.latitude],
-          userPosition,
-        ) -
-        distance(
-          [a.labelPosition.longitude, a.labelPosition.latitude],
-          userPosition,
-        ),
-    );
-  }
+  // sort building by distance
+  // if (userPosition) {
+  //   buildings.sort(
+  //     (b, a) =>
+  //       distance(
+  //         [b.labelPosition.longitude, b.labelPosition.latitude],
+  //         userPosition,
+  //       ) -
+  //       distance(
+  //         [a.labelPosition.longitude, a.labelPosition.latitude],
+  //         userPosition,
+  //       ),
+  //   );
+  // }
 
-  const searchResult = buildings
+  const searchResult = Object.values(buildings)
     .map((building: Building) => ({
       Building: building,
-      Rooms: findRooms(query, building, floorMap, userPosition),
+      Rooms: findRooms(query, building, searchMap[building.code], userPosition),
     }))
     .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
     .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
@@ -72,55 +90,50 @@ export default function SearchResults({
   }
 
   const renderBuildingResults = (building: Building) => {
+    const handleClick = () => {
+      dispatch(claimBuilding(building));
+    };
+
     return (
-      <button
-        type="button"
-        className="flex h-14 w-full justify-between gap-2 p-1"
-        onClick={() => {
-          dispatch(claimBuilding(building));
-          // dispatch(setFloorOrdinal(null));
-        }}
-      >
+      <SearchResultWrapper handleClick={handleClick}>
         <div className="flex items-center gap-3">
           <Roundel code={building.code} />
-          <p className="">{building.name}</p>
+          <h4 className="">{building.name}</h4>
         </div>
-        <ChevronRightIcon className="h-5 w-5" />
-      </button>
+      </SearchResultWrapper>
     );
   };
 
   const renderRoomResults = (rooms: Room[], building: Building) => {
     const renderText = (room: Room) => (
       <div className="flex flex-col text-left">
-        <div>
+        <p>
           <span>
             {building.code} {room.name}
           </span>
           {room.type !== 'default' && (
             <span>{` • ${titleCase(roomType(room))}`}</span>
           )}
-        </div>
-        {room.alias && <div className="truncate">{room.alias}</div>}
+          {room.alias && <span className="truncate">{room.alias}</span>}
+        </p>
       </div>
     );
 
+    const handleClick = (room: Room) => () => {
+      // dispatch(claimBuilding(building));
+      dispatch(claimRoom(room));
+    };
+
     return rooms.map((room: Room) => (
-      <button
-        type="button"
-        className="flex h-14 w-full justify-between gap-2 p-1 pl-6"
-        key={room.id}
-        onClick={() => {
-          // dispatch(claimBuilding(building));
-          dispatch(claimRoom(room));
-        }}
+      <SearchResultWrapper
+        key={room.name + room.floor.level}
+        handleClick={handleClick(room)}
       >
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 pl-8">
           <RoomPin room={room} />
           {renderText(room)}
         </div>
-        <ChevronRightIcon className="h-5 w-5" />
-      </button>
+      </SearchResultWrapper>
     ));
   };
 

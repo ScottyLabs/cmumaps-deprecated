@@ -1,41 +1,51 @@
 /**
  * Contains TypeScript type definitions used in the project.
  */
-
+import { Polygon } from 'geojson';
 import { Coordinate } from 'mapkit-react';
+
+export type ID = string;
+
+export type BuildingCode = string;
+export type FloorLevel = string;
 
 /**
  * An absolute coordinate.
  */
-export type AbsoluteCoordinate = [number, number];
+export type AbsoluteCoordinate = { x: number; y: number };
 
 /**
  * Room types
  */
-export type RoomType =
-  | 'default'
-  | 'corridor'
-  | 'auditorium'
-  | 'office'
-  | 'classroom'
-  | 'operational' // Used for storage or maintenance, not publicly accessible
-  | 'conference'
-  | 'study'
-  | 'laboratory'
-  | 'computer lab'
-  | 'studio'
-  | 'workshop'
-  | 'vestibule'
-  | 'storage'
-  | 'restroom'
-  | 'stairs'
-  | 'elevator'
-  | 'ramp'
-  | 'dining'
-  | 'store'
-  | 'library'
-  | 'sport'
-  | 'parking';
+export const RoomTypeList = [
+  'default',
+  'corridor',
+  'auditorium',
+  'office',
+  'classroom',
+  'operational', // Used for storage or maintenance, not publicly accessible
+  'conference',
+  'study',
+  'laboratory',
+  'computer lab',
+  'studio',
+  'workshop',
+  'vestibule',
+  'storage',
+  'restroom',
+  'stairs',
+  'elevator',
+  'ramp',
+  'dining',
+  'store',
+  'library',
+  'sport',
+  'parking',
+  'inaccessible',
+  '', // not assigned
+];
+
+export type RoomType = (typeof RoomTypeList)[number];
 
 /**
  * The attributes of a room type.
@@ -105,16 +115,12 @@ export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
       return { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' };
   }
 }
-export interface Polygon {
-  coordinates: AbsoluteCoordinate[][];
-  type: string;
-}
 
 export interface SearchRoom {
   /**
    * Unique ID (UUID)
    */
-  id?: string;
+  id: string;
 
   /**
    * The short name of the room, without the building name but including the
@@ -123,14 +129,9 @@ export interface SearchRoom {
   name: string;
 
   /**
-   * Building-Floor code (e.g. 'WEH-4')
+   * A list of names under which the room is known for searching purposes (e.g. 'ABP vs Au Bon Pain')
    */
-  floor: string;
-
-  /**
-   * Another name under which the room is known (e.g. 'McConomy Auditorium')
-   */
-  alias?: string;
+  aliases: string[];
 
   type: RoomType;
 }
@@ -144,7 +145,7 @@ export interface Room {
   /**
    * Building-Floor code (e.g. 'WEH-4')
    */
-  floor: string;
+  floor: Floor;
 
   /**
    * even-odd included-not-included 2darray of coordinates to polygon
@@ -160,11 +161,11 @@ export interface Room {
   /**
    * Another name under which the room is known (e.g. 'McConomy Auditorium')
    */
-  alias?: string;
+  alias: string;
 
   type: RoomType;
 
-  labelPosition?: AbsoluteCoordinate;
+  labelPosition: AbsoluteCoordinate;
 }
 
 /**
@@ -192,7 +193,7 @@ export interface Placement {
  */
 export interface Floor {
   buildingCode: string;
-  level: string;
+  level: FloorLevel;
 }
 
 /**
@@ -220,12 +221,17 @@ export interface Building {
   /**
    * The floors in the building.
    */
-  floors: { name: string; ordinal: number }[];
+  floors: Floor[];
 
   /**
    * The name of the floor displayed by default for this building.
    */
   defaultFloor: string;
+
+  /**
+   * The ordinal of the default floor (the ordinal of the Cut is 0)
+   */
+  defaultOrdinal: string;
 
   /**
    * The position of the label for the building's code.
@@ -244,14 +250,7 @@ export interface Building {
 }
 
 /**
- * A map from floor identifiers (e.g. 'WEH-4') to floor plans.
+ * A map from building code to a map of floor levels to a list of search rooms
+ * Used for searching purposes
  */
-export type FloorMap = { [code: string]: FloorPlan };
-
-/**
- * The structure of the export file containing the CMU Map data.
- */
-export interface Export {
-  buildings: Building[];
-  floors: FloorMap;
-}
+export type SearchMap = Record<BuildingCode, Record<FloorLevel, SearchRoom[]>>;
