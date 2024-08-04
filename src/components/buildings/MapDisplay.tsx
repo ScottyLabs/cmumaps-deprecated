@@ -203,16 +203,16 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
     (region, density) => {
-      if (!buildings) {
-        return;
-      }
-
       const newShowFloors = density >= 200_000;
       setShowFloor(newShowFloors);
       setShowRoomNames(density >= 750_000);
 
-      // if show floor then show the default floor of the building
-      if (newShowFloors) {
+      // if not show floor then set focused floor to null
+      if (!newShowFloors) {
+        dispatch(setFocusedFloor(null));
+      }
+      // if show floor then show the default floor of the centered building
+      else {
         const center = {
           latitude: region.centerLatitude,
           longitude: region.centerLongitude,
@@ -226,12 +226,17 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
           ) ?? null;
 
         if (centerBuilding) {
-          dispatch(
-            setFocusedFloor(getBuildingDefaultFloorToFocus(centerBuilding)),
-          );
+          // only focus on the default floor of the center building if
+          // either no floor is selected or we are focusing on a different building
+          if (
+            !focusedFloor ||
+            buildings[focusedFloor.buildingCode].code != centerBuilding.code
+          ) {
+            dispatch(
+              setFocusedFloor(getBuildingDefaultFloorToFocus(centerBuilding)),
+            );
+          }
         }
-      } else {
-        dispatch(setFocusedFloor(null));
       }
     },
     mapRef,
