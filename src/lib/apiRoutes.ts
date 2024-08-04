@@ -1,5 +1,7 @@
 import { Event } from '@prisma/client';
 
+import { Floor } from '@/types';
+
 export async function fetchEvents(
   roomName: string | undefined,
   startDate: Date,
@@ -41,3 +43,30 @@ export async function searchEvents(query: string) {
     return;
   }
 }
+
+export const getFloorPlan = async function (floor: Floor) {
+  const response = await fetch('/api/getFloorPlan', {
+    method: 'GET',
+    headers: {
+      buildingCode: floor.buildingCode,
+      floorLevel: floor.level,
+    },
+  });
+
+  try {
+    const body = await response.json();
+
+    if (!response.ok) {
+      console.error(body.error);
+
+      return;
+    }
+
+    if (body.floorPlan) {
+      return body.floorPlan;
+    }
+  } catch (e) {
+    console.error('Failed to get floor plan', response);
+    return;
+  }
+};
