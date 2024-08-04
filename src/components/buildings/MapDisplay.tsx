@@ -4,12 +4,10 @@ import {
   Map,
   MapType,
   PointOfInterestCategory,
-  Polyline,
 } from 'mapkit-react';
 
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { node } from '@/app/api/findPath/route';
 import {
   claimBuilding,
   claimRoom,
@@ -17,21 +15,13 @@ import {
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import {
-  AbsoluteCoordinate,
-  Building,
-  BuildingCode,
-  FloorMap,
-  Room,
-} from '@/types';
+import { AbsoluteCoordinate, Building, BuildingCode, Room } from '@/types';
 import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
+import NavLine from '../navigation/NavLine';
 import BuildingShape from './BuildingShape';
-import FloorPlanOverlay, {
-  getFloorCenter,
-  positionOnMap,
-} from './FloorPlanOverlay';
+import FloorPlanOverlay, { getFloorCenter } from './FloorPlanOverlay';
 import { getBuildingDefaultFloorToFocus, zoomOnObject } from './mapUtils';
 
 interface MapDisplayProps {
@@ -46,7 +36,6 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
-  const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
@@ -295,29 +284,7 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
         <FloorPlanOverlay floor={focusedFloor} showRoomNames={showRoomNames} />
       )}
 
-      {recommendedPath && ( // This will be its own component at some point
-        <Polyline
-          points={(recommendedPath || []).map((n: node) =>
-            positionOnMap(
-              [n.pos.x, n.pos.y],
-              {
-                center: {
-                  latitude: 40.44367399601104,
-                  longitude: -79.94452069407168,
-                },
-                scale: 5.85,
-                angle: 254,
-              },
-              [332.58, 327.18],
-            ),
-          )}
-          selected={false}
-          enabled={true}
-          strokeColor={'red'}
-          strokeOpacity={1}
-          lineWidth={5}
-        ></Polyline>
-      )}
+      <NavLine />
     </Map>
   );
 };
