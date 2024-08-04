@@ -3,7 +3,6 @@ import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 
 import React, { useEffect, useState } from 'react';
 
-import { getFloorPlan } from '@/lib/apiRoutes';
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Floor, FloorPlan, getRoomTypeDetails, Placement, Room } from '@/types';
@@ -67,14 +66,35 @@ export default function FloorPlanOverlay({
 
   // fetch the floor plan from floor
   useEffect(() => {
-    getFloorPlan(floor).then((floorPlan) => {
-      // be careful of pre-rotated floor plans that doesn't have placements
-      if (floorPlan?.placement) {
-        setFloorPlan(floorPlan);
-      } else {
+    const buildingCode = floor.buildingCode;
+    const floorPlanPath = `json/${buildingCode}/${buildingCode}-${floor.level}-outline.json`;
+
+    fetch(floorPlanPath).then((response) => {
+      const contentType = response.headers.get('content-type');
+
+      // json doesn't exist so the response is a text/html
+      if (contentType?.includes('text/html')) {
         setFloorPlan(null);
+      } else {
+        response.json().then((floorPlan) => {
+          // be careful of pre-rotated floor plans that doesn't have placements
+          if (floorPlan?.placement) {
+            setFloorPlan(floorPlan);
+          } else {
+            setFloorPlan(null);
+          }
+        });
       }
     });
+
+    // getFloorPlan(floor).then((floorPlan) => {
+    //   // be careful of pre-rotated floor plans that doesn't have placements
+    //   if (floorPlan?.placement) {
+    //     setFloorPlan(floorPlan);
+    //   } else {
+    //     setFloorPlan(null);
+    //   }
+    // });
   }, [floor]);
 
   if (!floorPlan) {
