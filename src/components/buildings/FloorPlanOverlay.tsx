@@ -74,7 +74,12 @@ export default function FloorPlanOverlay({
 
   useEffect(() => {
     getFloorPlan(floor).then((floorPlan) => {
-      setFloorPlan(floorPlan);
+      // be careful of pre-rotated floor plans that doesn't have placements
+      if (floorPlan?.placement) {
+        setFloorPlan(floorPlan);
+      } else {
+        setFloorPlan(null);
+      }
     });
   }, [floor]);
 
