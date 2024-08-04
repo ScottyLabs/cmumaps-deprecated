@@ -6,11 +6,11 @@ import React, { useEffect, useState } from 'react';
 import { getFloorPlan } from '@/lib/apiRoutes';
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Floor, FloorPlan, getRoomTypeDetails, Placement, Room } from '@/types';
-import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
+import { Floor, FloorPlan, getRoomTypeDetails, Room } from '@/types';
 
 import styles from '../../styles/FloorPlanOverlay.module.css';
 import RoomPin, { hasIcon } from './RoomPin';
+import { positionOnMap } from './mapUtils';
 
 export const getFloorCenter = (rooms: Room[]): Position => {
   let points: Position[] = Object.values(rooms).flatMap((room: Room) =>
@@ -29,24 +29,6 @@ export const getFloorCenter = (rooms: Room[]): Position => {
 
   return [(minX + maxX) / 2, (minY + maxY) / 2];
 };
-
-export function positionOnMap(
-  absolute: Position,
-  placement: Placement,
-  center: Position,
-) {
-  const [absoluteY, absoluteX] = rotate(
-    absolute[0] - center[0],
-    absolute[1] - center[1],
-    placement.angle,
-  );
-  return {
-    latitude:
-      absoluteY / latitudeRatio / placement.scale + placement.center.latitude,
-    longitude:
-      absoluteX / longitudeRatio / placement.scale + placement.center.longitude,
-  };
-}
 
 interface FloorPlanOverlayProps {
   floor: Floor;
@@ -67,7 +49,6 @@ export default function FloorPlanOverlay({
 
   // fetch the floor plan from floor
   useEffect(() => {
-    console.log('loading');
     getFloorPlan({ buildingCode: floor.buildingCode, level: floor.level }).then(
       (floorPlan) => {
         // be careful of pre-rotated floor plans that doesn't have placements
