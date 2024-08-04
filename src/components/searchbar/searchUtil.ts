@@ -67,14 +67,14 @@ export const findRooms = (
                 ),
               );
             }
-            if (bestScore > 2) {
+            if (bestScore > queryToken.length / 2) {
               // If there is a query token that dosen't have a reasonable match
               score = 999;
               break;
             }
             score += bestScore;
           }
-          if (score < queryTokens.length) {
+          if (score < queryTokens.length * 0.5) {
             lDistCache.set(room.id, score);
           }
           return score < queryTokens.length;

@@ -131,7 +131,7 @@ export default function SearchResults({
         return (
           <div key={building.code}>
             {renderBuildingResults(building)}
-            {renderRoomResults(buildingResult['Rooms'].slice(0, 20), building)}
+            {renderRoomResults(buildingResult['Rooms'].slice(0, 100), building)}
           </div>
         );
       })}

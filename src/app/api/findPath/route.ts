@@ -80,7 +80,6 @@ function findPath(
   }
   return { error: 'Path not found' };
 }
-type resp = NextApiResponse<Door[] | { error: string }>;
 
 export async function POST(req: NextRequest) {
   let nodes = {};

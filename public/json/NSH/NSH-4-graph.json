@@ -1,1 +1,3587 @@
-{"e7fbd33e-232b-4167-ab89-24086d133dba":{"pos":{"x":167.8,"y":98.43},"neighbors":{"9282dba0-23c3-4115-b36d-c72e73bb7489":{"dist":49.88},"13a79470-81e5-46e4-bd6f-1614802a2f41":{"dist":48.38}},"roomId":"532ee20c-7e1f-4258-af7e-37575e63875a"},"ac23dc95-4ed6-4bab-9e8b-8c4a1ced5598":{"pos":{"x":166.9,"y":148.53},"neighbors":{"2d7b96b8-c4e4-449c-8379-5f5235768ca0":{"dist":47.85}},"roomId":"12d2e9b1-c82e-4cb8-8cd4-470b2101dda3"},"6821d6e0-1d02-4b8d-b51a-b223ff5ecb07":{"pos":{"x":167.05,"y":182.58},"neighbors":{"6f3fd8a1-1180-4ce4-9e85-a3c1042ae22b":{"dist":47.37}},"roomId":"014a6044-0e48-4d35-9466-75ab6bf65b6f"},"2301dcce-83f9-4b83-9058-6a530c35e6ef":{"pos":{"x":167.32,"y":235.2},"neighbors":{"014f2a28-7076-454f-8e96-02d93bfccd11":{"dist":49.58},"a742645a-065c-422e-abe8-1f0359ddc85a":{"dist":46.42}},"roomId":"84ce6218-88ab-47fb-a77f-2c02f797e58c"},"a742645a-065c-422e-abe8-1f0359ddc85a":{"pos":{"x":210.82,"y":251.4},"neighbors":{"2301dcce-83f9-4b83-9058-6a530c35e6ef":{"dist":46.42},"d1ee8f44-1563-4df3-a123-42e05e3a76e5":{"dist":46.83}},"roomId":"6ee84159-7b9b-4342-8422-204ff1e2c7c0"},"4eeca309-5e4c-4814-9d90-f5905b5e65e0":{"pos":{"x":287.44,"y":251.22},"neighbors":{"f8395040-cd7d-44ff-93e2-c18e245e76ae":{"dist":29.62}},"roomId":"df815c5f-9865-43bc-9a2e-055a10795305"},"9da8bf33-da85-49d2-a36f-336c3e8fd9d2":{"pos":{"x":328.12,"y":247.59},"neighbors":{"0f09c590-8026-4f30-abf9-792092ee0179":{"dist":38.18}},"roomId":"6843104a-5455-4035-a8bc-25834712e3c1"},"13a79470-81e5-46e4-bd6f-1614802a2f41":{"pos":{"x":212.47,"y":79.86},"neighbors":{"c605be8a-bf3d-48bc-814c-ace6c3e8e7b2":{"dist":49.21},"e7fbd33e-232b-4167-ab89-24086d133dba":{"dist":48.38}},"roomId":"c7654055-1d09-481c-808a-3bd4c0234d69"},"320e265f-1275-4762-84c1-899c7e0ecc61":{"pos":{"x":250.12,"y":79.65},"neighbors":{"c605be8a-bf3d-48bc-814c-ace6c3e8e7b2":{"dist":34.55}},"roomId":"22fd475d-d278-4e6d-8388-9e9d50ee2498"},"356978ed-9fac-4176-9c84-e7f3d4e13f61":{"pos":{"x":289.72,"y":79.47},"neighbors":{"e6c2ab5e-a7a5-4bb4-9513-0d40c891639e":{"dist":34.62}},"roomId":"787530bb-5706-48ee-82d7-10aa97a6f0c6"},"b211765a-6b55-492a-886f-f3632a66241f":{"pos":{"x":350.2,"y":124.44},"neighbors":{"e2f45345-58d4-4ce7-a9cc-ee253a89fd87":{"dist":40.75}},"roomId":"5436dd96-472a-4756-95a6-225f8c7180b4"},"0bab713a-61d1-49da-8c72-813a9c7354c8":{"pos":{"x":272.08,"y":165.42},"neighbors":{"e6c2ab5e-a7a5-4bb4-9513-0d40c891639e":{"dist":53.12},"c605be8a-bf3d-48bc-814c-ace6c3e8e7b2":{"dist":56.76},"d1ee8f44-1563-4df3-a123-42e05e3a76e5":{"dist":62.23},"6e2efb4f-d7bb-4c11-aa7a-837c1617ac31":{"dist":75.22}},"roomId":"686d501a-45f1-41da-b336-b85641343c40"},"43e35672-f8c8-4d4a-acbd-d77f77a15b2f":{"pos":{"x":328.54,"y":189.39},"neighbors":{"0f09c590-8026-4f30-abf9-792092ee0179":{"dist":41.93}},"roomId":"c1b70ba0-75a7-46aa-9166-6fe1567e8e2c"},"4ec9c5d1-73a5-4988-9cf6-845edc159f88":{"pos":{"x":366.1,"y":189.39},"neighbors":{"a1f33d4f-1e2e-4c4b-95a7-88a7d18df390":{"dist":36.34},"122649b4-a059-4edf-9cab-8fc4565386ce":{"dist":28.57}},"roomId":"184a958d-d8e2-4bd8-9dee-0aa12121b244"},"cdcdf6f2-4c96-460d-b66b-6391a2840ff6":{"pos":{"x":403.69,"y":189.39},"neighbors":{"a1f33d4f-1e2e-4c4b-95a7-88a7d18df390":{"dist":37.71},"122649b4-a059-4edf-9cab-8fc4565386ce":{"dist":41.24}},"roomId":"6af2ddcd-0c27-4f58-ae7a-43371398e8d4"},"b2b42d69-7660-433a-8674-93b34e2f7eb8":{"pos":{"x":416.95,"y":249.36},"neighbors":{"fcb0c528-32b4-4084-b59c-d0643aad4a3d":{"dist":30.24}},"roomId":"7b5fc84e-df1d-419c-8dfb-b25fddcdd492"},"ff8046c8-5062-4b26-a89e-a9d454e5e886":{"pos":{"x":241.54,"y":395.73},"neighbors":{"5631b8e8-5713-41eb-ad74-c01f80b96efc":{"dist":58.23}},"roomId":"7d23b48f-5d74-411a-a61c-da98794fa5fe"},"1b5891da-3b0b-47b7-9149-c436707844d6":{"pos":{"x":294.4,"y":396.51},"neighbors":{"5631b8e8-5713-41eb-ad74-c01f80b96efc":{"dist":38.18}},"roomId":"48e08b30-bb7a-4aa3-88bd-686466dc1330"},"da59f6cf-edfd-4730-8b39-7a38a4aec92a":{"pos":{"x":329.89,"y":396.51},"neighbors":{"e11a7e88-7a48-4639-8eff-5eda3534a591":{"dist":38.14}},"roomId":"6a998f8e-be42-4250-b188-68a693fa26ee"},"c587d55a-7577-4ade-a71e-501a252eeee9":{"pos":{"x":230.08,"y":441.45},"neighbors":{"5631b8e8-5713-41eb-ad74-c01f80b96efc":{"dist":56.16}},"roomId":"195dae1a-25ec-4c77-b20a-2308a726fe55"},"b802be55-89db-458e-9e35-ad31f7664d8b":{"pos":{"x":230.08,"y":483.9},"neighbors":{"3d5155ec-94d1-4af9-ba82-4279ece365bb":{"dist":53.31},"5016e4f2-9422-4fbe-8202-b51f208dfa44":{"dist":44.8}},"roomId":"2f8b55d8-bfab-4600-8e3d-6b9ed591a0c9"},"3d5155ec-94d1-4af9-ba82-4279ece365bb":{"pos":{"x":234.76,"y":537},"neighbors":{"b802be55-89db-458e-9e35-ad31f7664d8b":{"dist":53.31},"6e50a892-088e-4a54-a6c5-6e566ddd835c":{"dist":51.47}},"roomId":"9482eea0-b61e-421a-a97b-6ef44fd6144f"},"9e6f788a-6d20-4636-a931-9de8e729d056":{"pos":{"x":278.77,"y":547.95},"neighbors":{"6e50a892-088e-4a54-a6c5-6e566ddd835c":{"dist":40.35}},"roomId":"f72cd236-2e33-48b5-bbe0-ec74282127c2"},"f0ec19e8-8a8d-43d8-b980-4d3a19bd3f25":{"pos":{"x":309.73,"y":547.95},"neighbors":{"508969e0-b78c-4382-8efb-f30fa14a1a2a":{"dist":37.03}},"roomId":"b3691eca-ddcc-495e-a1e0-5a7aa01f1b5a"},"90012d6f-cd2d-47e6-913a-3d85b0f28a3e":{"pos":{"x":341.38,"y":547.89},"neighbors":{"508969e0-b78c-4382-8efb-f30fa14a1a2a":{"dist":34.73}},"roomId":"08154383-d14c-4f94-b74f-8902e4443410"},"882a85fa-a620-420c-b12b-b20eca0fa9b4":{"pos":{"x":372.67,"y":547.95},"neighbors":{"bfb8245a-9fac-42dc-b79d-1a10016f35dc":{"dist":34.35}},"roomId":"7ca13ab3-41c1-41d6-b312-cad59f9f29a9"},"f3e0b567-93a2-48ec-9b2e-48db5a4f9800":{"pos":{"x":403.66,"y":547.95},"neighbors":{"bfb8245a-9fac-42dc-b79d-1a10016f35dc":{"dist":37.6}},"roomId":"ad0a3a2b-e267-405c-83cd-9ac4230a91d5"},"81bcd3db-41bc-4728-b098-3d9ec745d687":{"pos":{"x":435.28,"y":547.95},"neighbors":{"18c92a35-237e-47b5-b31c-1881f54b7028":{"dist":34.38}},"roomId":"0c6f4145-11f7-4fe2-a0c4-4a7c0349c9e7"},"40b082d0-3e23-4e05-813a-27ca9058f3e1":{"pos":{"x":470.83,"y":547.95},"neighbors":{"18c92a35-237e-47b5-b31c-1881f54b7028":{"dist":40.09}},"roomId":"b6c2c069-05ee-402b-a0c8-1b5c6ebf80df"},"6190c243-5da3-46fc-9c2b-bbea1d698cd9":{"pos":{"x":314.77,"y":455.52},"neighbors":{"e11a7e88-7a48-4639-8eff-5eda3534a591":{"dist":38.51}},"roomId":"cb86a6ca-e7d4-4925-85ab-2a814c6a8c01"},"2d2fbfd1-9224-440c-9ebf-a9c88ae488b4":{"pos":{"x":314.77,"y":486.84},"neighbors":{"508969e0-b78c-4382-8efb-f30fa14a1a2a":{"dist":31.88}},"roomId":"614dd5ef-5d1a-469b-94d7-52f8087d9948"},"94127c00-3359-4298-acb5-83f32daac2aa":{"pos":{"x":361.72,"y":455.52},"neighbors":{"663d881b-5979-4912-a818-e4e6af005bff":{"dist":47.7}},"roomId":"324f77d0-751f-43c0-bed2-68a97778a8e5"},"a0198a68-4d60-4b63-92f1-87bde70d4ce1":{"pos":{"x":361.72,"y":486.84},"neighbors":{"bfb8245a-9fac-42dc-b79d-1a10016f35dc":{"dist":36.67}},"roomId":"19875bed-543c-48d6-a7e6-0337006e7703"},"6f88681e-c5c8-4493-aff8-00789667e192":{"pos":{"x":408.67,"y":474.39},"neighbors":{"663d881b-5979-4912-a818-e4e6af005bff":{"dist":43.21}},"roomId":"209ab725-b7a3-4e76-ae08-43bdafee06b1"},"91763e83-e592-4b4d-bc36-484b92e0d0a2":{"pos":{"x":618.88,"y":547.95},"neighbors":{"6f261884-dcf9-4913-a098-75eed075734e":{"dist":36.91}},"roomId":"ec573175-5e90-441c-8982-5a48e82cd81d"},"72f1b675-a887-4ce5-9f57-75cea3fe03de":{"pos":{"x":654.4,"y":547.95},"neighbors":{"6f261884-dcf9-4913-a098-75eed075734e":{"dist":34.62}},"roomId":"4f323cf6-8c8b-4861-8791-17bb54724084"},"f64ab76d-7ede-4c4e-8aa7-6e6b1802e2b7":{"pos":{"x":686.05,"y":547.95},"neighbors":{"b3e8c749-5b35-4834-b443-e1767a07e5c0":{"dist":43.87}},"roomId":"131173d4-1567-4c7e-b2b5-99aab359b9d3"},"9fc8a487-deef-4d2c-bba6-c1d638ce0fd8":{"pos":{"x":717.01,"y":547.95},"neighbors":{"b3e8c749-5b35-4834-b443-e1767a07e5c0":{"dist":30.98}},"roomId":"c64a0829-21ad-4003-9e5b-02acf060aae7"},"5cd072f5-e6ea-498d-befa-43b743695bfa":{"pos":{"x":748.33,"y":547.95},"neighbors":{"972fdfd0-7660-4372-a121-d93f7018a41e":{"dist":31.31}},"roomId":"cb109762-31fb-4298-becd-d86b73a7b665"},"f2c23489-6e1a-482a-b452-5b8c0011bd40":{"pos":{"x":784,"y":547.95},"neighbors":{"972fdfd0-7660-4372-a121-d93f7018a41e":{"dist":42.77}},"roomId":"a3813d8e-8a0b-4d9b-a2fa-bd1702a3fd07"},"4b6cc9df-a3ad-4107-bdc8-fe94cdfbaa31":{"pos":{"x":816.55,"y":511.74},"neighbors":{"e3a20643-90f5-49c9-82cb-d81f5a5f6820":{"dist":33.53},"4a9c3ceb-c2e1-4b7d-89b9-ebcced7c2fbc":{"dist":-1,"toFloorInfo":{"toFloor":"NSH-3","type":"stairs"}}},"roomId":"245e6ac4-2a62-442c-8879-858df0ef211f"},"76cfb1c2-6484-40a6-8c25-241ae664b559":{"pos":{"x":812.83,"y":481.14},"neighbors":{"e3a20643-90f5-49c9-82cb-d81f5a5f6820":{"dist":37.59}},"roomId":"c1a50ac7-b297-40d4-b2f5-c6cea2f4fa43"},"103c9821-e7a4-42e2-ac49-c3b49a514a8d":{"pos":{"x":812.83,"y":446.13},"neighbors":{"03a1f9c8-8d77-4677-b211-37680cb40dda":{"dist":38.78}},"roomId":"670c3b94-996c-4083-8ea0-37873b1e15f4"},"c03b4724-b34e-47b9-990b-4ba2211b18c8":{"pos":{"x":812.83,"y":408.57},"neighbors":{"03a1f9c8-8d77-4677-b211-37680cb40dda":{"dist":40.65}},"roomId":"163536b6-47ac-4c9b-9fec-91545090d8c8"},"c75609dd-b444-46e1-af05-ec696b864a8f":{"pos":{"x":812.98,"y":378.54},"neighbors":{"a1b1c983-4925-4a78-bfe7-0b6330a7b306":{"dist":32.18}},"roomId":"4c0494f9-f199-47a5-a55b-9c0a5bc20432"},"03d08e89-9dbe-44ea-9aa6-5b2934da7240":{"pos":{"x":813.28,"y":190.38},"neighbors":{"df9b6041-e535-442e-9cde-bcd6abea3e9a":{"dist":63.42},"4b250726-00f9-46c2-90dd-b32144889063":{"dist":-1,"toFloorInfo":{"toFloor":"NSH-3","type":"stairs"}}},"roomId":"ec48a446-51f1-4a78-a342-000df1e999cc"},"ef3f5589-df13-4555-9556-c942a1455d6d":{"pos":{"x":810.91,"y":161.94},"neighbors":{"669f3da3-0071-4655-a280-dea5fbcf2139":{"dist":35.67}},"roomId":"6cf216c6-c868-447c-905a-0a27f5adfe2c"},"a6fbffea-eb2f-4578-bc39-31165e39d91b":{"pos":{"x":810.73,"y":123.3},"neighbors":{"c6457014-929e-4ee6-919a-8cbf64b80c45":{"dist":39.29}},"roomId":"83b4a757-425d-4e69-bbb7-d4db7d3e01a5"},"61a348d3-b1c3-4d5e-8580-f5c882294509":{"pos":{"x":803.44,"y":77.07},"neighbors":{"c6457014-929e-4ee6-919a-8cbf64b80c45":{"dist":47.98}},"roomId":"98922908-a266-44a8-8821-fa416e4eb148"},"3808475d-b1ee-4c12-b2c5-281d1ca39a95":{"pos":{"x":758.08,"y":77.4},"neighbors":{"e9f0f6b3-1690-4e08-8b84-2a2f95b4b7e7":{"dist":40.82}},"roomId":"821e78c0-817e-4272-9efb-da151a903a5a"},"968a4a81-59b0-475f-8ea0-9dfd113067a8":{"pos":{"x":719.5,"y":77.55},"neighbors":{"475ebaa2-a087-482c-806b-2c81122da620":{"dist":40.52}},"roomId":"dfd12ebd-81bc-42e8-8fc8-db534747093b"},"b32e4b71-8efa-479e-920a-500af30c1cf3":{"pos":{"x":681.19,"y":77.73},"neighbors":{"5433a409-b72b-4565-a397-a35b379397a6":{"dist":43.9}},"roomId":"23a290c7-0bae-47a9-9d24-94c3e062d223"},"33e3e8b9-7cd9-4c10-b14d-0a59b9ffb3a8":{"pos":{"x":722.08,"y":143.76},"neighbors":{"5433a409-b72b-4565-a397-a35b379397a6":{"dist":69.48}},"roomId":"b41ec44e-3281-4a35-b91e-717e75119035"},"757fd629-ee4c-4206-b7e5-d5c9b71b85b1":{"pos":{"x":745.84,"y":185.19},"neighbors":{"701f5a56-199f-487d-a12c-022b83f08081":{"dist":34.63}},"roomId":"99bf7440-2184-4afc-acbf-6c7df88f50ea"},"17592123-f958-4807-8345-b55260801ac1":{"pos":{"x":698.8,"y":185.31},"neighbors":{"bf148e3a-8ef2-4422-b842-2babf663506d":{"dist":42.88}},"roomId":"c3c96c62-c269-4153-b09b-dd83ac109adb"},"f5bb6e25-521b-4c40-a434-84185cd8c72e":{"pos":{"x":544.39,"y":123.51},"neighbors":{"b8b37b5a-eae8-46d5-8cba-98d62fcf369f":{"dist":50.76}},"roomId":"b7f7fa09-590a-4a8c-b01f-faa229792768"},"c5a48f73-2bbb-4400-aed5-824fe8a66081":{"pos":{"x":626.55,"y":123.12},"neighbors":{"06e796c8-c03d-405b-b915-f401346ec1b5":{"dist":74.51}},"roomId":"fe9f2ae3-3521-4411-9c77-2e82b777928e"},"0561c0b1-96a1-4a78-a06d-a8895d3728b9":{"pos":{"x":595.23,"y":123.27},"neighbors":{"06e796c8-c03d-405b-b915-f401346ec1b5":{"dist":57.85}},"roomId":"a9bd727d-a416-4023-b876-556347c68644"},"f66a9c70-e747-4bf6-aeb9-684330aca810":{"pos":{"x":550.09,"y":251.91},"neighbors":{"df775de5-45fb-4c6e-aa8d-d0e2b68ab9e6":{"dist":29.64}},"roomId":"c21ed363-9b43-4aed-91b9-b4f5da71f283"},"1cdc38a6-0ab4-44da-b0de-bb3a332f0aa5":{"pos":{"x":592.69,"y":252.21},"neighbors":{"97b5ec15-3185-4ab6-b4f8-46cc9a332c30":{"dist":38.24}},"roomId":"87a2c3c8-a2df-46fd-bfcf-09043c50b26c"},"2932c5e3-c8af-4762-a817-c6f86b0ae213":{"pos":{"x":639.55,"y":252},"neighbors":{"239ae2ed-c25f-4817-9b59-5679cbcb9647":{"dist":33.21}},"roomId":"89f126c1-6e5a-44f9-b0bd-0e897151a21b"},"180bc925-142c-4e4f-aaba-5897dd325237":{"pos":{"x":680.92,"y":248.43},"neighbors":{"c952a203-4b23-4aeb-874d-871a6e825b36":{"dist":35.23}},"roomId":"a0368ea8-2dce-45aa-b9c3-8df90227b8dd"},"3a08b483-e2ce-4880-b084-61937e7c2e27":{"pos":{"x":717.79,"y":248.34},"neighbors":{"c952a203-4b23-4aeb-874d-871a6e825b36":{"dist":36.92}},"roomId":"9633afb3-f546-4d49-8929-a7f361ed9eea"},"d9470068-ba9b-43c7-bdfd-4108d1a5b5f8":{"pos":{"x":754.9,"y":248.28},"neighbors":{"701f5a56-199f-487d-a12c-022b83f08081":{"dist":37.76}},"roomId":"fa114279-3f6a-423e-9103-661637f0f1fc"},"a806c118-b9ec-4131-a007-a626d67c8b9b":{"pos":{"x":734.92,"y":468.51},"neighbors":{"26bab9e1-04ad-4783-ae41-16f3c1f56e7b":{"dist":95.36},"b4d815b8-adf1-4bc0-a6db-dd965fb34960":{"dist":77.13},"ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7":{"dist":87.3}},"roomId":"944b0324-bab4-4989-bf55-4934791cab36"},"0950e3c7-ca84-4a36-8b18-3e739903b257":{"pos":{"x":590.26,"y":471.42},"neighbors":{"23b91080-9e5a-4a43-9ff3-29c622cf9e89":{"dist":41.89}},"roomId":"7bad3c11-6755-42a0-84bf-f6da22bfa3c2"},"e64a8e4c-44e6-4ddb-8e28-33f701597885":{"pos":{"x":757.18,"y":394.74},"neighbors":{"2ab33928-f1af-4c75-91b4-e79b2993c862":{"dist":41.27}},"roomId":"6e646f29-603b-49e8-8ba3-fa123864288e"},"06753bb2-6af7-4c6b-9738-9151f811ce2f":{"pos":{"x":725.89,"y":394.74},"neighbors":{"2ab33928-f1af-4c75-91b4-e79b2993c862":{"dist":35.96}},"roomId":"727cde35-4548-4545-af85-181f6ed655e0"},"951e39f8-ab5d-42ca-93b8-a33e7aeae77a":{"pos":{"x":694.57,"y":394.83},"neighbors":{"e303968f-baac-4b35-b5bb-351ab45fc541":{"dist":34.7}},"roomId":"d9f1dfec-3453-4ff5-a92a-23b08d30424a"},"00913be5-2822-4536-8d9e-56d9ba3d7721":{"pos":{"x":662.38,"y":394.83},"neighbors":{"ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7":{"dist":35.14}},"roomId":"8e3730a4-5cc4-4035-8e28-ec850d465b2f"},"00c16368-e753-45fa-a984-70117365c5e1":{"pos":{"x":620.02,"y":385.2},"neighbors":{"23b91080-9e5a-4a43-9ff3-29c622cf9e89":{"dist":53.65}},"roomId":"a5af7281-8b75-474f-b01f-02a8bbf6c179"},"de7420f8-1d9f-4bd2-ba33-ed254369f5f9":{"pos":{"x":566.47,"y":392.79},"neighbors":{"23b91080-9e5a-4a43-9ff3-29c622cf9e89":{"dist":43.52}},"roomId":"e36752f4-6572-49c9-9d84-e056fbf8ea2b"},"b7d853b6-4ad7-463a-9347-290869ad6dab":{"pos":{"x":383.11,"y":393.24},"neighbors":{"663d881b-5979-4912-a818-e4e6af005bff":{"dist":43.16}},"roomId":"c6b0aa1a-6dd8-40ac-99e3-91aa51fbca8f"},"c22bd96f-881f-4f8f-81fa-07052ef91959":{"pos":{"x":413.38,"y":393.24},"neighbors":{"663d881b-5979-4912-a818-e4e6af005bff":{"dist":39.71}},"roomId":"20b507b3-f087-409c-b21b-8092cfb175c1"},"9ff2f342-7024-43ff-99ed-d8dfe6910c09":{"pos":{"x":444.67,"y":393.9},"neighbors":{"83aea0a1-bec8-4b30-8d1d-67209260bd71":{"dist":40.18}},"roomId":"9b03cf49-ee0d-48c8-b931-ae652e7a38d0"},"1bd7d0a5-b990-4809-a514-9349ca482579":{"pos":{"x":476.77,"y":394.38},"neighbors":{"83aea0a1-bec8-4b30-8d1d-67209260bd71":{"dist":41.35}},"roomId":"bb119b3d-27d2-4997-8c39-eb044e4e8eb0"},"d4965db5-3ed0-4fec-81c9-1438b5999ca1":{"pos":{"x":393.22,"y":124.23},"neighbors":{"122649b4-a059-4edf-9cab-8fc4565386ce":{"dist":42.52}},"roomId":"9f7f91f6-704d-463d-8f5a-51f1d03b7773"},"d79ad4e5-adf3-49d3-be15-6663c25ee859":{"pos":{"x":440.2,"y":124.08},"neighbors":{"50ebc128-a394-4815-884d-1702ae0953a1":{"dist":47.08}},"roomId":"e72875a4-2dc5-4728-9375-8f58e088179e"},"5062df55-a386-4407-8180-561c522e6b07":{"pos":{"x":417.13,"y":349.53},"neighbors":{"4ca414ad-fb39-4273-981a-4404a4128983":{"dist":54.31},"be439694-d32e-41d8-ae0f-c02ba030bb4c":{"dist":-1,"toFloorInfo":{"toFloor":"NSH-3","type":"stairs"}}},"roomId":"3bcebd31-9d75-444e-9d17-e3c95a1c1cc4"},"ac47cf67-7cde-4a41-a79a-bef2f23edde5":{"pos":{"x":390.94,"y":328.83},"neighbors":{"aea7fa08-8a03-4d6b-915e-1d4078c1e511":{"dist":32.73}},"roomId":"180397ed-e92c-4977-bb98-41462e232e10"},"ff7632db-3daf-4961-8211-688afb98ee84":{"pos":{"x":371.4,"y":342.03},"neighbors":{"0f26e8f5-db24-49a2-b005-aa88c69456d6":{"dist":23.93}},"roomId":"7ffc37a0-8aee-47d9-ad83-c014c2bd90c5"},"00277655-0e6e-48d4-b7cc-db7bb2dc855c":{"pos":{"x":371.91,"y":306.93},"neighbors":{"ecfc9ca5-fa0c-4c99-b9f0-9888d163c284":{"dist":16.08}},"roomId":"106e9405-ad11-43a4-a9ca-ffa2db2839ae"},"5e29d7e6-6a47-488f-a87a-2dde379271b0":{"pos":{"x":460.77,"y":207.15},"neighbors":{"30c0b791-2a57-467e-afae-5e1bd62265e7":{"dist":16.14}},"roomId":"07631f63-81b9-4dae-b3b6-1d506bfebb29"},"07245a28-e13a-4b49-ac0e-d36ea4313cce":{"pos":{"x":439.45,"y":183.54},"neighbors":{"608ecdd8-0a3c-4569-889d-ac396aec93a4":{"dist":22.88},"c8b9a53f-8a8d-423f-82bd-54a8954b37ad":{"dist":39.44}},"roomId":"f2feb143-5593-46ab-a4bc-97b862c714a9"},"f22f598e-6f42-4f4b-a10a-72889c876035":{"pos":{"x":455.71,"y":316.38},"neighbors":{"d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8":{"dist":27.83}},"roomId":"3fdbdcda-f206-42aa-86f1-5a8e637139dd"},"847eeed4-c0a0-44b5-b792-0b155bb10cba":{"pos":{"x":593.07,"y":560.76},"neighbors":{},"roomId":"f28cd018-8211-4a71-9db4-13cfb9b0306a"},"485bdb0e-d81d-4032-b722-64d3f0b92108":{"pos":{"x":497.04,"y":560.46},"neighbors":{},"roomId":"59e893eb-f763-4361-98c7-bd20765d769c"},"c6a45bce-1dd5-4a37-97dd-a2f23a3c1c03":{"pos":{"x":487.6,"y":472.83},"neighbors":{"00452504-c265-4132-9a88-ab53e0cc0abc":{"dist":43.42},"18c92a35-237e-47b5-b31c-1881f54b7028":{"dist":58.97}},"roomId":"f358e401-bd53-4aef-8ad9-e8bfc6475da0"},"00452504-c265-4132-9a88-ab53e0cc0abc":{"pos":{"x":446.91,"y":457.68},"neighbors":{"c6a45bce-1dd5-4a37-97dd-a2f23a3c1c03":{"dist":43.42}},"roomId":"90638029-b2a7-44dd-93cd-b12c5943837a"},"8dc04ba5-26b6-4bc3-a592-670c18697b48":{"pos":{"x":423.3,"y":337.29},"neighbors":{},"roomId":"a29d611b-8e42-4d63-9526-c55dd0cbab37"},"06e796c8-c03d-405b-b915-f401346ec1b5":{"pos":{"x":575.95,"y":177.81},"neighbors":{"c5a48f73-2bbb-4400-aed5-824fe8a66081":{"dist":74.51},"0561c0b1-96a1-4a78-a06d-a8895d3728b9":{"dist":57.85},"97b5ec15-3185-4ab6-b4f8-46cc9a332c30":{"dist":47.5}},"roomId":"7e8392df-c216-4b0c-b77a-a7a857d2eadd"},"39a86578-eb43-40c0-8191-3439de8af70e":{"pos":{"x":390.79,"y":310.8},"neighbors":{"722b939f-3ab0-4190-976d-073743093712":{"dist":24.22},"959ef164-2d71-4842-a772-e97db3a480a3":{"dist":27.36},"7f572759-6f46-4019-82ae-e08e4dd0416e":{"dist":-1,"toFloorInfo":{"toFloor":"NSH-3","type":"elevator"}}},"roomId":"473b33d4-633d-4a74-8587-8f33e31b3516"},"959ef164-2d71-4842-a772-e97db3a480a3":{"pos":{"x":417.67,"y":315.9},"neighbors":{"ed77371a-b493-4bb2-ac7f-03515e2d7155":{"dist":30.04},"39a86578-eb43-40c0-8191-3439de8af70e":{"dist":27.36},"f373b5e4-dfd4-46b9-b9ce-931d9cb52c65":{"dist":-1,"toFloorInfo":{"toFloor":"NSH-3","type":"elevator"}}},"roomId":"4c606ee8-05f9-4558-98ee-8c7d398d81a9"},"a86b6252-81e4-4224-bddd-b70d993d50e2":{"pos":{"x":375.93,"y":351},"neighbors":{"0f26e8f5-db24-49a2-b005-aa88c69456d6":{"dist":20.86}},"roomId":"eba4906a-582f-4843-a748-ce2f3917f01e"},"3a2bd2f8-0c59-4e00-a9e9-eb16074077e7":{"pos":{"x":373.47,"y":363.63},"neighbors":{},"roomId":"3f19ceb2-6232-49e4-9193-2dd7051c2182"},"38896b34-d004-4e09-9005-d0f28c0934f5":{"pos":{"x":573.13,"y":315.57},"neighbors":{"288d07d2-988f-4302-b9d2-3e12c8631492":{"dist":72.55},"71a35c67-f498-4ccd-b3a4-ff718e3d8c2a":{"dist":-1,"toFloorInfo":{"toFloor":"NSH-3","type":"stairs"}}},"roomId":"c03c9b1d-31a4-41b2-83d3-f7d24e9ceb18"},"e40537af-8971-458c-b967-935de282810c":{"pos":{"x":304.56,"y":133.98},"neighbors":{},"roomId":"737fa6dc-9565-4b9b-bb1a-bfeee9a084d1"},"1db01752-ad23-4380-9111-f316688c96a8":{"pos":{"x":462.69,"y":185.79},"neighbors":{},"roomId":"6e9a62d7-728a-406c-931e-e0ee644489ba"},"b7452ecd-652c-4915-981d-323aa1fc5a80":{"pos":{"x":512.4,"y":184.17},"neighbors":{},"roomId":"b8400980-d658-47bb-afe8-85ac65381b8b"},"20282eee-2016-449c-a35c-9f60f07b9e65":{"pos":{"x":255.17,"y":319.37},"neighbors":{"a0ee27ec-d54f-4880-9724-e300bdbd1978":{"dist":42.11},"c1c0222b-1e10-41d8-928a-88896040faf8":{"dist":56.96}},"roomId":"1ceae1a2-b1b1-4ac9-bcb5-954f3ec15ccf"},"c1c0222b-1e10-41d8-928a-88896040faf8":{"pos":{"x":272.25,"y":373.71},"neighbors":{"20282eee-2016-449c-a35c-9f60f07b9e65":{"dist":56.96}},"roomId":"053dc439-08dd-4efe-b38c-bd079e2d9d11"},"a0ee27ec-d54f-4880-9724-e300bdbd1978":{"pos":{"x":296.53,"y":311.44},"neighbors":{"484bdc7e-f24c-4dde-bd6e-b209a04eb294":{"dist":47.21},"20282eee-2016-449c-a35c-9f60f07b9e65":{"dist":42.11},"e1de8cea-5f61-4635-a77f-bd77cb51e3ca":{"dist":71.62}},"roomId":"1ceae1a2-b1b1-4ac9-bcb5-954f3ec15ccf"},"484bdc7e-f24c-4dde-bd6e-b209a04eb294":{"pos":{"x":319.74,"y":270.33},"neighbors":{"a0ee27ec-d54f-4880-9724-e300bdbd1978":{"dist":47.21}},"roomId":"87a03fb1-f95d-494e-ac0a-a12f365285ab"},"2e148c0b-6430-494c-b46f-a179d093b92e":{"pos":{"x":333.09,"y":270.33},"neighbors":{},"roomId":"21ec30a9-7644-44d4-bc12-17c03b579e4e"},"b4d815b8-adf1-4bc0-a6db-dd965fb34960":{"pos":{"x":667.11,"y":505.26},"neighbors":{"a806c118-b9ec-4131-a007-a626d67c8b9b":{"dist":77.13}},"roomId":"4d1bf75b-4b92-400b-8248-cd25132bacf4"},"26bab9e1-04ad-4783-ae41-16f3c1f56e7b":{"pos":{"x":639.6,"y":471.18},"neighbors":{"a806c118-b9ec-4131-a007-a626d67c8b9b":{"dist":95.36},"e9b126e9-3c85-4c77-9217-afe239776a0a":{"dist":44.73}},"roomId":"d7eeb878-8ebe-46cc-8db1-dba98d2d3389"},"68729c3d-66ec-4fab-949a-4fa355bb9fc4":{"pos":{"x":249.16,"y":251.31},"neighbors":{"d1ee8f44-1563-4df3-a123-42e05e3a76e5":{"dist":28.6}},"roomId":"6e96d139-5ec8-4f1d-8eea-48c133820aba"},"2db14fc6-d06f-4497-b06b-ee6dbc41eaa3":{"pos":{"x":615.38,"y":360.14},"neighbors":{"34a15edf-41bf-4641-9cdc-099c6d2c5ee0":{"dist":39.73},"afedf4d1-9bc5-491e-901d-f8c2dbdf3a92":{"dist":33.61}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"4c9a9a08-f22b-443c-88a3-effd10abf3d0":{"pos":{"x":780.21,"y":313.59},"neighbors":{"6b273a15-4540-4f75-8ac6-3995195e19d7":{"dist":35.15},"26df39dc-10e8-47ed-88fa-f2d970868e77":{"dist":33.55}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"4914c32f-e5df-4e9a-a5ff-20ec91d55ce9":{"pos":{"x":728.44,"y":360.14},"neighbors":{"8e4256aa-1482-4022-b2d0-3103a117aa1c":{"dist":33.61},"3ca9174c-a5f6-480f-8fbc-4eba7a3f06c3":{"dist":30.73}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"03f4e8e6-fc20-4048-81b2-4c19222583a6":{"pos":{"x":811.06,"y":258.71},"neighbors":{"26df39dc-10e8-47ed-88fa-f2d970868e77":{"dist":34.9},"df9b6041-e535-442e-9cde-bcd6abea3e9a":{"dist":26.39}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"c38df624-9130-46fd-837c-f1a4f88c6645":{"pos":{"x":532.87,"y":360.14},"neighbors":{"6a3fa762-6263-44b9-ab3b-abd4358c4863":{"dist":21.39},"89584f95-4e76-4f05-b64c-2acef5211d22":{"dist":22.45}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"34a15edf-41bf-4641-9cdc-099c6d2c5ee0":{"pos":{"x":655.11,"y":360.14},"neighbors":{"2db14fc6-d06f-4497-b06b-ee6dbc41eaa3":{"dist":39.73},"8e4256aa-1482-4022-b2d0-3103a117aa1c":{"dist":39.73}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"8e4256aa-1482-4022-b2d0-3103a117aa1c":{"pos":{"x":694.83,"y":360.14},"neighbors":{"4914c32f-e5df-4e9a-a5ff-20ec91d55ce9":{"dist":33.61},"34a15edf-41bf-4641-9cdc-099c6d2c5ee0":{"dist":39.73}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"6b273a15-4540-4f75-8ac6-3995195e19d7":{"pos":{"x":781.37,"y":348.72},"neighbors":{"4c9a9a08-f22b-443c-88a3-effd10abf3d0":{"dist":35.15},"3ca9174c-a5f6-480f-8fbc-4eba7a3f06c3":{"dist":24.93},"a1b1c983-4925-4a78-bfe7-0b6330a7b306":{"dist":44.42}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"26df39dc-10e8-47ed-88fa-f2d970868e77":{"pos":{"x":783.57,"y":280.2},"neighbors":{"4c9a9a08-f22b-443c-88a3-effd10abf3d0":{"dist":33.55},"03f4e8e6-fc20-4048-81b2-4c19222583a6":{"dist":34.9},"df9b6041-e535-442e-9cde-bcd6abea3e9a":{"dist":32.32}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"afedf4d1-9bc5-491e-901d-f8c2dbdf3a92":{"pos":{"x":581.77,"y":360.14},"neighbors":{"2db14fc6-d06f-4497-b06b-ee6dbc41eaa3":{"dist":33.61},"6a3fa762-6263-44b9-ab3b-abd4358c4863":{"dist":27.5}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"df9b6041-e535-442e-9cde-bcd6abea3e9a":{"pos":{"x":786.92,"y":248.06},"neighbors":{"03f4e8e6-fc20-4048-81b2-4c19222583a6":{"dist":26.39},"26df39dc-10e8-47ed-88fa-f2d970868e77":{"dist":32.32},"f15a6bbe-33d9-4758-ac15-9643633b64b2":{"dist":39.07},"03d08e89-9dbe-44ea-9aa6-5b2934da7240":{"dist":63.42}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"6a3fa762-6263-44b9-ab3b-abd4358c4863":{"pos":{"x":554.26,"y":360.14},"neighbors":{"c38df624-9130-46fd-837c-f1a4f88c6645":{"dist":21.39},"afedf4d1-9bc5-491e-901d-f8c2dbdf3a92":{"dist":27.5}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"3ca9174c-a5f6-480f-8fbc-4eba7a3f06c3":{"pos":{"x":759.17,"y":360.07},"neighbors":{"4914c32f-e5df-4e9a-a5ff-20ec91d55ce9":{"dist":30.73},"6b273a15-4540-4f75-8ac6-3995195e19d7":{"dist":24.93}},"roomId":"7a9f60c9-9863-49ec-a36d-cd10c67a3376"},"0f09c590-8026-4f30-abf9-792092ee0179":{"pos":{"x":355.78,"y":221.27},"neighbors":{"a1f33d4f-1e2e-4c4b-95a7-88a7d18df390":{"dist":27.77},"6e2efb4f-d7bb-4c11-aa7a-837c1617ac31":{"dist":33.32},"43e35672-f8c8-4d4a-acbd-d77f77a15b2f":{"dist":41.93},"9da8bf33-da85-49d2-a36f-336c3e8fd9d2":{"dist":38.18},"40afa0a4-f90a-439e-b2c6-ef323ce31bc4":{"dist":29.83}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"c605be8a-bf3d-48bc-814c-ace6c3e8e7b2":{"pos":{"x":247.8,"y":114.12},"neighbors":{"9282dba0-23c3-4115-b36d-c72e73bb7489":{"dist":36.12},"e6c2ab5e-a7a5-4bb4-9513-0d40c891639e":{"dist":35.29},"0bab713a-61d1-49da-8c72-813a9c7354c8":{"dist":56.76},"13a79470-81e5-46e4-bd6f-1614802a2f41":{"dist":49.21},"320e265f-1275-4762-84c1-899c7e0ecc61":{"dist":34.55}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"6f3fd8a1-1180-4ce4-9e85-a3c1042ae22b":{"pos":{"x":214.38,"y":184.56},"neighbors":{"2d7b96b8-c4e4-449c-8379-5f5235768ca0":{"dist":31.73},"014f2a28-7076-454f-8e96-02d93bfccd11":{"dist":30.72},"6821d6e0-1d02-4b8d-b51a-b223ff5ecb07":{"dist":47.37}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"50ebc128-a394-4815-884d-1702ae0953a1":{"pos":{"x":411.31,"y":161.25},"neighbors":{"122649b4-a059-4edf-9cab-8fc4565386ce":{"dist":38.19},"608ecdd8-0a3c-4569-889d-ac396aec93a4":{"dist":33.32},"d79ad4e5-adf3-49d3-be15-6663c25ee859":{"dist":47.08}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"6499bb0c-0d48-4c44-82cf-55c23e7fcd00":{"pos":{"x":316.02,"y":119.87},"neighbors":{"e2f45345-58d4-4ce7-a9cc-ee253a89fd87":{"dist":40.88},"e6c2ab5e-a7a5-4bb4-9513-0d40c891639e":{"dist":33.55}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"f8395040-cd7d-44ff-93e2-c18e245e76ae":{"pos":{"x":286.89,"y":221.61},"neighbors":{"d1ee8f44-1563-4df3-a123-42e05e3a76e5":{"dist":39.05},"6e2efb4f-d7bb-4c11-aa7a-837c1617ac31":{"dist":35.58},"4eeca309-5e4c-4814-9d90-f5905b5e65e0":{"dist":29.62}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"fcb0c528-32b4-4084-b59c-d0643aad4a3d":{"pos":{"x":405.76,"y":221.27},"neighbors":{"c8b9a53f-8a8d-423f-82bd-54a8954b37ad":{"dist":22.21},"a1f33d4f-1e2e-4c4b-95a7-88a7d18df390":{"dist":22.21},"b2b42d69-7660-433a-8674-93b34e2f7eb8":{"dist":30.24}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"2d7b96b8-c4e4-449c-8379-5f5235768ca0":{"pos":{"x":214.56,"y":152.84},"neighbors":{"6f3fd8a1-1180-4ce4-9e85-a3c1042ae22b":{"dist":31.73},"9282dba0-23c3-4115-b36d-c72e73bb7489":{"dist":32.01},"ac23dc95-4ed6-4bab-9e8b-8c4a1ced5598":{"dist":47.85}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"d1ee8f44-1563-4df3-a123-42e05e3a76e5":{"pos":{"x":247.85,"y":222.74},"neighbors":{"f8395040-cd7d-44ff-93e2-c18e245e76ae":{"dist":39.05},"014f2a28-7076-454f-8e96-02d93bfccd11":{"dist":35.93},"68729c3d-66ec-4fab-949a-4fa355bb9fc4":{"dist":28.6},"0bab713a-61d1-49da-8c72-813a9c7354c8":{"dist":62.23},"a742645a-065c-422e-abe8-1f0359ddc85a":{"dist":46.83}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"122649b4-a059-4edf-9cab-8fc4565386ce":{"pos":{"x":373.13,"y":161.7},"neighbors":{"50ebc128-a394-4815-884d-1702ae0953a1":{"dist":38.19},"e2f45345-58d4-4ce7-a9cc-ee253a89fd87":{"dist":44.85},"d4965db5-3ed0-4fec-81c9-1438b5999ca1":{"dist":42.52},"4ec9c5d1-73a5-4988-9cf6-845edc159f88":{"dist":28.57},"cdcdf6f2-4c96-460d-b66b-6391a2840ff6":{"dist":41.24}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"9282dba0-23c3-4115-b36d-c72e73bb7489":{"pos":{"x":212.33,"y":120.9},"neighbors":{"c605be8a-bf3d-48bc-814c-ace6c3e8e7b2":{"dist":36.12},"2d7b96b8-c4e4-449c-8379-5f5235768ca0":{"dist":32.01},"e7fbd33e-232b-4167-ab89-24086d133dba":{"dist":49.88}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"c8b9a53f-8a8d-423f-82bd-54a8954b37ad":{"pos":{"x":427.97,"y":221.27},"neighbors":{"fcb0c528-32b4-4084-b59c-d0643aad4a3d":{"dist":22.21},"30c0b791-2a57-467e-afae-5e1bd62265e7":{"dist":24.99},"a1f33d4f-1e2e-4c4b-95a7-88a7d18df390":{"dist":44.42},"07245a28-e13a-4b49-ac0e-d36ea4313cce":{"dist":39.44}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"30c0b791-2a57-467e-afae-5e1bd62265e7":{"pos":{"x":452.96,"y":221.27},"neighbors":{"c8b9a53f-8a8d-423f-82bd-54a8954b37ad":{"dist":24.99},"5e29d7e6-6a47-488f-a87a-2dde379271b0":{"dist":16.14},"39225bd8-f351-48fd-9e12-7464bc2142a1":{"dist":33.41}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"e2f45345-58d4-4ce7-a9cc-ee253a89fd87":{"pos":{"x":328.37,"y":158.85},"neighbors":{"6499bb0c-0d48-4c44-82cf-55c23e7fcd00":{"dist":40.88},"122649b4-a059-4edf-9cab-8fc4565386ce":{"dist":44.85},"b211765a-6b55-492a-886f-f3632a66241f":{"dist":40.75}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"608ecdd8-0a3c-4569-889d-ac396aec93a4":{"pos":{"x":444.63,"y":161.25},"neighbors":{"50ebc128-a394-4815-884d-1702ae0953a1":{"dist":33.32},"276c1e9d-81f3-4c61-9cbc-746c62a23476":{"dist":31.81},"07245a28-e13a-4b49-ac0e-d36ea4313cce":{"dist":22.88}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"a1f33d4f-1e2e-4c4b-95a7-88a7d18df390":{"pos":{"x":383.55,"y":221.27},"neighbors":{"0f09c590-8026-4f30-abf9-792092ee0179":{"dist":27.77},"fcb0c528-32b4-4084-b59c-d0643aad4a3d":{"dist":22.21},"c8b9a53f-8a8d-423f-82bd-54a8954b37ad":{"dist":44.42},"4ec9c5d1-73a5-4988-9cf6-845edc159f88":{"dist":36.34},"cdcdf6f2-4c96-460d-b66b-6391a2840ff6":{"dist":37.71}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"014f2a28-7076-454f-8e96-02d93bfccd11":{"pos":{"x":212.71,"y":215.24},"neighbors":{"6f3fd8a1-1180-4ce4-9e85-a3c1042ae22b":{"dist":30.72},"d1ee8f44-1563-4df3-a123-42e05e3a76e5":{"dist":35.93},"2301dcce-83f9-4b83-9058-6a530c35e6ef":{"dist":49.58}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"e6c2ab5e-a7a5-4bb4-9513-0d40c891639e":{"pos":{"x":283.09,"y":113.45},"neighbors":{"c605be8a-bf3d-48bc-814c-ace6c3e8e7b2":{"dist":35.29},"6499bb0c-0d48-4c44-82cf-55c23e7fcd00":{"dist":33.55},"0bab713a-61d1-49da-8c72-813a9c7354c8":{"dist":53.12},"356978ed-9fac-4176-9c84-e7f3d4e13f61":{"dist":34.62}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"6e2efb4f-d7bb-4c11-aa7a-837c1617ac31":{"pos":{"x":322.47,"y":221.27},"neighbors":{"0f09c590-8026-4f30-abf9-792092ee0179":{"dist":33.32},"f8395040-cd7d-44ff-93e2-c18e245e76ae":{"dist":35.58},"0bab713a-61d1-49da-8c72-813a9c7354c8":{"dist":75.22}},"roomId":"10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"},"658d0c06-011c-4ee0-a046-55e50c346df2":{"pos":{"x":535.25,"y":461.08},"neighbors":{"c4efa186-4609-48e1-95de-dcfa671e0a8e":{"dist":29.84},"9294b892-7da9-4a1b-b628-eff370d38b4a":{"dist":25.08},"54f1047c-8c9c-44fd-8520-5da940dd187c":{"dist":18.12}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"92498a0f-4a68-4cea-977a-2d6cf021099d":{"pos":{"x":516.76,"y":554.79},"neighbors":{"0ecd1f30-7f62-4a2e-882f-25e599029312":{"dist":28.18},"dbee5782-875f-4bb3-a4e8-e2aefde313cd":{"dist":31.89},"aded1c6b-f0a4-4678-9564-64bdd67ef2ea":{"dist":43.18}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"9dff3519-0890-4132-a576-c2dd3067c2e2":{"pos":{"x":508.7,"y":387.16},"neighbors":{"52fa085f-bc9f-42e6-8f04-f36a2f861ee8":{"dist":22.5},"89584f95-4e76-4f05-b64c-2acef5211d22":{"dist":27.79}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"4150d716-9e88-4f23-8462-83f1620e71fe":{"pos":{"x":545.53,"y":511.19},"neighbors":{"aded1c6b-f0a4-4678-9564-64bdd67ef2ea":{"dist":24.58},"91911eac-581c-43ec-b66b-cb61fab7d536":{"dist":28.43},"9294b892-7da9-4a1b-b628-eff370d38b4a":{"dist":29.68},"0ecd1f30-7f62-4a2e-882f-25e599029312":{"dist":28.55}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"97eaefee-a61b-418d-9657-1185f760c541":{"pos":{"x":570.29,"y":554.56},"neighbors":{"dbee5782-875f-4bb3-a4e8-e2aefde313cd":{"dist":30.98},"91911eac-581c-43ec-b66b-cb61fab7d536":{"dist":30.46},"0ecd1f30-7f62-4a2e-882f-25e599029312":{"dist":33.7}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"aded1c6b-f0a4-4678-9564-64bdd67ef2ea":{"pos":{"x":520.96,"y":511.81},"neighbors":{"4150d716-9e88-4f23-8462-83f1620e71fe":{"dist":24.58},"9294b892-7da9-4a1b-b628-eff370d38b4a":{"dist":27.77},"4d3c0e24-8f8c-4258-bc53-7991772e83d6":{"dist":22.24},"0ecd1f30-7f62-4a2e-882f-25e599029312":{"dist":33.55},"92498a0f-4a68-4cea-977a-2d6cf021099d":{"dist":43.18}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"11f9a98f-d046-4d30-a692-665bfb1303c9":{"pos":{"x":501.97,"y":429.41},"neighbors":{"c4efa186-4609-48e1-95de-dcfa671e0a8e":{"dist":28.03},"52fa085f-bc9f-42e6-8f04-f36a2f861ee8":{"dist":27},"54f1047c-8c9c-44fd-8520-5da940dd187c":{"dist":30.01},"83aea0a1-bec8-4b30-8d1d-67209260bd71":{"dist":43.34}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"c4efa186-4609-48e1-95de-dcfa671e0a8e":{"pos":{"x":529.9,"y":431.73},"neighbors":{"658d0c06-011c-4ee0-a046-55e50c346df2":{"dist":29.84},"11f9a98f-d046-4d30-a692-665bfb1303c9":{"dist":28.03},"52fa085f-bc9f-42e6-8f04-f36a2f861ee8":{"dist":26.85},"74753610-3a32-4330-b7fe-31a3f28c1f64":{"dist":24.19},"54f1047c-8c9c-44fd-8520-5da940dd187c":{"dist":25.6}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"dbee5782-875f-4bb3-a4e8-e2aefde313cd":{"pos":{"x":544.13,"y":571.16},"neighbors":{"97eaefee-a61b-418d-9657-1185f760c541":{"dist":30.98},"92498a0f-4a68-4cea-977a-2d6cf021099d":{"dist":31.89},"0ecd1f30-7f62-4a2e-882f-25e599029312":{"dist":32.14}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"91911eac-581c-43ec-b66b-cb61fab7d536":{"pos":{"x":570.86,"y":524.1},"neighbors":{"4150d716-9e88-4f23-8462-83f1620e71fe":{"dist":28.43},"97eaefee-a61b-418d-9657-1185f760c541":{"dist":30.46},"94259972-51cc-4b77-860b-dfc550b3f135":{"dist":33.12}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"9294b892-7da9-4a1b-b628-eff370d38b4a":{"pos":{"x":530.37,"y":485.68},"neighbors":{"658d0c06-011c-4ee0-a046-55e50c346df2":{"dist":25.08},"4150d716-9e88-4f23-8462-83f1620e71fe":{"dist":29.68},"aded1c6b-f0a4-4678-9564-64bdd67ef2ea":{"dist":27.77}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"52fa085f-bc9f-42e6-8f04-f36a2f861ee8":{"pos":{"x":517.97,"y":407.67},"neighbors":{"9dff3519-0890-4132-a576-c2dd3067c2e2":{"dist":22.5},"11f9a98f-d046-4d30-a692-665bfb1303c9":{"dist":27},"c4efa186-4609-48e1-95de-dcfa671e0a8e":{"dist":26.85}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"0ecd1f30-7f62-4a2e-882f-25e599029312":{"pos":{"x":540.27,"y":539.25},"neighbors":{"92498a0f-4a68-4cea-977a-2d6cf021099d":{"dist":28.18},"4150d716-9e88-4f23-8462-83f1620e71fe":{"dist":28.55},"aded1c6b-f0a4-4678-9564-64bdd67ef2ea":{"dist":33.55},"97eaefee-a61b-418d-9657-1185f760c541":{"dist":33.7},"dbee5782-875f-4bb3-a4e8-e2aefde313cd":{"dist":32.14}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"74753610-3a32-4330-b7fe-31a3f28c1f64":{"pos":{"x":553.96,"y":429.24},"neighbors":{"c4efa186-4609-48e1-95de-dcfa671e0a8e":{"dist":24.19},"23b91080-9e5a-4a43-9ff3-29c622cf9e89":{"dist":35.84}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"54f1047c-8c9c-44fd-8520-5da940dd187c":{"pos":{"x":518.34,"y":454.56},"neighbors":{"658d0c06-011c-4ee0-a046-55e50c346df2":{"dist":18.12},"11f9a98f-d046-4d30-a692-665bfb1303c9":{"dist":30.01},"c4efa186-4609-48e1-95de-dcfa671e0a8e":{"dist":25.6}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"4d3c0e24-8f8c-4258-bc53-7991772e83d6":{"pos":{"x":500.67,"y":520.91},"neighbors":{"aded1c6b-f0a4-4678-9564-64bdd67ef2ea":{"dist":22.24},"18c92a35-237e-47b5-b31c-1881f54b7028":{"dist":53.86}},"roomId":"d0034ee1-3e9a-4498-967c-32850ee94039"},"b8b37b5a-eae8-46d5-8cba-98d62fcf369f":{"pos":{"x":498.68,"y":145.59},"neighbors":{"276c1e9d-81f3-4c61-9cbc-746c62a23476":{"dist":24.84},"f5bb6e25-521b-4c40-a434-84185cd8c72e":{"dist":50.76},"4364912f-6f68-4687-adb8-694f949e993c":{"dist":29.69},"d94e7655-8429-4006-b167-27a0eaf247a8":{"dist":31.82}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"39225bd8-f351-48fd-9e12-7464bc2142a1":{"pos":{"x":484.72,"y":231.65},"neighbors":{"a1df62e5-0164-4a24-a2b4-e9114c96f954":{"dist":24.95},"fb027fb0-bfbf-49b4-b2e3-1bef4eb4e0c4":{"dist":28.23},"ec07240e-ecfd-4ace-ade1-de5d1fd54336":{"dist":25.13},"15062f7e-47e9-4cca-800b-2f9f7d448b10":{"dist":26.17},"30c0b791-2a57-467e-afae-5e1bd62265e7":{"dist":33.41}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"d94e7655-8429-4006-b167-27a0eaf247a8":{"pos":{"x":488.44,"y":175.72},"neighbors":{"fb027fb0-bfbf-49b4-b2e3-1bef4eb4e0c4":{"dist":27.83},"276c1e9d-81f3-4c61-9cbc-746c62a23476":{"dist":29.99},"b8b37b5a-eae8-46d5-8cba-98d62fcf369f":{"dist":31.82}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"a1df62e5-0164-4a24-a2b4-e9114c96f954":{"pos":{"x":508.7,"y":224.77},"neighbors":{"39225bd8-f351-48fd-9e12-7464bc2142a1":{"dist":24.95},"a75d67b3-b379-4715-a823-29da23ba67c9":{"dist":28.24},"df775de5-45fb-4c6e-aa8d-d0e2b68ab9e6":{"dist":30.47}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"276c1e9d-81f3-4c61-9cbc-746c62a23476":{"pos":{"x":474.13,"y":149.36},"neighbors":{"b8b37b5a-eae8-46d5-8cba-98d62fcf369f":{"dist":24.84},"d94e7655-8429-4006-b167-27a0eaf247a8":{"dist":29.99},"608ecdd8-0a3c-4569-889d-ac396aec93a4":{"dist":31.81},"4364912f-6f68-4687-adb8-694f949e993c":{"dist":32.54}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"a75d67b3-b379-4715-a823-29da23ba67c9":{"pos":{"x":509.38,"y":253},"neighbors":{"a1df62e5-0164-4a24-a2b4-e9114c96f954":{"dist":28.24},"ec07240e-ecfd-4ace-ade1-de5d1fd54336":{"dist":23.89}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"49d1d651-cedc-4984-bc10-4431e2a93d7d":{"pos":{"x":460.5,"y":259.97},"neighbors":{"ec07240e-ecfd-4ace-ade1-de5d1fd54336":{"dist":25.49},"15062f7e-47e9-4cca-800b-2f9f7d448b10":{"dist":18.18}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"fb027fb0-bfbf-49b4-b2e3-1bef4eb4e0c4":{"pos":{"x":486.12,"y":203.45},"neighbors":{"39225bd8-f351-48fd-9e12-7464bc2142a1":{"dist":28.23},"d94e7655-8429-4006-b167-27a0eaf247a8":{"dist":27.83}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"4364912f-6f68-4687-adb8-694f949e993c":{"pos":{"x":485.64,"y":118.92},"neighbors":{"276c1e9d-81f3-4c61-9cbc-746c62a23476":{"dist":32.54},"b8b37b5a-eae8-46d5-8cba-98d62fcf369f":{"dist":29.69}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"ec07240e-ecfd-4ace-ade1-de5d1fd54336":{"pos":{"x":485.79,"y":256.75},"neighbors":{"39225bd8-f351-48fd-9e12-7464bc2142a1":{"dist":25.13},"a75d67b3-b379-4715-a823-29da23ba67c9":{"dist":23.89},"49d1d651-cedc-4984-bc10-4431e2a93d7d":{"dist":25.49},"15062f7e-47e9-4cca-800b-2f9f7d448b10":{"dist":29.29},"fec52904-9da9-40c3-8e34-c1598f8ef784":{"dist":27.32}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"15062f7e-47e9-4cca-800b-2f9f7d448b10":{"pos":{"x":460.6,"y":241.8},"neighbors":{"39225bd8-f351-48fd-9e12-7464bc2142a1":{"dist":26.17},"49d1d651-cedc-4984-bc10-4431e2a93d7d":{"dist":18.18},"ec07240e-ecfd-4ace-ade1-de5d1fd54336":{"dist":29.29}},"roomId":"4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"},"eebd252a-9f9f-46f9-8f90-c1b5b31d9c16":{"pos":{"x":435.58,"y":286.04},"neighbors":{"ed77371a-b493-4bb2-ac7f-03515e2d7155":{"dist":24.33},"2faec5cc-ae7e-407c-9d16-0fb355a36d83":{"dist":25.55}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"1ec1b923-36de-482e-8425-ca95741c6509":{"pos":{"x":490.75,"y":355.9},"neighbors":{"89584f95-4e76-4f05-b64c-2acef5211d22":{"dist":19.99},"4ca414ad-fb39-4273-981a-4404a4128983":{"dist":19.8}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8":{"pos":{"x":480.25,"y":303.25},"neighbors":{"288d07d2-988f-4302-b9d2-3e12c8631492":{"dist":21.69},"fec52904-9da9-40c3-8e34-c1598f8ef784":{"dist":22.73},"2faec5cc-ae7e-407c-9d16-0fb355a36d83":{"dist":25.44},"f22f598e-6f42-4f4b-a10a-72889c876035":{"dist":27.83}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"722b939f-3ab0-4190-976d-073743093712":{"pos":{"x":389.33,"y":286.62},"neighbors":{"ed77371a-b493-4bb2-ac7f-03515e2d7155":{"dist":21.92},"e1de8cea-5f61-4635-a77f-bd77cb51e3ca":{"dist":31.16},"39a86578-eb43-40c0-8191-3439de8af70e":{"dist":24.22}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"ed77371a-b493-4bb2-ac7f-03515e2d7155":{"pos":{"x":411.25,"y":286.55},"neighbors":{"eebd252a-9f9f-46f9-8f90-c1b5b31d9c16":{"dist":24.33},"722b939f-3ab0-4190-976d-073743093712":{"dist":21.92},"959ef164-2d71-4842-a772-e97db3a480a3":{"dist":30.04}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"288d07d2-988f-4302-b9d2-3e12c8631492":{"pos":{"x":500.77,"y":310.27},"neighbors":{"d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8":{"dist":21.69},"9df2c378-90ce-4641-9daa-a696510315d3":{"dist":25.19},"38896b34-d004-4e09-9005-d0f28c0934f5":{"dist":72.55}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"89584f95-4e76-4f05-b64c-2acef5211d22":{"pos":{"x":510.43,"y":359.42},"neighbors":{"1ec1b923-36de-482e-8425-ca95741c6509":{"dist":19.99},"9df2c378-90ce-4641-9daa-a696510315d3":{"dist":24.92},"c38df624-9130-46fd-837c-f1a4f88c6645":{"dist":22.45},"9dff3519-0890-4132-a576-c2dd3067c2e2":{"dist":27.79}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"4ca414ad-fb39-4273-981a-4404a4128983":{"pos":{"x":470.97,"y":356.69},"neighbors":{"1ec1b923-36de-482e-8425-ca95741c6509":{"dist":19.8},"5062df55-a386-4407-8180-561c522e6b07":{"dist":54.31}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"fec52904-9da9-40c3-8e34-c1598f8ef784":{"pos":{"x":491.46,"y":283.48},"neighbors":{"d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8":{"dist":22.73},"ec07240e-ecfd-4ace-ade1-de5d1fd54336":{"dist":27.32}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"2faec5cc-ae7e-407c-9d16-0fb355a36d83":{"pos":{"x":461.12,"y":286.49},"neighbors":{"eebd252a-9f9f-46f9-8f90-c1b5b31d9c16":{"dist":25.55},"d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8":{"dist":25.44}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"9df2c378-90ce-4641-9daa-a696510315d3":{"pos":{"x":506.37,"y":334.84},"neighbors":{"288d07d2-988f-4302-b9d2-3e12c8631492":{"dist":25.19},"89584f95-4e76-4f05-b64c-2acef5211d22":{"dist":24.92},"b8846801-3226-4a57-b41f-17d564d9635c":{"dist":23.66}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"b8846801-3226-4a57-b41f-17d564d9635c":{"pos":{"x":483.24,"y":329.9},"neighbors":{"9df2c378-90ce-4641-9daa-a696510315d3":{"dist":23.66}},"roomId":"36a93d85-9d37-4fc1-8712-1865c0183a76"},"c952a203-4b23-4aeb-874d-871a6e825b36":{"pos":{"x":697.63,"y":217.41},"neighbors":{"701f5a56-199f-487d-a12c-022b83f08081":{"dist":35.52},"180bc925-142c-4e4f-aaba-5897dd325237":{"dist":35.23},"3a08b483-e2ce-4880-b084-61937e7c2e27":{"dist":36.92},"25ff3615-ffad-43fc-85bd-675b2acf4294":{"dist":48.88}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"e67c71f7-064c-4684-871b-ea16e169598e":{"pos":{"x":593.81,"y":224.36},"neighbors":{"97b5ec15-3185-4ab6-b4f8-46cc9a332c30":{"dist":27.32},"239ae2ed-c25f-4817-9b59-5679cbcb9647":{"dist":27.32}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"e9f0f6b3-1690-4e08-8b84-2a2f95b4b7e7":{"pos":{"x":735.88,"y":111.66},"neighbors":{"475ebaa2-a087-482c-806b-2c81122da620":{"dist":38.25},"c6457014-929e-4ee6-919a-8cbf64b80c45":{"dist":36.78},"3808475d-b1ee-4c12-b2c5-281d1ca39a95":{"dist":40.82}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"692e48e0-7af8-431e-9b1b-1a17119e5e44":{"pos":{"x":656.87,"y":144.44},"neighbors":{"5433a409-b72b-4565-a397-a35b379397a6":{"dist":29.09},"b63a6654-6a06-4546-9eeb-be6f60af0f9d":{"dist":31.05}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"fda4aacd-edf1-4b79-a190-a03dbf4151c8":{"pos":{"x":782.85,"y":211.13},"neighbors":{"11d835e3-3e4d-48b0-9fde-d3007be569b5":{"dist":34.23},"f15a6bbe-33d9-4758-ac15-9643633b64b2":{"dist":22.14}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"bf148e3a-8ef2-4422-b842-2babf663506d":{"pos":{"x":660.72,"y":205.03},"neighbors":{"b63a6654-6a06-4546-9eeb-be6f60af0f9d":{"dist":29.68},"25ff3615-ffad-43fc-85bd-675b2acf4294":{"dist":23.45},"17592123-f958-4807-8345-b55260801ac1":{"dist":42.88}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"df775de5-45fb-4c6e-aa8d-d0e2b68ab9e6":{"pos":{"x":539.17,"y":224.36},"neighbors":{"97b5ec15-3185-4ab6-b4f8-46cc9a332c30":{"dist":27.32},"f66a9c70-e747-4bf6-aeb9-684330aca810":{"dist":29.64},"a1df62e5-0164-4a24-a2b4-e9114c96f954":{"dist":30.47}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"475ebaa2-a087-482c-806b-2c81122da620":{"pos":{"x":697.63,"y":111.66},"neighbors":{"e9f0f6b3-1690-4e08-8b84-2a2f95b4b7e7":{"dist":38.25},"968a4a81-59b0-475f-8ea0-9dfd113067a8":{"dist":40.52}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"11d835e3-3e4d-48b0-9fde-d3007be569b5":{"pos":{"x":779.6,"y":177.06},"neighbors":{"fda4aacd-edf1-4b79-a190-a03dbf4151c8":{"dist":34.23},"669f3da3-0071-4655-a280-dea5fbcf2139":{"dist":32.49}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"701f5a56-199f-487d-a12c-022b83f08081":{"pos":{"x":733.15,"y":217.41},"neighbors":{"c952a203-4b23-4aeb-874d-871a6e825b36":{"dist":35.52},"f15a6bbe-33d9-4758-ac15-9643633b64b2":{"dist":28.7},"757fd629-ee4c-4206-b7e5-d5c9b71b85b1":{"dist":34.63},"d9470068-ba9b-43c7-bdfd-4108d1a5b5f8":{"dist":37.76}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"5433a409-b72b-4565-a397-a35b379397a6":{"pos":{"x":658.65,"y":115.4},"neighbors":{"692e48e0-7af8-431e-9b1b-1a17119e5e44":{"dist":29.09},"33e3e8b9-7cd9-4c10-b14d-0a59b9ffb3a8":{"dist":69.48},"b32e4b71-8efa-479e-920a-500af30c1cf3":{"dist":43.9}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"b63a6654-6a06-4546-9eeb-be6f60af0f9d":{"pos":{"x":659.58,"y":175.37},"neighbors":{"692e48e0-7af8-431e-9b1b-1a17119e5e44":{"dist":31.05},"bf148e3a-8ef2-4422-b842-2babf663506d":{"dist":29.68}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"669f3da3-0071-4655-a280-dea5fbcf2139":{"pos":{"x":779.76,"y":144.56},"neighbors":{"11d835e3-3e4d-48b0-9fde-d3007be569b5":{"dist":32.49},"c6457014-929e-4ee6-919a-8cbf64b80c45":{"dist":31.55},"ef3f5589-df13-4555-9556-c942a1455d6d":{"dist":35.67}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"25ff3615-ffad-43fc-85bd-675b2acf4294":{"pos":{"x":649.44,"y":225.59},"neighbors":{"bf148e3a-8ef2-4422-b842-2babf663506d":{"dist":23.45},"239ae2ed-c25f-4817-9b59-5679cbcb9647":{"dist":28.33},"c952a203-4b23-4aeb-874d-871a6e825b36":{"dist":48.88}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"97b5ec15-3185-4ab6-b4f8-46cc9a332c30":{"pos":{"x":566.49,"y":224.36},"neighbors":{"e67c71f7-064c-4684-871b-ea16e169598e":{"dist":27.32},"df775de5-45fb-4c6e-aa8d-d0e2b68ab9e6":{"dist":27.32},"1cdc38a6-0ab4-44da-b0de-bb3a332f0aa5":{"dist":38.24},"06e796c8-c03d-405b-b915-f401346ec1b5":{"dist":47.5}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"f15a6bbe-33d9-4758-ac15-9643633b64b2":{"pos":{"x":761.84,"y":218.1},"neighbors":{"fda4aacd-edf1-4b79-a190-a03dbf4151c8":{"dist":22.14},"701f5a56-199f-487d-a12c-022b83f08081":{"dist":28.7},"df9b6041-e535-442e-9cde-bcd6abea3e9a":{"dist":39.07}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"239ae2ed-c25f-4817-9b59-5679cbcb9647":{"pos":{"x":621.14,"y":224.36},"neighbors":{"e67c71f7-064c-4684-871b-ea16e169598e":{"dist":27.32},"25ff3615-ffad-43fc-85bd-675b2acf4294":{"dist":28.33},"2932c5e3-c8af-4762-a817-c6f86b0ae213":{"dist":33.21}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"c6457014-929e-4ee6-919a-8cbf64b80c45":{"pos":{"x":772.6,"y":113.83},"neighbors":{"e9f0f6b3-1690-4e08-8b84-2a2f95b4b7e7":{"dist":36.78},"669f3da3-0071-4655-a280-dea5fbcf2139":{"dist":31.55},"61a348d3-b1c3-4d5e-8580-f5c882294509":{"dist":47.98},"a6fbffea-eb2f-4578-bc39-31165e39d91b":{"dist":39.29}},"roomId":"f1974482-843f-42be-ba05-5541863e8652"},"aea7fa08-8a03-4d6b-915e-1d4078c1e511":{"pos":{"x":358.21,"y":328.46},"neighbors":{"0f26e8f5-db24-49a2-b005-aa88c69456d6":{"dist":33.54},"ecfc9ca5-fa0c-4c99-b9f0-9888d163c284":{"dist":28.65},"ac47cf67-7cde-4a41-a79a-bef2f23edde5":{"dist":32.73}},"roomId":"9e298c07-cea8-4aec-bdf2-b9d15ccc2918"},"40afa0a4-f90a-439e-b2c6-ef323ce31bc4":{"pos":{"x":366.15,"y":249.24},"neighbors":{"e1de8cea-5f61-4635-a77f-bd77cb51e3ca":{"dist":28.94},"0f09c590-8026-4f30-abf9-792092ee0179":{"dist":29.83}},"roomId":"9e298c07-cea8-4aec-bdf2-b9d15ccc2918"},"b56c3a1b-f218-4a8a-a67a-16c86bf58f9b":{"pos":{"x":358.21,"y":399.26},"neighbors":{"0f26e8f5-db24-49a2-b005-aa88c69456d6":{"dist":37.26},"fe8cdaf9-d59f-4db9-ab5d-bcf11b1e4307":{"dist":31.28}},"roomId":"9e298c07-cea8-4aec-bdf2-b9d15ccc2918"},"e1de8cea-5f61-4635-a77f-bd77cb51e3ca":{"pos":{"x":359.56,"y":277.43},"neighbors":{"40afa0a4-f90a-439e-b2c6-ef323ce31bc4":{"dist":28.94},"ecfc9ca5-fa0c-4c99-b9f0-9888d163c284":{"dist":22.49},"722b939f-3ab0-4190-976d-073743093712":{"dist":31.16},"a0ee27ec-d54f-4880-9724-e300bdbd1978":{"dist":71.62}},"roomId":"9e298c07-cea8-4aec-bdf2-b9d15ccc2918"},"0f26e8f5-db24-49a2-b005-aa88c69456d6":{"pos":{"x":358.21,"y":362},"neighbors":{"aea7fa08-8a03-4d6b-915e-1d4078c1e511":{"dist":33.54},"ff7632db-3daf-4961-8211-688afb98ee84":{"dist":23.93},"a86b6252-81e4-4224-bddd-b70d993d50e2":{"dist":20.86},"b56c3a1b-f218-4a8a-a67a-16c86bf58f9b":{"dist":37.26}},"roomId":"9e298c07-cea8-4aec-bdf2-b9d15ccc2918"},"ecfc9ca5-fa0c-4c99-b9f0-9888d163c284":{"pos":{"x":357.49,"y":299.82},"neighbors":{"aea7fa08-8a03-4d6b-915e-1d4078c1e511":{"dist":28.65},"e1de8cea-5f61-4635-a77f-bd77cb51e3ca":{"dist":22.49},"00277655-0e6e-48d4-b7cc-db7bb2dc855c":{"dist":16.08}},"roomId":"9e298c07-cea8-4aec-bdf2-b9d15ccc2918"},"fe8cdaf9-d59f-4db9-ab5d-bcf11b1e4307":{"pos":{"x":355.89,"y":430.45},"neighbors":{"b56c3a1b-f218-4a8a-a67a-16c86bf58f9b":{"dist":31.28},"fe8cdaf9-d59f-4db9-ab5d-bcf11b1e4307":{"dist":0}},"roomId":"08154383-d14c-4f94-b74f-8902e4443410"},"508969e0-b78c-4382-8efb-f30fa14a1a2a":{"pos":{"x":328.11,"y":515.8},"neighbors":{"bfb8245a-9fac-42dc-b79d-1a10016f35dc":{"dist":56.27},"6e50a892-088e-4a54-a6c5-6e566ddd835c":{"dist":51.73},"90012d6f-cd2d-47e6-913a-3d85b0f28a3e":{"dist":34.73},"f0ec19e8-8a8d-43d8-b980-4d3a19bd3f25":{"dist":37.03},"2d2fbfd1-9224-440c-9ebf-a9c88ae488b4":{"dist":31.88}},"roomId":"8822034e-10ec-47b0-8716-2777c35626e9"},"663d881b-5979-4912-a818-e4e6af005bff":{"pos":{"x":402.96,"y":431.56},"neighbors":{"83aea0a1-bec8-4b30-8d1d-67209260bd71":{"dist":55.72},"e11a7e88-7a48-4639-8eff-5eda3534a591":{"dist":58.04},"c22bd96f-881f-4f8f-81fa-07052ef91959":{"dist":39.71},"b7d853b6-4ad7-463a-9347-290869ad6dab":{"dist":43.16},"94127c00-3359-4298-acb5-83f32daac2aa":{"dist":47.7},"6f88681e-c5c8-4493-aff8-00789667e192":{"dist":43.21}},"roomId":"8822034e-10ec-47b0-8716-2777c35626e9"},"5631b8e8-5713-41eb-ad74-c01f80b96efc":{"pos":{"x":285.7,"y":433.69},"neighbors":{"e11a7e88-7a48-4639-8eff-5eda3534a591":{"dist":59.26},"5016e4f2-9422-4fbe-8202-b51f208dfa44":{"dist":36.26},"c587d55a-7577-4ade-a71e-501a252eeee9":{"dist":56.16},"ff8046c8-5062-4b26-a89e-a9d454e5e886":{"dist":58.23},"1b5891da-3b0b-47b7-9149-c436707844d6":{"dist":38.18}},"roomId":"8822034e-10ec-47b0-8716-2777c35626e9"},"bfb8245a-9fac-42dc-b79d-1a10016f35dc":{"pos":{"x":384.39,"y":515.66},"neighbors":{"508969e0-b78c-4382-8efb-f30fa14a1a2a":{"dist":56.27},"f3e0b567-93a2-48ec-9b2e-48db5a4f9800":{"dist":37.6},"882a85fa-a620-420c-b12b-b20eca0fa9b4":{"dist":34.35},"a0198a68-4d60-4b63-92f1-87bde70d4ce1":{"dist":36.67},"18c92a35-237e-47b5-b31c-1881f54b7028":{"dist":62.68}},"roomId":"8822034e-10ec-47b0-8716-2777c35626e9"},"18c92a35-237e-47b5-b31c-1881f54b7028":{"pos":{"x":447.07,"y":515.66},"neighbors":{"40b082d0-3e23-4e05-813a-27ca9058f3e1":{"dist":40.09},"81bcd3db-41bc-4728-b098-3d9ec745d687":{"dist":34.38},"4d3c0e24-8f8c-4258-bc53-7991772e83d6":{"dist":53.86},"c6a45bce-1dd5-4a37-97dd-a2f23a3c1c03":{"dist":58.97},"bfb8245a-9fac-42dc-b79d-1a10016f35dc":{"dist":62.68}},"roomId":"8822034e-10ec-47b0-8716-2777c35626e9"},"6e50a892-088e-4a54-a6c5-6e566ddd835c":{"pos":{"x":277.03,"y":507.64},"neighbors":{"508969e0-b78c-4382-8efb-f30fa14a1a2a":{"dist":51.73},"5016e4f2-9422-4fbe-8202-b51f208dfa44":{"dist":40.89},"9e6f788a-6d20-4636-a931-9de8e729d056":{"dist":40.35},"3d5155ec-94d1-4af9-ba82-4279ece365bb":{"dist":51.47}},"roomId":"8822034e-10ec-47b0-8716-2777c35626e9"},"83aea0a1-bec8-4b30-8d1d-67209260bd71":{"pos":{"x":458.68,"y":431.56},"neighbors":{"663d881b-5979-4912-a818-e4e6af005bff":{"dist":55.72},"1bd7d0a5-b990-4809-a514-9349ca482579":{"dist":41.35},"9ff2f342-7024-43ff-99ed-d8dfe6910c09":{"dist":40.18},"11f9a98f-d046-4d30-a692-665bfb1303c9":{"dist":43.34}},"roomId":"8822034e-10ec-47b0-8716-2777c35626e9"},"e11a7e88-7a48-4639-8eff-5eda3534a591":{"pos":{"x":344.92,"y":431.56},"neighbors":{"663d881b-5979-4912-a818-e4e6af005bff":{"dist":58.04},"5631b8e8-5713-41eb-ad74-c01f80b96efc":{"dist":59.26},"6190c243-5da3-46fc-9c2b-bbea1d698cd9":{"dist":38.51},"da59f6cf-edfd-4730-8b39-7a38a4aec92a":{"dist":38.14}},"roomId":"8822034e-10ec-47b0-8716-2777c35626e9"},"5016e4f2-9422-4fbe-8202-b51f208dfa44":{"pos":{"x":271.62,"y":467.11},"neighbors":{"5631b8e8-5713-41eb-ad74-c01f80b96efc":{"dist":36.26},"6e50a892-088e-4a54-a6c5-6e566ddd835c":{"dist":40.89},"b802be55-89db-458e-9e35-ad31f7664d8b":{"dist":44.8}},"roomId":"8822034e-10ec-47b0-8716-2777c35626e9"},"a1b1c983-4925-4a78-bfe7-0b6330a7b306":{"pos":{"x":784.26,"y":393.05},"neighbors":{"03a1f9c8-8d77-4677-b211-37680cb40dda":{"dist":36.83},"c75609dd-b444-46e1-af05-ec696b864a8f":{"dist":32.18},"6b273a15-4540-4f75-8ac6-3995195e19d7":{"dist":44.42}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"6f261884-dcf9-4913-a098-75eed075734e":{"pos":{"x":638.94,"y":516.97},"neighbors":{"e65c256e-1289-4da1-9f77-17d63495a912":{"dist":37.97},"94259972-51cc-4b77-860b-dfc550b3f135":{"dist":35.74},"91763e83-e592-4b4d-bc36-484b92e0d0a2":{"dist":36.91},"72f1b675-a887-4ce5-9f57-75cea3fe03de":{"dist":34.62}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"972fdfd0-7660-4372-a121-d93f7018a41e":{"pos":{"x":754.26,"y":517.21},"neighbors":{"e3a20643-90f5-49c9-82cb-d81f5a5f6820":{"dist":31.92},"b3e8c749-5b35-4834-b443-e1767a07e5c0":{"dist":37.15},"5cd072f5-e6ea-498d-befa-43b743695bfa":{"dist":31.31},"f2c23489-6e1a-482a-b452-5b8c0011bd40":{"dist":42.77}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"23b91080-9e5a-4a43-9ff3-29c622cf9e89":{"pos":{"x":589.8,"y":429.53},"neighbors":{"e9b126e9-3c85-4c77-9217-afe239776a0a":{"dist":33.5},"74753610-3a32-4330-b7fe-31a3f28c1f64":{"dist":35.84},"00c16368-e753-45fa-a984-70117365c5e1":{"dist":53.65},"0950e3c7-ca84-4a36-8b18-3e739903b257":{"dist":41.89},"de7420f8-1d9f-4bd2-ba33-ed254369f5f9":{"dist":43.52}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"e303968f-baac-4b35-b5bb-351ab45fc541":{"pos":{"x":694.78,"y":429.53},"neighbors":{"2ab33928-f1af-4c75-91b4-e79b2993c862":{"dist":40.2},"ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7":{"dist":37.97},"951e39f8-ab5d-42ca-93b8-a33e7aeae77a":{"dist":34.7}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"33ba4595-7f39-4018-abb3-092ee88b8514":{"pos":{"x":784.33,"y":465.7},"neighbors":{"e3a20643-90f5-49c9-82cb-d81f5a5f6820":{"dist":39.22},"03a1f9c8-8d77-4677-b211-37680cb40dda":{"dist":36.95}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"e65c256e-1289-4da1-9f77-17d63495a912":{"pos":{"x":676.91,"y":516.97},"neighbors":{"6f261884-dcf9-4913-a098-75eed075734e":{"dist":37.97},"b3e8c749-5b35-4834-b443-e1767a07e5c0":{"dist":40.2}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"e3a20643-90f5-49c9-82cb-d81f5a5f6820":{"pos":{"x":783.72,"y":504.92},"neighbors":{"972fdfd0-7660-4372-a121-d93f7018a41e":{"dist":31.92},"33ba4595-7f39-4018-abb3-092ee88b8514":{"dist":39.22},"76cfb1c2-6484-40a6-8c25-241ae664b559":{"dist":37.59},"4b6cc9df-a3ad-4107-bdc8-fe94cdfbaa31":{"dist":33.53}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"2ab33928-f1af-4c75-91b4-e79b2993c862":{"pos":{"x":734.98,"y":429.53},"neighbors":{"e303968f-baac-4b35-b5bb-351ab45fc541":{"dist":40.2},"03a1f9c8-8d77-4677-b211-37680cb40dda":{"dist":42.91},"e64a8e4c-44e6-4ddb-8e28-33f701597885":{"dist":41.27},"06753bb2-6af7-4c6b-9738-9151f811ce2f":{"dist":35.96}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"03a1f9c8-8d77-4677-b211-37680cb40dda":{"pos":{"x":777.88,"y":429.33},"neighbors":{"a1b1c983-4925-4a78-bfe7-0b6330a7b306":{"dist":36.83},"33ba4595-7f39-4018-abb3-092ee88b8514":{"dist":36.95},"2ab33928-f1af-4c75-91b4-e79b2993c862":{"dist":42.91},"103c9821-e7a4-42e2-ac49-c3b49a514a8d":{"dist":38.78},"c03b4724-b34e-47b9-990b-4ba2211b18c8":{"dist":40.65}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"94259972-51cc-4b77-860b-dfc550b3f135":{"pos":{"x":603.2,"y":516.97},"neighbors":{"6f261884-dcf9-4913-a098-75eed075734e":{"dist":35.74},"91911eac-581c-43ec-b66b-cb61fab7d536":{"dist":33.12}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"b3e8c749-5b35-4834-b443-e1767a07e5c0":{"pos":{"x":717.11,"y":516.97},"neighbors":{"972fdfd0-7660-4372-a121-d93f7018a41e":{"dist":37.15},"e65c256e-1289-4da1-9f77-17d63495a912":{"dist":40.2},"f64ab76d-7ede-4c4e-8aa7-6e6b1802e2b7":{"dist":43.87},"9fc8a487-deef-4d2c-bba6-c1d638ce0fd8":{"dist":30.98}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"e9b126e9-3c85-4c77-9217-afe239776a0a":{"pos":{"x":623.3,"y":429.53},"neighbors":{"23b91080-9e5a-4a43-9ff3-29c622cf9e89":{"dist":33.5},"ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7":{"dist":33.5},"26bab9e1-04ad-4783-ae41-16f3c1f56e7b":{"dist":44.73}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"},"ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7":{"pos":{"x":656.81,"y":429.53},"neighbors":{"e303968f-baac-4b35-b5bb-351ab45fc541":{"dist":37.97},"e9b126e9-3c85-4c77-9217-afe239776a0a":{"dist":33.5},"00913be5-2822-4536-8d9e-56d9ba3d7721":{"dist":35.14},"a806c118-b9ec-4131-a007-a626d67c8b9b":{"dist":87.3}},"roomId":"33258358-7e54-49a8-8cc9-b5a069942e8b"}}
+{
+    "e7fbd33e-232b-4167-ab89-24086d133dba": {
+        "pos": {
+            "x": 167.8,
+            "y": 98.43
+        },
+        "neighbors": {
+            "9282dba0-23c3-4115-b36d-c72e73bb7489": {
+                "dist": 49.88
+            },
+            "13a79470-81e5-46e4-bd6f-1614802a2f41": {
+                "dist": 48.38
+            }
+        },
+        "roomId": "532ee20c-7e1f-4258-af7e-37575e63875a"
+    },
+    "ac23dc95-4ed6-4bab-9e8b-8c4a1ced5598": {
+        "pos": {
+            "x": 166.9,
+            "y": 148.53
+        },
+        "neighbors": {
+            "2d7b96b8-c4e4-449c-8379-5f5235768ca0": {
+                "dist": 47.85
+            }
+        },
+        "roomId": "12d2e9b1-c82e-4cb8-8cd4-470b2101dda3"
+    },
+    "6821d6e0-1d02-4b8d-b51a-b223ff5ecb07": {
+        "pos": {
+            "x": 167.05,
+            "y": 182.58
+        },
+        "neighbors": {
+            "6f3fd8a1-1180-4ce4-9e85-a3c1042ae22b": {
+                "dist": 47.37
+            }
+        },
+        "roomId": "014a6044-0e48-4d35-9466-75ab6bf65b6f"
+    },
+    "2301dcce-83f9-4b83-9058-6a530c35e6ef": {
+        "pos": {
+            "x": 167.32,
+            "y": 235.2
+        },
+        "neighbors": {
+            "014f2a28-7076-454f-8e96-02d93bfccd11": {
+                "dist": 49.58
+            },
+            "a742645a-065c-422e-abe8-1f0359ddc85a": {
+                "dist": 46.42
+            }
+        },
+        "roomId": "84ce6218-88ab-47fb-a77f-2c02f797e58c"
+    },
+    "a742645a-065c-422e-abe8-1f0359ddc85a": {
+        "pos": {
+            "x": 210.82,
+            "y": 251.4
+        },
+        "neighbors": {
+            "2301dcce-83f9-4b83-9058-6a530c35e6ef": {
+                "dist": 46.42
+            },
+            "d1ee8f44-1563-4df3-a123-42e05e3a76e5": {
+                "dist": 46.83
+            }
+        },
+        "roomId": "6ee84159-7b9b-4342-8422-204ff1e2c7c0"
+    },
+    "4eeca309-5e4c-4814-9d90-f5905b5e65e0": {
+        "pos": {
+            "x": 287.44,
+            "y": 251.22
+        },
+        "neighbors": {
+            "f8395040-cd7d-44ff-93e2-c18e245e76ae": {
+                "dist": 29.62
+            }
+        },
+        "roomId": "df815c5f-9865-43bc-9a2e-055a10795305"
+    },
+    "9da8bf33-da85-49d2-a36f-336c3e8fd9d2": {
+        "pos": {
+            "x": 328.12,
+            "y": 247.59
+        },
+        "neighbors": {
+            "0f09c590-8026-4f30-abf9-792092ee0179": {
+                "dist": 38.18
+            }
+        },
+        "roomId": "6843104a-5455-4035-a8bc-25834712e3c1"
+    },
+    "13a79470-81e5-46e4-bd6f-1614802a2f41": {
+        "pos": {
+            "x": 212.47,
+            "y": 79.86
+        },
+        "neighbors": {
+            "c605be8a-bf3d-48bc-814c-ace6c3e8e7b2": {
+                "dist": 49.21
+            },
+            "e7fbd33e-232b-4167-ab89-24086d133dba": {
+                "dist": 48.38
+            }
+        },
+        "roomId": "c7654055-1d09-481c-808a-3bd4c0234d69"
+    },
+    "320e265f-1275-4762-84c1-899c7e0ecc61": {
+        "pos": {
+            "x": 250.12,
+            "y": 79.65
+        },
+        "neighbors": {
+            "c605be8a-bf3d-48bc-814c-ace6c3e8e7b2": {
+                "dist": 34.55
+            }
+        },
+        "roomId": "22fd475d-d278-4e6d-8388-9e9d50ee2498"
+    },
+    "356978ed-9fac-4176-9c84-e7f3d4e13f61": {
+        "pos": {
+            "x": 289.72,
+            "y": 79.47
+        },
+        "neighbors": {
+            "e6c2ab5e-a7a5-4bb4-9513-0d40c891639e": {
+                "dist": 34.62
+            }
+        },
+        "roomId": "787530bb-5706-48ee-82d7-10aa97a6f0c6"
+    },
+    "b211765a-6b55-492a-886f-f3632a66241f": {
+        "pos": {
+            "x": 350.2,
+            "y": 124.44
+        },
+        "neighbors": {
+            "e2f45345-58d4-4ce7-a9cc-ee253a89fd87": {
+                "dist": 40.75
+            }
+        },
+        "roomId": "5436dd96-472a-4756-95a6-225f8c7180b4"
+    },
+    "0bab713a-61d1-49da-8c72-813a9c7354c8": {
+        "pos": {
+            "x": 272.08,
+            "y": 165.42
+        },
+        "neighbors": {
+            "e6c2ab5e-a7a5-4bb4-9513-0d40c891639e": {
+                "dist": 53.12
+            },
+            "c605be8a-bf3d-48bc-814c-ace6c3e8e7b2": {
+                "dist": 56.76
+            },
+            "d1ee8f44-1563-4df3-a123-42e05e3a76e5": {
+                "dist": 62.23
+            },
+            "6e2efb4f-d7bb-4c11-aa7a-837c1617ac31": {
+                "dist": 75.22
+            }
+        },
+        "roomId": "686d501a-45f1-41da-b336-b85641343c40"
+    },
+    "43e35672-f8c8-4d4a-acbd-d77f77a15b2f": {
+        "pos": {
+            "x": 328.54,
+            "y": 189.39
+        },
+        "neighbors": {
+            "0f09c590-8026-4f30-abf9-792092ee0179": {
+                "dist": 41.93
+            }
+        },
+        "roomId": "c1b70ba0-75a7-46aa-9166-6fe1567e8e2c"
+    },
+    "4ec9c5d1-73a5-4988-9cf6-845edc159f88": {
+        "pos": {
+            "x": 366.1,
+            "y": 189.39
+        },
+        "neighbors": {
+            "a1f33d4f-1e2e-4c4b-95a7-88a7d18df390": {
+                "dist": 36.34
+            },
+            "122649b4-a059-4edf-9cab-8fc4565386ce": {
+                "dist": 28.57
+            }
+        },
+        "roomId": "184a958d-d8e2-4bd8-9dee-0aa12121b244"
+    },
+    "cdcdf6f2-4c96-460d-b66b-6391a2840ff6": {
+        "pos": {
+            "x": 403.69,
+            "y": 189.39
+        },
+        "neighbors": {
+            "a1f33d4f-1e2e-4c4b-95a7-88a7d18df390": {
+                "dist": 37.71
+            },
+            "122649b4-a059-4edf-9cab-8fc4565386ce": {
+                "dist": 41.24
+            }
+        },
+        "roomId": "6af2ddcd-0c27-4f58-ae7a-43371398e8d4"
+    },
+    "b2b42d69-7660-433a-8674-93b34e2f7eb8": {
+        "pos": {
+            "x": 416.95,
+            "y": 249.36
+        },
+        "neighbors": {
+            "fcb0c528-32b4-4084-b59c-d0643aad4a3d": {
+                "dist": 30.24
+            }
+        },
+        "roomId": "7b5fc84e-df1d-419c-8dfb-b25fddcdd492"
+    },
+    "ff8046c8-5062-4b26-a89e-a9d454e5e886": {
+        "pos": {
+            "x": 241.54,
+            "y": 395.73
+        },
+        "neighbors": {
+            "5631b8e8-5713-41eb-ad74-c01f80b96efc": {
+                "dist": 58.23
+            }
+        },
+        "roomId": "7d23b48f-5d74-411a-a61c-da98794fa5fe"
+    },
+    "1b5891da-3b0b-47b7-9149-c436707844d6": {
+        "pos": {
+            "x": 294.4,
+            "y": 396.51
+        },
+        "neighbors": {
+            "5631b8e8-5713-41eb-ad74-c01f80b96efc": {
+                "dist": 38.18
+            }
+        },
+        "roomId": "48e08b30-bb7a-4aa3-88bd-686466dc1330"
+    },
+    "da59f6cf-edfd-4730-8b39-7a38a4aec92a": {
+        "pos": {
+            "x": 329.89,
+            "y": 396.51
+        },
+        "neighbors": {
+            "e11a7e88-7a48-4639-8eff-5eda3534a591": {
+                "dist": 38.14
+            }
+        },
+        "roomId": "6a998f8e-be42-4250-b188-68a693fa26ee"
+    },
+    "c587d55a-7577-4ade-a71e-501a252eeee9": {
+        "pos": {
+            "x": 230.08,
+            "y": 441.45
+        },
+        "neighbors": {
+            "5631b8e8-5713-41eb-ad74-c01f80b96efc": {
+                "dist": 56.16
+            }
+        },
+        "roomId": "195dae1a-25ec-4c77-b20a-2308a726fe55"
+    },
+    "b802be55-89db-458e-9e35-ad31f7664d8b": {
+        "pos": {
+            "x": 230.08,
+            "y": 483.9
+        },
+        "neighbors": {
+            "3d5155ec-94d1-4af9-ba82-4279ece365bb": {
+                "dist": 53.31
+            },
+            "5016e4f2-9422-4fbe-8202-b51f208dfa44": {
+                "dist": 44.8
+            }
+        },
+        "roomId": "2f8b55d8-bfab-4600-8e3d-6b9ed591a0c9"
+    },
+    "3d5155ec-94d1-4af9-ba82-4279ece365bb": {
+        "pos": {
+            "x": 234.76,
+            "y": 537
+        },
+        "neighbors": {
+            "b802be55-89db-458e-9e35-ad31f7664d8b": {
+                "dist": 53.31
+            },
+            "6e50a892-088e-4a54-a6c5-6e566ddd835c": {
+                "dist": 51.47
+            }
+        },
+        "roomId": "9482eea0-b61e-421a-a97b-6ef44fd6144f"
+    },
+    "9e6f788a-6d20-4636-a931-9de8e729d056": {
+        "pos": {
+            "x": 278.77,
+            "y": 547.95
+        },
+        "neighbors": {
+            "6e50a892-088e-4a54-a6c5-6e566ddd835c": {
+                "dist": 40.35
+            }
+        },
+        "roomId": "f72cd236-2e33-48b5-bbe0-ec74282127c2"
+    },
+    "f0ec19e8-8a8d-43d8-b980-4d3a19bd3f25": {
+        "pos": {
+            "x": 309.73,
+            "y": 547.95
+        },
+        "neighbors": {
+            "508969e0-b78c-4382-8efb-f30fa14a1a2a": {
+                "dist": 37.03
+            }
+        },
+        "roomId": "b3691eca-ddcc-495e-a1e0-5a7aa01f1b5a"
+    },
+    "90012d6f-cd2d-47e6-913a-3d85b0f28a3e": {
+        "pos": {
+            "x": 341.38,
+            "y": 547.89
+        },
+        "neighbors": {
+            "508969e0-b78c-4382-8efb-f30fa14a1a2a": {
+                "dist": 34.73
+            }
+        },
+        "roomId": "08154383-d14c-4f94-b74f-8902e4443410"
+    },
+    "882a85fa-a620-420c-b12b-b20eca0fa9b4": {
+        "pos": {
+            "x": 372.67,
+            "y": 547.95
+        },
+        "neighbors": {
+            "bfb8245a-9fac-42dc-b79d-1a10016f35dc": {
+                "dist": 34.35
+            }
+        },
+        "roomId": "7ca13ab3-41c1-41d6-b312-cad59f9f29a9"
+    },
+    "f3e0b567-93a2-48ec-9b2e-48db5a4f9800": {
+        "pos": {
+            "x": 403.66,
+            "y": 547.95
+        },
+        "neighbors": {
+            "bfb8245a-9fac-42dc-b79d-1a10016f35dc": {
+                "dist": 37.6
+            }
+        },
+        "roomId": "ad0a3a2b-e267-405c-83cd-9ac4230a91d5"
+    },
+    "81bcd3db-41bc-4728-b098-3d9ec745d687": {
+        "pos": {
+            "x": 435.28,
+            "y": 547.95
+        },
+        "neighbors": {
+            "18c92a35-237e-47b5-b31c-1881f54b7028": {
+                "dist": 34.38
+            }
+        },
+        "roomId": "0c6f4145-11f7-4fe2-a0c4-4a7c0349c9e7"
+    },
+    "40b082d0-3e23-4e05-813a-27ca9058f3e1": {
+        "pos": {
+            "x": 470.83,
+            "y": 547.95
+        },
+        "neighbors": {
+            "18c92a35-237e-47b5-b31c-1881f54b7028": {
+                "dist": 40.09
+            }
+        },
+        "roomId": "b6c2c069-05ee-402b-a0c8-1b5c6ebf80df"
+    },
+    "6190c243-5da3-46fc-9c2b-bbea1d698cd9": {
+        "pos": {
+            "x": 314.77,
+            "y": 455.52
+        },
+        "neighbors": {
+            "e11a7e88-7a48-4639-8eff-5eda3534a591": {
+                "dist": 38.51
+            }
+        },
+        "roomId": "cb86a6ca-e7d4-4925-85ab-2a814c6a8c01"
+    },
+    "2d2fbfd1-9224-440c-9ebf-a9c88ae488b4": {
+        "pos": {
+            "x": 314.77,
+            "y": 486.84
+        },
+        "neighbors": {
+            "508969e0-b78c-4382-8efb-f30fa14a1a2a": {
+                "dist": 31.88
+            }
+        },
+        "roomId": "614dd5ef-5d1a-469b-94d7-52f8087d9948"
+    },
+    "94127c00-3359-4298-acb5-83f32daac2aa": {
+        "pos": {
+            "x": 361.72,
+            "y": 455.52
+        },
+        "neighbors": {
+            "663d881b-5979-4912-a818-e4e6af005bff": {
+                "dist": 47.7
+            }
+        },
+        "roomId": "324f77d0-751f-43c0-bed2-68a97778a8e5"
+    },
+    "a0198a68-4d60-4b63-92f1-87bde70d4ce1": {
+        "pos": {
+            "x": 361.72,
+            "y": 486.84
+        },
+        "neighbors": {
+            "bfb8245a-9fac-42dc-b79d-1a10016f35dc": {
+                "dist": 36.67
+            }
+        },
+        "roomId": "19875bed-543c-48d6-a7e6-0337006e7703"
+    },
+    "6f88681e-c5c8-4493-aff8-00789667e192": {
+        "pos": {
+            "x": 408.67,
+            "y": 474.39
+        },
+        "neighbors": {
+            "663d881b-5979-4912-a818-e4e6af005bff": {
+                "dist": 43.21
+            }
+        },
+        "roomId": "209ab725-b7a3-4e76-ae08-43bdafee06b1"
+    },
+    "91763e83-e592-4b4d-bc36-484b92e0d0a2": {
+        "pos": {
+            "x": 618.88,
+            "y": 547.95
+        },
+        "neighbors": {
+            "6f261884-dcf9-4913-a098-75eed075734e": {
+                "dist": 36.91
+            }
+        },
+        "roomId": "ec573175-5e90-441c-8982-5a48e82cd81d"
+    },
+    "72f1b675-a887-4ce5-9f57-75cea3fe03de": {
+        "pos": {
+            "x": 654.4,
+            "y": 547.95
+        },
+        "neighbors": {
+            "6f261884-dcf9-4913-a098-75eed075734e": {
+                "dist": 34.62
+            }
+        },
+        "roomId": "4f323cf6-8c8b-4861-8791-17bb54724084"
+    },
+    "f64ab76d-7ede-4c4e-8aa7-6e6b1802e2b7": {
+        "pos": {
+            "x": 686.05,
+            "y": 547.95
+        },
+        "neighbors": {
+            "b3e8c749-5b35-4834-b443-e1767a07e5c0": {
+                "dist": 43.87
+            }
+        },
+        "roomId": "131173d4-1567-4c7e-b2b5-99aab359b9d3"
+    },
+    "9fc8a487-deef-4d2c-bba6-c1d638ce0fd8": {
+        "pos": {
+            "x": 717.01,
+            "y": 547.95
+        },
+        "neighbors": {
+            "b3e8c749-5b35-4834-b443-e1767a07e5c0": {
+                "dist": 30.98
+            }
+        },
+        "roomId": "c64a0829-21ad-4003-9e5b-02acf060aae7"
+    },
+    "5cd072f5-e6ea-498d-befa-43b743695bfa": {
+        "pos": {
+            "x": 748.33,
+            "y": 547.95
+        },
+        "neighbors": {
+            "972fdfd0-7660-4372-a121-d93f7018a41e": {
+                "dist": 31.31
+            }
+        },
+        "roomId": "cb109762-31fb-4298-becd-d86b73a7b665"
+    },
+    "f2c23489-6e1a-482a-b452-5b8c0011bd40": {
+        "pos": {
+            "x": 784,
+            "y": 547.95
+        },
+        "neighbors": {
+            "972fdfd0-7660-4372-a121-d93f7018a41e": {
+                "dist": 42.77
+            }
+        },
+        "roomId": "a3813d8e-8a0b-4d9b-a2fa-bd1702a3fd07"
+    },
+    "4b6cc9df-a3ad-4107-bdc8-fe94cdfbaa31": {
+        "pos": {
+            "x": 816.55,
+            "y": 511.74
+        },
+        "neighbors": {
+            "e3a20643-90f5-49c9-82cb-d81f5a5f6820": {
+                "dist": 33.53
+            },
+            "4a9c3ceb-c2e1-4b7d-89b9-ebcced7c2fbc": {
+                "dist": -1,
+                "toFloorInfo": {
+                    "toFloor": "NSH-3",
+                    "type": "stairs"
+                }
+            }
+        },
+        "roomId": "245e6ac4-2a62-442c-8879-858df0ef211f"
+    },
+    "76cfb1c2-6484-40a6-8c25-241ae664b559": {
+        "pos": {
+            "x": 812.83,
+            "y": 481.14
+        },
+        "neighbors": {
+            "e3a20643-90f5-49c9-82cb-d81f5a5f6820": {
+                "dist": 37.59
+            }
+        },
+        "roomId": "c1a50ac7-b297-40d4-b2f5-c6cea2f4fa43"
+    },
+    "103c9821-e7a4-42e2-ac49-c3b49a514a8d": {
+        "pos": {
+            "x": 812.83,
+            "y": 446.13
+        },
+        "neighbors": {
+            "03a1f9c8-8d77-4677-b211-37680cb40dda": {
+                "dist": 38.78
+            }
+        },
+        "roomId": "670c3b94-996c-4083-8ea0-37873b1e15f4"
+    },
+    "c03b4724-b34e-47b9-990b-4ba2211b18c8": {
+        "pos": {
+            "x": 812.83,
+            "y": 408.57
+        },
+        "neighbors": {
+            "03a1f9c8-8d77-4677-b211-37680cb40dda": {
+                "dist": 40.65
+            }
+        },
+        "roomId": "163536b6-47ac-4c9b-9fec-91545090d8c8"
+    },
+    "c75609dd-b444-46e1-af05-ec696b864a8f": {
+        "pos": {
+            "x": 812.98,
+            "y": 378.54
+        },
+        "neighbors": {
+            "a1b1c983-4925-4a78-bfe7-0b6330a7b306": {
+                "dist": 32.18
+            }
+        },
+        "roomId": "4c0494f9-f199-47a5-a55b-9c0a5bc20432"
+    },
+    "03d08e89-9dbe-44ea-9aa6-5b2934da7240": {
+        "pos": {
+            "x": 813.28,
+            "y": 190.38
+        },
+        "neighbors": {
+            "df9b6041-e535-442e-9cde-bcd6abea3e9a": {
+                "dist": 63.42
+            },
+            "4b250726-00f9-46c2-90dd-b32144889063": {
+                "dist": -1,
+                "toFloorInfo": {
+                    "toFloor": "NSH-3",
+                    "type": "stairs"
+                }
+            }
+        },
+        "roomId": "ec48a446-51f1-4a78-a342-000df1e999cc"
+    },
+    "ef3f5589-df13-4555-9556-c942a1455d6d": {
+        "pos": {
+            "x": 810.91,
+            "y": 161.94
+        },
+        "neighbors": {
+            "669f3da3-0071-4655-a280-dea5fbcf2139": {
+                "dist": 35.67
+            }
+        },
+        "roomId": "6cf216c6-c868-447c-905a-0a27f5adfe2c"
+    },
+    "a6fbffea-eb2f-4578-bc39-31165e39d91b": {
+        "pos": {
+            "x": 810.73,
+            "y": 123.3
+        },
+        "neighbors": {
+            "c6457014-929e-4ee6-919a-8cbf64b80c45": {
+                "dist": 39.29
+            }
+        },
+        "roomId": "83b4a757-425d-4e69-bbb7-d4db7d3e01a5"
+    },
+    "61a348d3-b1c3-4d5e-8580-f5c882294509": {
+        "pos": {
+            "x": 803.44,
+            "y": 77.07
+        },
+        "neighbors": {
+            "c6457014-929e-4ee6-919a-8cbf64b80c45": {
+                "dist": 47.98
+            }
+        },
+        "roomId": "98922908-a266-44a8-8821-fa416e4eb148"
+    },
+    "3808475d-b1ee-4c12-b2c5-281d1ca39a95": {
+        "pos": {
+            "x": 758.08,
+            "y": 77.4
+        },
+        "neighbors": {
+            "e9f0f6b3-1690-4e08-8b84-2a2f95b4b7e7": {
+                "dist": 40.82
+            }
+        },
+        "roomId": "821e78c0-817e-4272-9efb-da151a903a5a"
+    },
+    "968a4a81-59b0-475f-8ea0-9dfd113067a8": {
+        "pos": {
+            "x": 719.5,
+            "y": 77.55
+        },
+        "neighbors": {
+            "475ebaa2-a087-482c-806b-2c81122da620": {
+                "dist": 40.52
+            }
+        },
+        "roomId": "dfd12ebd-81bc-42e8-8fc8-db534747093b"
+    },
+    "b32e4b71-8efa-479e-920a-500af30c1cf3": {
+        "pos": {
+            "x": 681.19,
+            "y": 77.73
+        },
+        "neighbors": {
+            "5433a409-b72b-4565-a397-a35b379397a6": {
+                "dist": 43.9
+            }
+        },
+        "roomId": "23a290c7-0bae-47a9-9d24-94c3e062d223"
+    },
+    "33e3e8b9-7cd9-4c10-b14d-0a59b9ffb3a8": {
+        "pos": {
+            "x": 722.08,
+            "y": 143.76
+        },
+        "neighbors": {
+            "5433a409-b72b-4565-a397-a35b379397a6": {
+                "dist": 69.48
+            }
+        },
+        "roomId": "b41ec44e-3281-4a35-b91e-717e75119035"
+    },
+    "757fd629-ee4c-4206-b7e5-d5c9b71b85b1": {
+        "pos": {
+            "x": 745.84,
+            "y": 185.19
+        },
+        "neighbors": {
+            "701f5a56-199f-487d-a12c-022b83f08081": {
+                "dist": 34.63
+            }
+        },
+        "roomId": "99bf7440-2184-4afc-acbf-6c7df88f50ea"
+    },
+    "17592123-f958-4807-8345-b55260801ac1": {
+        "pos": {
+            "x": 698.8,
+            "y": 185.31
+        },
+        "neighbors": {
+            "bf148e3a-8ef2-4422-b842-2babf663506d": {
+                "dist": 42.88
+            }
+        },
+        "roomId": "c3c96c62-c269-4153-b09b-dd83ac109adb"
+    },
+    "f5bb6e25-521b-4c40-a434-84185cd8c72e": {
+        "pos": {
+            "x": 544.39,
+            "y": 123.51
+        },
+        "neighbors": {
+            "b8b37b5a-eae8-46d5-8cba-98d62fcf369f": {
+                "dist": 50.76
+            }
+        },
+        "roomId": "b7f7fa09-590a-4a8c-b01f-faa229792768"
+    },
+    "c5a48f73-2bbb-4400-aed5-824fe8a66081": {
+        "pos": {
+            "x": 626.55,
+            "y": 123.12
+        },
+        "neighbors": {
+            "06e796c8-c03d-405b-b915-f401346ec1b5": {
+                "dist": 74.51
+            }
+        },
+        "roomId": "fe9f2ae3-3521-4411-9c77-2e82b777928e"
+    },
+    "0561c0b1-96a1-4a78-a06d-a8895d3728b9": {
+        "pos": {
+            "x": 595.23,
+            "y": 123.27
+        },
+        "neighbors": {
+            "06e796c8-c03d-405b-b915-f401346ec1b5": {
+                "dist": 57.85
+            }
+        },
+        "roomId": "a9bd727d-a416-4023-b876-556347c68644"
+    },
+    "f66a9c70-e747-4bf6-aeb9-684330aca810": {
+        "pos": {
+            "x": 550.09,
+            "y": 251.91
+        },
+        "neighbors": {
+            "df775de5-45fb-4c6e-aa8d-d0e2b68ab9e6": {
+                "dist": 29.64
+            }
+        },
+        "roomId": "c21ed363-9b43-4aed-91b9-b4f5da71f283"
+    },
+    "1cdc38a6-0ab4-44da-b0de-bb3a332f0aa5": {
+        "pos": {
+            "x": 592.69,
+            "y": 252.21
+        },
+        "neighbors": {
+            "97b5ec15-3185-4ab6-b4f8-46cc9a332c30": {
+                "dist": 38.24
+            }
+        },
+        "roomId": "87a2c3c8-a2df-46fd-bfcf-09043c50b26c"
+    },
+    "2932c5e3-c8af-4762-a817-c6f86b0ae213": {
+        "pos": {
+            "x": 639.55,
+            "y": 252
+        },
+        "neighbors": {
+            "239ae2ed-c25f-4817-9b59-5679cbcb9647": {
+                "dist": 33.21
+            }
+        },
+        "roomId": "89f126c1-6e5a-44f9-b0bd-0e897151a21b"
+    },
+    "180bc925-142c-4e4f-aaba-5897dd325237": {
+        "pos": {
+            "x": 680.92,
+            "y": 248.43
+        },
+        "neighbors": {
+            "c952a203-4b23-4aeb-874d-871a6e825b36": {
+                "dist": 35.23
+            }
+        },
+        "roomId": "a0368ea8-2dce-45aa-b9c3-8df90227b8dd"
+    },
+    "3a08b483-e2ce-4880-b084-61937e7c2e27": {
+        "pos": {
+            "x": 717.79,
+            "y": 248.34
+        },
+        "neighbors": {
+            "c952a203-4b23-4aeb-874d-871a6e825b36": {
+                "dist": 36.92
+            }
+        },
+        "roomId": "9633afb3-f546-4d49-8929-a7f361ed9eea"
+    },
+    "d9470068-ba9b-43c7-bdfd-4108d1a5b5f8": {
+        "pos": {
+            "x": 754.9,
+            "y": 248.28
+        },
+        "neighbors": {
+            "701f5a56-199f-487d-a12c-022b83f08081": {
+                "dist": 37.76
+            }
+        },
+        "roomId": "fa114279-3f6a-423e-9103-661637f0f1fc"
+    },
+    "a806c118-b9ec-4131-a007-a626d67c8b9b": {
+        "pos": {
+            "x": 734.92,
+            "y": 468.51
+        },
+        "neighbors": {
+            "26bab9e1-04ad-4783-ae41-16f3c1f56e7b": {
+                "dist": 95.36
+            },
+            "b4d815b8-adf1-4bc0-a6db-dd965fb34960": {
+                "dist": 77.13
+            },
+            "ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7": {
+                "dist": 87.3
+            }
+        },
+        "roomId": "944b0324-bab4-4989-bf55-4934791cab36"
+    },
+    "0950e3c7-ca84-4a36-8b18-3e739903b257": {
+        "pos": {
+            "x": 590.26,
+            "y": 471.42
+        },
+        "neighbors": {
+            "23b91080-9e5a-4a43-9ff3-29c622cf9e89": {
+                "dist": 41.89
+            }
+        },
+        "roomId": "7bad3c11-6755-42a0-84bf-f6da22bfa3c2"
+    },
+    "e64a8e4c-44e6-4ddb-8e28-33f701597885": {
+        "pos": {
+            "x": 757.18,
+            "y": 394.74
+        },
+        "neighbors": {
+            "2ab33928-f1af-4c75-91b4-e79b2993c862": {
+                "dist": 41.27
+            }
+        },
+        "roomId": "6e646f29-603b-49e8-8ba3-fa123864288e"
+    },
+    "06753bb2-6af7-4c6b-9738-9151f811ce2f": {
+        "pos": {
+            "x": 725.89,
+            "y": 394.74
+        },
+        "neighbors": {
+            "2ab33928-f1af-4c75-91b4-e79b2993c862": {
+                "dist": 35.96
+            }
+        },
+        "roomId": "727cde35-4548-4545-af85-181f6ed655e0"
+    },
+    "951e39f8-ab5d-42ca-93b8-a33e7aeae77a": {
+        "pos": {
+            "x": 694.57,
+            "y": 394.83
+        },
+        "neighbors": {
+            "e303968f-baac-4b35-b5bb-351ab45fc541": {
+                "dist": 34.7
+            }
+        },
+        "roomId": "d9f1dfec-3453-4ff5-a92a-23b08d30424a"
+    },
+    "00913be5-2822-4536-8d9e-56d9ba3d7721": {
+        "pos": {
+            "x": 662.38,
+            "y": 394.83
+        },
+        "neighbors": {
+            "ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7": {
+                "dist": 35.14
+            }
+        },
+        "roomId": "8e3730a4-5cc4-4035-8e28-ec850d465b2f"
+    },
+    "00c16368-e753-45fa-a984-70117365c5e1": {
+        "pos": {
+            "x": 620.02,
+            "y": 385.2
+        },
+        "neighbors": {
+            "23b91080-9e5a-4a43-9ff3-29c622cf9e89": {
+                "dist": 53.65
+            }
+        },
+        "roomId": "a5af7281-8b75-474f-b01f-02a8bbf6c179"
+    },
+    "de7420f8-1d9f-4bd2-ba33-ed254369f5f9": {
+        "pos": {
+            "x": 566.47,
+            "y": 392.79
+        },
+        "neighbors": {
+            "23b91080-9e5a-4a43-9ff3-29c622cf9e89": {
+                "dist": 43.52
+            }
+        },
+        "roomId": "e36752f4-6572-49c9-9d84-e056fbf8ea2b"
+    },
+    "b7d853b6-4ad7-463a-9347-290869ad6dab": {
+        "pos": {
+            "x": 383.11,
+            "y": 393.24
+        },
+        "neighbors": {
+            "663d881b-5979-4912-a818-e4e6af005bff": {
+                "dist": 43.16
+            }
+        },
+        "roomId": "c6b0aa1a-6dd8-40ac-99e3-91aa51fbca8f"
+    },
+    "c22bd96f-881f-4f8f-81fa-07052ef91959": {
+        "pos": {
+            "x": 413.38,
+            "y": 393.24
+        },
+        "neighbors": {
+            "663d881b-5979-4912-a818-e4e6af005bff": {
+                "dist": 39.71
+            }
+        },
+        "roomId": "20b507b3-f087-409c-b21b-8092cfb175c1"
+    },
+    "9ff2f342-7024-43ff-99ed-d8dfe6910c09": {
+        "pos": {
+            "x": 444.67,
+            "y": 393.9
+        },
+        "neighbors": {
+            "83aea0a1-bec8-4b30-8d1d-67209260bd71": {
+                "dist": 40.18
+            }
+        },
+        "roomId": "9b03cf49-ee0d-48c8-b931-ae652e7a38d0"
+    },
+    "1bd7d0a5-b990-4809-a514-9349ca482579": {
+        "pos": {
+            "x": 476.77,
+            "y": 394.38
+        },
+        "neighbors": {
+            "83aea0a1-bec8-4b30-8d1d-67209260bd71": {
+                "dist": 41.35
+            }
+        },
+        "roomId": "bb119b3d-27d2-4997-8c39-eb044e4e8eb0"
+    },
+    "d4965db5-3ed0-4fec-81c9-1438b5999ca1": {
+        "pos": {
+            "x": 393.22,
+            "y": 124.23
+        },
+        "neighbors": {
+            "122649b4-a059-4edf-9cab-8fc4565386ce": {
+                "dist": 42.52
+            }
+        },
+        "roomId": "9f7f91f6-704d-463d-8f5a-51f1d03b7773"
+    },
+    "d79ad4e5-adf3-49d3-be15-6663c25ee859": {
+        "pos": {
+            "x": 440.2,
+            "y": 124.08
+        },
+        "neighbors": {
+            "50ebc128-a394-4815-884d-1702ae0953a1": {
+                "dist": 47.08
+            }
+        },
+        "roomId": "e72875a4-2dc5-4728-9375-8f58e088179e"
+    },
+    "5062df55-a386-4407-8180-561c522e6b07": {
+        "pos": {
+            "x": 417.13,
+            "y": 349.53
+        },
+        "neighbors": {
+            "4ca414ad-fb39-4273-981a-4404a4128983": {
+                "dist": 54.31
+            },
+            "be439694-d32e-41d8-ae0f-c02ba030bb4c": {
+                "dist": -1,
+                "toFloorInfo": {
+                    "toFloor": "NSH-3",
+                    "type": "stairs"
+                }
+            }
+        },
+        "roomId": "3bcebd31-9d75-444e-9d17-e3c95a1c1cc4"
+    },
+    "ac47cf67-7cde-4a41-a79a-bef2f23edde5": {
+        "pos": {
+            "x": 390.94,
+            "y": 328.83
+        },
+        "neighbors": {
+            "aea7fa08-8a03-4d6b-915e-1d4078c1e511": {
+                "dist": 32.73
+            }
+        },
+        "roomId": "180397ed-e92c-4977-bb98-41462e232e10"
+    },
+    "ff7632db-3daf-4961-8211-688afb98ee84": {
+        "pos": {
+            "x": 371.4,
+            "y": 342.03
+        },
+        "neighbors": {
+            "0f26e8f5-db24-49a2-b005-aa88c69456d6": {
+                "dist": 23.93
+            }
+        },
+        "roomId": "7ffc37a0-8aee-47d9-ad83-c014c2bd90c5"
+    },
+    "00277655-0e6e-48d4-b7cc-db7bb2dc855c": {
+        "pos": {
+            "x": 371.91,
+            "y": 306.93
+        },
+        "neighbors": {
+            "ecfc9ca5-fa0c-4c99-b9f0-9888d163c284": {
+                "dist": 16.08
+            }
+        },
+        "roomId": "106e9405-ad11-43a4-a9ca-ffa2db2839ae"
+    },
+    "5e29d7e6-6a47-488f-a87a-2dde379271b0": {
+        "pos": {
+            "x": 460.77,
+            "y": 207.15
+        },
+        "neighbors": {
+            "30c0b791-2a57-467e-afae-5e1bd62265e7": {
+                "dist": 16.14
+            }
+        },
+        "roomId": "07631f63-81b9-4dae-b3b6-1d506bfebb29"
+    },
+    "07245a28-e13a-4b49-ac0e-d36ea4313cce": {
+        "pos": {
+            "x": 439.45,
+            "y": 183.54
+        },
+        "neighbors": {
+            "608ecdd8-0a3c-4569-889d-ac396aec93a4": {
+                "dist": 22.88
+            },
+            "c8b9a53f-8a8d-423f-82bd-54a8954b37ad": {
+                "dist": 39.44
+            }
+        },
+        "roomId": "f2feb143-5593-46ab-a4bc-97b862c714a9"
+    },
+    "f22f598e-6f42-4f4b-a10a-72889c876035": {
+        "pos": {
+            "x": 455.71,
+            "y": 316.38
+        },
+        "neighbors": {
+            "d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8": {
+                "dist": 27.83
+            }
+        },
+        "roomId": "3fdbdcda-f206-42aa-86f1-5a8e637139dd"
+    },
+    "847eeed4-c0a0-44b5-b792-0b155bb10cba": {
+        "pos": {
+            "x": 593.07,
+            "y": 560.76
+        },
+        "neighbors": {},
+        "roomId": "f28cd018-8211-4a71-9db4-13cfb9b0306a"
+    },
+    "485bdb0e-d81d-4032-b722-64d3f0b92108": {
+        "pos": {
+            "x": 497.04,
+            "y": 560.46
+        },
+        "neighbors": {},
+        "roomId": "59e893eb-f763-4361-98c7-bd20765d769c"
+    },
+    "c6a45bce-1dd5-4a37-97dd-a2f23a3c1c03": {
+        "pos": {
+            "x": 487.6,
+            "y": 472.83
+        },
+        "neighbors": {
+            "00452504-c265-4132-9a88-ab53e0cc0abc": {
+                "dist": 43.42
+            },
+            "18c92a35-237e-47b5-b31c-1881f54b7028": {
+                "dist": 58.97
+            }
+        },
+        "roomId": "f358e401-bd53-4aef-8ad9-e8bfc6475da0"
+    },
+    "00452504-c265-4132-9a88-ab53e0cc0abc": {
+        "pos": {
+            "x": 446.91,
+            "y": 457.68
+        },
+        "neighbors": {
+            "c6a45bce-1dd5-4a37-97dd-a2f23a3c1c03": {
+                "dist": 43.42
+            }
+        },
+        "roomId": "90638029-b2a7-44dd-93cd-b12c5943837a"
+    },
+    "8dc04ba5-26b6-4bc3-a592-670c18697b48": {
+        "pos": {
+            "x": 423.3,
+            "y": 337.29
+        },
+        "neighbors": {},
+        "roomId": "a29d611b-8e42-4d63-9526-c55dd0cbab37"
+    },
+    "06e796c8-c03d-405b-b915-f401346ec1b5": {
+        "pos": {
+            "x": 575.95,
+            "y": 177.81
+        },
+        "neighbors": {
+            "c5a48f73-2bbb-4400-aed5-824fe8a66081": {
+                "dist": 74.51
+            },
+            "0561c0b1-96a1-4a78-a06d-a8895d3728b9": {
+                "dist": 57.85
+            },
+            "97b5ec15-3185-4ab6-b4f8-46cc9a332c30": {
+                "dist": 47.5
+            }
+        },
+        "roomId": "7e8392df-c216-4b0c-b77a-a7a857d2eadd"
+    },
+    "39a86578-eb43-40c0-8191-3439de8af70e": {
+        "pos": {
+            "x": 390.79,
+            "y": 310.8
+        },
+        "neighbors": {
+            "722b939f-3ab0-4190-976d-073743093712": {
+                "dist": 24.22
+            },
+            "959ef164-2d71-4842-a772-e97db3a480a3": {
+                "dist": 27.36
+            },
+            "7f572759-6f46-4019-82ae-e08e4dd0416e": {
+                "dist": -1,
+                "toFloorInfo": {
+                    "toFloor": "NSH-3",
+                    "type": "elevator"
+                }
+            }
+        },
+        "roomId": "473b33d4-633d-4a74-8587-8f33e31b3516"
+    },
+    "959ef164-2d71-4842-a772-e97db3a480a3": {
+        "pos": {
+            "x": 417.67,
+            "y": 315.9
+        },
+        "neighbors": {
+            "ed77371a-b493-4bb2-ac7f-03515e2d7155": {
+                "dist": 30.04
+            },
+            "39a86578-eb43-40c0-8191-3439de8af70e": {
+                "dist": 27.36
+            },
+            "f373b5e4-dfd4-46b9-b9ce-931d9cb52c65": {
+                "dist": -1,
+                "toFloorInfo": {
+                    "toFloor": "NSH-3",
+                    "type": "elevator"
+                }
+            }
+        },
+        "roomId": "4c606ee8-05f9-4558-98ee-8c7d398d81a9"
+    },
+    "a86b6252-81e4-4224-bddd-b70d993d50e2": {
+        "pos": {
+            "x": 375.93,
+            "y": 351
+        },
+        "neighbors": {
+            "0f26e8f5-db24-49a2-b005-aa88c69456d6": {
+                "dist": 20.86
+            }
+        },
+        "roomId": "eba4906a-582f-4843-a748-ce2f3917f01e"
+    },
+    "3a2bd2f8-0c59-4e00-a9e9-eb16074077e7": {
+        "pos": {
+            "x": 373.47,
+            "y": 363.63
+        },
+        "neighbors": {},
+        "roomId": "3f19ceb2-6232-49e4-9193-2dd7051c2182"
+    },
+    "38896b34-d004-4e09-9005-d0f28c0934f5": {
+        "pos": {
+            "x": 573.13,
+            "y": 315.57
+        },
+        "neighbors": {
+            "288d07d2-988f-4302-b9d2-3e12c8631492": {
+                "dist": 72.55
+            },
+            "71a35c67-f498-4ccd-b3a4-ff718e3d8c2a": {
+                "dist": -1,
+                "toFloorInfo": {
+                    "toFloor": "NSH-3",
+                    "type": "stairs"
+                }
+            }
+        },
+        "roomId": "c03c9b1d-31a4-41b2-83d3-f7d24e9ceb18"
+    },
+    "e40537af-8971-458c-b967-935de282810c": {
+        "pos": {
+            "x": 304.56,
+            "y": 133.98
+        },
+        "neighbors": {},
+        "roomId": "737fa6dc-9565-4b9b-bb1a-bfeee9a084d1"
+    },
+    "1db01752-ad23-4380-9111-f316688c96a8": {
+        "pos": {
+            "x": 462.69,
+            "y": 185.79
+        },
+        "neighbors": {},
+        "roomId": "6e9a62d7-728a-406c-931e-e0ee644489ba"
+    },
+    "b7452ecd-652c-4915-981d-323aa1fc5a80": {
+        "pos": {
+            "x": 512.4,
+            "y": 184.17
+        },
+        "neighbors": {},
+        "roomId": "b8400980-d658-47bb-afe8-85ac65381b8b"
+    },
+    "20282eee-2016-449c-a35c-9f60f07b9e65": {
+        "pos": {
+            "x": 255.17,
+            "y": 319.37
+        },
+        "neighbors": {
+            "a0ee27ec-d54f-4880-9724-e300bdbd1978": {
+                "dist": 42.11
+            },
+            "c1c0222b-1e10-41d8-928a-88896040faf8": {
+                "dist": 56.96
+            }
+        },
+        "roomId": "1ceae1a2-b1b1-4ac9-bcb5-954f3ec15ccf"
+    },
+    "c1c0222b-1e10-41d8-928a-88896040faf8": {
+        "pos": {
+            "x": 272.25,
+            "y": 373.71
+        },
+        "neighbors": {
+            "20282eee-2016-449c-a35c-9f60f07b9e65": {
+                "dist": 56.96
+            }
+        },
+        "roomId": "053dc439-08dd-4efe-b38c-bd079e2d9d11"
+    },
+    "a0ee27ec-d54f-4880-9724-e300bdbd1978": {
+        "pos": {
+            "x": 296.53,
+            "y": 311.44
+        },
+        "neighbors": {
+            "484bdc7e-f24c-4dde-bd6e-b209a04eb294": {
+                "dist": 47.21
+            },
+            "20282eee-2016-449c-a35c-9f60f07b9e65": {
+                "dist": 42.11
+            },
+            "e1de8cea-5f61-4635-a77f-bd77cb51e3ca": {
+                "dist": 71.62
+            }
+        },
+        "roomId": "1ceae1a2-b1b1-4ac9-bcb5-954f3ec15ccf"
+    },
+    "484bdc7e-f24c-4dde-bd6e-b209a04eb294": {
+        "pos": {
+            "x": 319.74,
+            "y": 270.33
+        },
+        "neighbors": {
+            "a0ee27ec-d54f-4880-9724-e300bdbd1978": {
+                "dist": 47.21
+            }
+        },
+        "roomId": "87a03fb1-f95d-494e-ac0a-a12f365285ab"
+    },
+    "2e148c0b-6430-494c-b46f-a179d093b92e": {
+        "pos": {
+            "x": 333.09,
+            "y": 270.33
+        },
+        "neighbors": {},
+        "roomId": "21ec30a9-7644-44d4-bc12-17c03b579e4e"
+    },
+    "b4d815b8-adf1-4bc0-a6db-dd965fb34960": {
+        "pos": {
+            "x": 667.11,
+            "y": 505.26
+        },
+        "neighbors": {
+            "a806c118-b9ec-4131-a007-a626d67c8b9b": {
+                "dist": 77.13
+            }
+        },
+        "roomId": "4d1bf75b-4b92-400b-8248-cd25132bacf4"
+    },
+    "26bab9e1-04ad-4783-ae41-16f3c1f56e7b": {
+        "pos": {
+            "x": 639.6,
+            "y": 471.18
+        },
+        "neighbors": {
+            "a806c118-b9ec-4131-a007-a626d67c8b9b": {
+                "dist": 95.36
+            },
+            "e9b126e9-3c85-4c77-9217-afe239776a0a": {
+                "dist": 44.73
+            }
+        },
+        "roomId": "d7eeb878-8ebe-46cc-8db1-dba98d2d3389"
+    },
+    "68729c3d-66ec-4fab-949a-4fa355bb9fc4": {
+        "pos": {
+            "x": 249.16,
+            "y": 251.31
+        },
+        "neighbors": {
+            "d1ee8f44-1563-4df3-a123-42e05e3a76e5": {
+                "dist": 28.6
+            }
+        },
+        "roomId": "6e96d139-5ec8-4f1d-8eea-48c133820aba"
+    },
+    "2db14fc6-d06f-4497-b06b-ee6dbc41eaa3": {
+        "pos": {
+            "x": 615.38,
+            "y": 360.14
+        },
+        "neighbors": {
+            "34a15edf-41bf-4641-9cdc-099c6d2c5ee0": {
+                "dist": 39.73
+            },
+            "afedf4d1-9bc5-491e-901d-f8c2dbdf3a92": {
+                "dist": 33.61
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "4c9a9a08-f22b-443c-88a3-effd10abf3d0": {
+        "pos": {
+            "x": 780.21,
+            "y": 313.59
+        },
+        "neighbors": {
+            "6b273a15-4540-4f75-8ac6-3995195e19d7": {
+                "dist": 35.15
+            },
+            "26df39dc-10e8-47ed-88fa-f2d970868e77": {
+                "dist": 33.55
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "4914c32f-e5df-4e9a-a5ff-20ec91d55ce9": {
+        "pos": {
+            "x": 728.44,
+            "y": 360.14
+        },
+        "neighbors": {
+            "8e4256aa-1482-4022-b2d0-3103a117aa1c": {
+                "dist": 33.61
+            },
+            "3ca9174c-a5f6-480f-8fbc-4eba7a3f06c3": {
+                "dist": 30.73
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "03f4e8e6-fc20-4048-81b2-4c19222583a6": {
+        "pos": {
+            "x": 811.06,
+            "y": 258.71
+        },
+        "neighbors": {
+            "7f05e9df-6f78-407a-8adb-d900c0317ddc": {
+                "dist": -1,
+                "toFloorInfo": {
+                    "toFloor": "GHC-4",
+                    "type": "corridor"
+                }
+            },
+            "26df39dc-10e8-47ed-88fa-f2d970868e77": {
+                "dist": 34.9
+            },
+            "df9b6041-e535-442e-9cde-bcd6abea3e9a": {
+                "dist": 26.39
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "c38df624-9130-46fd-837c-f1a4f88c6645": {
+        "pos": {
+            "x": 532.87,
+            "y": 360.14
+        },
+        "neighbors": {
+            "6a3fa762-6263-44b9-ab3b-abd4358c4863": {
+                "dist": 21.39
+            },
+            "89584f95-4e76-4f05-b64c-2acef5211d22": {
+                "dist": 22.45
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "34a15edf-41bf-4641-9cdc-099c6d2c5ee0": {
+        "pos": {
+            "x": 655.11,
+            "y": 360.14
+        },
+        "neighbors": {
+            "2db14fc6-d06f-4497-b06b-ee6dbc41eaa3": {
+                "dist": 39.73
+            },
+            "8e4256aa-1482-4022-b2d0-3103a117aa1c": {
+                "dist": 39.73
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "8e4256aa-1482-4022-b2d0-3103a117aa1c": {
+        "pos": {
+            "x": 694.83,
+            "y": 360.14
+        },
+        "neighbors": {
+            "4914c32f-e5df-4e9a-a5ff-20ec91d55ce9": {
+                "dist": 33.61
+            },
+            "34a15edf-41bf-4641-9cdc-099c6d2c5ee0": {
+                "dist": 39.73
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "6b273a15-4540-4f75-8ac6-3995195e19d7": {
+        "pos": {
+            "x": 781.37,
+            "y": 348.72
+        },
+        "neighbors": {
+            "4c9a9a08-f22b-443c-88a3-effd10abf3d0": {
+                "dist": 35.15
+            },
+            "3ca9174c-a5f6-480f-8fbc-4eba7a3f06c3": {
+                "dist": 24.93
+            },
+            "a1b1c983-4925-4a78-bfe7-0b6330a7b306": {
+                "dist": 44.42
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "26df39dc-10e8-47ed-88fa-f2d970868e77": {
+        "pos": {
+            "x": 783.57,
+            "y": 280.2
+        },
+        "neighbors": {
+            "4c9a9a08-f22b-443c-88a3-effd10abf3d0": {
+                "dist": 33.55
+            },
+            "03f4e8e6-fc20-4048-81b2-4c19222583a6": {
+                "dist": 34.9
+            },
+            "df9b6041-e535-442e-9cde-bcd6abea3e9a": {
+                "dist": 32.32
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "afedf4d1-9bc5-491e-901d-f8c2dbdf3a92": {
+        "pos": {
+            "x": 581.77,
+            "y": 360.14
+        },
+        "neighbors": {
+            "2db14fc6-d06f-4497-b06b-ee6dbc41eaa3": {
+                "dist": 33.61
+            },
+            "6a3fa762-6263-44b9-ab3b-abd4358c4863": {
+                "dist": 27.5
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "df9b6041-e535-442e-9cde-bcd6abea3e9a": {
+        "pos": {
+            "x": 786.92,
+            "y": 248.06
+        },
+        "neighbors": {
+            "03f4e8e6-fc20-4048-81b2-4c19222583a6": {
+                "dist": 26.39
+            },
+            "26df39dc-10e8-47ed-88fa-f2d970868e77": {
+                "dist": 32.32
+            },
+            "f15a6bbe-33d9-4758-ac15-9643633b64b2": {
+                "dist": 39.07
+            },
+            "03d08e89-9dbe-44ea-9aa6-5b2934da7240": {
+                "dist": 63.42
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "6a3fa762-6263-44b9-ab3b-abd4358c4863": {
+        "pos": {
+            "x": 554.26,
+            "y": 360.14
+        },
+        "neighbors": {
+            "c38df624-9130-46fd-837c-f1a4f88c6645": {
+                "dist": 21.39
+            },
+            "afedf4d1-9bc5-491e-901d-f8c2dbdf3a92": {
+                "dist": 27.5
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "3ca9174c-a5f6-480f-8fbc-4eba7a3f06c3": {
+        "pos": {
+            "x": 759.17,
+            "y": 360.07
+        },
+        "neighbors": {
+            "4914c32f-e5df-4e9a-a5ff-20ec91d55ce9": {
+                "dist": 30.73
+            },
+            "6b273a15-4540-4f75-8ac6-3995195e19d7": {
+                "dist": 24.93
+            }
+        },
+        "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376"
+    },
+    "0f09c590-8026-4f30-abf9-792092ee0179": {
+        "pos": {
+            "x": 355.78,
+            "y": 221.27
+        },
+        "neighbors": {
+            "a1f33d4f-1e2e-4c4b-95a7-88a7d18df390": {
+                "dist": 27.77
+            },
+            "6e2efb4f-d7bb-4c11-aa7a-837c1617ac31": {
+                "dist": 33.32
+            },
+            "43e35672-f8c8-4d4a-acbd-d77f77a15b2f": {
+                "dist": 41.93
+            },
+            "9da8bf33-da85-49d2-a36f-336c3e8fd9d2": {
+                "dist": 38.18
+            },
+            "40afa0a4-f90a-439e-b2c6-ef323ce31bc4": {
+                "dist": 29.83
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "c605be8a-bf3d-48bc-814c-ace6c3e8e7b2": {
+        "pos": {
+            "x": 247.8,
+            "y": 114.12
+        },
+        "neighbors": {
+            "9282dba0-23c3-4115-b36d-c72e73bb7489": {
+                "dist": 36.12
+            },
+            "e6c2ab5e-a7a5-4bb4-9513-0d40c891639e": {
+                "dist": 35.29
+            },
+            "0bab713a-61d1-49da-8c72-813a9c7354c8": {
+                "dist": 56.76
+            },
+            "13a79470-81e5-46e4-bd6f-1614802a2f41": {
+                "dist": 49.21
+            },
+            "320e265f-1275-4762-84c1-899c7e0ecc61": {
+                "dist": 34.55
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "6f3fd8a1-1180-4ce4-9e85-a3c1042ae22b": {
+        "pos": {
+            "x": 214.38,
+            "y": 184.56
+        },
+        "neighbors": {
+            "2d7b96b8-c4e4-449c-8379-5f5235768ca0": {
+                "dist": 31.73
+            },
+            "014f2a28-7076-454f-8e96-02d93bfccd11": {
+                "dist": 30.72
+            },
+            "6821d6e0-1d02-4b8d-b51a-b223ff5ecb07": {
+                "dist": 47.37
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "50ebc128-a394-4815-884d-1702ae0953a1": {
+        "pos": {
+            "x": 411.31,
+            "y": 161.25
+        },
+        "neighbors": {
+            "122649b4-a059-4edf-9cab-8fc4565386ce": {
+                "dist": 38.19
+            },
+            "608ecdd8-0a3c-4569-889d-ac396aec93a4": {
+                "dist": 33.32
+            },
+            "d79ad4e5-adf3-49d3-be15-6663c25ee859": {
+                "dist": 47.08
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "6499bb0c-0d48-4c44-82cf-55c23e7fcd00": {
+        "pos": {
+            "x": 316.02,
+            "y": 119.87
+        },
+        "neighbors": {
+            "e2f45345-58d4-4ce7-a9cc-ee253a89fd87": {
+                "dist": 40.88
+            },
+            "e6c2ab5e-a7a5-4bb4-9513-0d40c891639e": {
+                "dist": 33.55
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "f8395040-cd7d-44ff-93e2-c18e245e76ae": {
+        "pos": {
+            "x": 286.89,
+            "y": 221.61
+        },
+        "neighbors": {
+            "d1ee8f44-1563-4df3-a123-42e05e3a76e5": {
+                "dist": 39.05
+            },
+            "6e2efb4f-d7bb-4c11-aa7a-837c1617ac31": {
+                "dist": 35.58
+            },
+            "4eeca309-5e4c-4814-9d90-f5905b5e65e0": {
+                "dist": 29.62
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "fcb0c528-32b4-4084-b59c-d0643aad4a3d": {
+        "pos": {
+            "x": 405.76,
+            "y": 221.27
+        },
+        "neighbors": {
+            "c8b9a53f-8a8d-423f-82bd-54a8954b37ad": {
+                "dist": 22.21
+            },
+            "a1f33d4f-1e2e-4c4b-95a7-88a7d18df390": {
+                "dist": 22.21
+            },
+            "b2b42d69-7660-433a-8674-93b34e2f7eb8": {
+                "dist": 30.24
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "2d7b96b8-c4e4-449c-8379-5f5235768ca0": {
+        "pos": {
+            "x": 214.56,
+            "y": 152.84
+        },
+        "neighbors": {
+            "6f3fd8a1-1180-4ce4-9e85-a3c1042ae22b": {
+                "dist": 31.73
+            },
+            "9282dba0-23c3-4115-b36d-c72e73bb7489": {
+                "dist": 32.01
+            },
+            "ac23dc95-4ed6-4bab-9e8b-8c4a1ced5598": {
+                "dist": 47.85
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "d1ee8f44-1563-4df3-a123-42e05e3a76e5": {
+        "pos": {
+            "x": 247.85,
+            "y": 222.74
+        },
+        "neighbors": {
+            "f8395040-cd7d-44ff-93e2-c18e245e76ae": {
+                "dist": 39.05
+            },
+            "014f2a28-7076-454f-8e96-02d93bfccd11": {
+                "dist": 35.93
+            },
+            "68729c3d-66ec-4fab-949a-4fa355bb9fc4": {
+                "dist": 28.6
+            },
+            "0bab713a-61d1-49da-8c72-813a9c7354c8": {
+                "dist": 62.23
+            },
+            "a742645a-065c-422e-abe8-1f0359ddc85a": {
+                "dist": 46.83
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "122649b4-a059-4edf-9cab-8fc4565386ce": {
+        "pos": {
+            "x": 373.13,
+            "y": 161.7
+        },
+        "neighbors": {
+            "50ebc128-a394-4815-884d-1702ae0953a1": {
+                "dist": 38.19
+            },
+            "e2f45345-58d4-4ce7-a9cc-ee253a89fd87": {
+                "dist": 44.85
+            },
+            "d4965db5-3ed0-4fec-81c9-1438b5999ca1": {
+                "dist": 42.52
+            },
+            "4ec9c5d1-73a5-4988-9cf6-845edc159f88": {
+                "dist": 28.57
+            },
+            "cdcdf6f2-4c96-460d-b66b-6391a2840ff6": {
+                "dist": 41.24
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "9282dba0-23c3-4115-b36d-c72e73bb7489": {
+        "pos": {
+            "x": 212.33,
+            "y": 120.9
+        },
+        "neighbors": {
+            "c605be8a-bf3d-48bc-814c-ace6c3e8e7b2": {
+                "dist": 36.12
+            },
+            "2d7b96b8-c4e4-449c-8379-5f5235768ca0": {
+                "dist": 32.01
+            },
+            "e7fbd33e-232b-4167-ab89-24086d133dba": {
+                "dist": 49.88
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "c8b9a53f-8a8d-423f-82bd-54a8954b37ad": {
+        "pos": {
+            "x": 427.97,
+            "y": 221.27
+        },
+        "neighbors": {
+            "fcb0c528-32b4-4084-b59c-d0643aad4a3d": {
+                "dist": 22.21
+            },
+            "30c0b791-2a57-467e-afae-5e1bd62265e7": {
+                "dist": 24.99
+            },
+            "a1f33d4f-1e2e-4c4b-95a7-88a7d18df390": {
+                "dist": 44.42
+            },
+            "07245a28-e13a-4b49-ac0e-d36ea4313cce": {
+                "dist": 39.44
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "30c0b791-2a57-467e-afae-5e1bd62265e7": {
+        "pos": {
+            "x": 452.96,
+            "y": 221.27
+        },
+        "neighbors": {
+            "c8b9a53f-8a8d-423f-82bd-54a8954b37ad": {
+                "dist": 24.99
+            },
+            "5e29d7e6-6a47-488f-a87a-2dde379271b0": {
+                "dist": 16.14
+            },
+            "39225bd8-f351-48fd-9e12-7464bc2142a1": {
+                "dist": 33.41
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "e2f45345-58d4-4ce7-a9cc-ee253a89fd87": {
+        "pos": {
+            "x": 328.37,
+            "y": 158.85
+        },
+        "neighbors": {
+            "6499bb0c-0d48-4c44-82cf-55c23e7fcd00": {
+                "dist": 40.88
+            },
+            "122649b4-a059-4edf-9cab-8fc4565386ce": {
+                "dist": 44.85
+            },
+            "b211765a-6b55-492a-886f-f3632a66241f": {
+                "dist": 40.75
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "608ecdd8-0a3c-4569-889d-ac396aec93a4": {
+        "pos": {
+            "x": 444.63,
+            "y": 161.25
+        },
+        "neighbors": {
+            "50ebc128-a394-4815-884d-1702ae0953a1": {
+                "dist": 33.32
+            },
+            "276c1e9d-81f3-4c61-9cbc-746c62a23476": {
+                "dist": 31.81
+            },
+            "07245a28-e13a-4b49-ac0e-d36ea4313cce": {
+                "dist": 22.88
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "a1f33d4f-1e2e-4c4b-95a7-88a7d18df390": {
+        "pos": {
+            "x": 383.55,
+            "y": 221.27
+        },
+        "neighbors": {
+            "0f09c590-8026-4f30-abf9-792092ee0179": {
+                "dist": 27.77
+            },
+            "fcb0c528-32b4-4084-b59c-d0643aad4a3d": {
+                "dist": 22.21
+            },
+            "c8b9a53f-8a8d-423f-82bd-54a8954b37ad": {
+                "dist": 44.42
+            },
+            "4ec9c5d1-73a5-4988-9cf6-845edc159f88": {
+                "dist": 36.34
+            },
+            "cdcdf6f2-4c96-460d-b66b-6391a2840ff6": {
+                "dist": 37.71
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "014f2a28-7076-454f-8e96-02d93bfccd11": {
+        "pos": {
+            "x": 212.71,
+            "y": 215.24
+        },
+        "neighbors": {
+            "6f3fd8a1-1180-4ce4-9e85-a3c1042ae22b": {
+                "dist": 30.72
+            },
+            "d1ee8f44-1563-4df3-a123-42e05e3a76e5": {
+                "dist": 35.93
+            },
+            "2301dcce-83f9-4b83-9058-6a530c35e6ef": {
+                "dist": 49.58
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "e6c2ab5e-a7a5-4bb4-9513-0d40c891639e": {
+        "pos": {
+            "x": 283.09,
+            "y": 113.45
+        },
+        "neighbors": {
+            "c605be8a-bf3d-48bc-814c-ace6c3e8e7b2": {
+                "dist": 35.29
+            },
+            "6499bb0c-0d48-4c44-82cf-55c23e7fcd00": {
+                "dist": 33.55
+            },
+            "0bab713a-61d1-49da-8c72-813a9c7354c8": {
+                "dist": 53.12
+            },
+            "356978ed-9fac-4176-9c84-e7f3d4e13f61": {
+                "dist": 34.62
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "6e2efb4f-d7bb-4c11-aa7a-837c1617ac31": {
+        "pos": {
+            "x": 322.47,
+            "y": 221.27
+        },
+        "neighbors": {
+            "0f09c590-8026-4f30-abf9-792092ee0179": {
+                "dist": 33.32
+            },
+            "f8395040-cd7d-44ff-93e2-c18e245e76ae": {
+                "dist": 35.58
+            },
+            "0bab713a-61d1-49da-8c72-813a9c7354c8": {
+                "dist": 75.22
+            }
+        },
+        "roomId": "10fc12b4-0b2e-4ea1-8bc3-0dc65fd7433b"
+    },
+    "658d0c06-011c-4ee0-a046-55e50c346df2": {
+        "pos": {
+            "x": 535.25,
+            "y": 461.08
+        },
+        "neighbors": {
+            "c4efa186-4609-48e1-95de-dcfa671e0a8e": {
+                "dist": 29.84
+            },
+            "9294b892-7da9-4a1b-b628-eff370d38b4a": {
+                "dist": 25.08
+            },
+            "54f1047c-8c9c-44fd-8520-5da940dd187c": {
+                "dist": 18.12
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "92498a0f-4a68-4cea-977a-2d6cf021099d": {
+        "pos": {
+            "x": 516.76,
+            "y": 554.79
+        },
+        "neighbors": {
+            "0ecd1f30-7f62-4a2e-882f-25e599029312": {
+                "dist": 28.18
+            },
+            "dbee5782-875f-4bb3-a4e8-e2aefde313cd": {
+                "dist": 31.89
+            },
+            "aded1c6b-f0a4-4678-9564-64bdd67ef2ea": {
+                "dist": 43.18
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "9dff3519-0890-4132-a576-c2dd3067c2e2": {
+        "pos": {
+            "x": 508.7,
+            "y": 387.16
+        },
+        "neighbors": {
+            "52fa085f-bc9f-42e6-8f04-f36a2f861ee8": {
+                "dist": 22.5
+            },
+            "89584f95-4e76-4f05-b64c-2acef5211d22": {
+                "dist": 27.79
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "4150d716-9e88-4f23-8462-83f1620e71fe": {
+        "pos": {
+            "x": 545.53,
+            "y": 511.19
+        },
+        "neighbors": {
+            "aded1c6b-f0a4-4678-9564-64bdd67ef2ea": {
+                "dist": 24.58
+            },
+            "91911eac-581c-43ec-b66b-cb61fab7d536": {
+                "dist": 28.43
+            },
+            "9294b892-7da9-4a1b-b628-eff370d38b4a": {
+                "dist": 29.68
+            },
+            "0ecd1f30-7f62-4a2e-882f-25e599029312": {
+                "dist": 28.55
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "97eaefee-a61b-418d-9657-1185f760c541": {
+        "pos": {
+            "x": 570.29,
+            "y": 554.56
+        },
+        "neighbors": {
+            "dbee5782-875f-4bb3-a4e8-e2aefde313cd": {
+                "dist": 30.98
+            },
+            "91911eac-581c-43ec-b66b-cb61fab7d536": {
+                "dist": 30.46
+            },
+            "0ecd1f30-7f62-4a2e-882f-25e599029312": {
+                "dist": 33.7
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "aded1c6b-f0a4-4678-9564-64bdd67ef2ea": {
+        "pos": {
+            "x": 520.96,
+            "y": 511.81
+        },
+        "neighbors": {
+            "4150d716-9e88-4f23-8462-83f1620e71fe": {
+                "dist": 24.58
+            },
+            "9294b892-7da9-4a1b-b628-eff370d38b4a": {
+                "dist": 27.77
+            },
+            "4d3c0e24-8f8c-4258-bc53-7991772e83d6": {
+                "dist": 22.24
+            },
+            "0ecd1f30-7f62-4a2e-882f-25e599029312": {
+                "dist": 33.55
+            },
+            "92498a0f-4a68-4cea-977a-2d6cf021099d": {
+                "dist": 43.18
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "11f9a98f-d046-4d30-a692-665bfb1303c9": {
+        "pos": {
+            "x": 501.97,
+            "y": 429.41
+        },
+        "neighbors": {
+            "c4efa186-4609-48e1-95de-dcfa671e0a8e": {
+                "dist": 28.03
+            },
+            "52fa085f-bc9f-42e6-8f04-f36a2f861ee8": {
+                "dist": 27
+            },
+            "54f1047c-8c9c-44fd-8520-5da940dd187c": {
+                "dist": 30.01
+            },
+            "83aea0a1-bec8-4b30-8d1d-67209260bd71": {
+                "dist": 43.34
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "c4efa186-4609-48e1-95de-dcfa671e0a8e": {
+        "pos": {
+            "x": 529.9,
+            "y": 431.73
+        },
+        "neighbors": {
+            "658d0c06-011c-4ee0-a046-55e50c346df2": {
+                "dist": 29.84
+            },
+            "11f9a98f-d046-4d30-a692-665bfb1303c9": {
+                "dist": 28.03
+            },
+            "52fa085f-bc9f-42e6-8f04-f36a2f861ee8": {
+                "dist": 26.85
+            },
+            "74753610-3a32-4330-b7fe-31a3f28c1f64": {
+                "dist": 24.19
+            },
+            "54f1047c-8c9c-44fd-8520-5da940dd187c": {
+                "dist": 25.6
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "dbee5782-875f-4bb3-a4e8-e2aefde313cd": {
+        "pos": {
+            "x": 544.13,
+            "y": 571.16
+        },
+        "neighbors": {
+            "cd8e9f7b-aab5-4d0a-9f02-dcb23f831a6e": {
+                "dist": -1,
+                "toFloorInfo": {
+                    "toFloor": "WEH-4",
+                    "type": "corridor"
+                }
+            },
+            "97eaefee-a61b-418d-9657-1185f760c541": {
+                "dist": 30.98
+            },
+            "92498a0f-4a68-4cea-977a-2d6cf021099d": {
+                "dist": 31.89
+            },
+            "0ecd1f30-7f62-4a2e-882f-25e599029312": {
+                "dist": 32.14
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "91911eac-581c-43ec-b66b-cb61fab7d536": {
+        "pos": {
+            "x": 570.86,
+            "y": 524.1
+        },
+        "neighbors": {
+            "4150d716-9e88-4f23-8462-83f1620e71fe": {
+                "dist": 28.43
+            },
+            "97eaefee-a61b-418d-9657-1185f760c541": {
+                "dist": 30.46
+            },
+            "94259972-51cc-4b77-860b-dfc550b3f135": {
+                "dist": 33.12
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "9294b892-7da9-4a1b-b628-eff370d38b4a": {
+        "pos": {
+            "x": 530.37,
+            "y": 485.68
+        },
+        "neighbors": {
+            "658d0c06-011c-4ee0-a046-55e50c346df2": {
+                "dist": 25.08
+            },
+            "4150d716-9e88-4f23-8462-83f1620e71fe": {
+                "dist": 29.68
+            },
+            "aded1c6b-f0a4-4678-9564-64bdd67ef2ea": {
+                "dist": 27.77
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "52fa085f-bc9f-42e6-8f04-f36a2f861ee8": {
+        "pos": {
+            "x": 517.97,
+            "y": 407.67
+        },
+        "neighbors": {
+            "9dff3519-0890-4132-a576-c2dd3067c2e2": {
+                "dist": 22.5
+            },
+            "11f9a98f-d046-4d30-a692-665bfb1303c9": {
+                "dist": 27
+            },
+            "c4efa186-4609-48e1-95de-dcfa671e0a8e": {
+                "dist": 26.85
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "0ecd1f30-7f62-4a2e-882f-25e599029312": {
+        "pos": {
+            "x": 540.27,
+            "y": 539.25
+        },
+        "neighbors": {
+            "92498a0f-4a68-4cea-977a-2d6cf021099d": {
+                "dist": 28.18
+            },
+            "4150d716-9e88-4f23-8462-83f1620e71fe": {
+                "dist": 28.55
+            },
+            "aded1c6b-f0a4-4678-9564-64bdd67ef2ea": {
+                "dist": 33.55
+            },
+            "97eaefee-a61b-418d-9657-1185f760c541": {
+                "dist": 33.7
+            },
+            "dbee5782-875f-4bb3-a4e8-e2aefde313cd": {
+                "dist": 32.14
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "74753610-3a32-4330-b7fe-31a3f28c1f64": {
+        "pos": {
+            "x": 553.96,
+            "y": 429.24
+        },
+        "neighbors": {
+            "c4efa186-4609-48e1-95de-dcfa671e0a8e": {
+                "dist": 24.19
+            },
+            "23b91080-9e5a-4a43-9ff3-29c622cf9e89": {
+                "dist": 35.84
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "54f1047c-8c9c-44fd-8520-5da940dd187c": {
+        "pos": {
+            "x": 518.34,
+            "y": 454.56
+        },
+        "neighbors": {
+            "658d0c06-011c-4ee0-a046-55e50c346df2": {
+                "dist": 18.12
+            },
+            "11f9a98f-d046-4d30-a692-665bfb1303c9": {
+                "dist": 30.01
+            },
+            "c4efa186-4609-48e1-95de-dcfa671e0a8e": {
+                "dist": 25.6
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "4d3c0e24-8f8c-4258-bc53-7991772e83d6": {
+        "pos": {
+            "x": 500.67,
+            "y": 520.91
+        },
+        "neighbors": {
+            "aded1c6b-f0a4-4678-9564-64bdd67ef2ea": {
+                "dist": 22.24
+            },
+            "18c92a35-237e-47b5-b31c-1881f54b7028": {
+                "dist": 53.86
+            }
+        },
+        "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039"
+    },
+    "b8b37b5a-eae8-46d5-8cba-98d62fcf369f": {
+        "pos": {
+            "x": 498.68,
+            "y": 145.59
+        },
+        "neighbors": {
+            "276c1e9d-81f3-4c61-9cbc-746c62a23476": {
+                "dist": 24.84
+            },
+            "f5bb6e25-521b-4c40-a434-84185cd8c72e": {
+                "dist": 50.76
+            },
+            "4364912f-6f68-4687-adb8-694f949e993c": {
+                "dist": 29.69
+            },
+            "d94e7655-8429-4006-b167-27a0eaf247a8": {
+                "dist": 31.82
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "39225bd8-f351-48fd-9e12-7464bc2142a1": {
+        "pos": {
+            "x": 484.72,
+            "y": 231.65
+        },
+        "neighbors": {
+            "a1df62e5-0164-4a24-a2b4-e9114c96f954": {
+                "dist": 24.95
+            },
+            "fb027fb0-bfbf-49b4-b2e3-1bef4eb4e0c4": {
+                "dist": 28.23
+            },
+            "ec07240e-ecfd-4ace-ade1-de5d1fd54336": {
+                "dist": 25.13
+            },
+            "15062f7e-47e9-4cca-800b-2f9f7d448b10": {
+                "dist": 26.17
+            },
+            "30c0b791-2a57-467e-afae-5e1bd62265e7": {
+                "dist": 33.41
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "d94e7655-8429-4006-b167-27a0eaf247a8": {
+        "pos": {
+            "x": 488.44,
+            "y": 175.72
+        },
+        "neighbors": {
+            "fb027fb0-bfbf-49b4-b2e3-1bef4eb4e0c4": {
+                "dist": 27.83
+            },
+            "276c1e9d-81f3-4c61-9cbc-746c62a23476": {
+                "dist": 29.99
+            },
+            "b8b37b5a-eae8-46d5-8cba-98d62fcf369f": {
+                "dist": 31.82
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "a1df62e5-0164-4a24-a2b4-e9114c96f954": {
+        "pos": {
+            "x": 508.7,
+            "y": 224.77
+        },
+        "neighbors": {
+            "39225bd8-f351-48fd-9e12-7464bc2142a1": {
+                "dist": 24.95
+            },
+            "a75d67b3-b379-4715-a823-29da23ba67c9": {
+                "dist": 28.24
+            },
+            "df775de5-45fb-4c6e-aa8d-d0e2b68ab9e6": {
+                "dist": 30.47
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "276c1e9d-81f3-4c61-9cbc-746c62a23476": {
+        "pos": {
+            "x": 474.13,
+            "y": 149.36
+        },
+        "neighbors": {
+            "b8b37b5a-eae8-46d5-8cba-98d62fcf369f": {
+                "dist": 24.84
+            },
+            "d94e7655-8429-4006-b167-27a0eaf247a8": {
+                "dist": 29.99
+            },
+            "608ecdd8-0a3c-4569-889d-ac396aec93a4": {
+                "dist": 31.81
+            },
+            "4364912f-6f68-4687-adb8-694f949e993c": {
+                "dist": 32.54
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "a75d67b3-b379-4715-a823-29da23ba67c9": {
+        "pos": {
+            "x": 509.38,
+            "y": 253
+        },
+        "neighbors": {
+            "a1df62e5-0164-4a24-a2b4-e9114c96f954": {
+                "dist": 28.24
+            },
+            "ec07240e-ecfd-4ace-ade1-de5d1fd54336": {
+                "dist": 23.89
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "49d1d651-cedc-4984-bc10-4431e2a93d7d": {
+        "pos": {
+            "x": 460.5,
+            "y": 259.97
+        },
+        "neighbors": {
+            "ec07240e-ecfd-4ace-ade1-de5d1fd54336": {
+                "dist": 25.49
+            },
+            "15062f7e-47e9-4cca-800b-2f9f7d448b10": {
+                "dist": 18.18
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "fb027fb0-bfbf-49b4-b2e3-1bef4eb4e0c4": {
+        "pos": {
+            "x": 486.12,
+            "y": 203.45
+        },
+        "neighbors": {
+            "39225bd8-f351-48fd-9e12-7464bc2142a1": {
+                "dist": 28.23
+            },
+            "d94e7655-8429-4006-b167-27a0eaf247a8": {
+                "dist": 27.83
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "4364912f-6f68-4687-adb8-694f949e993c": {
+        "pos": {
+            "x": 485.64,
+            "y": 118.92
+        },
+        "neighbors": {
+            "276c1e9d-81f3-4c61-9cbc-746c62a23476": {
+                "dist": 32.54
+            },
+            "b8b37b5a-eae8-46d5-8cba-98d62fcf369f": {
+                "dist": 29.69
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "ec07240e-ecfd-4ace-ade1-de5d1fd54336": {
+        "pos": {
+            "x": 485.79,
+            "y": 256.75
+        },
+        "neighbors": {
+            "39225bd8-f351-48fd-9e12-7464bc2142a1": {
+                "dist": 25.13
+            },
+            "a75d67b3-b379-4715-a823-29da23ba67c9": {
+                "dist": 23.89
+            },
+            "49d1d651-cedc-4984-bc10-4431e2a93d7d": {
+                "dist": 25.49
+            },
+            "15062f7e-47e9-4cca-800b-2f9f7d448b10": {
+                "dist": 29.29
+            },
+            "fec52904-9da9-40c3-8e34-c1598f8ef784": {
+                "dist": 27.32
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "15062f7e-47e9-4cca-800b-2f9f7d448b10": {
+        "pos": {
+            "x": 460.6,
+            "y": 241.8
+        },
+        "neighbors": {
+            "39225bd8-f351-48fd-9e12-7464bc2142a1": {
+                "dist": 26.17
+            },
+            "49d1d651-cedc-4984-bc10-4431e2a93d7d": {
+                "dist": 18.18
+            },
+            "ec07240e-ecfd-4ace-ade1-de5d1fd54336": {
+                "dist": 29.29
+            }
+        },
+        "roomId": "4d5cbe1d-d210-4e2a-b2fb-cc6ea64a0a42"
+    },
+    "eebd252a-9f9f-46f9-8f90-c1b5b31d9c16": {
+        "pos": {
+            "x": 435.58,
+            "y": 286.04
+        },
+        "neighbors": {
+            "ed77371a-b493-4bb2-ac7f-03515e2d7155": {
+                "dist": 24.33
+            },
+            "2faec5cc-ae7e-407c-9d16-0fb355a36d83": {
+                "dist": 25.55
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "1ec1b923-36de-482e-8425-ca95741c6509": {
+        "pos": {
+            "x": 490.75,
+            "y": 355.9
+        },
+        "neighbors": {
+            "89584f95-4e76-4f05-b64c-2acef5211d22": {
+                "dist": 19.99
+            },
+            "4ca414ad-fb39-4273-981a-4404a4128983": {
+                "dist": 19.8
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8": {
+        "pos": {
+            "x": 480.25,
+            "y": 303.25
+        },
+        "neighbors": {
+            "288d07d2-988f-4302-b9d2-3e12c8631492": {
+                "dist": 21.69
+            },
+            "fec52904-9da9-40c3-8e34-c1598f8ef784": {
+                "dist": 22.73
+            },
+            "2faec5cc-ae7e-407c-9d16-0fb355a36d83": {
+                "dist": 25.44
+            },
+            "f22f598e-6f42-4f4b-a10a-72889c876035": {
+                "dist": 27.83
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "722b939f-3ab0-4190-976d-073743093712": {
+        "pos": {
+            "x": 389.33,
+            "y": 286.62
+        },
+        "neighbors": {
+            "ed77371a-b493-4bb2-ac7f-03515e2d7155": {
+                "dist": 21.92
+            },
+            "e1de8cea-5f61-4635-a77f-bd77cb51e3ca": {
+                "dist": 31.16
+            },
+            "39a86578-eb43-40c0-8191-3439de8af70e": {
+                "dist": 24.22
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "ed77371a-b493-4bb2-ac7f-03515e2d7155": {
+        "pos": {
+            "x": 411.25,
+            "y": 286.55
+        },
+        "neighbors": {
+            "eebd252a-9f9f-46f9-8f90-c1b5b31d9c16": {
+                "dist": 24.33
+            },
+            "722b939f-3ab0-4190-976d-073743093712": {
+                "dist": 21.92
+            },
+            "959ef164-2d71-4842-a772-e97db3a480a3": {
+                "dist": 30.04
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "288d07d2-988f-4302-b9d2-3e12c8631492": {
+        "pos": {
+            "x": 500.77,
+            "y": 310.27
+        },
+        "neighbors": {
+            "d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8": {
+                "dist": 21.69
+            },
+            "9df2c378-90ce-4641-9daa-a696510315d3": {
+                "dist": 25.19
+            },
+            "38896b34-d004-4e09-9005-d0f28c0934f5": {
+                "dist": 72.55
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "89584f95-4e76-4f05-b64c-2acef5211d22": {
+        "pos": {
+            "x": 510.43,
+            "y": 359.42
+        },
+        "neighbors": {
+            "1ec1b923-36de-482e-8425-ca95741c6509": {
+                "dist": 19.99
+            },
+            "9df2c378-90ce-4641-9daa-a696510315d3": {
+                "dist": 24.92
+            },
+            "c38df624-9130-46fd-837c-f1a4f88c6645": {
+                "dist": 22.45
+            },
+            "9dff3519-0890-4132-a576-c2dd3067c2e2": {
+                "dist": 27.79
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "4ca414ad-fb39-4273-981a-4404a4128983": {
+        "pos": {
+            "x": 470.97,
+            "y": 356.69
+        },
+        "neighbors": {
+            "1ec1b923-36de-482e-8425-ca95741c6509": {
+                "dist": 19.8
+            },
+            "5062df55-a386-4407-8180-561c522e6b07": {
+                "dist": 54.31
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "fec52904-9da9-40c3-8e34-c1598f8ef784": {
+        "pos": {
+            "x": 491.46,
+            "y": 283.48
+        },
+        "neighbors": {
+            "d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8": {
+                "dist": 22.73
+            },
+            "ec07240e-ecfd-4ace-ade1-de5d1fd54336": {
+                "dist": 27.32
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "2faec5cc-ae7e-407c-9d16-0fb355a36d83": {
+        "pos": {
+            "x": 461.12,
+            "y": 286.49
+        },
+        "neighbors": {
+            "eebd252a-9f9f-46f9-8f90-c1b5b31d9c16": {
+                "dist": 25.55
+            },
+            "d2034b6a-0ec9-45f7-9a9b-dd861eca8eb8": {
+                "dist": 25.44
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "9df2c378-90ce-4641-9daa-a696510315d3": {
+        "pos": {
+            "x": 506.37,
+            "y": 334.84
+        },
+        "neighbors": {
+            "288d07d2-988f-4302-b9d2-3e12c8631492": {
+                "dist": 25.19
+            },
+            "89584f95-4e76-4f05-b64c-2acef5211d22": {
+                "dist": 24.92
+            },
+            "b8846801-3226-4a57-b41f-17d564d9635c": {
+                "dist": 23.66
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "b8846801-3226-4a57-b41f-17d564d9635c": {
+        "pos": {
+            "x": 483.24,
+            "y": 329.9
+        },
+        "neighbors": {
+            "9df2c378-90ce-4641-9daa-a696510315d3": {
+                "dist": 23.66
+            }
+        },
+        "roomId": "36a93d85-9d37-4fc1-8712-1865c0183a76"
+    },
+    "c952a203-4b23-4aeb-874d-871a6e825b36": {
+        "pos": {
+            "x": 697.63,
+            "y": 217.41
+        },
+        "neighbors": {
+            "701f5a56-199f-487d-a12c-022b83f08081": {
+                "dist": 35.52
+            },
+            "180bc925-142c-4e4f-aaba-5897dd325237": {
+                "dist": 35.23
+            },
+            "3a08b483-e2ce-4880-b084-61937e7c2e27": {
+                "dist": 36.92
+            },
+            "25ff3615-ffad-43fc-85bd-675b2acf4294": {
+                "dist": 48.88
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "e67c71f7-064c-4684-871b-ea16e169598e": {
+        "pos": {
+            "x": 593.81,
+            "y": 224.36
+        },
+        "neighbors": {
+            "97b5ec15-3185-4ab6-b4f8-46cc9a332c30": {
+                "dist": 27.32
+            },
+            "239ae2ed-c25f-4817-9b59-5679cbcb9647": {
+                "dist": 27.32
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "e9f0f6b3-1690-4e08-8b84-2a2f95b4b7e7": {
+        "pos": {
+            "x": 735.88,
+            "y": 111.66
+        },
+        "neighbors": {
+            "475ebaa2-a087-482c-806b-2c81122da620": {
+                "dist": 38.25
+            },
+            "c6457014-929e-4ee6-919a-8cbf64b80c45": {
+                "dist": 36.78
+            },
+            "3808475d-b1ee-4c12-b2c5-281d1ca39a95": {
+                "dist": 40.82
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "692e48e0-7af8-431e-9b1b-1a17119e5e44": {
+        "pos": {
+            "x": 656.87,
+            "y": 144.44
+        },
+        "neighbors": {
+            "5433a409-b72b-4565-a397-a35b379397a6": {
+                "dist": 29.09
+            },
+            "b63a6654-6a06-4546-9eeb-be6f60af0f9d": {
+                "dist": 31.05
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "fda4aacd-edf1-4b79-a190-a03dbf4151c8": {
+        "pos": {
+            "x": 782.85,
+            "y": 211.13
+        },
+        "neighbors": {
+            "11d835e3-3e4d-48b0-9fde-d3007be569b5": {
+                "dist": 34.23
+            },
+            "f15a6bbe-33d9-4758-ac15-9643633b64b2": {
+                "dist": 22.14
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "bf148e3a-8ef2-4422-b842-2babf663506d": {
+        "pos": {
+            "x": 660.72,
+            "y": 205.03
+        },
+        "neighbors": {
+            "b63a6654-6a06-4546-9eeb-be6f60af0f9d": {
+                "dist": 29.68
+            },
+            "25ff3615-ffad-43fc-85bd-675b2acf4294": {
+                "dist": 23.45
+            },
+            "17592123-f958-4807-8345-b55260801ac1": {
+                "dist": 42.88
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "df775de5-45fb-4c6e-aa8d-d0e2b68ab9e6": {
+        "pos": {
+            "x": 539.17,
+            "y": 224.36
+        },
+        "neighbors": {
+            "97b5ec15-3185-4ab6-b4f8-46cc9a332c30": {
+                "dist": 27.32
+            },
+            "f66a9c70-e747-4bf6-aeb9-684330aca810": {
+                "dist": 29.64
+            },
+            "a1df62e5-0164-4a24-a2b4-e9114c96f954": {
+                "dist": 30.47
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "475ebaa2-a087-482c-806b-2c81122da620": {
+        "pos": {
+            "x": 697.63,
+            "y": 111.66
+        },
+        "neighbors": {
+            "e9f0f6b3-1690-4e08-8b84-2a2f95b4b7e7": {
+                "dist": 38.25
+            },
+            "968a4a81-59b0-475f-8ea0-9dfd113067a8": {
+                "dist": 40.52
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "11d835e3-3e4d-48b0-9fde-d3007be569b5": {
+        "pos": {
+            "x": 779.6,
+            "y": 177.06
+        },
+        "neighbors": {
+            "fda4aacd-edf1-4b79-a190-a03dbf4151c8": {
+                "dist": 34.23
+            },
+            "669f3da3-0071-4655-a280-dea5fbcf2139": {
+                "dist": 32.49
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "701f5a56-199f-487d-a12c-022b83f08081": {
+        "pos": {
+            "x": 733.15,
+            "y": 217.41
+        },
+        "neighbors": {
+            "c952a203-4b23-4aeb-874d-871a6e825b36": {
+                "dist": 35.52
+            },
+            "f15a6bbe-33d9-4758-ac15-9643633b64b2": {
+                "dist": 28.7
+            },
+            "757fd629-ee4c-4206-b7e5-d5c9b71b85b1": {
+                "dist": 34.63
+            },
+            "d9470068-ba9b-43c7-bdfd-4108d1a5b5f8": {
+                "dist": 37.76
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "5433a409-b72b-4565-a397-a35b379397a6": {
+        "pos": {
+            "x": 658.65,
+            "y": 115.4
+        },
+        "neighbors": {
+            "692e48e0-7af8-431e-9b1b-1a17119e5e44": {
+                "dist": 29.09
+            },
+            "33e3e8b9-7cd9-4c10-b14d-0a59b9ffb3a8": {
+                "dist": 69.48
+            },
+            "b32e4b71-8efa-479e-920a-500af30c1cf3": {
+                "dist": 43.9
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "b63a6654-6a06-4546-9eeb-be6f60af0f9d": {
+        "pos": {
+            "x": 659.58,
+            "y": 175.37
+        },
+        "neighbors": {
+            "692e48e0-7af8-431e-9b1b-1a17119e5e44": {
+                "dist": 31.05
+            },
+            "bf148e3a-8ef2-4422-b842-2babf663506d": {
+                "dist": 29.68
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "669f3da3-0071-4655-a280-dea5fbcf2139": {
+        "pos": {
+            "x": 779.76,
+            "y": 144.56
+        },
+        "neighbors": {
+            "11d835e3-3e4d-48b0-9fde-d3007be569b5": {
+                "dist": 32.49
+            },
+            "c6457014-929e-4ee6-919a-8cbf64b80c45": {
+                "dist": 31.55
+            },
+            "ef3f5589-df13-4555-9556-c942a1455d6d": {
+                "dist": 35.67
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "25ff3615-ffad-43fc-85bd-675b2acf4294": {
+        "pos": {
+            "x": 649.44,
+            "y": 225.59
+        },
+        "neighbors": {
+            "bf148e3a-8ef2-4422-b842-2babf663506d": {
+                "dist": 23.45
+            },
+            "239ae2ed-c25f-4817-9b59-5679cbcb9647": {
+                "dist": 28.33
+            },
+            "c952a203-4b23-4aeb-874d-871a6e825b36": {
+                "dist": 48.88
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "97b5ec15-3185-4ab6-b4f8-46cc9a332c30": {
+        "pos": {
+            "x": 566.49,
+            "y": 224.36
+        },
+        "neighbors": {
+            "e67c71f7-064c-4684-871b-ea16e169598e": {
+                "dist": 27.32
+            },
+            "df775de5-45fb-4c6e-aa8d-d0e2b68ab9e6": {
+                "dist": 27.32
+            },
+            "1cdc38a6-0ab4-44da-b0de-bb3a332f0aa5": {
+                "dist": 38.24
+            },
+            "06e796c8-c03d-405b-b915-f401346ec1b5": {
+                "dist": 47.5
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "f15a6bbe-33d9-4758-ac15-9643633b64b2": {
+        "pos": {
+            "x": 761.84,
+            "y": 218.1
+        },
+        "neighbors": {
+            "fda4aacd-edf1-4b79-a190-a03dbf4151c8": {
+                "dist": 22.14
+            },
+            "701f5a56-199f-487d-a12c-022b83f08081": {
+                "dist": 28.7
+            },
+            "df9b6041-e535-442e-9cde-bcd6abea3e9a": {
+                "dist": 39.07
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "239ae2ed-c25f-4817-9b59-5679cbcb9647": {
+        "pos": {
+            "x": 621.14,
+            "y": 224.36
+        },
+        "neighbors": {
+            "e67c71f7-064c-4684-871b-ea16e169598e": {
+                "dist": 27.32
+            },
+            "25ff3615-ffad-43fc-85bd-675b2acf4294": {
+                "dist": 28.33
+            },
+            "2932c5e3-c8af-4762-a817-c6f86b0ae213": {
+                "dist": 33.21
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "c6457014-929e-4ee6-919a-8cbf64b80c45": {
+        "pos": {
+            "x": 772.6,
+            "y": 113.83
+        },
+        "neighbors": {
+            "e9f0f6b3-1690-4e08-8b84-2a2f95b4b7e7": {
+                "dist": 36.78
+            },
+            "669f3da3-0071-4655-a280-dea5fbcf2139": {
+                "dist": 31.55
+            },
+            "61a348d3-b1c3-4d5e-8580-f5c882294509": {
+                "dist": 47.98
+            },
+            "a6fbffea-eb2f-4578-bc39-31165e39d91b": {
+                "dist": 39.29
+            }
+        },
+        "roomId": "f1974482-843f-42be-ba05-5541863e8652"
+    },
+    "aea7fa08-8a03-4d6b-915e-1d4078c1e511": {
+        "pos": {
+            "x": 358.21,
+            "y": 328.46
+        },
+        "neighbors": {
+            "0f26e8f5-db24-49a2-b005-aa88c69456d6": {
+                "dist": 33.54
+            },
+            "ecfc9ca5-fa0c-4c99-b9f0-9888d163c284": {
+                "dist": 28.65
+            },
+            "ac47cf67-7cde-4a41-a79a-bef2f23edde5": {
+                "dist": 32.73
+            }
+        },
+        "roomId": "9e298c07-cea8-4aec-bdf2-b9d15ccc2918"
+    },
+    "40afa0a4-f90a-439e-b2c6-ef323ce31bc4": {
+        "pos": {
+            "x": 366.15,
+            "y": 249.24
+        },
+        "neighbors": {
+            "e1de8cea-5f61-4635-a77f-bd77cb51e3ca": {
+                "dist": 28.94
+            },
+            "0f09c590-8026-4f30-abf9-792092ee0179": {
+                "dist": 29.83
+            }
+        },
+        "roomId": "9e298c07-cea8-4aec-bdf2-b9d15ccc2918"
+    },
+    "b56c3a1b-f218-4a8a-a67a-16c86bf58f9b": {
+        "pos": {
+            "x": 358.21,
+            "y": 399.26
+        },
+        "neighbors": {
+            "0f26e8f5-db24-49a2-b005-aa88c69456d6": {
+                "dist": 37.26
+            },
+            "fe8cdaf9-d59f-4db9-ab5d-bcf11b1e4307": {
+                "dist": 31.28
+            }
+        },
+        "roomId": "9e298c07-cea8-4aec-bdf2-b9d15ccc2918"
+    },
+    "e1de8cea-5f61-4635-a77f-bd77cb51e3ca": {
+        "pos": {
+            "x": 359.56,
+            "y": 277.43
+        },
+        "neighbors": {
+            "40afa0a4-f90a-439e-b2c6-ef323ce31bc4": {
+                "dist": 28.94
+            },
+            "ecfc9ca5-fa0c-4c99-b9f0-9888d163c284": {
+                "dist": 22.49
+            },
+            "722b939f-3ab0-4190-976d-073743093712": {
+                "dist": 31.16
+            },
+            "a0ee27ec-d54f-4880-9724-e300bdbd1978": {
+                "dist": 71.62
+            }
+        },
+        "roomId": "9e298c07-cea8-4aec-bdf2-b9d15ccc2918"
+    },
+    "0f26e8f5-db24-49a2-b005-aa88c69456d6": {
+        "pos": {
+            "x": 358.21,
+            "y": 362
+        },
+        "neighbors": {
+            "aea7fa08-8a03-4d6b-915e-1d4078c1e511": {
+                "dist": 33.54
+            },
+            "ff7632db-3daf-4961-8211-688afb98ee84": {
+                "dist": 23.93
+            },
+            "a86b6252-81e4-4224-bddd-b70d993d50e2": {
+                "dist": 20.86
+            },
+            "b56c3a1b-f218-4a8a-a67a-16c86bf58f9b": {
+                "dist": 37.26
+            }
+        },
+        "roomId": "9e298c07-cea8-4aec-bdf2-b9d15ccc2918"
+    },
+    "ecfc9ca5-fa0c-4c99-b9f0-9888d163c284": {
+        "pos": {
+            "x": 357.49,
+            "y": 299.82
+        },
+        "neighbors": {
+            "aea7fa08-8a03-4d6b-915e-1d4078c1e511": {
+                "dist": 28.65
+            },
+            "e1de8cea-5f61-4635-a77f-bd77cb51e3ca": {
+                "dist": 22.49
+            },
+            "00277655-0e6e-48d4-b7cc-db7bb2dc855c": {
+                "dist": 16.08
+            }
+        },
+        "roomId": "9e298c07-cea8-4aec-bdf2-b9d15ccc2918"
+    },
+    "fe8cdaf9-d59f-4db9-ab5d-bcf11b1e4307": {
+        "pos": {
+            "x": 355.89,
+            "y": 430.45
+        },
+        "neighbors": {
+            "b56c3a1b-f218-4a8a-a67a-16c86bf58f9b": {
+                "dist": 31.28
+            },
+            "fe8cdaf9-d59f-4db9-ab5d-bcf11b1e4307": {
+                "dist": 0
+            }
+        },
+        "roomId": "08154383-d14c-4f94-b74f-8902e4443410"
+    },
+    "508969e0-b78c-4382-8efb-f30fa14a1a2a": {
+        "pos": {
+            "x": 328.11,
+            "y": 515.8
+        },
+        "neighbors": {
+            "bfb8245a-9fac-42dc-b79d-1a10016f35dc": {
+                "dist": 56.27
+            },
+            "6e50a892-088e-4a54-a6c5-6e566ddd835c": {
+                "dist": 51.73
+            },
+            "90012d6f-cd2d-47e6-913a-3d85b0f28a3e": {
+                "dist": 34.73
+            },
+            "f0ec19e8-8a8d-43d8-b980-4d3a19bd3f25": {
+                "dist": 37.03
+            },
+            "2d2fbfd1-9224-440c-9ebf-a9c88ae488b4": {
+                "dist": 31.88
+            }
+        },
+        "roomId": "8822034e-10ec-47b0-8716-2777c35626e9"
+    },
+    "663d881b-5979-4912-a818-e4e6af005bff": {
+        "pos": {
+            "x": 402.96,
+            "y": 431.56
+        },
+        "neighbors": {
+            "83aea0a1-bec8-4b30-8d1d-67209260bd71": {
+                "dist": 55.72
+            },
+            "e11a7e88-7a48-4639-8eff-5eda3534a591": {
+                "dist": 58.04
+            },
+            "c22bd96f-881f-4f8f-81fa-07052ef91959": {
+                "dist": 39.71
+            },
+            "b7d853b6-4ad7-463a-9347-290869ad6dab": {
+                "dist": 43.16
+            },
+            "94127c00-3359-4298-acb5-83f32daac2aa": {
+                "dist": 47.7
+            },
+            "6f88681e-c5c8-4493-aff8-00789667e192": {
+                "dist": 43.21
+            }
+        },
+        "roomId": "8822034e-10ec-47b0-8716-2777c35626e9"
+    },
+    "5631b8e8-5713-41eb-ad74-c01f80b96efc": {
+        "pos": {
+            "x": 285.7,
+            "y": 433.69
+        },
+        "neighbors": {
+            "e11a7e88-7a48-4639-8eff-5eda3534a591": {
+                "dist": 59.26
+            },
+            "5016e4f2-9422-4fbe-8202-b51f208dfa44": {
+                "dist": 36.26
+            },
+            "c587d55a-7577-4ade-a71e-501a252eeee9": {
+                "dist": 56.16
+            },
+            "ff8046c8-5062-4b26-a89e-a9d454e5e886": {
+                "dist": 58.23
+            },
+            "1b5891da-3b0b-47b7-9149-c436707844d6": {
+                "dist": 38.18
+            }
+        },
+        "roomId": "8822034e-10ec-47b0-8716-2777c35626e9"
+    },
+    "bfb8245a-9fac-42dc-b79d-1a10016f35dc": {
+        "pos": {
+            "x": 384.39,
+            "y": 515.66
+        },
+        "neighbors": {
+            "508969e0-b78c-4382-8efb-f30fa14a1a2a": {
+                "dist": 56.27
+            },
+            "f3e0b567-93a2-48ec-9b2e-48db5a4f9800": {
+                "dist": 37.6
+            },
+            "882a85fa-a620-420c-b12b-b20eca0fa9b4": {
+                "dist": 34.35
+            },
+            "a0198a68-4d60-4b63-92f1-87bde70d4ce1": {
+                "dist": 36.67
+            },
+            "18c92a35-237e-47b5-b31c-1881f54b7028": {
+                "dist": 62.68
+            }
+        },
+        "roomId": "8822034e-10ec-47b0-8716-2777c35626e9"
+    },
+    "18c92a35-237e-47b5-b31c-1881f54b7028": {
+        "pos": {
+            "x": 447.07,
+            "y": 515.66
+        },
+        "neighbors": {
+            "40b082d0-3e23-4e05-813a-27ca9058f3e1": {
+                "dist": 40.09
+            },
+            "81bcd3db-41bc-4728-b098-3d9ec745d687": {
+                "dist": 34.38
+            },
+            "4d3c0e24-8f8c-4258-bc53-7991772e83d6": {
+                "dist": 53.86
+            },
+            "c6a45bce-1dd5-4a37-97dd-a2f23a3c1c03": {
+                "dist": 58.97
+            },
+            "bfb8245a-9fac-42dc-b79d-1a10016f35dc": {
+                "dist": 62.68
+            }
+        },
+        "roomId": "8822034e-10ec-47b0-8716-2777c35626e9"
+    },
+    "6e50a892-088e-4a54-a6c5-6e566ddd835c": {
+        "pos": {
+            "x": 277.03,
+            "y": 507.64
+        },
+        "neighbors": {
+            "508969e0-b78c-4382-8efb-f30fa14a1a2a": {
+                "dist": 51.73
+            },
+            "5016e4f2-9422-4fbe-8202-b51f208dfa44": {
+                "dist": 40.89
+            },
+            "9e6f788a-6d20-4636-a931-9de8e729d056": {
+                "dist": 40.35
+            },
+            "3d5155ec-94d1-4af9-ba82-4279ece365bb": {
+                "dist": 51.47
+            }
+        },
+        "roomId": "8822034e-10ec-47b0-8716-2777c35626e9"
+    },
+    "83aea0a1-bec8-4b30-8d1d-67209260bd71": {
+        "pos": {
+            "x": 458.68,
+            "y": 431.56
+        },
+        "neighbors": {
+            "663d881b-5979-4912-a818-e4e6af005bff": {
+                "dist": 55.72
+            },
+            "1bd7d0a5-b990-4809-a514-9349ca482579": {
+                "dist": 41.35
+            },
+            "9ff2f342-7024-43ff-99ed-d8dfe6910c09": {
+                "dist": 40.18
+            },
+            "11f9a98f-d046-4d30-a692-665bfb1303c9": {
+                "dist": 43.34
+            }
+        },
+        "roomId": "8822034e-10ec-47b0-8716-2777c35626e9"
+    },
+    "e11a7e88-7a48-4639-8eff-5eda3534a591": {
+        "pos": {
+            "x": 344.92,
+            "y": 431.56
+        },
+        "neighbors": {
+            "663d881b-5979-4912-a818-e4e6af005bff": {
+                "dist": 58.04
+            },
+            "5631b8e8-5713-41eb-ad74-c01f80b96efc": {
+                "dist": 59.26
+            },
+            "6190c243-5da3-46fc-9c2b-bbea1d698cd9": {
+                "dist": 38.51
+            },
+            "da59f6cf-edfd-4730-8b39-7a38a4aec92a": {
+                "dist": 38.14
+            }
+        },
+        "roomId": "8822034e-10ec-47b0-8716-2777c35626e9"
+    },
+    "5016e4f2-9422-4fbe-8202-b51f208dfa44": {
+        "pos": {
+            "x": 271.62,
+            "y": 467.11
+        },
+        "neighbors": {
+            "5631b8e8-5713-41eb-ad74-c01f80b96efc": {
+                "dist": 36.26
+            },
+            "6e50a892-088e-4a54-a6c5-6e566ddd835c": {
+                "dist": 40.89
+            },
+            "b802be55-89db-458e-9e35-ad31f7664d8b": {
+                "dist": 44.8
+            }
+        },
+        "roomId": "8822034e-10ec-47b0-8716-2777c35626e9"
+    },
+    "a1b1c983-4925-4a78-bfe7-0b6330a7b306": {
+        "pos": {
+            "x": 784.26,
+            "y": 393.05
+        },
+        "neighbors": {
+            "03a1f9c8-8d77-4677-b211-37680cb40dda": {
+                "dist": 36.83
+            },
+            "c75609dd-b444-46e1-af05-ec696b864a8f": {
+                "dist": 32.18
+            },
+            "6b273a15-4540-4f75-8ac6-3995195e19d7": {
+                "dist": 44.42
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "6f261884-dcf9-4913-a098-75eed075734e": {
+        "pos": {
+            "x": 638.94,
+            "y": 516.97
+        },
+        "neighbors": {
+            "e65c256e-1289-4da1-9f77-17d63495a912": {
+                "dist": 37.97
+            },
+            "94259972-51cc-4b77-860b-dfc550b3f135": {
+                "dist": 35.74
+            },
+            "91763e83-e592-4b4d-bc36-484b92e0d0a2": {
+                "dist": 36.91
+            },
+            "72f1b675-a887-4ce5-9f57-75cea3fe03de": {
+                "dist": 34.62
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "972fdfd0-7660-4372-a121-d93f7018a41e": {
+        "pos": {
+            "x": 754.26,
+            "y": 517.21
+        },
+        "neighbors": {
+            "e3a20643-90f5-49c9-82cb-d81f5a5f6820": {
+                "dist": 31.92
+            },
+            "b3e8c749-5b35-4834-b443-e1767a07e5c0": {
+                "dist": 37.15
+            },
+            "5cd072f5-e6ea-498d-befa-43b743695bfa": {
+                "dist": 31.31
+            },
+            "f2c23489-6e1a-482a-b452-5b8c0011bd40": {
+                "dist": 42.77
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "23b91080-9e5a-4a43-9ff3-29c622cf9e89": {
+        "pos": {
+            "x": 589.8,
+            "y": 429.53
+        },
+        "neighbors": {
+            "e9b126e9-3c85-4c77-9217-afe239776a0a": {
+                "dist": 33.5
+            },
+            "74753610-3a32-4330-b7fe-31a3f28c1f64": {
+                "dist": 35.84
+            },
+            "00c16368-e753-45fa-a984-70117365c5e1": {
+                "dist": 53.65
+            },
+            "0950e3c7-ca84-4a36-8b18-3e739903b257": {
+                "dist": 41.89
+            },
+            "de7420f8-1d9f-4bd2-ba33-ed254369f5f9": {
+                "dist": 43.52
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "e303968f-baac-4b35-b5bb-351ab45fc541": {
+        "pos": {
+            "x": 694.78,
+            "y": 429.53
+        },
+        "neighbors": {
+            "2ab33928-f1af-4c75-91b4-e79b2993c862": {
+                "dist": 40.2
+            },
+            "ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7": {
+                "dist": 37.97
+            },
+            "951e39f8-ab5d-42ca-93b8-a33e7aeae77a": {
+                "dist": 34.7
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "33ba4595-7f39-4018-abb3-092ee88b8514": {
+        "pos": {
+            "x": 784.33,
+            "y": 465.7
+        },
+        "neighbors": {
+            "e3a20643-90f5-49c9-82cb-d81f5a5f6820": {
+                "dist": 39.22
+            },
+            "03a1f9c8-8d77-4677-b211-37680cb40dda": {
+                "dist": 36.95
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "e65c256e-1289-4da1-9f77-17d63495a912": {
+        "pos": {
+            "x": 676.91,
+            "y": 516.97
+        },
+        "neighbors": {
+            "6f261884-dcf9-4913-a098-75eed075734e": {
+                "dist": 37.97
+            },
+            "b3e8c749-5b35-4834-b443-e1767a07e5c0": {
+                "dist": 40.2
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "e3a20643-90f5-49c9-82cb-d81f5a5f6820": {
+        "pos": {
+            "x": 783.72,
+            "y": 504.92
+        },
+        "neighbors": {
+            "972fdfd0-7660-4372-a121-d93f7018a41e": {
+                "dist": 31.92
+            },
+            "33ba4595-7f39-4018-abb3-092ee88b8514": {
+                "dist": 39.22
+            },
+            "76cfb1c2-6484-40a6-8c25-241ae664b559": {
+                "dist": 37.59
+            },
+            "4b6cc9df-a3ad-4107-bdc8-fe94cdfbaa31": {
+                "dist": 33.53
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "2ab33928-f1af-4c75-91b4-e79b2993c862": {
+        "pos": {
+            "x": 734.98,
+            "y": 429.53
+        },
+        "neighbors": {
+            "e303968f-baac-4b35-b5bb-351ab45fc541": {
+                "dist": 40.2
+            },
+            "03a1f9c8-8d77-4677-b211-37680cb40dda": {
+                "dist": 42.91
+            },
+            "e64a8e4c-44e6-4ddb-8e28-33f701597885": {
+                "dist": 41.27
+            },
+            "06753bb2-6af7-4c6b-9738-9151f811ce2f": {
+                "dist": 35.96
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "03a1f9c8-8d77-4677-b211-37680cb40dda": {
+        "pos": {
+            "x": 777.88,
+            "y": 429.33
+        },
+        "neighbors": {
+            "a1b1c983-4925-4a78-bfe7-0b6330a7b306": {
+                "dist": 36.83
+            },
+            "33ba4595-7f39-4018-abb3-092ee88b8514": {
+                "dist": 36.95
+            },
+            "2ab33928-f1af-4c75-91b4-e79b2993c862": {
+                "dist": 42.91
+            },
+            "103c9821-e7a4-42e2-ac49-c3b49a514a8d": {
+                "dist": 38.78
+            },
+            "c03b4724-b34e-47b9-990b-4ba2211b18c8": {
+                "dist": 40.65
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "94259972-51cc-4b77-860b-dfc550b3f135": {
+        "pos": {
+            "x": 603.2,
+            "y": 516.97
+        },
+        "neighbors": {
+            "6f261884-dcf9-4913-a098-75eed075734e": {
+                "dist": 35.74
+            },
+            "91911eac-581c-43ec-b66b-cb61fab7d536": {
+                "dist": 33.12
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "b3e8c749-5b35-4834-b443-e1767a07e5c0": {
+        "pos": {
+            "x": 717.11,
+            "y": 516.97
+        },
+        "neighbors": {
+            "972fdfd0-7660-4372-a121-d93f7018a41e": {
+                "dist": 37.15
+            },
+            "e65c256e-1289-4da1-9f77-17d63495a912": {
+                "dist": 40.2
+            },
+            "f64ab76d-7ede-4c4e-8aa7-6e6b1802e2b7": {
+                "dist": 43.87
+            },
+            "9fc8a487-deef-4d2c-bba6-c1d638ce0fd8": {
+                "dist": 30.98
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "e9b126e9-3c85-4c77-9217-afe239776a0a": {
+        "pos": {
+            "x": 623.3,
+            "y": 429.53
+        },
+        "neighbors": {
+            "23b91080-9e5a-4a43-9ff3-29c622cf9e89": {
+                "dist": 33.5
+            },
+            "ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7": {
+                "dist": 33.5
+            },
+            "26bab9e1-04ad-4783-ae41-16f3c1f56e7b": {
+                "dist": 44.73
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    },
+    "ad3bde71-545e-4a91-8ad6-ba8dbd84a6d7": {
+        "pos": {
+            "x": 656.81,
+            "y": 429.53
+        },
+        "neighbors": {
+            "e303968f-baac-4b35-b5bb-351ab45fc541": {
+                "dist": 37.97
+            },
+            "e9b126e9-3c85-4c77-9217-afe239776a0a": {
+                "dist": 33.5
+            },
+            "00913be5-2822-4536-8d9e-56d9ba3d7721": {
+                "dist": 35.14
+            },
+            "a806c118-b9ec-4131-a007-a626d67c8b9b": {
+                "dist": 87.3
+            }
+        },
+        "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b"
+    }
+}
