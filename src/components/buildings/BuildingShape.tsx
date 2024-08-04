@@ -2,7 +2,11 @@ import { Annotation, Polygon } from 'mapkit-react';
 
 import React from 'react';
 
-import { claimBuilding, releaseBuilding } from '@/lib/features/uiSlice';
+import {
+  claimBuilding,
+  releaseBuilding,
+  selectBuilding,
+} from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { Building } from '@/types';
 
@@ -39,7 +43,7 @@ export default function BuildingShape({
         <Annotation
           latitude={building.labelPosition.latitude}
           longitude={building.labelPosition.longitude}
-          onSelect={() => dispatch(claimBuilding(building))}
+          onSelect={() => dispatch(selectBuilding(building))}
           onDeselect={() => dispatch(releaseBuilding(building))}
         >
           <div className="translate-y-1/2 scale-[0.8]">
