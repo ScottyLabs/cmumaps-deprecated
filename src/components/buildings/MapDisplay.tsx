@@ -246,7 +246,7 @@ const MapDisplay = ({
         const promises = buildings
           .map((building) =>
             building.floors.map(async (floor) => {
-              if (!['GHC', 'WEH'].includes(building.code)) {
+              if (!['GHC', 'WEH', 'NSH'].includes(building.code)) {
                 return [null, null];
               }
               const outlineResp = await fetch(
@@ -375,7 +375,8 @@ const MapDisplay = ({
             const code = `${building.code}-${floor.name}`;
             if (
               code.substring(0, 3) != 'GHC' &&
-              code.substring(0, 3) != 'WEH'
+              code.substring(0, 3) != 'WEH' &&
+              code.substring(0, 3) != 'NSH'
             ) {
               return null;
             }
