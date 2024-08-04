@@ -8,7 +8,7 @@ interface UIState {
   // A room/building is selected iff the user has clicked on it. And has not since clicked on another room, building, or the map.
   selectedRoom: Room | null;
   selectedBuilding: Building | null;
-  focusedBuilding: Building | null;
+
   focusedFloor: Floor | null;
   isSearchOpen: boolean;
   roomImageList: Record<string, string[]>;
@@ -20,7 +20,6 @@ const initialState: UIState = {
   isMobile: false,
   selectedRoom: null,
   selectedBuilding: null,
-  focusedBuilding: null,
   focusedFloor: null,
   isSearchOpen: false,
   roomImageList: {},
@@ -49,7 +48,6 @@ const uiSlice = createSlice({
 
       if (state.selectedBuilding?.code !== building?.code) {
         state.selectedBuilding = building;
-        state.focusedBuilding = building;
         state.focusedFloor = {
           buildingCode: building.code,
           level: building.defaultFloor,
@@ -62,9 +60,6 @@ const uiSlice = createSlice({
       if (action.payload?.code === state.selectedBuilding?.code) {
         state.selectedBuilding = null;
       }
-    },
-    focusBuilding(state, action) {
-      state.focusedBuilding = action.payload;
     },
     selectBuilding(state, action) {
       state.selectedBuilding = action.payload;
@@ -98,7 +93,6 @@ export const {
   releaseRoom,
   claimBuilding,
   releaseBuilding,
-  focusBuilding,
   selectBuilding,
   setFocusedFloor,
   setIsSearchOpen,

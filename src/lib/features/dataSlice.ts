@@ -4,20 +4,17 @@ import {
   Building,
   BuildingCode,
   FloorLevel,
-  FloorMap,
   SearchMap,
   SearchRoom,
 } from '@/types';
 
 interface DataState {
   buildings: Record<BuildingCode, Building>;
-  floorMap: FloorMap;
   searchMap: SearchMap;
 }
 
 const initialState: DataState = {
   buildings: {},
-  floorMap: {},
   searchMap: {},
 };
 
@@ -28,10 +25,6 @@ const dataSlice = createSlice({
     setBuildings(state, action) {
       state.buildings = action.payload;
     },
-    // addFloorToMap(state, action: { payload: [string, FloorPlan] }) {
-    //   const [floorName, floorPlan] = action.payload;
-    //   state.floorMap[floorName] = floorPlan;
-    // },
     addFloorToSearchMap(
       state,
       action: { payload: [BuildingCode, FloorLevel, SearchRoom[]] },

@@ -13,7 +13,6 @@ import { node } from '@/app/api/findPath/route';
 import {
   claimBuilding,
   claimRoom,
-  focusBuilding,
   setFocusedFloor,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
@@ -33,7 +32,7 @@ import FloorPlanOverlay, {
   getFloorCenter,
   positionOnMap,
 } from './FloorPlanOverlay';
-import { zoomOnObject } from './mapUtils';
+import { getBuildingDefaultFloorToFocus, zoomOnObject } from './mapUtils';
 
 interface MapDisplayProps {
   params: {
@@ -60,7 +59,7 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
   const [showRoomNames, setShowRoomNames] = useState(false);
 
   const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
-    dispatch(focusBuilding(newBuilding));
+    // dispatch(focusBuilding(newBuilding));
     if (newBuilding === null) {
       return;
     }
@@ -154,7 +153,7 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
     dispatch(
       setFocusedFloor({ buildingCode: building.code, level: floorLevel }),
     );
-    dispatch(focusBuilding(building));
+    // dispatch(focusBuilding(building));
 
     if (newFloors) {
       const floor = building.floors.find(({ name }) => name == floorLevel)!; // .find({ level } => level == floorLevel)! once replace file format
@@ -212,11 +211,13 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
       setShowFloor(newShowFloors);
       setShowRoomNames(density >= 750_000);
 
+      // if show floor then show the default floor of the building
       if (newShowFloors) {
         const center = {
           latitude: region.centerLatitude,
           longitude: region.centerLongitude,
         };
+
         const centerBuilding =
           Object.values(buildings).find(
             (building: Building) =>
@@ -224,10 +225,12 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
               isInPolygonCoordinates(building.hitbox, center),
           ) ?? null;
 
-        showBuilding(centerBuilding, false);
+        if (centerBuilding) {
+          dispatch(
+            setFocusedFloor(getBuildingDefaultFloorToFocus(centerBuilding)),
+          );
+        }
       } else {
-        dispatch(focusBuilding(null));
-        console.log('searchme2', null);
         dispatch(setFocusedFloor(null));
       }
     },
@@ -245,34 +248,40 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
       />
     ));
 
-  const renderFloors = () =>
-    showFloor &&
-    !!buildings &&
-    !!floors &&
-    Object.values(buildings).flatMap((building: Building) =>
-      building.floors.map((floor: { name: string; ordinal: number }) => {
-        if (floor.name !== focusedFloor?.level) {
-          // TODO: update this after update nicolas export
-          return null;
-        }
+  const renderFloors = () => {
+    // console.log(showFloor);
+    // console.log(focusedFloor);
 
-        const code = `${building.code}-${floor.name}`;
-        if (code.substring(0, 3) != 'GHC' && code.substring(0, 3) != 'WEH') {
-          return null;
-        }
-        const floorPlan = floors[code];
-        return (
-          floorPlan && (
-            <FloorPlanOverlay
-              key={code}
-              floorPlan={floorPlan}
-              showRoomNames={showRoomNames}
-              isBackground={building.code !== focusedBuilding?.code}
-            />
-          )
-        );
-      }),
+    return (
+      showFloor &&
+      !!buildings &&
+      !!floors &&
+      Object.values(buildings).flatMap((building: Building) =>
+        building.floors.map((floor: { name: string; ordinal: number }) => {
+          if (floor.name !== focusedFloor?.level) {
+            // TODO: update this after update nicolas export
+            return null;
+          }
+
+          const code = `${building.code}-${floor.name}`;
+          if (code.substring(0, 3) != 'GHC' && code.substring(0, 3) != 'WEH') {
+            return null;
+          }
+          const floorPlan = floors[code];
+          return (
+            floorPlan && (
+              <FloorPlanOverlay
+                key={code}
+                floorPlan={floorPlan}
+                showRoomNames={showRoomNames}
+                isBackground={building.code !== focusedBuilding?.code}
+              />
+            )
+          );
+        }),
+      )
     );
+  };
 
   const handleLoad = () => {
     // extract data from the url

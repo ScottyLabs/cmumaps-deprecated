@@ -245,11 +245,6 @@ export interface Building {
 }
 
 /**
- * A map from building code to a map of floor leve to floor plans.
- */
-export type FloorMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;
-
-/**
  * A map from building code to a map of floor levels to a list of search rooms
  * Used for searching purposes
  */
