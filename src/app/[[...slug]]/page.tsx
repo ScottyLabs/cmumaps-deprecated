@@ -196,36 +196,23 @@ const Page = ({ params, searchParams }: Props) => {
 
   //#endregion
 
-  //#region Update the URL
-  // use window instead of the next router to prevent rezooming in...
-
-  // update the url - building
-  useEffect(() => {
-    if (selectedBuilding) {
-      const url = window.location.origin + '/' + selectedBuilding.code;
-      window.history.pushState({}, '', url);
-    }
-  }, [selectedBuilding]);
-
-  // update the url - floor
-  useEffect(() => {
-    if (focusedFloor) {
-      let url = window.location.origin + '/';
-      url += `${focusedFloor.buildingCode}`;
-      url += `-${focusedFloor.level}`;
-      window.history.pushState({}, '', url);
-    }
-  }, [focusedFloor]);
-
-  // update the url - room
+  // update the URL
   useEffect(() => {
     if (selectedRoom) {
       let url = window.location.origin + '/';
       url += `${selectedRoom.floor}/${selectedRoom.id}`;
       window.history.pushState({}, '', url);
+    } else if (focusedFloor) {
+      let url = window.location.origin + '/';
+      url += `${focusedFloor.buildingCode}`;
+      url += `-${focusedFloor.level}`;
+      window.history.pushState({}, '', url);
+    } else if (selectedBuilding) {
+      const url = window.location.origin + '/' + selectedBuilding.code;
+      window.history.pushState({}, '', url);
     }
-  }, [selectedRoom]);
-  //#endregion
+    // use window instead of the next router to prevent rezooming in
+  }, [selectedRoom, focusedFloor, selectedBuilding]);
 
   const renderClerkIcon = () => {
     if (isMobile) {
