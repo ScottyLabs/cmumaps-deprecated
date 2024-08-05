@@ -22,7 +22,7 @@ const BuildingCard = ({ building }: Props) => {
   const dispatch = useAppDispatch();
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
-  const floorMap = useAppSelector((state) => state.data.floorMap);
+  const floorMap = useAppSelector((state) => state.data.searchMap);
 
   const [eatingData, setEatingData] = useState<
     [Room, IReadOnlyExtendedLocation | null][]
@@ -33,16 +33,16 @@ const BuildingCard = ({ building }: Props) => {
       return building.floors
         .map((floor) => {
           // remove this later!!!
-          if (!floorMap[`${building.code}-${floor.level}`]) {
+          if (!floorMap[`${building.code}`][`${floor.level}`]) {
             return [];
           }
-          const rooms = floorMap[`${building.code}-${floor.level}`].rooms;
+          const rooms = floorMap[`${building.code}`][`${floor.level}`];
           // return Object.values(rooms).filter((room) => room.type == 'dining');
-          return Object.values(rooms).filter(
+          return rooms.filter(
             (room) =>
-              room.alias == 'Revolution Noodle' ||
-              room.alias == 'Schatz Dining Room' ||
-              room.alias == 'Au Bon Pain at Skibo Café',
+              room.aliases.includes('Revolution Noodle') ||
+              room.aliases.includes('Schatz Dining Room') ||
+              room.aliases.includes('Au Bon Pain at Skibo Café'),
           );
         })
         .flat();

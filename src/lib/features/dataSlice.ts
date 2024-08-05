@@ -33,7 +33,7 @@ const dataSlice = createSlice({
       if (!state.searchMap[buidlingCode]) {
         state.searchMap[buidlingCode] = {};
       }
-      state.searchMap[buidlingCode][floorLevel] = floorPlan;
+      state.searchMap[buidlingCode][String(floorLevel)] = floorPlan;
     },
   },
 });
