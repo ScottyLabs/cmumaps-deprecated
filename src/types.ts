@@ -134,6 +134,8 @@ export interface SearchRoom {
   aliases: string[];
 
   type: RoomType;
+
+  labelPosition: AbsoluteCoordinate;
 }
 
 export interface Room {

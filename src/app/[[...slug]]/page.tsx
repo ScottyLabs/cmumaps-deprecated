@@ -113,7 +113,6 @@ const Page = ({ params, searchParams }: Props) => {
             for (const roomId in searchRooms) {
               searchRooms[roomId]['id'] = roomId;
               delete searchRooms[roomId]['polygon'];
-              delete searchRooms[roomId]['labelPosition'];
             }
 
             return [building.code, floor.level, searchRooms];
