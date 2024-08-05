@@ -161,6 +161,11 @@ const Page = ({ params, searchParams }: Props) => {
     window.history.pushState({}, '', url);
   }, [selectedRoom, focusedFloor]);
 
+  // don't show anything until the buildings are loaded
+  if (Object.keys(buildings).length == 0) {
+    return;
+  }
+
   const renderClerkIcon = () => {
     if (isMobile) {
       return (
