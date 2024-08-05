@@ -73,7 +73,7 @@ export default function SearchResults({
   const searchResult = Object.values(buildings)
     .map((building: Building) => ({
       Building: building,
-      Rooms: findRooms(query, building, searchMap, userPosition),
+      Rooms: findRooms(query, building, searchMap[building.code], userPosition),
     }))
     .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
     .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
@@ -144,7 +144,7 @@ export default function SearchResults({
         return (
           <div key={building.code}>
             {renderBuildingResults(building)}
-            {renderRoomResults(buildingResult['Rooms'].slice(0, 20), building)}
+            {renderRoomResults(buildingResult['Rooms'].slice(0, 100), building)}
           </div>
         );
       })}

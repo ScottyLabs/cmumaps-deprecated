@@ -4,15 +4,14 @@ import {
   AbsoluteCoordinate,
   Building,
   Floor,
-  FloorMap,
+  SearchMap,
   SearchRoom,
 } from '@/types';
-import { distance } from '@/util/geometry';
 
 function getRoomTokens(room: SearchRoom, building: Building): string[] {
   let tokens = [room.name, building.code, building.name];
-  if (room.alias) {
-    tokens = tokens.concat(room.alias.split(' '));
+  if (room.aliases) {
+    tokens = tokens.concat(room.aliases.flatMap((alias) => alias.split(' ')));
   }
   return tokens
     .filter((token) => token.length > 0)
@@ -31,21 +30,19 @@ sum those distances to get a total distance for the query and target.
 export const findRooms = (
   query: string,
   building: Building,
-  floorMap: FloorMap,
-  userPosition: AbsoluteCoordinate,
+  floorMap: Record<string, SearchRoom[]>,
 ): [SearchRoom[], number] => {
-  if (query.length < 3) {
+  if (!floorMap || query.length < 3) {
     return [[], -1];
   }
   // No query: only show building names
   const lDistCache = new Map();
   // Query for another building
   const roomsList = building.floors.flatMap((floor: Floor) => {
-    if (!floorMap[`${building.code}-${floor.level}`]?.rooms) {
+    if (!floorMap?.[floor.level]) {
       return [];
     }
-    // let roomsObj = Object.entries(floorMap[`${building.code}-${floor.name}`]?.rooms) // for new floors layout
-    const roomsObj = floorMap[`${building.code}-${floor.name}`]?.rooms; // for legacy floors layout
+    const roomsObj = Object.values(floorMap[floor.level]);
     const queryTokens = query
       .toLowerCase()
       .split(' ')
@@ -67,14 +64,14 @@ export const findRooms = (
                 ),
               );
             }
-            if (bestScore > 2) {
+            if (bestScore > queryToken.length / 2) {
               // If there is a query token that dosen't have a reasonable match
               score = 999;
               break;
             }
             score += bestScore;
           }
-          if (score < queryTokens.length) {
+          if (score < queryTokens.length * 0.5) {
             lDistCache.set(room.id, score);
           }
           return score < queryTokens.length;
@@ -87,17 +84,16 @@ export const findRooms = (
     );
   });
 
-  if (userPosition) {
-    roomsList.sort(
-      (a, b) =>
-        distance(a.labelPosition, userPosition) -
-        distance(b.labelPosition, userPosition),
-    );
-  }
+  // if (userPosition) {
+  //   roomsList.sort(
+  //     (a, b) =>
+  //       distance(a.labelPosition, userPosition) -
+  //       distance(b.labelPosition, userPosition),
+  //   );
+  // }
 
   if (!roomsList || roomsList.length == 0) {
     return [[], -1];
   }
-  console.log(roomsList);
   return [roomsList, lDistCache.get(roomsList[0].id)];
 };

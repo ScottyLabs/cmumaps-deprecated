@@ -280,9 +280,7 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
         />
       ))}
 
-      {focusedFloor && (
-        <FloorPlanOverlay floor={focusedFloor} showRoomNames={showRoomNames} />
-      )}
+      {focusedFloor && <FloorPlanOverlay showRoomNames={showRoomNames} />}
 
       <NavLine />
     </Map>

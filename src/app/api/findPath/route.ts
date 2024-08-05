@@ -1,23 +1,31 @@
-import path from 'path';
+import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
 import fs from 'fs';
 import { Coordinate } from 'mapkit-react';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
-import { Room } from '@/types';
 import { NextRequest } from 'next/server';
+import path from 'path';
 
-export type node = {
+import { positionOnMap } from '@/components/buildings/mapUtils';
+import { Floor, Room } from '@/types';
+
+export type Node = {
   pos: { x: number; y: number };
-  neighbors: { [neighborId: string]: { dist: number } };
+  neighbors: {
+    [neighborId: string]: {
+      dist: number;
+      toFloorInfo: { toFloor: Floor; type: string };
+    };
+  };
   roomId: string;
+  coordinate: Coordinate;
 };
 export interface GraphResponse {
-  nodes: { [nodeId: string]: node };
+  nodes: { [nodeId: string]: Node };
 }
 
 interface Path {
-  node: node;
-  currPath: node[];
+  node: Node;
+  currPath: Node[];
   length: number;
 }
 
@@ -32,8 +40,8 @@ const comparePaths: ICompare<Path> = (a: Path, b: Path) => a.length - b.length;
 // Dijkstras algorithm to search from room 1 to room 2
 function findPath(
   rooms: Room[],
-  nodes: { [nodeId: string]: node },
-): node[] | { error: string } {
+  nodes: { [nodeId: string]: Node },
+): Node[] | { error: string } {
   const start = Object.values(nodes).find((e) => e.roomId == rooms[0].id);
   const end = Object.values(nodes).find((e) => e.roomId == rooms[1].id);
   if (!start) {
@@ -80,18 +88,75 @@ function findPath(
   }
   return { error: 'Path not found' };
 }
-type resp = NextApiResponse<Door[] | { error: string }>;
+const getFloorCenter = (rooms: Room[]): Position => {
+  let points: Position[] = Object.values(rooms).flatMap((room: Room) =>
+    room.polygon.coordinates.flat(),
+  );
 
+  points = points.filter((e) => e !== undefined);
+
+  const allX = points.map((p) => p[0]);
+  const allY = points.map((p) => p[1]);
+
+  const minX = Math.min(...allX);
+  const maxX = Math.max(...allX);
+  const minY = Math.min(...allY);
+  const maxY = Math.max(...allY);
+
+  return [(minX + maxX) / 2, (minY + maxY) / 2];
+};
 export async function POST(req: NextRequest) {
   let nodes = {};
-  for (const ordinal of ['1', '2', '3', '4', '5', '6', '7', '8', '9']) {
-    const graphPath = path.resolve(
-      process.cwd(),
-      './public/json/GHC/',
-      `GHC-${ordinal}-graph.json`,
-    );
-    const f = JSON.parse(fs.readFileSync(graphPath, 'utf-8'));
-    nodes = { ...nodes, ...f };
+  for (const buildingCode of ['GHC', 'WEH', 'NSH']) {
+    for (const level of [
+      'A',
+      'B',
+      'C',
+      'D',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+    ]) {
+      const graphPath = path.resolve(
+        process.cwd(),
+        `./public/json/${buildingCode}/`,
+        `${buildingCode}-${level}-graph.json`,
+      );
+      const outlinePath = path.resolve(
+        process.cwd(),
+        `./public/json/${buildingCode}/`,
+        `${buildingCode}-${level}-outline.json`,
+      );
+      if (!fs.existsSync(graphPath) || !fs.existsSync(outlinePath)) {
+        continue;
+      }
+      const f: { [id: string]: Node } = JSON.parse(
+        fs.readFileSync(graphPath, 'utf-8'),
+      );
+      const outline = JSON.parse(fs.readFileSync(outlinePath, 'utf-8'));
+
+      const rooms = outline.rooms;
+      const center = getFloorCenter(rooms);
+
+      Object.keys(f).forEach((id: string) => {
+        const node = f[id];
+        f[id] = {
+          ...node,
+          coordinate: positionOnMap(
+            [node.pos.x, node.pos.y],
+            outline.placement,
+            center,
+          ),
+        };
+      });
+      nodes = { ...nodes, ...f };
+    }
   }
   const { rooms } = await req.json();
   if (!rooms || rooms.length !== 2) {

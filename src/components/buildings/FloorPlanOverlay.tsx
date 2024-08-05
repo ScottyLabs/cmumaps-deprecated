@@ -1,7 +1,9 @@
+'use client';
+
 import { Position } from 'geojson';
 import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 
 import { getFloorPlan } from '@/lib/apiRoutes';
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
@@ -31,7 +33,6 @@ export const getFloorCenter = (rooms: Room[]): Position => {
 };
 
 interface FloorPlanOverlayProps {
-  floor: Floor;
   showRoomNames: boolean;
 }
 
@@ -39,19 +40,18 @@ interface FloorPlanOverlayProps {
  * The contents of a floor displayed on the map.
  */
 export default function FloorPlanOverlay({
-  floor,
   showRoomNames,
 }: FloorPlanOverlayProps) {
   const dispatch = useAppDispatch();
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-
+  const floor = useAppSelector((state) => state.ui.focusedFloor);
   const [floorPlan, setFloorPlan] = useState<FloorPlan | null>(null);
 
   // fetch the floor plan from floor
   useEffect(() => {
     getFloorPlan({ buildingCode: floor.buildingCode, level: floor.level }).then(
       (floorPlan) => {
-        // be careful of pre-rotated floor plans that doesn't have placements
+        // be careful of floor plans that doesn't have placements
         if (floorPlan?.placement) {
           setFloorPlan(floorPlan);
         } else {
@@ -126,7 +126,7 @@ export default function FloorPlanOverlay({
             <div
               className={`relative width-[${iconSize}] height-[${iconSize}]`}
             >
-              <RoomPin room={room} />
+              <RoomPin room={{ ...room, id: roomId }} />
               {(showRoomNames || room.alias) && (
                 <div
                   className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}

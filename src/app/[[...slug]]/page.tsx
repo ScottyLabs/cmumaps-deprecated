@@ -80,6 +80,10 @@ const Page = ({ params, searchParams }: Props) => {
 
   // load the buidling and floor data
   useEffect(() => {
+    if (!dispatch) {
+      return;
+    }
+
     const getBuildings = async () => {
       // set buildings
       const response = await fetch('/json/buildings.json');
@@ -90,8 +94,8 @@ const Page = ({ params, searchParams }: Props) => {
       const promises = Object.values(buildings)
         .map((building) =>
           building.floors.map(async (floor) => {
-            // only loads GHC, WEH, and CUC for now
-            if (!['GHC', 'WEH', 'CUC'].includes(building.code)) {
+            // only loads GHC, WEH, and NSH for now
+            if (!['GHC', 'WEH', 'NSH'].includes(building.code)) {
               return [null, null, null];
             }
 
