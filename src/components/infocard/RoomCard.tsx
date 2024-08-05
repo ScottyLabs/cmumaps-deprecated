@@ -6,6 +6,7 @@ import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
 import ButtonsRow from './ButtonsRow';
+import RoomSchedule from './RoomSchedule';
 
 // import RoomSchedule from './RoomSchedule';
 
@@ -52,7 +53,7 @@ const RoomCard = ({ room }: Props) => {
         No Room Schedule Available
       </div>
       {renderButtonsRow()}
-      {/* <RoomSchedule /> */}
+      <RoomSchedule />
     </div>
   );
 };
