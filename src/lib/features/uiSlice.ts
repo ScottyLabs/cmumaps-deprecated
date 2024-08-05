@@ -43,15 +43,11 @@ const uiSlice = createSlice({
       }
     },
 
-    claimBuilding(state, action) {
+    claimBuilding(state, action: PayloadAction<Building>) {
       const building = action.payload;
 
       if (state.selectedBuilding?.code !== building?.code) {
         state.selectedBuilding = building;
-        state.focusedFloor = {
-          buildingCode: building.code,
-          level: building.defaultFloor,
-        };
       }
 
       state.isSearchOpen = false;
