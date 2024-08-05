@@ -26,7 +26,7 @@ const RoomSchedule = () => {
   );
 
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-  const focusedBuilding = useAppSelector((state) => state.ui.focusedBuilding);
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 
   const startOfCurrentWeek = startOfWeek(currentWeek, { weekStartsOn: 0 });
   const endOfCurrentWeek = endOfWeek(currentWeek, { weekStartsOn: 0 });
@@ -40,7 +40,7 @@ const RoomSchedule = () => {
     setThisWeeksEvents(null);
 
     fetchEvents(
-      `${focusedBuilding?.code} ${selectedRoom?.name}`,
+      `${focusedFloor?.buildingCode} ${selectedRoom?.name}`,
       startOfCurrentWeek,
       endOfCurrentWeek,
       setThisWeeksEvents,

@@ -19,6 +19,7 @@ export async function fetchEvents(
 
   try {
     const body = await response.json();
+    console.log(body);
     callback(body);
   } catch (e) {
     console.error('Failed to fetch events', response);
