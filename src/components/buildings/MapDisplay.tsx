@@ -9,7 +9,6 @@ import {
 import React, { useState } from 'react';
 
 import {
-  claimBuilding,
   claimRoom,
   setFocusedFloor,
   setIsSearchOpen,

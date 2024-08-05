@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { claimBuilding, claimRoom } from '@/lib/features/uiSlice';
+import { claimRoom, selectBuilding } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
 import titleCase from '@/util/titleCase';
@@ -91,7 +91,7 @@ export default function SearchResults({
 
   const renderBuildingResults = (building: Building) => {
     const handleClick = () => {
-      dispatch(claimBuilding(building));
+      dispatch(selectBuilding(building));
     };
 
     return (
