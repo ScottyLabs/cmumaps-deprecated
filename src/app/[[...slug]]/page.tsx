@@ -14,10 +14,10 @@ import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
 import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
 import {
-  claimBuilding,
   setFocusedFloor,
   setIsMobile,
   setRoomImageList,
+  selectBuilding,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
@@ -73,12 +73,12 @@ const Page = ({ params, searchParams }: Props) => {
           return;
         }
 
-        dispatch(claimBuilding(building));
+        dispatch(selectBuilding(building));
         zoomOnObject(mapRef, building.shapes.flat());
         dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
       } else {
         const buildingCode = code;
-        dispatch(claimBuilding(buildings[buildingCode]));
+        dispatch(selectBuilding(buildings[buildingCode]));
       }
     }
   }, [buildings, dispatch, params.slug, router]);

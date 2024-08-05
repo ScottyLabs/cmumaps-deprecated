@@ -2,11 +2,7 @@ import { Annotation, Polygon } from 'mapkit-react';
 
 import React from 'react';
 
-import {
-  claimBuilding,
-  releaseBuilding,
-  selectBuilding,
-} from '@/lib/features/uiSlice';
+import { selectBuilding } from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { Building } from '@/types';
 
@@ -36,10 +32,10 @@ export default function BuildingShape({
         strokeColor={building.floors.length > 0 ? '#6b7280' : '#374151'}
         onSelect={() => {
           if (!showFloor) {
-            dispatch(claimBuilding(building));
+            dispatch(selectBuilding(building));
           }
         }}
-        onDeselect={() => dispatch(releaseBuilding(building))}
+        onDeselect={() => dispatch(selectBuilding(null))}
       />
     );
   };
@@ -51,7 +47,7 @@ export default function BuildingShape({
           latitude={building.labelPosition.latitude}
           longitude={building.labelPosition.longitude}
           onSelect={() => dispatch(selectBuilding(building))}
-          onDeselect={() => dispatch(releaseBuilding(building))}
+          onDeselect={() => dispatch(selectBuilding(null))}
         >
           <div className="translate-y-1/2 scale-[0.8]">
             <Roundel code={building.code} />
