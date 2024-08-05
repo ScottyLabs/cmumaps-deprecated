@@ -181,6 +181,10 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
     (region, density) => {
+      if (!buildings) {
+        return;
+      }
+
       const newShowFloors = density >= 200_000;
       setShowFloor(newShowFloors);
       setShowRoomNames(density >= 750_000);
@@ -243,14 +247,16 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
       allowWheelToZoom
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={onRegionChangeEnd}
-      onClick={() => dispatch(setIsSearchOpen(false))}
+      onClick={() => {
+        dispatch(setIsSearchOpen(false));
+      }}
     >
       {buildings &&
         Object.values(buildings).map((building) => (
           <BuildingShape
             key={building.code}
             building={building}
-            showName={!showFloor}
+            showFloor={showFloor}
           />
         ))}
 
