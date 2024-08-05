@@ -7,11 +7,17 @@ import { getSelectorsByUserAgent } from 'react-device-detect';
 
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
+import { zoomOnObject } from '@/components/buildings/mapUtils';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
 import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
-import { setIsMobile, setRoomImageList } from '@/lib/features/uiSlice';
+import {
+  claimBuilding,
+  setFocusedFloor,
+  setIsMobile,
+  setRoomImageList,
+} from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
 
@@ -40,6 +46,29 @@ const Page = ({ params, searchParams }: Props) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+
+  useEffect(() => {
+    // extract data from the url
+    console.log(buildings);
+    if (buildings && params.slug && params.slug.length > 0) {
+      // first slug is the building code
+      const code = params.slug[0];
+      if (code.includes('-')) {
+        const buildingCode = code.split('-')[0];
+        const floorLevel = code.split('-')[1];
+
+        // validations
+
+        const building = buildings[buildingCode];
+        dispatch(claimBuilding(building));
+        zoomOnObject(mapRef, building.shapes.flat());
+        dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
+      } else {
+        const buildingCode = code;
+        dispatch(claimBuilding(buildings[buildingCode]));
+      }
+    }
+  }, [buildings, dispatch, params.slug]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -160,11 +189,6 @@ const Page = ({ params, searchParams }: Props) => {
     }
     window.history.pushState({}, '', url);
   }, [selectedRoom, focusedFloor]);
-
-  // don't show anything until the buildings are loaded
-  if (Object.keys(buildings).length == 0) {
-    return;
-  }
 
   const renderClerkIcon = () => {
     if (isMobile) {

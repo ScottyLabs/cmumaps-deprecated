@@ -9,12 +9,12 @@ import {
 } from '@/types';
 
 interface DataState {
-  buildings: Record<BuildingCode, Building>;
+  buildings: Record<BuildingCode, Building> | null;
   searchMap: SearchMap;
 }
 
 const initialState: DataState = {
-  buildings: {},
+  buildings: null,
   searchMap: {},
 };
 
