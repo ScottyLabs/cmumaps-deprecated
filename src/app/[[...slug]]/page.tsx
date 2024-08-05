@@ -50,8 +50,8 @@ const Page = ({ params, searchParams }: Props) => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
+  // extracting data in the initial loading of the page
   useEffect(() => {
-    // extract data from the url
     if (buildings && params.slug && params.slug.length > 0) {
       // first slug is the building code
       const code = params.slug[0];
@@ -198,17 +198,18 @@ const Page = ({ params, searchParams }: Props) => {
 
   // update the URL
   useEffect(() => {
+    let url = window.location.origin + '/';
     if (selectedRoom) {
-      let url = window.location.origin + '/';
       url += `${selectedRoom.floor}/${selectedRoom.id}`;
       window.history.pushState({}, '', url);
     } else if (focusedFloor) {
-      let url = window.location.origin + '/';
       url += `${focusedFloor.buildingCode}`;
       url += `-${focusedFloor.level}`;
       window.history.pushState({}, '', url);
     } else if (selectedBuilding) {
-      const url = window.location.origin + '/' + selectedBuilding.code;
+      url += selectedBuilding.code;
+      window.history.pushState({}, '', url);
+    } else {
       window.history.pushState({}, '', url);
     }
     // use window instead of the next router to prevent rezooming in
