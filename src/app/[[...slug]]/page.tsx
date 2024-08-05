@@ -176,37 +176,56 @@ const Page = ({ params, searchParams }: Props) => {
     getBuildings();
   }, [dispatch]);
 
-  // update the page title
+  //#region Update the Page Title
+  // update the page title - building
   useEffect(() => {
-    if (buildings) {
-      let title = '';
-      if (focusedFloor) {
-        title += buildings[focusedFloor.buildingCode].name;
-        title += ` ${focusedFloor.level}`;
-        title += ' — ';
-      } else if (selectedBuilding) {
-        title += selectedBuilding.code + ' ';
-      }
-      title += 'CMU Maps';
+    if (selectedBuilding) {
+      const title = `${selectedBuilding.name} - CMU Maps`;
       document.title = title;
     }
-  }, [buildings, focusedFloor, focusedFloor?.level, selectedBuilding]);
+  }, [buildings, selectedBuilding]);
 
-  // update the url
+  // update the page title - floor
   useEffect(() => {
-    let url = window.location.origin + '/';
-    if (selectedRoom) {
-      url += `${selectedRoom.floor}/${selectedRoom.id}`;
-    } else if (focusedFloor) {
+    if (buildings && focusedFloor) {
+      const buildingCode = buildings[focusedFloor.buildingCode].code;
+      const title = `${buildingCode} Floor ${focusedFloor.level} - CMU Maps`;
+      document.title = title;
+    }
+  }, [buildings, focusedFloor, focusedFloor?.level]);
+
+  //#endregion
+
+  //#region Update the URL
+  // use window instead of the next router to prevent rezooming in...
+
+  // update the url - building
+  useEffect(() => {
+    if (selectedBuilding) {
+      const url = window.location.origin + '/' + selectedBuilding.code;
+      window.history.pushState({}, '', url);
+    }
+  }, [selectedBuilding]);
+
+  // update the url - floor
+  useEffect(() => {
+    if (focusedFloor) {
+      let url = window.location.origin + '/';
       url += `${focusedFloor.buildingCode}`;
       url += `-${focusedFloor.level}`;
-    } else if (selectedBuilding) {
-      url += selectedBuilding.code;
+      window.history.pushState({}, '', url);
     }
+  }, [focusedFloor]);
 
-    // use window instead of the next router to prevent rezooming in...
-    window.history.pushState({}, '', url);
-  }, [selectedRoom, focusedFloor, selectedBuilding]);
+  // update the url - room
+  useEffect(() => {
+    if (selectedRoom) {
+      let url = window.location.origin + '/';
+      url += `${selectedRoom.floor}/${selectedRoom.id}`;
+      window.history.pushState({}, '', url);
+    }
+  }, [selectedRoom]);
+  //#endregion
 
   const renderClerkIcon = () => {
     if (isMobile) {
