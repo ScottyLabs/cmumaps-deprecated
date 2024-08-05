@@ -249,7 +249,7 @@ const Page = ({ params, searchParams }: Props) => {
         {renderClerkIcon()}
       </div>
 
-      <MapDisplay params={params} mapRef={mapRef} points={points} />
+      <MapDisplay mapRef={mapRef} points={points} />
     </main>
   );
 };
