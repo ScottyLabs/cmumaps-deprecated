@@ -19,7 +19,7 @@ const SearchResultWrapper = ({ children, handleClick }: WrapperProps) => {
     <button
       type="button"
       className={
-        'flex h-14 w-full justify-between items-center gap-2 p-1 hover:bg-[#efefef] bg-gray-50 transition duration-150 ease-out'
+        'flex h-12 w-full justify-between items-center gap-2 px-6 hover:bg-[#efefef] bg-gray-50 transition duration-150 ease-out'
       }
       onClick={handleClick}
     >
@@ -97,8 +97,10 @@ export default function SearchResults({
     return (
       <SearchResultWrapper handleClick={handleClick}>
         <div className="flex items-center gap-3">
-          <Roundel code={building.code} />
-          <h4 className="">{building.name}</h4>
+          <div className="scale-[0.6] mx-[-10px]">
+            <Roundel code={building.code} />
+          </div>
+          <p className="font-bold pl-[-1]">{building.name}</p>
         </div>
       </SearchResultWrapper>
     );
@@ -112,7 +114,7 @@ export default function SearchResults({
             {building.code} {room.name}
           </span>
           {room.type !== 'default' && (
-            <span>{` • ${titleCase(roomType(room))}`}</span>
+            <span className="px-[8px] text-gray-400">{`${titleCase(roomType(room))}`}</span>
           )}
           {room.alias && <span className="truncate">{room.alias}</span>}
         </p>
@@ -129,7 +131,7 @@ export default function SearchResults({
         key={room.name + room.floor.level}
         handleClick={handleClick(room)}
       >
-        <div className="flex items-center space-x-3 pl-8">
+        <div className="flex items-center space-x-3">
           <RoomPin room={room} />
           {renderText(room)}
         </div>
