@@ -228,25 +228,6 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
     initialRegion,
   );
 
-  const handleLoad = () => {
-    // extract data from the url
-    // first slug is the building code
-    if (params.slug && params.slug.length > 0) {
-      if (buildings) {
-        const code = params.slug[0];
-        if (code.includes('-')) {
-          const buildingCode = code.split('-')[0];
-          const floorLevel = code.split('-')[1];
-          dispatch(claimBuilding(buildings[buildingCode]));
-          dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
-        } else {
-          const buildingCode = code;
-          dispatch(claimBuilding(buildings[buildingCode]));
-        }
-      }
-    }
-  };
-
   return (
     <Map
       ref={mapRef}
@@ -267,18 +248,18 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
         isMobile ? FeatureVisibility.Hidden : FeatureVisibility.Adaptive
       }
       allowWheelToZoom
-      onLoad={handleLoad}
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={onRegionChangeEnd}
       onClick={() => dispatch(setIsSearchOpen(false))}
     >
-      {Object.values(buildings).map((building) => (
-        <BuildingShape
-          key={building.code}
-          building={building}
-          showName={!showFloor}
-        />
-      ))}
+      {buildings &&
+        Object.values(buildings).map((building) => (
+          <BuildingShape
+            key={building.code}
+            building={building}
+            showName={!showFloor}
+          />
+        ))}
 
       {focusedFloor && <FloorPlanOverlay showRoomNames={showRoomNames} />}
 
