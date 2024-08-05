@@ -207,7 +207,6 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         </div>
       )}
       {searchResults}
-      Yuxiang please make the UI for events given here
       {/* <p> ({eventsResults.toString()})</p> */}
     </div>
   );
