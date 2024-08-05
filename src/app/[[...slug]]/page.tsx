@@ -67,8 +67,7 @@ const Page = ({ params, searchParams }: Props) => {
         }
 
         // validations on the floor level
-        const floorLevels = building.floors.map((floor) => floor.level);
-        if (!floorLevels.includes(floorLevel)) {
+        if (!building.floors.includes(floorLevel)) {
           router.push(buildingCode);
           return;
         }
@@ -135,18 +134,18 @@ const Page = ({ params, searchParams }: Props) => {
       // set floors
       const promises = Object.values(buildings)
         .map((building) =>
-          building.floors.map(async (floor) => {
+          building.floors.map(async (floorLevel) => {
             // only loads GHC, WEH, and NSH for now
             if (!['GHC', 'WEH', 'NSH'].includes(building.code)) {
               return [null, null, null];
             }
 
-            if (building.code == 'CUC' && floor.level !== '2') {
+            if (building.code == 'CUC' && floorLevel !== '2') {
               return [null, null, null];
             }
 
             const outlineResponse = await fetch(
-              `/json/${building.code}/${building.code}-${floor.level}-outline.json`,
+              `/json/${building.code}/${building.code}-${floorLevel}-outline.json`,
             );
             const outlineJson = await outlineResponse.json();
 
@@ -157,7 +156,7 @@ const Page = ({ params, searchParams }: Props) => {
               delete searchRooms[roomId]['polygon'];
             }
 
-            return [building.code, floor.level, searchRooms];
+            return [building.code, floorLevel, searchRooms];
           }),
         )
         .flat(2);
@@ -178,14 +177,16 @@ const Page = ({ params, searchParams }: Props) => {
 
   // update the page title
   useEffect(() => {
-    let title = '';
-    if (focusedFloor) {
-      title += buildings[focusedFloor.buildingCode].name;
-      title += ` ${focusedFloor.level}`;
-      title += ' — ';
+    if (buildings) {
+      let title = '';
+      if (focusedFloor) {
+        title += buildings[focusedFloor.buildingCode].name;
+        title += ` ${focusedFloor.level}`;
+        title += ' — ';
+      }
+      title += 'CMU Maps';
+      document.title = title;
     }
-    title += 'CMU Maps';
-    document.title = title;
   }, [buildings, focusedFloor, focusedFloor?.level]);
 
   // update the url

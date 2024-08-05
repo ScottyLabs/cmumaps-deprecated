@@ -65,7 +65,7 @@ const uiSlice = createSlice({
       state.selectedBuilding = action.payload;
     },
 
-    setFocusedFloor(state, action) {
+    setFocusedFloor(state, action: PayloadAction<Floor>) {
       state.focusedFloor = action.payload;
     },
 

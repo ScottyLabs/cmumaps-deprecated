@@ -69,30 +69,12 @@
         "name": "ANSYS Hall",
         "osmId": "1001941217",
         "floors": [
-            {
-                "buildingCode": "AN",
-                "level": "D"
-            },
-            {
-                "buildingCode": "AN",
-                "level": "C"
-            },
-            {
-                "buildingCode": "AN",
-                "level": "B"
-            },
-            {
-                "buildingCode": "AN",
-                "level": "A"
-            },
-            {
-                "buildingCode": "AN",
-                "level": "1"
-            },
-            {
-                "buildingCode": "AN",
-                "level": "2"
-            }
+            "D",
+            "C",
+            "B",
+            "A",
+            "1",
+            "2"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -195,26 +177,11 @@
         "name": "Baker Hall",
         "osmId": "27590907",
         "floors": [
-            {
-                "buildingCode": "BH",
-                "level": "A"
-            },
-            {
-                "buildingCode": "BH",
-                "level": "1"
-            },
-            {
-                "buildingCode": "BH",
-                "level": "2"
-            },
-            {
-                "buildingCode": "BH",
-                "level": "3"
-            },
-            {
-                "buildingCode": "BH",
-                "level": "4"
-            }
+            "A",
+            "1",
+            "2",
+            "3",
+            "4"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -421,30 +388,12 @@
         "name": "Porter Hall",
         "osmId": "27549961",
         "floors": [
-            {
-                "buildingCode": "PH",
-                "level": "C"
-            },
-            {
-                "buildingCode": "PH",
-                "level": "B"
-            },
-            {
-                "buildingCode": "PH",
-                "level": "A"
-            },
-            {
-                "buildingCode": "PH",
-                "level": "1"
-            },
-            {
-                "buildingCode": "PH",
-                "level": "2"
-            },
-            {
-                "buildingCode": "PH",
-                "level": "3"
-            }
+            "C",
+            "B",
+            "A",
+            "1",
+            "2",
+            "3"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -777,22 +726,10 @@
         "name": "Cohon University Center",
         "osmId": "27574394",
         "floors": [
-            {
-                "buildingCode": "CUC",
-                "level": "LL"
-            },
-            {
-                "buildingCode": "CUC",
-                "level": "1"
-            },
-            {
-                "buildingCode": "CUC",
-                "level": "2"
-            },
-            {
-                "buildingCode": "CUC",
-                "level": "3"
-            }
+            "LL",
+            "1",
+            "2",
+            "3"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -1063,30 +1000,12 @@
         "name": "College of Fine Arts",
         "osmId": "27591225",
         "floors": [
-            {
-                "buildingCode": "CFA",
-                "level": "A"
-            },
-            {
-                "buildingCode": "CFA",
-                "level": "1"
-            },
-            {
-                "buildingCode": "CFA",
-                "level": "M"
-            },
-            {
-                "buildingCode": "CFA",
-                "level": "2"
-            },
-            {
-                "buildingCode": "CFA",
-                "level": "3"
-            },
-            {
-                "buildingCode": "CFA",
-                "level": "4"
-            }
+            "A",
+            "1",
+            "M",
+            "2",
+            "3",
+            "4"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -1161,22 +1080,10 @@
         "name": "Cyert Hall",
         "osmId": "27574718",
         "floors": [
-            {
-                "buildingCode": "CYH",
-                "level": "B"
-            },
-            {
-                "buildingCode": "CYH",
-                "level": "A"
-            },
-            {
-                "buildingCode": "CYH",
-                "level": "1"
-            },
-            {
-                "buildingCode": "CYH",
-                "level": "2"
-            }
+            "B",
+            "A",
+            "1",
+            "2"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -1315,30 +1222,12 @@
         "name": "Doherty Hall",
         "osmId": "27574545",
         "floors": [
-            {
-                "buildingCode": "DH",
-                "level": "B"
-            },
-            {
-                "buildingCode": "DH",
-                "level": "A"
-            },
-            {
-                "buildingCode": "DH",
-                "level": "1"
-            },
-            {
-                "buildingCode": "DH",
-                "level": "2"
-            },
-            {
-                "buildingCode": "DH",
-                "level": "3"
-            },
-            {
-                "buildingCode": "DH",
-                "level": "4"
-            }
+            "B",
+            "A",
+            "1",
+            "2",
+            "3",
+            "4"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -1501,14 +1390,8 @@
         "name": "Facilities Management Services Building",
         "osmId": "27590940",
         "floors": [
-            {
-                "buildingCode": "FM",
-                "level": "1"
-            },
-            {
-                "buildingCode": "FM",
-                "level": "2"
-            }
+            "1",
+            "2"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -1639,42 +1522,15 @@
         "name": "Gates & Hillman Centers",
         "osmId": "27623372",
         "floors": [
-            {
-                "buildingCode": "GHC",
-                "level": "1"
-            },
-            {
-                "buildingCode": "GHC",
-                "level": "2"
-            },
-            {
-                "buildingCode": "GHC",
-                "level": "3"
-            },
-            {
-                "buildingCode": "GHC",
-                "level": "4"
-            },
-            {
-                "buildingCode": "GHC",
-                "level": "5"
-            },
-            {
-                "buildingCode": "GHC",
-                "level": "6"
-            },
-            {
-                "buildingCode": "GHC",
-                "level": "7"
-            },
-            {
-                "buildingCode": "GHC",
-                "level": "8"
-            },
-            {
-                "buildingCode": "GHC",
-                "level": "9"
-            }
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"
         ],
         "defaultFloor": "4",
         "labelPosition": {
@@ -1933,22 +1789,10 @@
         "name": "Hall of the Arts",
         "osmId": "1002857138",
         "floors": [
-            {
-                "buildingCode": "HOA",
-                "level": "A"
-            },
-            {
-                "buildingCode": "HOA",
-                "level": "1"
-            },
-            {
-                "buildingCode": "HOA",
-                "level": "2"
-            },
-            {
-                "buildingCode": "HOA",
-                "level": "3"
-            }
+            "A",
+            "1",
+            "2",
+            "3"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -2063,22 +1907,10 @@
         "name": "Hamburg Hall",
         "osmId": "27591096",
         "floors": [
-            {
-                "buildingCode": "HBH",
-                "level": "A"
-            },
-            {
-                "buildingCode": "HBH",
-                "level": "1"
-            },
-            {
-                "buildingCode": "HBH",
-                "level": "2"
-            },
-            {
-                "buildingCode": "HBH",
-                "level": "3"
-            }
+            "A",
+            "1",
+            "2",
+            "3"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -2241,46 +2073,16 @@
         "name": "Hamerschlag Hall",
         "osmId": "27551077",
         "floors": [
-            {
-                "buildingCode": "HH",
-                "level": "F"
-            },
-            {
-                "buildingCode": "HH",
-                "level": "E"
-            },
-            {
-                "buildingCode": "HH",
-                "level": "D"
-            },
-            {
-                "buildingCode": "HH",
-                "level": "C"
-            },
-            {
-                "buildingCode": "HH",
-                "level": "B"
-            },
-            {
-                "buildingCode": "HH",
-                "level": "A"
-            },
-            {
-                "buildingCode": "HH",
-                "level": "1"
-            },
-            {
-                "buildingCode": "HH",
-                "level": "2"
-            },
-            {
-                "buildingCode": "HH",
-                "level": "3"
-            },
-            {
-                "buildingCode": "HH",
-                "level": "4"
-            }
+            "F",
+            "E",
+            "D",
+            "C",
+            "B",
+            "A",
+            "1",
+            "2",
+            "3",
+            "4"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -2439,30 +2241,12 @@
         "name": "Hunt Library",
         "osmId": "27574204",
         "floors": [
-            {
-                "buildingCode": "HL",
-                "level": "A"
-            },
-            {
-                "buildingCode": "HL",
-                "level": "1"
-            },
-            {
-                "buildingCode": "HL",
-                "level": "2"
-            },
-            {
-                "buildingCode": "HL",
-                "level": "3"
-            },
-            {
-                "buildingCode": "HL",
-                "level": "4"
-            },
-            {
-                "buildingCode": "HL",
-                "level": "5"
-            }
+            "A",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -2606,34 +2390,13 @@
         "name": "Margaret Morrison Carnegie Hall",
         "osmId": "27591314",
         "floors": [
-            {
-                "buildingCode": "MM",
-                "level": "C"
-            },
-            {
-                "buildingCode": "MM",
-                "level": "B"
-            },
-            {
-                "buildingCode": "MM",
-                "level": "A"
-            },
-            {
-                "buildingCode": "MM",
-                "level": "1"
-            },
-            {
-                "buildingCode": "MM",
-                "level": "2"
-            },
-            {
-                "buildingCode": "MM",
-                "level": "3"
-            },
-            {
-                "buildingCode": "MM",
-                "level": "4"
-            }
+            "C",
+            "B",
+            "A",
+            "1",
+            "2",
+            "3",
+            "4"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -2921,30 +2684,12 @@
         "name": "Newell-Simon Hall",
         "osmId": "27551590",
         "floors": [
-            {
-                "buildingCode": "NSH",
-                "level": "B"
-            },
-            {
-                "buildingCode": "NSH",
-                "level": "A"
-            },
-            {
-                "buildingCode": "NSH",
-                "level": "1"
-            },
-            {
-                "buildingCode": "NSH",
-                "level": "2"
-            },
-            {
-                "buildingCode": "NSH",
-                "level": "3"
-            },
-            {
-                "buildingCode": "NSH",
-                "level": "4"
-            }
+            "B",
+            "A",
+            "1",
+            "2",
+            "3",
+            "4"
         ],
         "defaultFloor": "3",
         "labelPosition": {
@@ -3063,10 +2808,7 @@
         "name": "Posner Center",
         "osmId": "27591276",
         "floors": [
-            {
-                "buildingCode": "PC",
-                "level": "1"
-            }
+            "1"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -3129,22 +2871,10 @@
         "name": "Posner Hall",
         "osmId": "27591241",
         "floors": [
-            {
-                "buildingCode": "POS",
-                "level": "A"
-            },
-            {
-                "buildingCode": "POS",
-                "level": "1"
-            },
-            {
-                "buildingCode": "POS",
-                "level": "2"
-            },
-            {
-                "buildingCode": "POS",
-                "level": "3"
-            }
+            "A",
+            "1",
+            "2",
+            "3"
         ],
         "defaultFloor": "A",
         "labelPosition": {
@@ -3235,22 +2965,10 @@
         "name": "Purnell Center for the Arts",
         "osmId": "27574406",
         "floors": [
-            {
-                "buildingCode": "PCA",
-                "level": "A"
-            },
-            {
-                "buildingCode": "PCA",
-                "level": "1"
-            },
-            {
-                "buildingCode": "PCA",
-                "level": "2"
-            },
-            {
-                "buildingCode": "PCA",
-                "level": "3"
-            }
+            "A",
+            "1",
+            "2",
+            "3"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -3393,26 +3111,11 @@
         "name": "Roberts Engineering Hall",
         "osmId": "27590641",
         "floors": [
-            {
-                "buildingCode": "REH",
-                "level": "A"
-            },
-            {
-                "buildingCode": "REH",
-                "level": "1"
-            },
-            {
-                "buildingCode": "REH",
-                "level": "2"
-            },
-            {
-                "buildingCode": "REH",
-                "level": "3"
-            },
-            {
-                "buildingCode": "REH",
-                "level": "4"
-            }
+            "A",
+            "1",
+            "2",
+            "3",
+            "4"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -3511,34 +3214,13 @@
         "name": "Scott Hall",
         "osmId": null,
         "floors": [
-            {
-                "buildingCode": "SC",
-                "level": "EV"
-            },
-            {
-                "buildingCode": "SC",
-                "level": "LL"
-            },
-            {
-                "buildingCode": "SC",
-                "level": "3"
-            },
-            {
-                "buildingCode": "SC",
-                "level": "4"
-            },
-            {
-                "buildingCode": "SC",
-                "level": "5"
-            },
-            {
-                "buildingCode": "SC",
-                "level": "6"
-            },
-            {
-                "buildingCode": "SC",
-                "level": "PH"
-            }
+            "EV",
+            "LL",
+            "3",
+            "4",
+            "5",
+            "6",
+            "PH"
         ],
         "defaultFloor": "5",
         "labelPosition": {
@@ -3699,18 +3381,9 @@
         "name": "Smith Hall",
         "osmId": "27591104",
         "floors": [
-            {
-                "buildingCode": "EDS",
-                "level": "1"
-            },
-            {
-                "buildingCode": "EDS",
-                "level": "2"
-            },
-            {
-                "buildingCode": "EDS",
-                "level": "3"
-            }
+            "1",
+            "2",
+            "3"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -3773,22 +3446,10 @@
         "name": "TCS Hall",
         "osmId": "946491335",
         "floors": [
-            {
-                "buildingCode": "TCS",
-                "level": "1"
-            },
-            {
-                "buildingCode": "TCS",
-                "level": "2"
-            },
-            {
-                "buildingCode": "TCS",
-                "level": "3"
-            },
-            {
-                "buildingCode": "TCS",
-                "level": "4"
-            }
+            "1",
+            "2",
+            "3",
+            "4"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -3907,30 +3568,12 @@
         "name": "Tepper Building",
         "osmId": "583510520",
         "floors": [
-            {
-                "buildingCode": "TEP",
-                "level": "1"
-            },
-            {
-                "buildingCode": "TEP",
-                "level": "2"
-            },
-            {
-                "buildingCode": "TEP",
-                "level": "3"
-            },
-            {
-                "buildingCode": "TEP",
-                "level": "4"
-            },
-            {
-                "buildingCode": "TEP",
-                "level": "5"
-            },
-            {
-                "buildingCode": "TEP",
-                "level": "6"
-            }
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
         ],
         "defaultFloor": "2",
         "labelPosition": {
@@ -4150,42 +3793,15 @@
         "name": "Wean Hall",
         "osmId": "27551364",
         "floors": [
-            {
-                "buildingCode": "WEH",
-                "level": "1"
-            },
-            {
-                "buildingCode": "WEH",
-                "level": "2"
-            },
-            {
-                "buildingCode": "WEH",
-                "level": "3"
-            },
-            {
-                "buildingCode": "WEH",
-                "level": "4"
-            },
-            {
-                "buildingCode": "WEH",
-                "level": "5"
-            },
-            {
-                "buildingCode": "WEH",
-                "level": "6"
-            },
-            {
-                "buildingCode": "WEH",
-                "level": "7"
-            },
-            {
-                "buildingCode": "WEH",
-                "level": "8"
-            },
-            {
-                "buildingCode": "WEH",
-                "level": "9"
-            }
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"
         ],
         "defaultFloor": "5",
         "labelPosition": {
@@ -4534,14 +4150,8 @@
         "name": "WQED Building",
         "osmId": "544174673",
         "floors": [
-            {
-                "buildingCode": "WQ",
-                "level": "1"
-            },
-            {
-                "buildingCode": "WQ",
-                "level": "3"
-            }
+            "1",
+            "3"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -4878,18 +4488,9 @@
         "name": "407 S. Craig",
         "osmId": "44157443",
         "floors": [
-            {
-                "buildingCode": "4SC",
-                "level": "A"
-            },
-            {
-                "buildingCode": "4SC",
-                "level": "1"
-            },
-            {
-                "buildingCode": "4SC",
-                "level": "2"
-            }
+            "A",
+            "1",
+            "2"
         ],
         "defaultFloor": "1",
         "labelPosition": {

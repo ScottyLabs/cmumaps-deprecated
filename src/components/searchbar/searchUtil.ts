@@ -1,12 +1,6 @@
 import { distance as levenDist } from 'fastest-levenshtein';
 
-import {
-  AbsoluteCoordinate,
-  Building,
-  Floor,
-  SearchMap,
-  SearchRoom,
-} from '@/types';
+import { Building, SearchRoom } from '@/types';
 
 function getRoomTokens(room: SearchRoom, building: Building): string[] {
   let tokens = [room.name, building.code, building.name];
@@ -38,11 +32,11 @@ export const findRooms = (
   // No query: only show building names
   const lDistCache = new Map();
   // Query for another building
-  const roomsList = building.floors.flatMap((floor: Floor) => {
-    if (!floorMap?.[floor.level]) {
+  const roomsList = building.floors.flatMap((floorLevel) => {
+    if (!floorMap?.[floorLevel]) {
       return [];
     }
-    const roomsObj = Object.values(floorMap[floor.level]);
+    const roomsObj = Object.values(floorMap[floorLevel]);
     const queryTokens = query
       .toLowerCase()
       .split(' ')
@@ -79,7 +73,10 @@ export const findRooms = (
         // .map(([roomId, room]) => ({ // new
         .map((room) => ({
           ...room,
-          floor,
+          floor: {
+            buildingCode: building.code,
+            level: floorLevel,
+          },
         })) ?? []
     );
   });
