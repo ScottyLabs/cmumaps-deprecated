@@ -90,13 +90,6 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
     }
   };
 
-  // zoom on the selected building
-  useEffect(() => {
-    if (selectedBuilding) {
-      zoomOnObject(mapRef, selectedBuilding?.shapes.flat());
-    }
-  }, [mapRef, selectedBuilding]);
-
   const zoomOnDefaultBuilding = (
     newBuildings: Record<BuildingCode, Building>,
     newFloors: FloorMap | null,

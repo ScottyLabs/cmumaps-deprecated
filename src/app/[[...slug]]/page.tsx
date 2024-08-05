@@ -48,6 +48,7 @@ const Page = ({ params, searchParams }: Props) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+  const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
   useEffect(() => {
     // extract data from the url
@@ -183,11 +184,13 @@ const Page = ({ params, searchParams }: Props) => {
         title += buildings[focusedFloor.buildingCode].name;
         title += ` ${focusedFloor.level}`;
         title += ' — ';
+      } else if (selectedBuilding) {
+        title += selectedBuilding.code + ' ';
       }
       title += 'CMU Maps';
       document.title = title;
     }
-  }, [buildings, focusedFloor, focusedFloor?.level]);
+  }, [buildings, focusedFloor, focusedFloor?.level, selectedBuilding]);
 
   // update the url
   useEffect(() => {
@@ -196,14 +199,14 @@ const Page = ({ params, searchParams }: Props) => {
       url += `${selectedRoom.floor}/${selectedRoom.id}`;
     } else if (focusedFloor) {
       url += `${focusedFloor.buildingCode}`;
-
-      if (focusedFloor) {
-        url += `-${focusedFloor.level}`;
-      }
+      url += `-${focusedFloor.level}`;
+    } else if (selectedBuilding) {
+      url += selectedBuilding.code;
     }
+
     // use window instead of the next router to prevent rezooming in...
     window.history.pushState({}, '', url);
-  }, [selectedRoom, focusedFloor]);
+  }, [selectedRoom, focusedFloor, selectedBuilding]);
 
   const renderClerkIcon = () => {
     if (isMobile) {
