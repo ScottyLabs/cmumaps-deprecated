@@ -1,6 +1,7 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
@@ -36,6 +37,7 @@ interface Props {
  * The main page of the CMU Map website.
  */
 const Page = ({ params, searchParams }: Props) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const mapRef = useRef<mapkit.Map | null>(null);
@@ -49,7 +51,6 @@ const Page = ({ params, searchParams }: Props) => {
 
   useEffect(() => {
     // extract data from the url
-    console.log(buildings);
     if (buildings && params.slug && params.slug.length > 0) {
       // first slug is the building code
       const code = params.slug[0];
@@ -57,9 +58,21 @@ const Page = ({ params, searchParams }: Props) => {
         const buildingCode = code.split('-')[0];
         const floorLevel = code.split('-')[1];
 
-        // validations
-
         const building = buildings[buildingCode];
+
+        // validations on the building code
+        if (!building) {
+          router.push('/');
+          return;
+        }
+
+        // validations on the floor level
+        const floorLevels = building.floors.map((floor) => floor.level);
+        if (!floorLevels.includes(floorLevel)) {
+          router.push(buildingCode);
+          return;
+        }
+
         dispatch(claimBuilding(building));
         zoomOnObject(mapRef, building.shapes.flat());
         dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
@@ -68,7 +81,7 @@ const Page = ({ params, searchParams }: Props) => {
         dispatch(claimBuilding(buildings[buildingCode]));
       }
     }
-  }, [buildings, dispatch, params.slug]);
+  }, [buildings, dispatch, params.slug, router]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -187,6 +200,7 @@ const Page = ({ params, searchParams }: Props) => {
         url += `-${focusedFloor.level}`;
       }
     }
+    // use window instead of the next router to prevent rezooming in...
     window.history.pushState({}, '', url);
   }, [selectedRoom, focusedFloor]);
 
