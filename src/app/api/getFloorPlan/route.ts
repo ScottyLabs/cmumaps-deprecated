@@ -15,7 +15,13 @@ export async function GET(req: NextRequest) {
 
     const data = await readFile(floorPlanPath, 'utf8');
     const floorPlan = await JSON.parse(data);
-
+    Object.keys(floorPlan.rooms).forEach((roomId) => {
+      const room = floorPlan.rooms[roomId];
+      room.id = roomId;
+      room.floor = { buildingCode, level: floorLevel };
+      room.alias = room.aliases.length ? room.aliases[0] : '';
+      delete room.aliases;
+    });
     return new NextResponse(JSON.stringify({ floorPlan }), {
       status: 200,
     });
