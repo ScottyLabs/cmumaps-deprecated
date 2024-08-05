@@ -1,3 +1,5 @@
+'use client';
+
 import { Position } from 'geojson';
 import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 
@@ -31,7 +33,6 @@ export const getFloorCenter = (rooms: Room[]): Position => {
 };
 
 interface FloorPlanOverlayProps {
-  floor: Floor;
   showRoomNames: boolean;
 }
 
@@ -125,7 +126,7 @@ export default function FloorPlanOverlay({
             <div
               className={`relative width-[${iconSize}] height-[${iconSize}]`}
             >
-              <RoomPin room={room} />
+              <RoomPin room={{ ...room, id: roomId }} />
               {(showRoomNames || room.alias) && (
                 <div
                   className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
