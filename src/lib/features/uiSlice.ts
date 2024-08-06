@@ -43,29 +43,14 @@ const uiSlice = createSlice({
       }
     },
 
-    claimBuilding(state, action) {
-      const building = action.payload;
-
-      if (state.selectedBuilding?.code !== building?.code) {
-        state.selectedBuilding = building;
-        state.focusedFloor = {
-          buildingCode: building.code,
-          level: building.defaultFloor,
-        };
-      }
-
-      state.isSearchOpen = false;
-    },
-    releaseBuilding(state, action) {
-      if (action.payload?.code === state.selectedBuilding?.code) {
-        state.selectedBuilding = null;
-      }
-    },
     selectBuilding(state, action) {
       state.selectedBuilding = action.payload;
     },
+    deselectBuilding(state) {
+      state.selectedBuilding = null;
+    },
 
-    setFocusedFloor(state, action) {
+    setFocusedFloor(state, action: PayloadAction<Floor | null>) {
       state.focusedFloor = action.payload;
     },
 
@@ -91,9 +76,8 @@ export const getIsCardOpen = (state: UIState) => {
 export const {
   claimRoom,
   releaseRoom,
-  claimBuilding,
-  releaseBuilding,
   selectBuilding,
+  deselectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
   setRoomImageList,

@@ -29,6 +29,10 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
     (state) => state.ui.isCardWrapperCollapsed,
   );
 
+  if (!buildings) {
+    return;
+  }
+
   const building = buildings[focusedFloor.buildingCode];
 
   // don't render the floor switcher if on mobile and the card covers the floor switcher
@@ -47,11 +51,10 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
       );
     }
 
-    const floorLevels = building.floors.map((floor) => floor.level);
-    const floorIndex = floorLevels.indexOf(focusedFloor.level);
+    const floorIndex = building.floors.indexOf(focusedFloor.level);
 
     const canGoDown = floorIndex > 0;
-    const canGoUp = floorIndex < floorLevels.length - 1;
+    const canGoUp = floorIndex < building.floors.length - 1;
 
     const renderDownArrow = () => (
       <div className="mr-2 flex items-center border-x border-gray-300 px-2">
@@ -60,7 +63,12 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           className={canGoDown ? '' : 'text-gray-300'}
           disabled={!canGoDown}
           onClick={() =>
-            dispatch(setFocusedFloor(building.floors[floorIndex - 1]))
+            dispatch(
+              setFocusedFloor({
+                buildingCode: building.code,
+                level: building.floors[floorIndex - 1],
+              }),
+            )
           }
         >
           <FaArrowDown />
@@ -71,12 +79,12 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
     const renderFloorLevelCell = () => {
       const renderEllipses = () => (
         <div className="flex justify-center">
-          {building.floors.map((floor: Floor) => (
+          {building.floors.map((floorLevel) => (
             <div
-              key={floor.level}
+              key={floorLevel}
               className={
                 'm-[1px] h-1 w-1 rounded-full ' +
-                (floor.level == focusedFloor.level ? 'bg-black' : 'bg-gray-400')
+                (floorLevel == focusedFloor.level ? 'bg-black' : 'bg-gray-400')
               }
             ></div>
           ))}
@@ -91,9 +99,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           }}
           disabled={building.floors.length < 2}
         >
-          <div className="px-2 text-center">
-            {building.floors[floorIndex].level}
-          </div>
+          <div className="px-2 text-center">{building.floors[floorIndex]}</div>
           {renderEllipses()}
         </button>
       );
@@ -106,7 +112,12 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           className={canGoUp ? '' : 'text-gray-300'}
           disabled={!canGoUp}
           onClick={() =>
-            dispatch(setFocusedFloor(building.floors[floorIndex + 1]))
+            dispatch(
+              setFocusedFloor({
+                buildingCode: building.code,
+                level: building.floors[floorIndex + 1],
+              }),
+            )
           }
         >
           <FaArrowUp />
@@ -131,22 +142,27 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
 
     return (
       <div className="ml-2 flex items-stretch">
-        {building.floors.map((floor: Floor) => (
+        {building.floors.map((floorLevel) => (
           <div
-            key={floor.level}
+            key={floorLevel}
             className="flex items-center border-l border-gray-300"
           >
             <div
               className={
                 'cursor-pointer px-4 ' +
-                (floor.level === focusedFloor.level ? 'font-bold' : '')
+                (floorLevel === focusedFloor.level ? 'font-bold' : '')
               }
               onClick={() => {
                 setShowFloorPicker(false);
-                dispatch(setFocusedFloor(floor));
+                dispatch(
+                  setFocusedFloor({
+                    buildingCode: building.code,
+                    level: floorLevel,
+                  }),
+                );
               }}
             >
-              {floor.level}
+              {floorLevel}
             </div>
           </div>
         ))}

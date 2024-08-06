@@ -1,17 +1,24 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
 
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
+import { zoomOnObject } from '@/components/buildings/mapUtils';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
 import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
-import { setIsMobile, setRoomImageList } from '@/lib/features/uiSlice';
+import {
+  setFocusedFloor,
+  setIsMobile,
+  setRoomImageList,
+  selectBuilding,
+} from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
 
@@ -30,6 +37,7 @@ interface Props {
  * The main page of the CMU Map website.
  */
 const Page = ({ params, searchParams }: Props) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const mapRef = useRef<mapkit.Map | null>(null);
@@ -40,6 +48,40 @@ const Page = ({ params, searchParams }: Props) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+  const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+
+  // extracting data in the initial loading of the page
+  useEffect(() => {
+    if (buildings && params.slug && params.slug.length > 0) {
+      // first slug is the building code
+      const code = params.slug[0];
+      if (code.includes('-')) {
+        const buildingCode = code.split('-')[0];
+        const floorLevel = code.split('-')[1];
+
+        const building = buildings[buildingCode];
+
+        // validations on the building code
+        if (!building) {
+          router.push('/');
+          return;
+        }
+
+        // validations on the floor level
+        if (!building.floors.includes(floorLevel)) {
+          router.push(buildingCode);
+          return;
+        }
+
+        dispatch(selectBuilding(building));
+        zoomOnObject(mapRef, building.shapes.flat());
+        dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
+      } else {
+        const buildingCode = code;
+        dispatch(selectBuilding(buildings[buildingCode]));
+      }
+    }
+  }, [buildings, dispatch, params.slug, router]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -93,18 +135,18 @@ const Page = ({ params, searchParams }: Props) => {
       // set floors
       const promises = Object.values(buildings)
         .map((building) =>
-          building.floors.map(async (floor) => {
+          building.floors.map(async (floorLevel) => {
             // only loads GHC, WEH, and NSH for now
             if (!['GHC', 'WEH', 'NSH'].includes(building.code)) {
               return [null, null, null];
             }
 
-            if (building.code == 'CUC' && floor.level !== '2') {
+            if (building.code == 'CUC' && floorLevel !== '2') {
               return [null, null, null];
             }
 
             const outlineResponse = await fetch(
-              `/json/${building.code}/${building.code}-${floor.level}-outline.json`,
+              `/json/${building.code}/${building.code}-${floorLevel}-outline.json`,
             );
             const outlineJson = await outlineResponse.json();
 
@@ -113,10 +155,9 @@ const Page = ({ params, searchParams }: Props) => {
             for (const roomId in searchRooms) {
               searchRooms[roomId]['id'] = roomId;
               delete searchRooms[roomId]['polygon'];
-              delete searchRooms[roomId]['labelPosition'];
             }
 
-            return [building.code, floor.level, searchRooms];
+            return [building.code, floorLevel, searchRooms];
           }),
         )
         .flat(2);
@@ -135,32 +176,44 @@ const Page = ({ params, searchParams }: Props) => {
     getBuildings();
   }, [dispatch]);
 
-  // update the page title
+  //#region Update the Page Title
+  // update the page title - building
   useEffect(() => {
-    let title = '';
-    if (focusedFloor) {
-      title += buildings[focusedFloor.buildingCode].name;
-      title += ` ${focusedFloor.level}`;
-      title += ' — ';
+    if (selectedBuilding) {
+      const title = `${selectedBuilding.name} - CMU Maps`;
+      document.title = title;
     }
-    title += 'CMU Maps';
-    document.title = title;
+  }, [buildings, selectedBuilding]);
+
+  // update the page title - floor
+  useEffect(() => {
+    if (buildings && focusedFloor) {
+      const buildingCode = buildings[focusedFloor.buildingCode].code;
+      const title = `${buildingCode} Floor ${focusedFloor.level} - CMU Maps`;
+      document.title = title;
+    }
   }, [buildings, focusedFloor, focusedFloor?.level]);
 
-  // update the url
+  //#endregion
+
+  // update the URL
   useEffect(() => {
     let url = window.location.origin + '/';
     if (selectedRoom) {
       url += `${selectedRoom.floor}/${selectedRoom.id}`;
+      window.history.pushState({}, '', url);
     } else if (focusedFloor) {
       url += `${focusedFloor.buildingCode}`;
-
-      if (focusedFloor) {
-        url += `-${focusedFloor.level}`;
-      }
+      url += `-${focusedFloor.level}`;
+      window.history.pushState({}, '', url);
+    } else if (selectedBuilding) {
+      url += selectedBuilding.code;
+      window.history.pushState({}, '', url);
+    } else {
+      window.history.pushState({}, '', url);
     }
-    window.history.pushState({}, '', url);
-  }, [selectedRoom, focusedFloor]);
+    // use window instead of the next router to prevent rezooming in
+  }, [selectedRoom, focusedFloor, selectedBuilding]);
 
   const renderClerkIcon = () => {
     if (isMobile) {
@@ -197,7 +250,7 @@ const Page = ({ params, searchParams }: Props) => {
         {renderClerkIcon()}
       </div>
 
-      <MapDisplay params={params} mapRef={mapRef} points={points} />
+      <MapDisplay mapRef={mapRef} points={points} />
     </main>
   );
 };
