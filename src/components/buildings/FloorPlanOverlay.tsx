@@ -1,7 +1,7 @@
 'use client';
 
 import { Position } from 'geojson';
-import { Annotation, Coordinate, Polygon } from 'mapkit-react';
+import { Annotation, Coordinate, Marker, Polygon } from 'mapkit-react';
 
 import React, { use, useEffect, useState } from 'react';
 
@@ -49,17 +49,20 @@ export default function FloorPlanOverlay({
 
   // fetch the floor plan from floor
   useEffect(() => {
-    getFloorPlan({ buildingCode: floor.buildingCode, level: floor.level }).then(
-      (floorPlan) => {
+    if (floor?.buildingCode && floor.level) {
+      getFloorPlan({
+        buildingCode: floor.buildingCode,
+        level: floor.level,
+      }).then((floorPlan) => {
         // be careful of floor plans that doesn't have placements
         if (floorPlan?.placement) {
           setFloorPlan(floorPlan);
         } else {
           setFloorPlan(null);
         }
-      },
-    );
-  }, [floor.buildingCode, floor.level]);
+      });
+    }
+  }, [floor?.buildingCode, floor?.level]);
 
   if (!floorPlan) {
     return;
@@ -99,7 +102,7 @@ export default function FloorPlanOverlay({
     };
 
     return (
-      <React.Fragment key={room.name}>
+      <div key={room.id}>
         <Polygon
           points={[...pointsSrc]}
           selected={selectedRoom?.id === roomId}
@@ -117,30 +120,38 @@ export default function FloorPlanOverlay({
         />
 
         {(showRoomNames || showIcon) && (
-          <Annotation
-            latitude={labelPos.latitude}
-            longitude={labelPos.longitude}
-            onSelect={() => dispatch(claimRoom(room))}
-            onDeselect={() => dispatch(releaseRoom(room))}
-          >
-            <div
-              className={`relative width-[${iconSize}] height-[${iconSize}]`}
+          <>
+            {/* <Marker
+              latitude={labelPos.latitude}
+              longitude={labelPos.longitude}
+            /> */}
+
+            <Annotation
+              latitude={labelPos.latitude}
+              longitude={labelPos.longitude}
+              onSelect={() => dispatch(claimRoom(room))}
+              onDeselect={() => dispatch(releaseRoom(room))}
+              // visible={showRoomNames || showIcon}
             >
-              <RoomPin room={{ ...room, id: roomId }} />
-              {(showRoomNames || room.alias) && (
-                <div
-                  className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
-                >
-                  {showRoomNames && (
-                    <div className={styles['room-number']}>{room.name}</div>
-                  )}
-                  {room.alias && <div>{room.alias}</div>}
-                </div>
-              )}
-            </div>
-          </Annotation>
+              <div
+                className={`relative width-[${iconSize}] height-[${iconSize}]`}
+              >
+                <RoomPin room={{ ...room, id: roomId }} />
+                {(showRoomNames || room.alias) && (
+                  <div
+                    className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
+                  >
+                    {showRoomNames && (
+                      <div className={styles['room-number']}>{room.name}</div>
+                    )}
+                    {room.alias && <div>{room.alias}</div>}
+                  </div>
+                )}
+              </div>
+            </Annotation>
+          </>
         )}
-      </React.Fragment>
+      </div>
     );
   });
 }
