@@ -134,6 +134,8 @@ export interface SearchRoom {
   aliases: string[];
 
   type: RoomType;
+
+  labelPosition: AbsoluteCoordinate;
 }
 
 export interface Room {
@@ -219,9 +221,9 @@ export interface Building {
   name: string;
 
   /**
-   * The floors in the building.
+   * A list of floor levels in the building.
    */
-  floors: Floor[];
+  floors: FloorLevel[];
 
   /**
    * The name of the floor displayed by default for this building.

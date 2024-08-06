@@ -6,11 +6,11 @@ import {
   PointOfInterestCategory,
 } from 'mapkit-react';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
-  claimBuilding,
   claimRoom,
+  deselectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
@@ -25,19 +25,34 @@ import FloorPlanOverlay, { getFloorCenter } from './FloorPlanOverlay';
 import { getBuildingDefaultFloorToFocus, zoomOnObject } from './mapUtils';
 
 interface MapDisplayProps {
-  params: {
-    slug?: string[];
-  };
   mapRef: React.RefObject<mapkit.Map | null>;
   points: number[][];
 }
 
-const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
+//#region Constants
+const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 200_000;
+const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 750_000;
+
+const cameraBoundary = {
+  centerLatitude: 40.44533940432823,
+  centerLongitude: -79.9457060010195,
+  latitudeDelta: 0.009258427149788417,
+  longitudeDelta: 0.014410141520116326,
+};
+
+const initialRegion = {
+  centerLatitude: 40.444,
+  centerLongitude: -79.945,
+  latitudeDelta: 0.006337455593801167,
+  longitudeDelta: 0.011960061265583022,
+};
+//#endregion
+
+const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
-  const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
   const [showFloor, setShowFloor] = useState<boolean>(false);
@@ -89,13 +104,6 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
       setShowRoomNames(true);
     }
   };
-
-  // zoom on the selected building
-  useEffect(() => {
-    if (selectedBuilding) {
-      zoomOnObject(mapRef, selectedBuilding?.shapes.flat());
-    }
-  }, [mapRef, selectedBuilding]);
 
   const zoomOnDefaultBuilding = (
     newBuildings: Record<BuildingCode, Building>,
@@ -165,38 +173,22 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
     }
   };
 
-  const cameraBoundary = useMemo(
-    () => ({
-      centerLatitude: 40.44533940432823,
-      centerLongitude: -79.9457060010195,
-      latitudeDelta: 0.009258427149788417,
-      longitudeDelta: 0.014410141520116326,
-    }),
-    [],
-  );
-
-  const initialRegion = useMemo(
-    () => ({
-      centerLatitude: 40.444,
-      centerLongitude: -79.945,
-      latitudeDelta: 0.006337455593801167,
-      longitudeDelta: 0.011960061265583022,
-    }),
-    [],
-  );
-
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
     (region, density) => {
-      const newShowFloors = density >= 200_000;
-      setShowFloor(newShowFloors);
-      setShowRoomNames(density >= 750_000);
+      if (!buildings) {
+        return;
+      }
 
-      // if not show floor then set focused floor to null
+      const newShowFloors = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
+      setShowFloor(newShowFloors);
+      setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS);
+
+      // there is no focused floor if we are not showing floors
       if (!newShowFloors) {
         dispatch(setFocusedFloor(null));
       }
-      // if show floor then show the default floor of the centered building
+      // if we are showing floor, we will show the default floor of the centered building
       else {
         const center = {
           latitude: region.centerLatitude,
@@ -220,6 +212,11 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
             dispatch(
               setFocusedFloor(getBuildingDefaultFloorToFocus(centerBuilding)),
             );
+
+            // // we should also show the building card when focus on the center buidling
+            // dispatch(
+            //   claimBuilding(getBuildingDefaultFloorToFocus(centerBuilding)),
+            // );
           }
         }
       }
@@ -227,25 +224,6 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
     mapRef,
     initialRegion,
   );
-
-  const handleLoad = () => {
-    // extract data from the url
-    // first slug is the building code
-    if (params.slug && params.slug.length > 0) {
-      if (buildings) {
-        const code = params.slug[0];
-        if (code.includes('-')) {
-          const buildingCode = code.split('-')[0];
-          const floorLevel = code.split('-')[1];
-          dispatch(claimBuilding(buildings[buildingCode]));
-          dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
-        } else {
-          const buildingCode = code;
-          dispatch(claimBuilding(buildings[buildingCode]));
-        }
-      }
-    }
-  };
 
   return (
     <Map
@@ -267,18 +245,21 @@ const MapDisplay = ({ params, mapRef }: MapDisplayProps) => {
         isMobile ? FeatureVisibility.Hidden : FeatureVisibility.Adaptive
       }
       allowWheelToZoom
-      onLoad={handleLoad}
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={onRegionChangeEnd}
-      onClick={() => dispatch(setIsSearchOpen(false))}
+      onClick={() => {
+        dispatch(setIsSearchOpen(false));
+        dispatch(deselectBuilding());
+      }}
     >
-      {Object.values(buildings).map((building) => (
-        <BuildingShape
-          key={building.code}
-          building={building}
-          showName={!showFloor}
-        />
-      ))}
+      {buildings &&
+        Object.values(buildings).map((building) => (
+          <BuildingShape
+            key={building.code}
+            building={building}
+            showFloor={showFloor}
+          />
+        ))}
 
       {focusedFloor && <FloorPlanOverlay showRoomNames={showRoomNames} />}
 

@@ -2,11 +2,7 @@ import { Annotation, Polygon } from 'mapkit-react';
 
 import React from 'react';
 
-import {
-  claimBuilding,
-  releaseBuilding,
-  selectBuilding,
-} from '@/lib/features/uiSlice';
+import { selectBuilding } from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { Building } from '@/types';
 
@@ -14,7 +10,7 @@ import Roundel from '../shared/Roundel';
 
 interface BuildingShapeProps {
   building: Building;
-  showName?: boolean;
+  showFloor: boolean;
 }
 
 /**
@@ -22,35 +18,54 @@ interface BuildingShapeProps {
  */
 export default function BuildingShape({
   building,
-  showName = false,
+  showFloor,
 }: BuildingShapeProps) {
   const dispatch = useAppDispatch();
 
-  return (
-    <>
+  const renderBuildingPolygon = () => {
+    return (
       <Polygon
-        key={`b-${building.code}`}
+        key={building.code}
         points={building.shapes}
         fillColor={building.floors.length > 0 ? '#9ca3af' : '#6b7280'}
         fillOpacity={1}
         strokeColor={building.floors.length > 0 ? '#6b7280' : '#374151'}
-        lineWidth={1}
-        onSelect={() => dispatch(claimBuilding(building))}
-        onDeselect={() => dispatch(releaseBuilding(building))}
       />
+    );
+  };
 
-      {(showName || building.floors.length === 0) && (
+  const renderRoundel = () => {
+    return (
+      <div
+        className="cursor-pointer translate-y-1/2"
+        onClick={(e) => {
+          dispatch(selectBuilding(building));
+          e.stopPropagation();
+        }}
+      >
         <Annotation
           latitude={building.labelPosition.latitude}
           longitude={building.labelPosition.longitude}
-          onSelect={() => dispatch(selectBuilding(building))}
-          onDeselect={() => dispatch(releaseBuilding(building))}
+          visible={!showFloor || building.floors.length === 0}
         >
-          <div className="translate-y-1/2 scale-[0.8]">
+          <div
+            className="cursor-pointer translate-y-1/2"
+            onClick={(e) => {
+              dispatch(selectBuilding(building));
+              e.stopPropagation();
+            }}
+          >
             <Roundel code={building.code} />
           </div>
         </Annotation>
-      )}
+      </div>
+    );
+  };
+
+  return (
+    <>
+      {renderBuildingPolygon()}
+      {renderRoundel()}
     </>
   );
 }

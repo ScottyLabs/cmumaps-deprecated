@@ -28,42 +28,42 @@ const BuildingCard = ({ building }: Props) => {
     [Room, IReadOnlyExtendedLocation | null][]
   >([]);
 
-  useEffect(() => {
-    const getEateries = () => {
-      return building.floors
-        .map((floor) => {
-          // remove this later!!!
-          if (!floorMap[`${building.code}`][`${floor.level}`]) {
-            return [];
-          }
-          const rooms = floorMap[`${building.code}`][`${floor.level}`];
-          // return Object.values(rooms).filter((room) => room.type == 'dining');
-          return rooms.filter(
-            (room) =>
-              room.aliases.includes('Revolution Noodle') ||
-              room.aliases.includes('Schatz Dining Room') ||
-              room.aliases.includes('Au Bon Pain at Skibo Café'),
-          );
-        })
-        .flat();
-    };
+  // useEffect(() => {
+  //   const getEateries = () => {
+  //     return building.floors
+  //       .map((floor) => {
+  //         // remove this later!!!
+  //         if (!floorMap[`${building.code}`][`${floor.level}`]) {
+  //           return [];
+  //         }
+  //         const rooms = floorMap[`${building.code}`][`${floor.level}`];
+  //         // return Object.values(rooms).filter((room) => room.type == 'dining');
+  //         return rooms.filter(
+  //           (room) =>
+  //             room.aliases.includes('Revolution Noodle') ||
+  //             room.aliases.includes('Schatz Dining Room') ||
+  //             room.aliases.includes('Au Bon Pain at Skibo Café'),
+  //         );
+  //       })
+  //       .flat();
+  //   };
 
-    const fetchEatingData = async () => {
-      const eateries = getEateries();
+  //   const fetchEatingData = async () => {
+  //     const eateries = getEateries();
 
-      const newEatingData: [Room, IReadOnlyExtendedLocation | null][] =
-        await Promise.all(
-          eateries.map(async (eatery) => {
-            const data = await getEatingData(eatery.alias);
-            return [eatery, data];
-          }),
-        );
+  //     const newEatingData: [Room, IReadOnlyExtendedLocation | null][] =
+  //       await Promise.all(
+  //         eateries.map(async (eatery) => {
+  //           const data = await getEatingData(eatery.alias);
+  //           return [eatery, data];
+  //         }),
+  //       );
 
-      setEatingData(newEatingData);
-    };
+  //     setEatingData(newEatingData);
+  //   };
 
-    fetchEatingData();
-  }, [building.code, building.floors, floorMap]);
+  //   fetchEatingData();
+  // }, [building.code, building.floors, floorMap]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
@@ -170,7 +170,7 @@ const BuildingCard = ({ building }: Props) => {
       {renderBuildingImage()}
       <h2 className="ml-3 mt-2">{building.name}</h2>
       {renderButtonsRow()}
-      {renderEateryCarousel()}
+      {/* {renderEateryCarousel()} */}
     </>
   );
 };
