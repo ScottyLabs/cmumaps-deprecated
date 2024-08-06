@@ -77,6 +77,7 @@ export const {
   claimRoom,
   releaseRoom,
   selectBuilding,
+  deselectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
   setRoomImageList,
