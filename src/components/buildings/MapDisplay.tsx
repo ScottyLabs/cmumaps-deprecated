@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 
 import {
   claimRoom,
+  deselectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
@@ -248,6 +249,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       onRegionChangeEnd={onRegionChangeEnd}
       onClick={() => {
         dispatch(setIsSearchOpen(false));
+        dispatch(deselectBuilding());
       }}
     >
       {buildings &&

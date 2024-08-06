@@ -12,9 +12,7 @@ export default function Roundel({ code }: Props) {
   return (
     <div
       className={
-        'flex items-center justify-center rounded-full bg-[#4b5563] font-mono font-extrabold' +
-        'border border-white' +
-        'text-center text-[1.05em] font-medium tracking-[0.02em] text-white size-10'
+        'flex items-center justify-center rounded-full bg-[#4b5563] font-mono border border-white text-center font-medium text-white size-10'
       }
     >
       {code}
