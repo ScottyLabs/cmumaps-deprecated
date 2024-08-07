@@ -6,7 +6,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 import { claimRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, Room } from '@/types';
+import { Building, SearchRoom } from '@/types';
 import { getEatingData } from '@/util/cmueats/getEatingData';
 import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
@@ -25,52 +25,54 @@ const BuildingCard = ({ building }: Props) => {
   const floorMap = useAppSelector((state) => state.data.searchMap);
 
   const [eatingData, setEatingData] = useState<
-    [Room, IReadOnlyExtendedLocation | null][]
+    [SearchRoom, IReadOnlyExtendedLocation | null][]
   >([]);
 
-  // useEffect(() => {
-  //   const getEateries = () => {
-  //     return building.floors
-  //       .map((floor) => {
-  //         // remove this later!!!
-  //         if (!floorMap[`${building.code}`][`${floor.level}`]) {
-  //           return [];
-  //         }
-  //         const rooms = floorMap[`${building.code}`][`${floor.level}`];
-  //         // return Object.values(rooms).filter((room) => room.type == 'dining');
-  //         return rooms.filter(
-  //           (room) =>
-  //             room.aliases.includes('Revolution Noodle') ||
-  //             room.aliases.includes('Schatz Dining Room') ||
-  //             room.aliases.includes('Au Bon Pain at Skibo Café'),
-  //         );
-  //       })
-  //       .flat();
-  //   };
+  useEffect(() => {
+    const getEateries = () => {
+      return building.floors
+        .map((floorLevel) => {
+          // remove this later!!!
+          if (
+            !floorMap[`${building.code}`] ||
+            !floorMap[`${building.code}`][floorLevel]
+          ) {
+            return [];
+          }
+          const rooms = floorMap[`${building.code}`][`${floorLevel}`];
+          return rooms.filter((room) => room.type == 'dining');
+        })
+        .flat();
+    };
 
-  //   const fetchEatingData = async () => {
-  //     const eateries = getEateries();
+    const fetchEatingData = async () => {
+      const eateries = getEateries();
 
-  //     const newEatingData: [Room, IReadOnlyExtendedLocation | null][] =
-  //       await Promise.all(
-  //         eateries.map(async (eatery) => {
-  //           const data = await getEatingData(eatery.alias);
-  //           return [eatery, data];
-  //         }),
-  //       );
+      const newEatingData: [SearchRoom, IReadOnlyExtendedLocation | null][] =
+        await Promise.all(
+          eateries.map(async (eatery) => {
+            const data = await getEatingData(eatery.aliases[0]);
+            return [eatery, data];
+          }),
+        );
 
-  //     setEatingData(newEatingData);
-  //   };
+      setEatingData(newEatingData);
+    };
 
-  //   fetchEatingData();
-  // }, [building.code, building.floors, floorMap]);
+    fetchEatingData();
+  }, [building.code, building.floors, floorMap]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
 
     return (
       <div className="relative h-36 object-cover">
-        <Image fill={true} alt="Room Image" src={url} sizes="100vw" />
+        <Image
+          src={url}
+          alt={building.name + ' image'}
+          fill={true}
+          sizes="99vw"
+        />
       </div>
     );
   };
@@ -170,7 +172,7 @@ const BuildingCard = ({ building }: Props) => {
       {renderBuildingImage()}
       <h2 className="ml-3 mt-2">{building.name}</h2>
       {renderButtonsRow()}
-      {/* {renderEateryCarousel()} */}
+      {renderEateryCarousel()}
     </>
   );
 };

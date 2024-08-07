@@ -1,15 +1,7 @@
 import axios from 'axios';
-
 import { DateTime } from 'luxon';
 
-import {
-  LocationState,
-  ITimeSlotTime,
-  IReadOnlyLocation,
-  IReadOnlyLocationStatus,
-  ITimeSlots,
-  IReadOnlyAPILocation,
-} from './types/locationTypes';
+import toTitleCase from './string';
 import {
   diffInMinutes,
   currentlyOpen,
@@ -21,11 +13,18 @@ import {
   minutesSinceSundayDateTime,
   getApproximateTimeStringFromMinutes,
 } from './time';
-import toTitleCase from './string';
 import {
   IAPIResponseJoiSchema,
   ILocationAPIJoiSchema,
 } from './types/joiLocationTypes';
+import {
+  LocationState,
+  ITimeSlotTime,
+  IReadOnlyLocation,
+  IReadOnlyLocationStatus,
+  ITimeSlots,
+  IReadOnlyAPILocation,
+} from './types/locationTypes';
 
 const WEEKDAYS = [
   'Sunday',
@@ -72,7 +71,7 @@ export function getStatusMessage(
   if (relTimeDiff === '0 minutes') {
     return `${action} now (${day} at ${time})`;
   }
-  console.log(`${action} in ${relTimeDiff} (${day} at ${time})`);
+  // console.log(`${action} in ${relTimeDiff} (${day} at ${time})`);
   return `${action} in ${relTimeDiff} (${day} at ${time})`;
 }
 

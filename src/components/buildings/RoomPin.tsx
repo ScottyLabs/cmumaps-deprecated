@@ -52,7 +52,11 @@ export default function RoomPin({ room }: RoomPinProps) {
       style={{ background: roomColors.primary }}
       title={titleCase(room.type)}
     >
-      <Image className="size-[12px]" src={hasGraphic ? icon : pinIcon} />
+      <Image
+        alt={'Room Pin Alt Placeholder'}
+        className="size-[12px]"
+        src={hasGraphic ? icon : pinIcon}
+      />
     </div>
   );
 }
