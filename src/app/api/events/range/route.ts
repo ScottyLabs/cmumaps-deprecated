@@ -1,9 +1,6 @@
-import { PrismaClient } from '@prisma/client';
-import { date } from 'joi';
 import { NextRequest } from 'next/server';
-import { start } from 'repl';
 
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
 export async function retrieveEvents(
   roomName: string | undefined,
