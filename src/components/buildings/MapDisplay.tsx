@@ -5,13 +5,15 @@ import {
   PointOfInterestCategory,
 } from 'mapkit-react';
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   deselectBuilding,
   releaseRoom,
   setFocusedFloor,
   setIsSearchOpen,
+  setShowFloor,
+  setShowRoomNames,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
@@ -53,9 +55,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
-
-  const [showFloor, setShowFloor] = useState<boolean>(false);
-  const [showRoomNames, setShowRoomNames] = useState(false);
+  const showFloor = useAppSelector((state) => state.ui.showFloor);
 
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
@@ -65,8 +65,8 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       }
 
       const newShowFloors = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
-      setShowFloor(newShowFloors);
-      setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS);
+      dispatch(setShowFloor(newShowFloors));
+      dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
 
       // there is no focused floor if we are not showing floors
       if (!newShowFloors) {
@@ -168,7 +168,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           />
         ))}
 
-      {focusedFloor && <FloorPlanOverlay showRoomNames={showRoomNames} />}
+      {focusedFloor && <FloorPlanOverlay />}
 
       <NavLine />
     </Map>

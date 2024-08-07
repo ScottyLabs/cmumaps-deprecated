@@ -32,19 +32,15 @@ export const getFloorCenter = (rooms: Room[]): Position => {
   return [(minX + maxX) / 2, (minY + maxY) / 2];
 };
 
-interface FloorPlanOverlayProps {
-  showRoomNames: boolean;
-}
-
 /**
  * The contents of a floor displayed on the map.
  */
-export default function FloorPlanOverlay({
-  showRoomNames,
-}: FloorPlanOverlayProps) {
+const FloorPlanOverlay = () => {
   const dispatch = useAppDispatch();
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const floor = useAppSelector((state) => state.ui.focusedFloor);
+  const showRoomNames = useAppSelector((state) => state.ui.showRoomNames);
+
   const [floorPlan, setFloorPlan] = useState<FloorPlan | null>(null);
 
   // fetch the floor plan from floor
@@ -143,4 +139,6 @@ export default function FloorPlanOverlay({
       </div>
     );
   });
-}
+};
+
+export default FloorPlanOverlay;
