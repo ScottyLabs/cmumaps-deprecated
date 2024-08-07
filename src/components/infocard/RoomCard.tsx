@@ -35,7 +35,7 @@ const RoomCard = ({ room }: Props) => {
           fill={true}
           alt="Room Image"
           src={url}
-          sizes="100vw"
+          sizes="99vw"
         />
       </div>
     );
