@@ -67,9 +67,17 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
     }
   }, [room, buildings, building]);
 
+  const handleCloseSearch = () => {
+    dispatch(setIsSearchOpen(false));
+    dispatch(setIsNavOpen(false));
+    dispatch(setRecommendedPath([]));
+    dispatch(releaseRoom(null));
+    setSearchQuery('');
+  };
+
   // close search if esc is pressed
   useEscapeKey(() => {
-    dispatch(setIsSearchOpen(false));
+    handleCloseSearch();
   });
 
   // blur the input field when not searching
@@ -88,22 +96,16 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         title="Close"
         size={25}
         className="absolute right-1"
-        onPointerDown={() => {
-          dispatch(setIsSearchOpen(false));
-          dispatch(setIsNavOpen(false));
-          dispatch(setRecommendedPath([]));
-          dispatch(releaseRoom(null));
-          setSearchQuery('');
-        }}
+        onPointerDown={handleCloseSearch}
       />
     );
 
     return (
-      <div className="flex items-center rounded bg-white w-full p-1">
+      <div className="flex w-full items-center rounded bg-white p-1">
         <Image
           alt="Search Icon"
           src={searchIcon}
-          className="size-4.5 invert ml-4 opacity-60"
+          className="size-4.5 ml-4 opacity-60 invert"
         />
 
         <input
@@ -198,7 +200,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
   return (
     <div
       id="SearchBar"
-      className="box-shadow fixed top-4 z-10 w-full rounded mx-2 sm:w-96"
+      className="box-shadow fixed top-4 z-10 mx-2 w-full rounded sm:w-96"
     >
       {renderSearchQueryInput()}
       {searchQuery == '' && (
