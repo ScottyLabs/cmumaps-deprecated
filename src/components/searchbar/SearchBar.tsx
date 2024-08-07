@@ -137,7 +137,11 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         }`}
       >
         {searchQuery != '' && (
-          <SearchResults query={searchQuery} userPosition={userPosition} />
+          <SearchResults
+            mapRef={mapRef}
+            query={searchQuery}
+            userPosition={userPosition}
+          />
         )}
       </div>
     );
