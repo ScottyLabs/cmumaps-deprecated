@@ -1,13 +1,13 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 
 import { claimRoom, selectBuilding } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
+import { AbsoluteCoordinate, Building, Floor, Room, SearchRoom } from '@/types';
 import titleCase from '@/util/titleCase';
 
 import RoomPin from '../buildings/RoomPin';
 import Roundel from '../shared/Roundel';
-import { findRooms } from './searchUtil';
+import { searchRoomsAll } from './searchUtil';
 
 interface WrapperProps {
   children: ReactElement;
@@ -19,7 +19,7 @@ const SearchResultWrapper = ({ children, handleClick }: WrapperProps) => {
     <button
       type="button"
       className={
-        'flex h-12 w-full justify-between items-center gap-2 px-6 hover:bg-[#efefef] bg-gray-50 transition duration-150 ease-out'
+        'flex h-12 w-full items-center justify-between gap-2 bg-gray-50 px-6 transition duration-150 ease-out hover:bg-[#efefef]'
       }
       onClick={handleClick}
     >
@@ -46,14 +46,18 @@ function roomType(room: Room): string {
 /**
  * Displays the search results.
  */
-export default function SearchResults({
-  query,
-  userPosition,
-}: SearchResultsProps) {
+export default function SearchResults({ query }: SearchResultsProps) {
   const dispatch = useAppDispatch();
 
   const searchMap = useAppSelector((state) => state.data.searchMap);
   const buildings = useAppSelector((state) => state.data.buildings);
+
+  const [searchResult, setSearchResults] = useState<
+    {
+      building: Building;
+      searchRoom: SearchRoom[];
+    }[]
+  >([]);
 
   // sort building by distance
   // if (userPosition) {
@@ -70,16 +74,14 @@ export default function SearchResults({
   //   );
   // }
 
-  const searchResult = Object.values(buildings)
-    .map((building: Building) => ({
-      Building: building,
-      Rooms: findRooms(query, building, searchMap[building.code], userPosition),
-    }))
-    .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
-    .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
-    .map(({ Building: building, Rooms: rooms }) => {
-      return { Building: building, Rooms: rooms[0] };
-    });
+  useEffect(() => {
+    if (buildings) {
+      setTimeout(() => {
+        const newSearchResult = searchRoomsAll(buildings, query, searchMap);
+        setSearchResults(newSearchResult);
+      }, 500);
+    }
+  }, [buildings, query, searchMap]);
 
   if (searchResult.length == 0) {
     return (
@@ -97,17 +99,17 @@ export default function SearchResults({
     return (
       <SearchResultWrapper handleClick={handleClick}>
         <div className="flex items-center gap-3">
-          <div className="scale-[0.6] mx-[-10px]">
+          <div className="mx-[-10px] scale-[0.6]">
             <Roundel code={building.code} />
           </div>
-          <p className="font-bold pl-[-1]">{building.name}</p>
+          <p className="pl-[-1] font-bold">{building.name}</p>
         </div>
       </SearchResultWrapper>
     );
   };
 
-  const renderRoomResults = (rooms: Room[], building: Building) => {
-    const renderText = (room: Room) => (
+  const renderRoomResults = (rooms: SearchRoom[], building: Building) => {
+    const renderText = (room: SearchRoom) => (
       <div className="flex flex-col text-left">
         <p>
           <span>
@@ -126,11 +128,8 @@ export default function SearchResults({
       dispatch(claimRoom(room));
     };
 
-    return rooms.map((room: Room) => (
-      <SearchResultWrapper
-        key={room.name + room.floor.level}
-        handleClick={handleClick(room)}
-      >
+    return rooms.map((room: SearchRoom) => (
+      <SearchResultWrapper key={room.id} handleClick={handleClick(room)}>
         <div className="flex items-center space-x-3">
           <RoomPin room={room} />
           {renderText(room)}
@@ -142,11 +141,14 @@ export default function SearchResults({
   return (
     <div id="searchResults">
       {searchResult.map((buildingResult) => {
-        const building = buildingResult['Building'];
+        const building = buildingResult['building'];
         return (
           <div key={building.code}>
             {renderBuildingResults(building)}
-            {renderRoomResults(buildingResult['Rooms'].slice(0, 100), building)}
+            {renderRoomResults(
+              buildingResult['searchRoom'].slice(0, 100),
+              building,
+            )}
           </div>
         );
       })}
