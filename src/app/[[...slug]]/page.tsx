@@ -6,10 +6,9 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
 
-import { getFloorCenter } from '@/components/buildings/FloorPlanOverlay';
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
-import { positionOnMap, zoomOnObject } from '@/components/buildings/mapUtils';
+import { zoomOnObject, zoomOnRoom } from '@/components/buildings/mapUtils';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
@@ -20,7 +19,6 @@ import {
   setIsMobile,
   setRoomImageList,
   selectBuilding,
-  claimRoom,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
@@ -95,14 +93,8 @@ const Page = ({ params, searchParams }: Props) => {
             if (floorPlan) {
               const room = floorPlan.rooms[roomId];
               if (room) {
-                dispatch(claimRoom(room));
-                const { placement, rooms } = floorPlan;
-                const center = getFloorCenter(Object.values(rooms));
-                const points = rooms[room.id].polygon.coordinates
-                  .flat()
-                  .map((point) => positionOnMap(point, placement, center));
                 if (mapRef.current) {
-                  zoomOnObject(mapRef.current, points);
+                  zoomOnRoom(mapRef.current, room, floorPlan, dispatch);
                 }
               }
             }
