@@ -28,7 +28,7 @@ export async function fetchEvents(
 }
 
 export async function searchEvents(query: string) {
-  console.log(query);
+  // console.log(query);
   const response = await fetch('/api/events/search', {
     method: 'GET',
     headers: {

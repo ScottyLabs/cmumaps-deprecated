@@ -12,6 +12,7 @@ import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
 import ButtonsRow from './ButtonsRow';
 import EateryInfo from './EateryInfo';
+import InfoCardImage from './InfoCardImage';
 import searchIcon from '/public/assets/icons/search.svg';
 
 interface Props {
@@ -69,17 +70,7 @@ const BuildingCard = ({ building }: Props) => {
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
 
-    return (
-      <div className="relative h-36 w-full">
-        <Image
-          className="object-cover"
-          fill={true}
-          alt="Building Image"
-          src={url}
-          sizes="99vw"
-        />
-      </div>
-    );
+    return <InfoCardImage url={url} />;
   };
 
   const renderButtonsRow = () => {
