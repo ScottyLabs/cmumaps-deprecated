@@ -6,18 +6,21 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
 
+import { getFloorCenter } from '@/components/buildings/FloorPlanOverlay';
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
-import { zoomOnObject } from '@/components/buildings/mapUtils';
+import { positionOnMap, zoomOnObject } from '@/components/buildings/mapUtils';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import SearchBar from '@/components/searchbar/SearchBar';
+import { getFloorPlan } from '@/lib/apiRoutes';
 import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
   setIsMobile,
   setRoomImageList,
   selectBuilding,
+  claimRoom,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
@@ -54,9 +57,13 @@ const Page = ({ params, searchParams }: Props) => {
   useEffect(() => {
     // makes all required things are loaded
     if (mapRef.current && buildings && params.slug && params.slug.length > 0) {
-      // first slug is the building code
       const code = params.slug[0];
-      if (code.includes('-')) {
+      if (!code.includes('-')) {
+        // only building code
+        const buildingCode = code;
+        dispatch(selectBuilding(buildings[buildingCode]));
+      } else {
+        // at least floor level
         const buildingCode = code.split('-')[0];
         const floorLevel = code.split('-')[1];
 
@@ -74,12 +81,33 @@ const Page = ({ params, searchParams }: Props) => {
           return;
         }
 
-        dispatch(selectBuilding(building));
-        zoomOnObject(mapRef.current, building.shapes.flat());
-        dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
-      } else {
-        const buildingCode = code;
-        dispatch(selectBuilding(buildings[buildingCode]));
+        const floor = { buildingCode, level: floorLevel };
+        const roomId = params.slug[1];
+
+        if (!roomId) {
+          // up to floor level
+          dispatch(selectBuilding(building));
+          zoomOnObject(mapRef.current, building.shapes.flat());
+          dispatch(setFocusedFloor(floor));
+        } else {
+          // up to room level
+          getFloorPlan(floor).then((floorPlan) => {
+            if (floorPlan) {
+              const room = floorPlan.rooms[roomId];
+              if (room) {
+                dispatch(claimRoom(room));
+                const { placement, rooms } = floorPlan;
+                const center = getFloorCenter(Object.values(rooms));
+                const points = rooms[room.id].polygon.coordinates
+                  .flat()
+                  .map((point) => positionOnMap(point, placement, center));
+                if (mapRef.current) {
+                  zoomOnObject(mapRef.current, points);
+                }
+              }
+            }
+          });
+        }
       }
     }
   }, [buildings, dispatch, params.slug, router, mapRef]);

@@ -72,7 +72,7 @@ export default function FloorPlanOverlay({
 
   // Compute the center position of the bounding box of the current floor
   // (Will be used as the rotation center)
-  const center = getFloorCenter(rooms);
+  const center = getFloorCenter(Object.values(rooms));
 
   const convertToMap = (absolute: Position): Coordinate =>
     positionOnMap(absolute, placement, center);
