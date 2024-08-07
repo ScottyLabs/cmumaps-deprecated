@@ -36,29 +36,30 @@ export default function BuildingShape({
 
   const renderRoundel = () => {
     return (
-      <div
-        className="cursor-pointer translate-y-1/2"
-        onClick={(e) => {
-          dispatch(selectBuilding(building));
-          e.stopPropagation();
-        }}
-      >
-        <Annotation
-          latitude={building.labelPosition.latitude}
-          longitude={building.labelPosition.longitude}
-          visible={!showFloor || building.floors.length === 0}
+      (!showFloor || building.floors.length === 0) && (
+        <div
+          className="translate-y-1/2 cursor-pointer"
+          onClick={(e) => {
+            dispatch(selectBuilding(building));
+            e.stopPropagation();
+          }}
         >
-          <div
-            className="cursor-pointer translate-y-1/2"
-            onClick={(e) => {
-              dispatch(selectBuilding(building));
-              e.stopPropagation();
-            }}
+          <Annotation
+            latitude={building.labelPosition.latitude}
+            longitude={building.labelPosition.longitude}
           >
-            <Roundel code={building.code} />
-          </div>
-        </Annotation>
-      </div>
+            <div
+              className="translate-y-1/2 cursor-pointer"
+              onClick={(e) => {
+                dispatch(selectBuilding(building));
+                e.stopPropagation();
+              }}
+            >
+              <Roundel code={building.code} />
+            </div>
+          </Annotation>
+        </div>
+      )
     );
   };
 
