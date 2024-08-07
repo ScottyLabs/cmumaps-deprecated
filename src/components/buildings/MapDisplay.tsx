@@ -6,7 +6,7 @@ import {
   PointOfInterestCategory,
 } from 'mapkit-react';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   claimRoom,
@@ -224,6 +224,27 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     mapRef,
     initialRegion,
   );
+
+  // DO NOT DELETE THIS MYSTERIOUS CODE IT HELPS THE PINS TO LOAD FASTER
+  // The working theory on why this works is that without any annotations, mapkit deletes the annotation layer
+  // so when we want to conjure the pins, we need to create a new annotation layer, which takes ~3s for no apparent reason
+  useEffect(() => {
+    if (!mapRef.current) {
+      return;
+    }
+    const randomCoordinate = new mapkit.Coordinate(40.444, -79.945);
+    const pinOptions = {
+      url: {
+        1: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Blank_square.svg/2048px-Blank_square.svg.png',
+      },
+      size: { width: 0, height: 0 },
+    };
+    const pinAnnotation = new mapkit.ImageAnnotation(
+      randomCoordinate,
+      pinOptions,
+    );
+    mapRef.current?.addAnnotation(pinAnnotation);
+  }, [mapRef.current]);
 
   return (
     <Map
