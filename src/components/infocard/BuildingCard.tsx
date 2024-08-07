@@ -51,8 +51,12 @@ const BuildingCard = ({ building }: Props) => {
       const newEatingData: [SearchRoom, IReadOnlyExtendedLocation | null][] =
         await Promise.all(
           eateries.map(async (eatery) => {
-            const data = await getEatingData(eatery.aliases[0]);
-            return [eatery, data];
+            if (eatery.aliases[0]) {
+              const data = await getEatingData(eatery.aliases[0]);
+              return [eatery, data];
+            } else {
+              return [eatery, null];
+            }
           }),
         );
 
@@ -81,7 +85,7 @@ const BuildingCard = ({ building }: Props) => {
     const renderMiddleButton = () => (
       <button
         type="button"
-        className="flex items-center rounded-lg bg-[#1e86ff] px-3 py-1 text-white gap-2"
+        className="flex items-center gap-2 rounded-lg bg-[#1e86ff] px-3 py-1 text-white"
       >
         <Image alt="Search Icon" src={searchIcon} className="size-3.5" />
         <p>Find rooms</p>
@@ -127,7 +131,7 @@ const BuildingCard = ({ building }: Props) => {
       };
 
       return (
-        <div className="ml-2 mb-1">
+        <div className="mb-1 ml-2">
           <p className="my-0 font-medium">Eateries nearby</p>
           <Carousel
             responsive={responsive}
@@ -152,7 +156,7 @@ const BuildingCard = ({ building }: Props) => {
       );
     } else {
       return (
-        <div className="mx-2 mb-3 space-y-3">
+        <div className="mx-2 mb-3 space-y-3 overflow-y-scroll">
           {eatingData.map(([eatery, eatingData]) => (
             <div
               key={eatery.id}
