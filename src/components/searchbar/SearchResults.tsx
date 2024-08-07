@@ -137,10 +137,7 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
       const floor = room.floor;
 
       if (floor?.buildingCode && floor.level) {
-        getFloorPlan({
-          buildingCode: floor.buildingCode,
-          level: floor.level,
-        }).then((floorPlan) => {
+        getFloorPlan(floor).then((floorPlan) => {
           // be careful of floor plans that doesn't have placements
           if (floorPlan?.placement) {
             const { placement, rooms } = floorPlan;
