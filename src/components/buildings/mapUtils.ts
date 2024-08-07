@@ -9,13 +9,10 @@ export const getBuildingDefaultFloorToFocus = (building: Building): Floor => {
   return { buildingCode: building.code, level: building.defaultFloor };
 };
 
-export const zoomOnObject = (
-  mapRef: React.RefObject<mapkit.Map | null>,
-  points: Coordinate[],
-) => {
+export const zoomOnObject = (mapRef: mapkit.Map, points: Coordinate[]) => {
   const allLat = points.map((p) => p.latitude);
   const allLon = points.map((p) => p.longitude);
-  mapRef.current?.setRegionAnimated(
+  mapRef.setRegionAnimated(
     new mapkit.BoundingRegion(
       Math.max(...allLat),
       Math.max(...allLon),
