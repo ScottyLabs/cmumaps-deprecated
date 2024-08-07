@@ -14,6 +14,9 @@ interface UIState {
   roomImageList: Record<string, string[]>;
 
   isCardWrapperCollapsed: boolean;
+
+  showFloor: boolean;
+  showRoomNames: boolean;
 }
 
 const initialState: UIState = {
@@ -24,6 +27,8 @@ const initialState: UIState = {
   isSearchOpen: false,
   roomImageList: {},
   isCardWrapperCollapsed: true,
+  showFloor: false,
+  showRoomNames: false,
 };
 
 const uiSlice = createSlice({
@@ -42,7 +47,9 @@ const uiSlice = createSlice({
         state.selectedBuilding = null;
       }
     },
-
+    setFocusedFloor(state, action: PayloadAction<Floor | null>) {
+      state.focusedFloor = action.payload;
+    },
     selectBuilding(state, action) {
       state.selectedBuilding = action.payload;
     },
@@ -50,21 +57,23 @@ const uiSlice = createSlice({
       state.selectedBuilding = null;
     },
 
-    setFocusedFloor(state, action: PayloadAction<Floor | null>) {
-      state.focusedFloor = action.payload;
-    },
-
-    setIsSearchOpen(state, action) {
-      state.isSearchOpen = action.payload;
-    },
-    setRoomImageList(state, action) {
+    setRoomImageList(state, action: PayloadAction<Record<string, string[]>>) {
       state.roomImageList = action.payload;
+    },
+    setIsSearchOpen(state, action: PayloadAction<boolean>) {
+      state.isSearchOpen = action.payload;
     },
     setIsCardWrapperCollapsed(state, action: PayloadAction<boolean>) {
       state.isCardWrapperCollapsed = action.payload;
     },
-    setIsMobile(state, action) {
+    setIsMobile(state, action: PayloadAction<boolean>) {
       state.isMobile = action.payload;
+    },
+    setShowFloor(state, action: PayloadAction<boolean>) {
+      state.showFloor = action.payload;
+    },
+    setShowRoomNames(state, action: PayloadAction<boolean>) {
+      state.showRoomNames = action.payload;
     },
   },
 });
@@ -83,5 +92,7 @@ export const {
   setRoomImageList,
   setIsCardWrapperCollapsed,
   setIsMobile,
+  setShowFloor,
+  setShowRoomNames,
 } = uiSlice.actions;
 export default uiSlice.reducer;
