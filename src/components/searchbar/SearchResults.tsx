@@ -3,14 +3,18 @@ import { Coordinate } from 'mapkit-react';
 
 import React, { ReactElement, useEffect, useState } from 'react';
 
-import { claimRoom, selectBuilding } from '@/lib/features/uiSlice';
+import {
+  claimRoom,
+  selectBuilding,
+  setIsSearchOpen,
+} from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, Floor, Room, SearchRoom } from '@/types';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 import { getFloorCenter } from '../buildings/FloorPlanOverlay';
 import RoomPin from '../buildings/RoomPin';
-import { positionOnMap } from '../buildings/mapUtils';
+import { positionOnMap, zoomOnObject } from '../buildings/mapUtils';
 import Roundel from '../shared/Roundel';
 import { searchRoomsAll } from './searchUtil';
 
@@ -34,6 +38,7 @@ const SearchResultWrapper = ({ children, handleClick }: WrapperProps) => {
 };
 
 interface SearchResultsProps {
+  mapRef: mapkit.Map | null;
   query: string;
   userPosition: AbsoluteCoordinate;
 }
@@ -41,7 +46,7 @@ interface SearchResultsProps {
 /**
  * Displays the search results.
  */
-export default function SearchResults({ query }: SearchResultsProps) {
+export default function SearchResults({ mapRef, query }: SearchResultsProps) {
   const dispatch = useAppDispatch();
 
   const searchMap = useAppSelector((state) => state.data.searchMap);
@@ -88,7 +93,11 @@ export default function SearchResults({ query }: SearchResultsProps) {
 
   const renderBuildingResults = (building: Building) => {
     const handleClick = () => {
+      if (mapRef) {
+        zoomOnObject(mapRef, building.shapes.flat());
+      }
       dispatch(selectBuilding(building));
+      dispatch(setIsSearchOpen(false));
     };
 
     return (
