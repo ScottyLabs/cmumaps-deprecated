@@ -133,6 +133,8 @@ export interface SearchRoom {
    */
   aliases: string[];
 
+  alias: string;
+
   type: RoomType;
 
   labelPosition: AbsoluteCoordinate;

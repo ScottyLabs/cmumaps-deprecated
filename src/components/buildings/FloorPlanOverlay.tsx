@@ -3,12 +3,12 @@
 import { Position } from 'geojson';
 import { Annotation, Coordinate, Marker, Polygon } from 'mapkit-react';
 
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { getFloorPlan } from '@/lib/apiRoutes';
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Floor, FloorPlan, getRoomTypeDetails, Room } from '@/types';
+import { FloorPlan, getRoomTypeDetails, Room } from '@/types';
 
 import styles from '../../styles/FloorPlanOverlay.module.css';
 import RoomPin, { hasIcon } from './RoomPin';

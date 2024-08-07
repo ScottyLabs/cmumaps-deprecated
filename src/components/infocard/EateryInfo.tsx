@@ -1,19 +1,24 @@
 import React from 'react';
 
-import { Room } from '@/types';
+import { Room, SearchRoom } from '@/types';
 import {
   IReadOnlyExtendedLocation,
   LocationState,
 } from '@/util/cmueats/types/locationTypes';
 
 interface Props {
-  room: Room;
+  room: Room | SearchRoom;
   eatingData: IReadOnlyExtendedLocation | null;
 }
 
 const EateryInfo = ({ room, eatingData }: Props) => {
   if (!eatingData) {
-    return <div className="ml-3 mt-2 font-bold"> {room.alias}</div>;
+    return (
+      <div className="ml-3 mt-2 flex justify-between">
+        <h3>{room.alias}</h3>
+        <p>No Info Available</p>
+      </div>
+    );
   }
 
   const getLocationState = () => {

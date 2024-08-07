@@ -20,7 +20,7 @@ import {
   selectBuilding,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building } from '@/types';
+import { Building, SearchRoom } from '@/types';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -137,12 +137,12 @@ const Page = ({ params, searchParams }: Props) => {
         .map((building) =>
           building.floors.map(async (floorLevel) => {
             // only loads GHC, WEH, and NSH for now
-            if (!['GHC', 'WEH', 'NSH'].includes(building.code)) {
-              return [null, null, null];
+            if (!['GHC', 'WEH', 'NSH', 'CUC'].includes(building.code)) {
+              return { buildingCode: '', floorLevel: '', searchRooms: [] };
             }
 
             if (building.code == 'CUC' && floorLevel !== '2') {
-              return [null, null, null];
+              return { buildingCode: '', floorLevel: '', searchRooms: [] };
             }
 
             const outlineResponse = await fetch(
@@ -150,20 +150,24 @@ const Page = ({ params, searchParams }: Props) => {
             );
             const outlineJson = await outlineResponse.json();
 
-            const searchRooms = outlineJson['rooms'];
+            const rooms = outlineJson['rooms'];
 
-            for (const roomId in searchRooms) {
-              searchRooms[roomId]['id'] = roomId;
-              delete searchRooms[roomId]['polygon'];
+            const searchRooms: SearchRoom[] = [];
+
+            for (const roomId in rooms) {
+              rooms[roomId]['id'] = roomId;
+              rooms[roomId]['alias'] = rooms[roomId]['aliases'][0];
+              delete rooms[roomId]['polygon'];
+              searchRooms.push(rooms[roomId]);
             }
 
-            return [building.code, floorLevel, searchRooms];
+            return { buildingCode: building.code, floorLevel, searchRooms };
           }),
         )
         .flat(2);
 
       Promise.all(promises).then((responses) => {
-        responses.forEach(([buildingCode, floorLevel, searchRooms]) => {
+        responses.forEach(({ buildingCode, floorLevel, searchRooms }) => {
           if (buildingCode) {
             dispatch(
               addFloorToSearchMap([buildingCode, floorLevel, searchRooms]),
