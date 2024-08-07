@@ -1,20 +1,12 @@
-import { Position } from 'geojson';
-import { Coordinate } from 'mapkit-react';
-
 import React, { ReactElement, useEffect, useState } from 'react';
 
 import { getFloorPlan } from '@/lib/apiRoutes';
-import {
-  claimRoom,
-  selectBuilding,
-  setIsSearchOpen,
-} from '@/lib/features/uiSlice';
+import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, SearchRoom } from '@/types';
 
-import { getFloorCenter } from '../buildings/FloorPlanOverlay';
 import RoomPin from '../buildings/RoomPin';
-import { positionOnMap, zoomOnObject } from '../buildings/mapUtils';
+import { zoomOnObject, zoomOnRoom } from '../buildings/mapUtils';
 import Roundel from '../shared/Roundel';
 import { searchRoomsAll } from './searchUtil';
 
@@ -127,31 +119,19 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
       </div>
     );
 
-    const handleClick = (room: SearchRoom) => () => {
-      dispatch(claimRoom(room));
-
+    const handleClick = (searchRoom: SearchRoom) => () => {
       if (!buildings || !mapRef) {
         return;
       }
 
-      const floor = room.floor;
+      const floor = searchRoom.floor;
 
       if (floor?.buildingCode && floor.level) {
         getFloorPlan(floor).then((floorPlan) => {
-          // be careful of floor plans that doesn't have placements
+          // be careful of floor plans that doesn't have placements !!!
           if (floorPlan?.placement) {
-            const { placement, rooms } = floorPlan;
-            const center = getFloorCenter(Object.values(rooms));
-            const points: Coordinate[] = rooms[room.id].polygon.coordinates
-              .flat()
-              .map((point: Position) =>
-                positionOnMap(point, placement, center),
-              );
-
-            zoomOnObject(mapRef, points);
-
-            // setShowFloor(true);
-            // setShowRoomNames(true);
+            const room = floorPlan.rooms[searchRoom.id];
+            zoomOnRoom(mapRef, room, floor, floorPlan, dispatch);
           }
         });
       }
