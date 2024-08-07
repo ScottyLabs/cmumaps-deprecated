@@ -228,7 +228,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   // DO NOT DELETE THIS MYSTERIOUS CODE IT HELPS THE PINS TO LOAD FASTER
   // The working theory on why this works is that without any annotations, mapkit deletes the annotation layer
   // so when we want to conjure the pins, we need to create a new annotation layer, which takes ~3s for no apparent reason
-  useEffect(() => {
+  const handleLoad = () => {
     if (!mapRef.current) {
       return;
     }
@@ -244,7 +244,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       pinOptions,
     );
     mapRef.current?.addAnnotation(pinAnnotation);
-  }, [mapRef.current]);
+  };
 
   return (
     <Map
@@ -272,6 +272,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         dispatch(setIsSearchOpen(false));
         dispatch(deselectBuilding());
       }}
+      onLoad={handleLoad}
     >
       {buildings &&
         Object.values(buildings).map((building) => (
