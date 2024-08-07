@@ -138,6 +138,8 @@ export interface SearchRoom {
   type: RoomType;
 
   labelPosition: AbsoluteCoordinate;
+
+  floor: Floor;
 }
 
 export interface Room {
@@ -205,7 +207,7 @@ export interface Floor {
  */
 export interface FloorPlan {
   placement: Placement;
-  rooms: Room[];
+  rooms: Record<ID, Room>;
 }
 
 /**
