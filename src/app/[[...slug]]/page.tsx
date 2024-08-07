@@ -52,7 +52,8 @@ const Page = ({ params, searchParams }: Props) => {
 
   // extracting data in the initial loading of the page
   useEffect(() => {
-    if (buildings && params.slug && params.slug.length > 0) {
+    // makes all required things are loaded
+    if (mapRef.current && buildings && params.slug && params.slug.length > 0) {
       // first slug is the building code
       const code = params.slug[0];
       if (code.includes('-')) {
@@ -74,14 +75,14 @@ const Page = ({ params, searchParams }: Props) => {
         }
 
         dispatch(selectBuilding(building));
-        zoomOnObject(mapRef, building.shapes.flat());
+        zoomOnObject(mapRef.current, building.shapes.flat());
         dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
       } else {
         const buildingCode = code;
         dispatch(selectBuilding(buildings[buildingCode]));
       }
     }
-  }, [buildings, dispatch, params.slug, router]);
+  }, [buildings, dispatch, params.slug, router, mapRef]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -204,7 +205,8 @@ const Page = ({ params, searchParams }: Props) => {
   useEffect(() => {
     let url = window.location.origin + '/';
     if (selectedRoom) {
-      url += `${selectedRoom.floor}/${selectedRoom.id}`;
+      const floor = selectedRoom.floor;
+      url += `${floor.buildingCode}-${floor.level}/${selectedRoom.id}`;
       window.history.pushState({}, '', url);
     } else if (focusedFloor) {
       url += `${focusedFloor.buildingCode}`;
@@ -222,7 +224,7 @@ const Page = ({ params, searchParams }: Props) => {
   const renderClerkIcon = () => {
     if (isMobile) {
       return (
-        <div className="fixed right-2 bottom-10">
+        <div className="fixed bottom-10 right-2">
           <UserButton />
         </div>
       );
