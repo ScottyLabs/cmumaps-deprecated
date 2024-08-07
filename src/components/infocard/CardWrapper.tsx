@@ -48,7 +48,7 @@ const CardWrapper = ({ snapPoint, children }: CardWrapperProps) => {
     );
   } else {
     return (
-      <div className="fixed left-2 top-20 z-10 flex w-96 flex-col overflow-clip rounded-lg bg-white">
+      <div className="fixed left-2 top-20 z-10 w-96 overflow-clip rounded-lg bg-white">
         {children}
       </div>
     );
