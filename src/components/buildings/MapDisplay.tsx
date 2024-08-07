@@ -1,3 +1,4 @@
+import { min } from 'date-fns';
 import {
   Coordinate,
   FeatureVisibility,
@@ -8,11 +9,13 @@ import {
 
 import React, { useEffect, useState } from 'react';
 
+import { setBuildings } from '@/lib/features/dataSlice';
 import {
   claimRoom,
   deselectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
+  setVisibleBuildings,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, BuildingCode, Room } from '@/types';
@@ -179,6 +182,35 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       if (!buildings) {
         return;
       }
+      const boundingBox = {
+        minLatitude: region.centerLatitude - region.latitudeDelta / 2,
+        maxLatitude: region.centerLatitude + region.latitudeDelta / 2,
+        minLongitude: region.centerLongitude - region.longitudeDelta / 2,
+        maxLongitude: region.centerLongitude + region.longitudeDelta / 2,
+      };
+      const buildingsToFocus = Object.values(buildings).filter((building) => {
+        const [buildingLats, buildingLongs] = building.shapes[0].reduce(
+          (acc: [number[], number[]], point: Coordinate) => {
+            acc[0].push(point.latitude);
+            acc[1].push(point.longitude);
+            return acc;
+          },
+          [[], []],
+        );
+        const isInLat = (value: number) =>
+          value >= boundingBox.minLatitude && value <= boundingBox.maxLatitude;
+        const isInLong = (value: number) =>
+          value >= boundingBox.minLongitude &&
+          value <= boundingBox.maxLongitude;
+        const anyLatIn =
+          isInLat(Math.min(...buildingLats)) ||
+          isInLat(Math.max(...buildingLats));
+        const anyLongIn =
+          isInLong(Math.min(...buildingLongs)) ||
+          isInLong(Math.max(...buildingLongs));
+        return anyLatIn && anyLongIn;
+      });
+      dispatch(setVisibleBuildings(buildingsToFocus));
 
       const newShowFloors = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
       setShowFloor(newShowFloors);
@@ -232,6 +264,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     if (!mapRef.current) {
       return;
     }
+
     const randomCoordinate = new mapkit.Coordinate(40.444, -79.945);
     const pinOptions = {
       url: {
