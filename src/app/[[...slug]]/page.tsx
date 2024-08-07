@@ -94,7 +94,7 @@ const Page = ({ params, searchParams }: Props) => {
               const room = floorPlan.rooms[roomId];
               if (room) {
                 if (mapRef.current) {
-                  zoomOnRoom(mapRef.current, room, floorPlan, dispatch);
+                  zoomOnRoom(mapRef.current, room, floor, floorPlan, dispatch);
                 }
               }
             }
