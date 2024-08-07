@@ -1,12 +1,32 @@
+import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { Position } from 'geojson';
 import { Coordinate } from 'mapkit-react';
 
-import { Building, Floor, Placement } from '@/types';
+import { claimRoom } from '@/lib/features/uiSlice';
+import { Building, Floor, FloorPlan, Placement, Room } from '@/types';
 import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
+import { getFloorCenter } from './FloorPlanOverlay';
+
 export const getBuildingDefaultFloorToFocus = (building: Building): Floor => {
   return { buildingCode: building.code, level: building.defaultFloor };
+};
+
+export const zoomOnRoom = (
+  mapRef: mapkit.Map,
+  room: Room,
+  floorPlan: FloorPlan,
+  dispatch: Dispatch<UnknownAction>,
+) => {
+  const { placement, rooms } = floorPlan;
+  const center = getFloorCenter(Object.values(rooms));
+  const points = rooms[room.id].polygon.coordinates
+    .flat()
+    .map((point) => positionOnMap(point, placement, center));
+  zoomOnObject(mapRef, points);
+
+  dispatch(claimRoom(room));
 };
 
 export const zoomOnObject = (mapRef: mapkit.Map, points: Coordinate[]) => {
