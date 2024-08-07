@@ -10,7 +10,6 @@ import Image from 'next/image';
 import React from 'react';
 
 import { Room, getRoomTypeDetails } from '@/types';
-import titleCase from '@/util/titleCase';
 
 const icons: { [type: string]: SVGElement } = {
   elevator: elevatorIcon,
@@ -48,9 +47,9 @@ export default function RoomPin({ room }: RoomPinProps) {
 
   return (
     <div
-      className="flex items-center justify-center h-[20px] w-[20px] rounded-[4px]"
+      className="flex h-[20px] w-[20px] items-center justify-center rounded-[4px]"
       style={{ background: roomColors.primary }}
-      title={titleCase(room.type)}
+      title={room.type}
     >
       <Image
         alt={'Room Pin Alt Placeholder'}
