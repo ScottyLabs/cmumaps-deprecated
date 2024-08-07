@@ -3,24 +3,21 @@ import { Annotation, Polygon } from 'mapkit-react';
 import React from 'react';
 
 import { selectBuilding } from '@/lib/features/uiSlice';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
 
 import Roundel from '../shared/Roundel';
 
 interface BuildingShapeProps {
   building: Building;
-  showFloor: boolean;
 }
 
 /**
  * The shape of a building on the map.
  */
-export default function BuildingShape({
-  building,
-  showFloor,
-}: BuildingShapeProps) {
+export default function BuildingShape({ building }: BuildingShapeProps) {
   const dispatch = useAppDispatch();
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 
   const renderBuildingPolygon = () => {
     return (
@@ -36,7 +33,7 @@ export default function BuildingShape({
 
   const renderRoundel = () => {
     return (
-      (!showFloor || building.floors.length === 0) && (
+      (!focusedFloor || building.floors.length === 0) && (
         <div
           className="translate-y-1/2 cursor-pointer"
           onClick={(e) => {

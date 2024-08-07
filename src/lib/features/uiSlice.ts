@@ -15,7 +15,6 @@ interface UIState {
 
   isCardWrapperCollapsed: boolean;
 
-  showFloor: boolean;
   showRoomNames: boolean;
 }
 
@@ -27,7 +26,6 @@ const initialState: UIState = {
   isSearchOpen: false,
   roomImageList: {},
   isCardWrapperCollapsed: true,
-  showFloor: false,
   showRoomNames: false,
 };
 
@@ -69,9 +67,6 @@ const uiSlice = createSlice({
     setIsMobile(state, action: PayloadAction<boolean>) {
       state.isMobile = action.payload;
     },
-    setShowFloor(state, action: PayloadAction<boolean>) {
-      state.showFloor = action.payload;
-    },
     setShowRoomNames(state, action: PayloadAction<boolean>) {
       state.showRoomNames = action.payload;
     },
@@ -92,7 +87,6 @@ export const {
   setRoomImageList,
   setIsCardWrapperCollapsed,
   setIsMobile,
-  setShowFloor,
   setShowRoomNames,
 } = uiSlice.actions;
 export default uiSlice.reducer;

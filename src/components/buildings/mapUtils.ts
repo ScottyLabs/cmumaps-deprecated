@@ -5,7 +5,6 @@ import { Coordinate } from 'mapkit-react';
 import {
   claimRoom,
   setFocusedFloor,
-  setShowFloor,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
 import { Building, Floor, FloorPlan, Placement, Room } from '@/types';
@@ -34,7 +33,6 @@ export const zoomOnRoom = (
 
   dispatch(claimRoom(room));
   dispatch(setFocusedFloor(floor));
-  dispatch(setShowFloor(true));
   dispatch(setShowRoomNames(true));
 };
 

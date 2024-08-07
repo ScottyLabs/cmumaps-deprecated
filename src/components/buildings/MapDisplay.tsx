@@ -12,7 +12,6 @@ import {
   releaseRoom,
   setFocusedFloor,
   setIsSearchOpen,
-  setShowFloor,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -32,7 +31,7 @@ interface MapDisplayProps {
 
 //#region Constants
 const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 200_000;
-const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 750_000;
+const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 600_000;
 
 const cameraBoundary = {
   centerLatitude: 40.44533940432823,
@@ -55,7 +54,6 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
-  const showFloor = useAppSelector((state) => state.ui.showFloor);
 
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
@@ -64,12 +62,11 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         return;
       }
 
-      const newShowFloors = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
-      dispatch(setShowFloor(newShowFloors));
+      const showFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
       dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
 
       // there is no focused floor if we are not showing floors
-      if (!newShowFloors) {
+      if (!showFloor) {
         dispatch(setFocusedFloor(null));
       }
       // if we are showing floor, we will show the default floor of the centered building
@@ -161,11 +158,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     >
       {buildings &&
         Object.values(buildings).map((building) => (
-          <BuildingShape
-            key={building.code}
-            building={building}
-            showFloor={showFloor}
-          />
+          <BuildingShape key={building.code} building={building} />
         ))}
 
       {focusedFloor && <FloorPlanOverlay />}
