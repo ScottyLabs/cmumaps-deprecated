@@ -10,7 +10,6 @@ import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { FloorPlan, getRoomTypeDetails, Room } from '@/types';
 
-import styles from '../../styles/FloorPlanOverlay.module.css';
 import RoomPin, { hasIcon } from './RoomPin';
 import { positionOnMap } from './mapUtils';
 
@@ -128,9 +127,7 @@ const FloorPlanOverlay = () => {
               <div
                 className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
               >
-                {showRoomNames && (
-                  <div className={styles['room-number']}>{room.name}</div>
-                )}
+                {showRoomNames && <div>{room.name}</div>}
                 {room.alias && <div>{room.alias}</div>}
               </div>
             )}
