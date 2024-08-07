@@ -90,7 +90,8 @@ const Page = ({ params, searchParams }: Props) => {
         } else {
           // up to room level
           getFloorPlan(floor).then((floorPlan) => {
-            if (floorPlan) {
+            // be careful of floor plans that doesn't have placements !!!
+            if (floorPlan?.placement) {
               const room = floorPlan.rooms[roomId];
               if (room) {
                 if (mapRef.current) {
