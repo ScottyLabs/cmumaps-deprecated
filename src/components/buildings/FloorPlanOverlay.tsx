@@ -1,7 +1,7 @@
 'use client';
 
 import { Position } from 'geojson';
-import { Annotation, Coordinate, Marker, Polygon } from 'mapkit-react';
+import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 
 import React, { useEffect, useState } from 'react';
 

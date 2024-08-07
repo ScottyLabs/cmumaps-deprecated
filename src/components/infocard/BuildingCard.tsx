@@ -156,7 +156,7 @@ const BuildingCard = ({ building }: Props) => {
       );
     } else {
       return (
-        <div className="mx-2 mb-3 space-y-3 overflow-y-scroll">
+        <div className="mx-2 mb-3 max-h-96 space-y-3 overflow-y-auto">
           {eatingData.map(([eatery, eatingData]) => (
             <div
               key={eatery.id}
