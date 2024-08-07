@@ -3,7 +3,6 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { claimRoom, selectBuilding } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, Floor, Room, SearchRoom } from '@/types';
-import titleCase from '@/util/titleCase';
 
 import RoomPin from '../buildings/RoomPin';
 import Roundel from '../shared/Roundel';
@@ -32,15 +31,6 @@ interface SearchResultsProps {
   query: string;
   onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   userPosition: AbsoluteCoordinate;
-}
-
-function roomType(room: Room): string {
-  switch (room.type) {
-    case 'study':
-      return 'Study Room';
-    default:
-      return room.type;
-  }
 }
 
 /**
@@ -116,7 +106,7 @@ export default function SearchResults({ query }: SearchResultsProps) {
             {building.code} {room.name}
           </span>
           {room.type !== 'default' && (
-            <span className="px-[8px] text-gray-400">{`${titleCase(roomType(room))}`}</span>
+            <span className="px-[8px] text-gray-400">{room.type}</span>
           )}
           {room.alias && <span className="truncate">{room.alias}</span>}
         </p>
