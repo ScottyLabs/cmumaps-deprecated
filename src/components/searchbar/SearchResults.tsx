@@ -3,14 +3,14 @@ import { Coordinate } from 'mapkit-react';
 
 import React, { ReactElement, useEffect, useState } from 'react';
 
+import { getFloorPlan } from '@/lib/apiRoutes';
 import {
   claimRoom,
   selectBuilding,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate, Building, Floor, Room, SearchRoom } from '@/types';
-import prefersReducedMotion from '@/util/prefersReducedMotion';
+import { AbsoluteCoordinate, Building, SearchRoom } from '@/types';
 
 import { getFloorCenter } from '../buildings/FloorPlanOverlay';
 import RoomPin from '../buildings/RoomPin';
@@ -112,38 +112,6 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
     );
   };
 
-  const onSelectRoom = (room: Room, building: Building, floor: Floor) => {
-    return;
-    if (!floors) {
-      console.error('floors is null, but how?');
-      return;
-    }
-
-    // dispatch(setFloorOrdinal(floor.ordinal));
-
-    const { placement, rooms } = floors[`${building.code}-${floor.name}`];
-    const center = getFloorCenter(rooms);
-    const points: Coordinate[] = room.polygon.coordinates
-      .flat()
-      .map((point: Position) => positionOnMap(point, placement, center));
-    const allLat = points.map((p) => p.latitude);
-    const allLon = points.map((p) => p.longitude);
-
-    mapRef?.setRegionAnimated(
-      new mapkit.BoundingRegion(
-        Math.max(...allLat),
-        Math.max(...allLon),
-        Math.min(...allLat),
-        Math.min(...allLon),
-      ).toCoordinateRegion(),
-      !prefersReducedMotion(),
-    );
-
-    // setShowFloor(true);
-    // setShowRoomNames(true);
-    // dispatch(setIsSearchOpen(false));
-  };
-
   const renderRoomResults = (rooms: SearchRoom[], building: Building) => {
     const renderText = (room: SearchRoom) => (
       <div className="flex flex-col text-left">
@@ -159,9 +127,37 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
       </div>
     );
 
-    const handleClick = (room: Room) => () => {
-      // dispatch(claimBuilding(building));
+    const handleClick = (room: SearchRoom) => () => {
       dispatch(claimRoom(room));
+
+      if (!buildings || !mapRef) {
+        return;
+      }
+
+      const floor = room.floor;
+
+      if (floor?.buildingCode && floor.level) {
+        getFloorPlan({
+          buildingCode: floor.buildingCode,
+          level: floor.level,
+        }).then((floorPlan) => {
+          // be careful of floor plans that doesn't have placements
+          if (floorPlan?.placement) {
+            const { placement, rooms } = floorPlan;
+            const center = getFloorCenter(Object.values(rooms));
+            const points: Coordinate[] = rooms[room.id].polygon.coordinates
+              .flat()
+              .map((point: Position) =>
+                positionOnMap(point, placement, center),
+              );
+
+            zoomOnObject(mapRef, points);
+
+            // setShowFloor(true);
+            // setShowRoomNames(true);
+          }
+        });
+      }
     };
 
     return rooms.map((room: SearchRoom) => (

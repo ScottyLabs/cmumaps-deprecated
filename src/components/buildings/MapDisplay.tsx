@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import {
   claimRoom,
   deselectBuilding,
+  releaseRoom,
   setFocusedFloor,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
@@ -271,6 +272,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       onClick={() => {
         dispatch(setIsSearchOpen(false));
         dispatch(deselectBuilding());
+        dispatch(releaseRoom(null));
       }}
       onLoad={handleLoad}
     >
