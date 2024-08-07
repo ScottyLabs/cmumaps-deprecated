@@ -1,11 +1,10 @@
-import Image from 'next/image';
-
 import React from 'react';
 
 import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
 import ButtonsRow from './ButtonsRow';
+import InfoCardImage from './InfoCardImage';
 import RoomSchedule from './RoomSchedule';
 
 // import RoomSchedule from './RoomSchedule';
@@ -28,17 +27,7 @@ const RoomCard = ({ room }: Props) => {
       url = `/assets/location_images/building_room_images/${buildingCode}/${room.name}.jpg`;
     }
 
-    return (
-      <div className="relative h-36 w-full">
-        <Image
-          className="object-cover"
-          fill={true}
-          alt="Room Image"
-          src={url}
-          sizes="99vw"
-        />
-      </div>
-    );
+    return <InfoCardImage url={url} alt={room.name} />;
   };
 
   const renderButtonsRow = () => {

@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import React, { useEffect, useState } from 'react';
 import { ImSpoonKnife } from 'react-icons/im';
 
@@ -9,6 +7,7 @@ import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
 import ButtonsRow from './ButtonsRow';
 import EateryInfo from './EateryInfo';
+import InfoCardImage from './InfoCardImage';
 
 interface Props {
   room: Room;
@@ -24,7 +23,7 @@ const Eaterycard = ({ room }: Props) => {
       setEatingData(newEatingData);
     };
     fetchEatingData();
-  }, [room.aliases]);
+  }, [room.alias]);
 
   const renderEateryImage = () => {
     if (eatingData) {
@@ -35,16 +34,7 @@ const Eaterycard = ({ room }: Props) => {
         .replace('é', 'e');
       const url = `/assets/location_images/eatery_images/${eateryName}.jpg`;
 
-      return (
-        <div className="relative h-36 w-full">
-          <Image
-            className="object-cover"
-            fill={true}
-            alt="Room Image"
-            src={url}
-          />
-        </div>
-      );
+      return <InfoCardImage url={url} alt={`${eateryName} Image`} />;
     }
   };
 

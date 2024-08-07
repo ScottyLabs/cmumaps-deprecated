@@ -70,7 +70,7 @@ const BuildingCard = ({ building }: Props) => {
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
 
-    return <InfoCardImage url={url} />;
+    return <InfoCardImage url={url} alt={`${building.name} Image`} />;
   };
 
   const renderButtonsRow = () => {
