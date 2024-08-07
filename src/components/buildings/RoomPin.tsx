@@ -9,7 +9,7 @@ import Image from 'next/image';
 
 import React from 'react';
 
-import { Room, getRoomTypeDetails } from '@/types';
+import { Room, SearchRoom, getRoomTypeDetails } from '@/types';
 
 const icons: { [type: string]: SVGElement } = {
   elevator: elevatorIcon,
@@ -29,10 +29,10 @@ const icons: { [type: string]: SVGElement } = {
 };
 
 interface RoomPinProps {
-  room: Room;
+  room: Room | SearchRoom;
 }
 
-export function hasIcon(room: Room) {
+export function hasIcon(room: Room | SearchRoom) {
   return room.type in icons;
 }
 

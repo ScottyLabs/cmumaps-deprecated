@@ -1,6 +1,4 @@
 import searchIcon from '@icons/search.svg';
-import { Position } from 'geojson';
-import { Coordinate } from 'mapkit-react';
 import Image from 'next/image';
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -11,11 +9,8 @@ import useEscapeKey from '@/hooks/useEscapeKey';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
 import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate, Building, Floor, Room } from '@/types';
-import prefersReducedMotion from '@/util/prefersReducedMotion';
+import { AbsoluteCoordinate } from '@/types';
 
-import { getFloorCenter } from '../buildings/FloorPlanOverlay';
-import { positionOnMap } from '../buildings/mapUtils';
 import SearchResults from './SearchResults';
 
 interface Props {
@@ -132,37 +127,6 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
     );
   };
 
-  const onSelectRoom = (room: Room, building: Building, floor: Floor) => {
-    return;
-    if (!floors) {
-      console.error('floors is null, but how?');
-      return;
-    }
-
-    // dispatch(setFloorOrdinal(floor.ordinal));
-
-    const { placement, rooms } = floors[`${building.code}-${floor.name}`];
-    const center = getFloorCenter(rooms);
-    const points: Coordinate[] = room.polygon.coordinates
-      .flat()
-      .map((point: Position) => positionOnMap(point, placement, center));
-    const allLat = points.map((p) => p.latitude);
-    const allLon = points.map((p) => p.longitude);
-
-    mapRef?.setRegionAnimated(
-      new mapkit.BoundingRegion(
-        Math.max(...allLat),
-        Math.max(...allLon),
-        Math.min(...allLat),
-        Math.min(...allLon),
-      ).toCoordinateRegion(),
-      !prefersReducedMotion(),
-    );
-
-    // setShowFloor(true);
-    // setShowRoomNames(true);
-  };
-
   const renderSearchResults = () => {
     return (
       <div
@@ -173,14 +137,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
         }`}
       >
         {searchQuery != '' && (
-          <SearchResults
-            query={searchQuery}
-            onSelectRoom={(room: Room, building: Building, newFloor: Floor) => {
-              onSelectRoom(room, building, newFloor);
-              dispatch(setIsSearchOpen(false));
-            }}
-            userPosition={userPosition}
-          />
+          <SearchResults query={searchQuery} userPosition={userPosition} />
         )}
       </div>
     );

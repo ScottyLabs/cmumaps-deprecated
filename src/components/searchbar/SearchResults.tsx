@@ -1,10 +1,16 @@
+import { Position } from 'geojson';
+import { Coordinate } from 'mapkit-react';
+
 import React, { ReactElement, useEffect, useState } from 'react';
 
 import { claimRoom, selectBuilding } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, Floor, Room, SearchRoom } from '@/types';
+import prefersReducedMotion from '@/util/prefersReducedMotion';
 
+import { getFloorCenter } from '../buildings/FloorPlanOverlay';
 import RoomPin from '../buildings/RoomPin';
+import { positionOnMap } from '../buildings/mapUtils';
 import Roundel from '../shared/Roundel';
 import { searchRoomsAll } from './searchUtil';
 
@@ -29,7 +35,6 @@ const SearchResultWrapper = ({ children, handleClick }: WrapperProps) => {
 
 interface SearchResultsProps {
   query: string;
-  onSelectRoom: (selectedRoom: Room, building: Building, floor: Floor) => void;
   userPosition: AbsoluteCoordinate;
 }
 
@@ -96,6 +101,38 @@ export default function SearchResults({ query }: SearchResultsProps) {
         </div>
       </SearchResultWrapper>
     );
+  };
+
+  const onSelectRoom = (room: Room, building: Building, floor: Floor) => {
+    return;
+    if (!floors) {
+      console.error('floors is null, but how?');
+      return;
+    }
+
+    // dispatch(setFloorOrdinal(floor.ordinal));
+
+    const { placement, rooms } = floors[`${building.code}-${floor.name}`];
+    const center = getFloorCenter(rooms);
+    const points: Coordinate[] = room.polygon.coordinates
+      .flat()
+      .map((point: Position) => positionOnMap(point, placement, center));
+    const allLat = points.map((p) => p.latitude);
+    const allLon = points.map((p) => p.longitude);
+
+    mapRef?.setRegionAnimated(
+      new mapkit.BoundingRegion(
+        Math.max(...allLat),
+        Math.max(...allLon),
+        Math.min(...allLat),
+        Math.min(...allLon),
+      ).toCoordinateRegion(),
+      !prefersReducedMotion(),
+    );
+
+    // setShowFloor(true);
+    // setShowRoomNames(true);
+    // dispatch(setIsSearchOpen(false));
   };
 
   const renderRoomResults = (rooms: SearchRoom[], building: Building) => {
