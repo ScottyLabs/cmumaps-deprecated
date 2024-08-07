@@ -7,15 +7,11 @@ import {
   setFocusedFloor,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
-import { Building, Floor, FloorPlan, Placement, Room } from '@/types';
+import { Floor, FloorPlan, Placement, Room } from '@/types';
 import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 import { getFloorCenter } from './FloorPlanOverlay';
-
-export const getBuildingDefaultFloorToFocus = (building: Building): Floor => {
-  return { buildingCode: building.code, level: building.defaultFloor };
-};
 
 export const zoomOnRoom = (
   mapRef: mapkit.Map,

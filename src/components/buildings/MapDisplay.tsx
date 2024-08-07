@@ -22,7 +22,6 @@ import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay from './FloorPlanOverlay';
-import { getBuildingDefaultFloorToFocus } from './mapUtils';
 
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
@@ -90,14 +89,12 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
             !focusedFloor ||
             buildings[focusedFloor.buildingCode].code != centerBuilding.code
           ) {
-            dispatch(
-              setFocusedFloor(getBuildingDefaultFloorToFocus(centerBuilding)),
-            );
+            const newFocusFloor = {
+              buildingCode: centerBuilding.code,
+              level: centerBuilding.defaultFloor,
+            };
 
-            // // we should also show the building card when focus on the center buidling
-            // dispatch(
-            //   claimBuilding(getBuildingDefaultFloorToFocus(centerBuilding)),
-            // );
+            dispatch(setFocusedFloor(newFocusFloor));
           }
         }
       }
