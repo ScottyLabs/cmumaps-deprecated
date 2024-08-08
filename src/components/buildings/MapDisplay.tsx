@@ -6,7 +6,7 @@ import {
   PointOfInterestCategory,
 } from 'mapkit-react';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   deselectBuilding,
@@ -14,7 +14,6 @@ import {
   setFocusedFloor,
   setIsSearchOpen,
   setShowRoomNames,
-  setVisibleBuildings,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
@@ -56,6 +55,8 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
+  const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
+
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
     (region, density) => {
@@ -68,6 +69,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         minLongitude: region.centerLongitude - region.longitudeDelta / 2,
         maxLongitude: region.centerLongitude + region.longitudeDelta / 2,
       };
+
       const buildingsToFocus = Object.values(buildings).filter((building) => {
         const [buildingLats, buildingLongs] = building.shapes[0].reduce(
           (acc: [number[], number[]], point: Coordinate) => {
@@ -90,7 +92,8 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           isInLong(Math.max(...buildingLongs));
         return anyLatIn && anyLongIn;
       });
-      dispatch(setVisibleBuildings(buildingsToFocus));
+
+      setVisibleBuildings(buildingsToFocus);
 
       const showFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
       dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
@@ -190,7 +193,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           <BuildingShape key={building.code} building={building} />
         ))}
 
-      {focusedFloor && <FloorPlanOverlay />}
+      {focusedFloor && <FloorPlanOverlay visibleBuildings={visibleBuildings} />}
 
       <NavLine />
     </Map>
