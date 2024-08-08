@@ -35,12 +35,29 @@ const RoomCard = ({ room }: Props) => {
     return <ButtonsRow middleButton={<></>} />;
   };
 
+  const renderRoomTitle = () => {
+    const getText = () => {
+      if (room.alias) {
+        return room.alias;
+      }
+
+      if (
+        room.type == 'restroom' ||
+        room.type == 'stairs' ||
+        room.type == 'elevator'
+      ) {
+        return room.type;
+      }
+      return `${buildings[room.floor.buildingCode].name} ${room.name}`;
+    };
+
+    return <div className="ml-3 mt-2 font-bold">{getText()}</div>;
+  };
+
   return (
     <div>
       {renderRoomImage()}
-      <div className="ml-3 mt-2 font-bold">
-        {buildings[room.floor.buildingCode].name} {room.name}
-      </div>
+      {renderRoomTitle()}
       {renderButtonsRow()}
       <RoomSchedule />
     </div>
