@@ -41,8 +41,9 @@ interface SearchResultsProps {
 export default function SearchResults({ mapRef, query }: SearchResultsProps) {
   const dispatch = useAppDispatch();
 
-  const searchMap = useAppSelector((state) => state.data.searchMap);
   const buildings = useAppSelector((state) => state.data.buildings);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
+  const searchMap = useAppSelector((state) => state.data.searchMap);
 
   const [searchResult, setSearchResults] = useState<
     {
@@ -127,13 +128,22 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
       const floor = searchRoom.floor;
 
       if (floor?.buildingCode && floor.level) {
-        getFloorPlan(floor).then((floorPlan) => {
-          // be careful of floor plans that doesn't have placements !!!
-          if (floorPlan?.placement) {
-            const room = floorPlan.rooms[searchRoom.id];
-            zoomOnRoom(mapRef, room, floor, floorPlan, dispatch);
-          }
-        });
+        if (
+          floorPlanMap[floor.buildingCode] &&
+          floorPlanMap[floor.buildingCode][floor.level]
+        ) {
+          const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
+          const room = floorPlan.rooms[searchRoom.id];
+          zoomOnRoom(mapRef, room, floor, floorPlan, dispatch);
+        } else {
+          getFloorPlan(floor).then((floorPlan) => {
+            // be careful of floor plans that doesn't have placements !!!
+            if (floorPlan?.placement) {
+              const room = floorPlan.rooms[searchRoom.id];
+              zoomOnRoom(mapRef, room, floor, floorPlan, dispatch);
+            }
+          });
+        }
       }
     };
 
