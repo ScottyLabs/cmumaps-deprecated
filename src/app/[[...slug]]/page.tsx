@@ -167,10 +167,6 @@ const Page = ({ params, searchParams }: Props) => {
               return { buildingCode: '', floorLevel: '', searchRooms: [] };
             }
 
-            if (building.code == 'WEH' && floorLevel === '3') {
-              return { buildingCode: '', floorLevel: '', searchRooms: [] };
-            }
-
             const outlineResponse = await fetch(
               `/json/${building.code}/${building.code}-${floorLevel}-outline.json`,
             );
