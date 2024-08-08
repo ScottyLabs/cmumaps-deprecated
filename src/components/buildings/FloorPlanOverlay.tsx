@@ -64,7 +64,9 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const showRoomNames = useAppSelector((state) => state.ui.showRoomNames);
 
-  const [floorPlans, setFloorPlans] = useState<FloorPlan[] | null>(null);
+  const [floorPlans, setFloorPlans] = useState<(FloorPlan | null)[] | null>(
+    null,
+  );
 
   // fetch the floor plan from floor
   useEffect(() => {
@@ -84,6 +86,7 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
     // get all the floor plans
     const promises = visibleBuildings.map(async (building) => {
       const floor = getFloorAtOrdinal(building, ordinal);
+
       if (floor) {
         return getFloorPlan(floor).then((floorPlan) => {
           // be careful of floor plans that doesn't have placements
@@ -93,16 +96,12 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
             return null;
           }
         });
+      } else {
+        return null;
       }
     });
 
-    Promise.all(promises).then((newFloorPlans) =>
-      setFloorPlans(
-        newFloorPlans.filter(
-          (floorPlan): floorPlan is FloorPlan => !!floorPlan,
-        ),
-      ),
-    );
+    Promise.all(promises).then((newFloorPlans) => setFloorPlans(newFloorPlans));
   }, [
     buildings,
     focusedFloor?.buildingCode,
@@ -114,82 +113,86 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
     return;
   }
 
-  console.log(floorPlans);
+  return floorPlans.map((floorPlan) => {
+    if (!floorPlan) {
+      return;
+    }
 
-  return;
+    const { placement, rooms } = floorPlan;
 
-  const { placement, rooms } = floorPlan;
+    // Compute the center position of the bounding box of the current floor
+    // (Will be used as the rotation center)
+    const center = getFloorCenter(Object.values(rooms));
 
-  // Compute the center position of the bounding box of the current floor
-  // (Will be used as the rotation center)
-  const center = getFloorCenter(Object.values(rooms));
+    const convertToMap = (absolute: Position): Coordinate =>
+      positionOnMap(absolute, placement, center);
 
-  const convertToMap = (absolute: Position): Coordinate =>
-    positionOnMap(absolute, placement, center);
+    return Object.entries(rooms).map(([roomId, room]) => {
+      const pointsSrc = room.polygon.coordinates.map((shape) =>
+        shape.map(convertToMap),
+      );
 
-  return Object.entries(rooms).map(([roomId, room]) => {
-    const pointsSrc = room.polygon.coordinates.map((shape) =>
-      shape.map(convertToMap),
-    );
+      const roomColors = getRoomTypeDetails(room.type);
 
-    const roomColors = getRoomTypeDetails(room.type);
+      const roomCenter = [room.labelPosition.x, room.labelPosition.y];
 
-    const roomCenter = [room.labelPosition.x, room.labelPosition.y];
+      const labelPos = convertToMap(roomCenter);
 
-    const labelPos = convertToMap(roomCenter);
+      // const opacity = isBackground ? 0.7 : 1;
+      const opacity = 1;
 
-    // const opacity = isBackground ? 0.7 : 1;
-    const opacity = 1;
+      const showIcon = hasIcon(room) || selectedRoom?.id === roomId;
 
-    const showIcon = hasIcon(room) || selectedRoom?.id === roomId;
+      const gutter = selectedRoom?.id === roomId ? 20 : 4;
+      const iconSize = selectedRoom?.id === roomId ? 20 : showIcon ? 20 : 10;
+      const labelHeight = 24;
+      const labelOffset = {
+        left: iconSize + gutter,
+        top: (iconSize - labelHeight) / 2,
+      };
 
-    const gutter = selectedRoom?.id === roomId ? 20 : 4;
-    const iconSize = selectedRoom?.id === roomId ? 20 : showIcon ? 20 : 10;
-    const labelHeight = 24;
-    const labelOffset = {
-      left: iconSize + gutter,
-      top: (iconSize - labelHeight) / 2,
-    };
+      return (
+        <div key={room.id}>
+          <Polygon
+            points={[...pointsSrc]}
+            selected={selectedRoom?.id === roomId}
+            enabled={true}
+            fillColor={roomColors.background}
+            fillOpacity={opacity}
+            strokeColor={
+              selectedRoom?.id === roomId ? '#f7efc3' : roomColors.border
+            }
+            strokeOpacity={opacity}
+            lineWidth={selectedRoom?.id === roomId ? 5 : 1}
+            onSelect={() => dispatch(claimRoom(room))}
+            onDeselect={() => dispatch(releaseRoom(room))}
+            fillRule="nonzero"
+          />
 
-    return (
-      <div key={room.id}>
-        <Polygon
-          points={[...pointsSrc]}
-          selected={selectedRoom?.id === roomId}
-          enabled={true}
-          fillColor={roomColors.background}
-          fillOpacity={opacity}
-          strokeColor={
-            selectedRoom?.id === roomId ? '#f7efc3' : roomColors.border
-          }
-          strokeOpacity={opacity}
-          lineWidth={selectedRoom?.id === roomId ? 5 : 1}
-          onSelect={() => dispatch(claimRoom(room))}
-          onDeselect={() => dispatch(releaseRoom(room))}
-          fillRule="nonzero"
-        />
-
-        <Annotation
-          latitude={labelPos.latitude}
-          longitude={labelPos.longitude}
-          onSelect={() => dispatch(claimRoom(room))}
-          onDeselect={() => dispatch(releaseRoom(room))}
-          visible={showRoomNames || showIcon}
-        >
-          <div className={`relative width-[${iconSize}] height-[${iconSize}] `}>
-            <RoomPin room={{ ...room, id: roomId }} />
-            {(showRoomNames || room.alias) && (
-              <div
-                className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
-              >
-                {showRoomNames && <div>{room.name}</div>}
-                {room.alias && <div>{room.alias}</div>}
-              </div>
-            )}
-          </div>
-        </Annotation>
-      </div>
-    );
+          <Annotation
+            latitude={labelPos.latitude}
+            longitude={labelPos.longitude}
+            onSelect={() => dispatch(claimRoom(room))}
+            onDeselect={() => dispatch(releaseRoom(room))}
+            visible={showRoomNames || showIcon}
+          >
+            <div
+              className={`relative width-[${iconSize}] height-[${iconSize}] `}
+            >
+              <RoomPin room={{ ...room, id: roomId }} />
+              {(showRoomNames || room.alias) && (
+                <div
+                  className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
+                >
+                  {showRoomNames && <div>{room.name}</div>}
+                  {room.alias && <div>{room.alias}</div>}
+                </div>
+              )}
+            </div>
+          </Annotation>
+        </div>
+      );
+    });
   });
 };
 
