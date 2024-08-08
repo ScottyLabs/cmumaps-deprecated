@@ -111,43 +111,43 @@ const RoomSchedule = () => {
       );
     };
 
-    const renderContent = () => {
-      if (weekEvents) {
-        const formatDate = (time: Date) => {
-          const date = new Date(time);
-          const hoursUTC = date.getUTCHours().toString().padStart(2, '0');
-          const minutesUTC = date.getUTCMinutes().toString().padStart(2, '0');
-          return `${hoursUTC}:${minutesUTC}`;
-        };
-
-        return weekEvents[dayOfWeek].map((event) => {
-          const startTime = formatDate(event.startTime);
-          const endTime = formatDate(event.endTime);
-
-          return (
-            <div key={event.id} className="flex justify-between">
-              <p>{event.name}</p>
-              <p>
-                {startTime}-{endTime}
-              </p>
-            </div>
-          );
-        });
-      }
-    };
-
     return (
       <div>
         {renderDateRow()}
         {renderWeekRow()}
-        {renderContent()}
       </div>
     );
+  };
+
+  const renderContent = () => {
+    if (weekEvents) {
+      const formatDate = (time: Date) => {
+        const date = new Date(time);
+        const hoursUTC = date.getUTCHours().toString().padStart(2, '0');
+        const minutesUTC = date.getUTCMinutes().toString().padStart(2, '0');
+        return `${hoursUTC}:${minutesUTC}`;
+      };
+
+      return weekEvents[dayOfWeek].map((event) => {
+        const startTime = formatDate(event.startTime);
+        const endTime = formatDate(event.endTime);
+
+        return (
+          <div key={event.id} className="flex justify-between">
+            <p>{event.name}</p>
+            <p>
+              {startTime}-{endTime}
+            </p>
+          </div>
+        );
+      });
+    }
   };
 
   return (
     <div className="space-x-4 rounded-lg bg-white p-4 shadow">
       {renderDatePicker()}
+      {renderContent()}
     </div>
   );
 };
