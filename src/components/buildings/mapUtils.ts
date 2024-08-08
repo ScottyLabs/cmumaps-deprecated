@@ -11,7 +11,7 @@ import { Floor, FloorPlan, Placement, Room } from '@/types';
 import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
-import { getFloorCenter } from './FloorPlanOverlay';
+import { getFloorCenter } from './FloorPlanView';
 
 export const zoomOnRoom = (
   mapRef: mapkit.Map,
