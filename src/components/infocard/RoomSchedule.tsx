@@ -8,7 +8,13 @@ import {
   eachDayOfInterval,
 } from 'date-fns';
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa';
 
@@ -20,18 +26,29 @@ interface Props {
 }
 
 const RoomSchedule = ({ setHasEvents }: Props) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  // replace this
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+
+  const today = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today;
+  }, []);
 
   const [currentWeek, setCurrentWeek] = useState<Date>(today);
   const [dayOfWeek, setDayOfWeek] = useState<number>(today.getDay());
   const [weekEvents, setWeekEvents] = useState<Event[][] | null>(null);
 
-  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const startOfCurrentWeek = useMemo(
+    () => startOfWeek(currentWeek, { weekStartsOn: 0 }),
+    [currentWeek],
+  );
+  const endOfCurrentWeek = useMemo(
+    () => endOfWeek(currentWeek, { weekStartsOn: 0 }),
+    [currentWeek],
+  );
 
-  const startOfCurrentWeek = startOfWeek(currentWeek, { weekStartsOn: 0 });
-  const endOfCurrentWeek = endOfWeek(currentWeek, { weekStartsOn: 0 });
   const daysOfWeek = eachDayOfInterval({
     start: startOfCurrentWeek,
     end: endOfCurrentWeek,
@@ -42,7 +59,7 @@ const RoomSchedule = ({ setHasEvents }: Props) => {
     setWeekEvents(null);
 
     const callBack = (events: Event[][]) => {
-      // setWeekEvents(events);
+      setWeekEvents(events);
       console.log(events);
       setHasEvents(events.flat().length > 0);
     };

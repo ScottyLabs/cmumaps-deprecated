@@ -41,11 +41,11 @@ const RoomCard = ({ room }: Props) => {
       {renderRoomImage()}
       <div className="ml-3 mt-2 font-bold">{room.name}</div>
 
-      {!hasEvents && (
+      {/* {!hasEvents && (
         <div className="ml-3 text-sm text-gray-400">
           No Room Schedule Available
         </div>
-      )}
+      )} */}
 
       {renderButtonsRow()}
 
