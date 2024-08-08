@@ -10,7 +10,12 @@ interface Props {
 }
 
 const RoomCard = ({ room }: Props) => {
+  const buildings = useAppSelector((state) => state.data.buildings);
   const roomImageList = useAppSelector((state) => state.ui.roomImageList);
+
+  if (!buildings) {
+    return;
+  }
 
   const renderRoomImage = () => {
     const buildingCode = room.floor.buildingCode;
@@ -34,7 +39,7 @@ const RoomCard = ({ room }: Props) => {
     <div>
       {renderRoomImage()}
       <div className="ml-3 mt-2 font-bold">
-        {room.floor.buildingCode} {room.name}
+        {buildings[room.floor.buildingCode].name} {room.name}
       </div>
       {renderButtonsRow()}
       <RoomSchedule />
