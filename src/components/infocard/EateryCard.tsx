@@ -48,10 +48,10 @@ const Eaterycard = ({ room }: Props) => {
         <a href={eatingData.url} target="_blank" rel="noreferrer">
           <button
             type="button"
-            className="flex rounded-lg bg-[#1e86ff] px-2 py-1 text-white"
+            className="flex h-full items-center gap-2 rounded-lg bg-[#1e86ff] px-3 py-1 text-white"
           >
-            <ImSpoonKnife className="mr-2" />
-            <p className="text-xs">Menu</p>
+            <ImSpoonKnife className="mr-2 size-3.5" />
+            <p>Menu</p>
           </button>
         </a>
       );

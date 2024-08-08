@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -13,7 +11,6 @@ import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 import ButtonsRow from './ButtonsRow';
 import EateryInfo from './EateryInfo';
 import InfoCardImage from './InfoCardImage';
-import searchIcon from '/public/assets/icons/search.svg';
 
 interface Props {
   building: Building;
@@ -74,17 +71,7 @@ const BuildingCard = ({ building }: Props) => {
   };
 
   const renderButtonsRow = () => {
-    const renderMiddleButton = () => (
-      <button
-        type="button"
-        className="flex items-center gap-2 rounded-lg bg-[#1e86ff] px-3 py-1 text-white"
-      >
-        <Image alt="Search Icon" src={searchIcon} className="size-3.5" />
-        <p>Find rooms</p>
-      </button>
-    );
-
-    return <ButtonsRow middleButton={renderMiddleButton()} />;
+    return <ButtonsRow middleButton={<></>} />;
   };
 
   const renderEateryCarousel = () => {
