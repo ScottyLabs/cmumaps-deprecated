@@ -199,8 +199,6 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     const ordinal =
       focusedBuilding.defaultOrdinal + focusedIndex - defaultIndex;
 
-    console.log(visibleBuildings);
-
     // get all the floor plans
     const promises = visibleBuildings.map(async (building) => {
       const floor = getFloorAtOrdinal(building, ordinal);
