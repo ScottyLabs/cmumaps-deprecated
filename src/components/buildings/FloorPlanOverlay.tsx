@@ -6,6 +6,7 @@ import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 import React, { useEffect, useState } from 'react';
 
 import { getFloorPlan } from '@/lib/apiRoutes';
+import { addFloorToFloorPlanMap } from '@/lib/features/dataSlice';
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Floor, FloorPlan, getRoomTypeDetails, Room } from '@/types';
@@ -60,6 +61,7 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const showRoomNames = useAppSelector((state) => state.ui.showRoomNames);
@@ -88,9 +90,23 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
       const floor = getFloorAtOrdinal(building, ordinal);
 
       if (floor) {
+        if (
+          floorPlanMap[floor.buildingCode] &&
+          floorPlanMap[floor.buildingCode][floor.level]
+        ) {
+          return floorPlanMap[floor.buildingCode][floor.level];
+        }
+
         return getFloorPlan(floor).then((floorPlan) => {
           // be careful of floor plans that doesn't have placements
           if (floorPlan?.placement) {
+            dispatch(
+              addFloorToFloorPlanMap([
+                floor.buildingCode,
+                floor.level,
+                floorPlan,
+              ]),
+            );
             return floorPlan;
           } else {
             return null;
@@ -104,6 +120,8 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
     Promise.all(promises).then((newFloorPlans) => setFloorPlans(newFloorPlans));
   }, [
     buildings,
+    dispatch,
+    floorPlanMap,
     focusedFloor?.buildingCode,
     focusedFloor?.level,
     visibleBuildings,
