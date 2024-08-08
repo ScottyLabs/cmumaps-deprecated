@@ -5,12 +5,13 @@ import React, { memo } from 'react';
 
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { FloorPlan, getRoomTypeDetails, Room } from '@/types';
+import { Floor, FloorPlan, getRoomTypeDetails, Room } from '@/types';
 
 import RoomPin, { hasIcon } from './RoomPin';
 import { positionOnMap } from './mapUtils';
 
 interface Props {
+  floor: Floor;
   floorPlan: FloorPlan;
 }
 
@@ -113,9 +114,11 @@ const FloorPlanView = ({ floorPlan }: Props) => {
   });
 };
 
-const areEqual = (prevProps, nextProps) => {
-  console.log(prevProps == nextProps);
-  return true;
+const areEqual = (prevProps: Props, nextProps: Props) => {
+  return (
+    prevProps.floor.buildingCode == nextProps.floor.buildingCode &&
+    prevProps.floor.level == nextProps.floor.level
+  );
 };
 
 export default memo(FloorPlanView, areEqual);
