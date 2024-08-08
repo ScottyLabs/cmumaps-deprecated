@@ -39,9 +39,9 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 
-  const [floorPlans, setFloorPlans] = useState<(FloorPlan | null)[] | null>(
-    null,
-  );
+  const [floorPlans, setFloorPlans] = useState<
+    ((FloorPlan & Floor) | null)[] | null
+  >(null);
 
   // fetch the floor plan from floor
   useEffect(() => {
@@ -67,7 +67,11 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
           floorPlanMap[floor.buildingCode] &&
           floorPlanMap[floor.buildingCode][floor.level]
         ) {
-          return floorPlanMap[floor.buildingCode][floor.level];
+          return {
+            ...floorPlanMap[floor.buildingCode][floor.level],
+            buildingCode: floor.buildingCode,
+            level: floor.level,
+          };
         }
 
         return getFloorPlan(floor).then((floorPlan) => {
@@ -80,7 +84,11 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
                 floorPlan,
               ]),
             );
-            return floorPlan;
+            return {
+              ...floorPlan,
+              buildingCode: floor.buildingCode,
+              level: floor.level,
+            };
           } else {
             return null;
           }
@@ -104,9 +112,15 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
     return;
   }
 
-  return floorPlans.map((floorPlan, index) => {
+  return floorPlans.map((floorPlan) => {
     if (floorPlan) {
-      return <FloorPlanView key={index} floorPlan={floorPlan} />;
+      return (
+        // key is the key to prevent re-rendering
+        <FloorPlanView
+          key={floorPlan.buildingCode + floorPlan.level}
+          floorPlan={floorPlan}
+        />
+      );
     }
   });
 };
