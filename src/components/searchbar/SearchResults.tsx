@@ -8,7 +8,7 @@ import { AbsoluteCoordinate, Building, SearchRoom } from '@/types';
 import RoomPin from '../buildings/RoomPin';
 import { zoomOnObject, zoomOnRoom } from '../buildings/mapUtils';
 import Roundel from '../shared/Roundel';
-import { searchRoomsAll } from './searchUtil';
+import { searchRoomsAll } from './searchUtils';
 
 interface WrapperProps {
   children: ReactElement;
