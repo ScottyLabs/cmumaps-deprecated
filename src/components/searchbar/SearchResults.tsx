@@ -5,8 +5,8 @@ import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, SearchRoom } from '@/types';
 
-import RoomPin from '../buildings/RoomPin';
 import { zoomOnObject, zoomOnRoom } from '../buildings/mapUtils';
+import RoomPin from '../shared/RoomPin';
 import Roundel from '../shared/Roundel';
 import { searchRoomsAll } from './searchUtils';
 
