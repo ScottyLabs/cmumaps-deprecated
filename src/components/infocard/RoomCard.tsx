@@ -33,7 +33,9 @@ const RoomCard = ({ room }: Props) => {
   return (
     <div>
       {renderRoomImage()}
-      <div className="ml-3 mt-2 font-bold">{room.name}</div>
+      <div className="ml-3 mt-2 font-bold">
+        {room.floor.buildingCode} {room.name}
+      </div>
       {renderButtonsRow()}
       <RoomSchedule />
     </div>
