@@ -47,13 +47,13 @@ export default function RoomPin({ room }: RoomPinProps) {
 
   return (
     <div
-      className="flex h-[20px] w-[20px] items-center justify-center rounded-[4px]"
+      className="flex h-5 w-5 items-center justify-center rounded"
       style={{ background: roomColors.primary }}
       title={room.type}
     >
       <Image
         alt={'Room Pin Alt Placeholder'}
-        className="size-[12px]"
+        className="size-3"
         src={hasGraphic ? icon : pinIcon}
       />
     </div>
