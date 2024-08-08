@@ -260,3 +260,5 @@ export interface Building {
  * Used for searching purposes
  */
 export type SearchMap = Record<BuildingCode, Record<FloorLevel, SearchRoom[]>>;
+
+export type FloorPlanMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;
