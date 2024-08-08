@@ -5,8 +5,6 @@ import ButtonsRow from './ButtonsRow';
 import InfoCardImage from './InfoCardImage';
 import RoomSchedule from './RoomSchedule';
 
-// import RoomSchedule from './RoomSchedule';
-
 interface Props {
   room: Room;
 }
