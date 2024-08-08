@@ -3,7 +3,7 @@ import { Event } from '@prisma/client';
 import { Floor, FloorPlan } from '@/types';
 
 export async function fetchEvents(
-  roomName: string | undefined,
+  roomName: string,
   startDate: Date,
   endDate: Date,
   callback: (events: Event[][]) => void,
@@ -11,7 +11,7 @@ export async function fetchEvents(
   const response = await fetch('/api/events/range', {
     method: 'GET',
     headers: {
-      roomName: roomName || '',
+      roomName,
       startDate: startDate.valueOf().toString(),
       endDate: endDate.valueOf().toString(),
     },
@@ -19,9 +19,9 @@ export async function fetchEvents(
 
   try {
     const body = await response.json();
-    // console.log(bsody);
     callback(body);
   } catch (e) {
+    console.log(e);
     console.error('Failed to fetch events', response);
     return;
   }

@@ -8,22 +8,24 @@ import {
   eachDayOfInterval,
 } from 'date-fns';
 
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa';
 
 import { fetchEvents } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
 
-const RoomSchedule = () => {
+interface Props {
+  setHasEvents: Dispatch<SetStateAction<boolean>>;
+}
+
+const RoomSchedule = ({ setHasEvents }: Props) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const [currentWeek, setCurrentWeek] = useState<Date>(today);
   const [dayOfWeek, setDayOfWeek] = useState<number>(today.getDay());
-  const [thisWeeksEvents, setThisWeeksEvents] = useState<Event[][] | null>(
-    null,
-  );
+  const [weekEvents, setWeekEvents] = useState<Event[][] | null>(null);
 
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
@@ -37,15 +39,28 @@ const RoomSchedule = () => {
 
   useEffect(() => {
     // fetch events for the current day
-    setThisWeeksEvents(null);
+    setWeekEvents(null);
+
+    const callBack = (events: Event[][]) => {
+      // setWeekEvents(events);
+      console.log(events);
+      setHasEvents(events.flat().length > 0);
+    };
 
     fetchEvents(
       `${focusedFloor?.buildingCode} ${selectedRoom?.name}`,
       startOfCurrentWeek,
       endOfCurrentWeek,
-      setThisWeeksEvents,
+      callBack,
     );
-  }, [selectedRoom, currentWeek]);
+  }, [
+    selectedRoom,
+    currentWeek,
+    focusedFloor?.buildingCode,
+    startOfCurrentWeek,
+    endOfCurrentWeek,
+    setHasEvents,
+  ]);
 
   const renderDatePicker = () => {
     const renderDateRow = () => {
