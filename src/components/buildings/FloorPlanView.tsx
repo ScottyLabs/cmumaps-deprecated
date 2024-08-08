@@ -7,7 +7,7 @@ import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { FloorPlan, getRoomTypeDetails, Room } from '@/types';
 
-import RoomPin, { hasIcon } from './RoomPin';
+import RoomPin, { hasIcon } from '../shared/RoomPin';
 import { positionOnMap } from './mapUtils';
 
 interface Props {
