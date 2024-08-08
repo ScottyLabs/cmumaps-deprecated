@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
@@ -15,8 +13,6 @@ interface Props {
 
 const RoomCard = ({ room }: Props) => {
   const roomImageList = useAppSelector((state) => state.ui.roomImageList);
-
-  const [hasEvents, setHasEvents] = useState<boolean>(false);
 
   const renderRoomImage = () => {
     const buildingCode = room.floor.buildingCode;
@@ -40,16 +36,8 @@ const RoomCard = ({ room }: Props) => {
     <div>
       {renderRoomImage()}
       <div className="ml-3 mt-2 font-bold">{room.name}</div>
-
-      {/* {!hasEvents && (
-        <div className="ml-3 text-sm text-gray-400">
-          No Room Schedule Available
-        </div>
-      )} */}
-
       {renderButtonsRow()}
-
-      <RoomSchedule setHasEvents={setHasEvents} />
+      <RoomSchedule />
     </div>
   );
 };

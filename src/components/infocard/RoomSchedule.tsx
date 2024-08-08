@@ -8,26 +8,14 @@ import {
   eachDayOfInterval,
 } from 'date-fns';
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa';
 
 import { fetchEvents } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
 
-interface Props {
-  setHasEvents: Dispatch<SetStateAction<boolean>>;
-}
-
-const RoomSchedule = ({ setHasEvents }: Props) => {
-  // replace this
-  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+const RoomSchedule = () => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
 
   const today = useMemo(() => {
@@ -55,29 +43,20 @@ const RoomSchedule = ({ setHasEvents }: Props) => {
   });
 
   useEffect(() => {
+    if (!selectedRoom) {
+      return;
+    }
+
     // fetch events for the current day
     setWeekEvents(null);
 
-    const callBack = (events: Event[][]) => {
-      setWeekEvents(events);
-      console.log(events);
-      setHasEvents(events.flat().length > 0);
-    };
-
     fetchEvents(
-      `${focusedFloor?.buildingCode} ${selectedRoom?.name}`,
+      `${selectedRoom.floor.buildingCode} ${selectedRoom.name}`,
       startOfCurrentWeek,
       endOfCurrentWeek,
-      callBack,
+      setWeekEvents,
     );
-  }, [
-    selectedRoom,
-    currentWeek,
-    focusedFloor?.buildingCode,
-    startOfCurrentWeek,
-    endOfCurrentWeek,
-    setHasEvents,
-  ]);
+  }, [selectedRoom, currentWeek, startOfCurrentWeek, endOfCurrentWeek]);
 
   const renderDatePicker = () => {
     const renderDateRow = () => {
@@ -133,12 +112,28 @@ const RoomSchedule = ({ setHasEvents }: Props) => {
     };
 
     const renderContent = () => {
-      return (
-        <p>
-          Yuxiang, please use the events returned by thisWeeksEvents ?
-          thisWeeksEvents[dayOfWeek] : null to populate
-        </p>
-      );
+      if (weekEvents) {
+        const formatDate = (time: Date) => {
+          const date = new Date(time);
+          const hoursUTC = date.getUTCHours().toString().padStart(2, '0');
+          const minutesUTC = date.getUTCMinutes().toString().padStart(2, '0');
+          return `${hoursUTC}:${minutesUTC}`;
+        };
+
+        return weekEvents[dayOfWeek].map((event) => {
+          const startTime = formatDate(event.startTime);
+          const endTime = formatDate(event.endTime);
+
+          return (
+            <div key={event.id} className="flex justify-between">
+              <p>{event.name}</p>
+              <p>
+                {startTime}-{endTime}
+              </p>
+            </div>
+          );
+        });
+      }
     };
 
     return (
