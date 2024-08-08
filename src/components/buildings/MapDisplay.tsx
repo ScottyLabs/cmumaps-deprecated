@@ -6,8 +6,10 @@ import {
   PointOfInterestCategory,
 } from 'mapkit-react';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { getFloorPlan } from '@/lib/apiRoutes';
+import { addFloorToFloorPlanMap } from '@/lib/features/dataSlice';
 import {
   deselectBuilding,
   releaseRoom,
@@ -16,13 +18,31 @@ import {
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building } from '@/types';
+import { Building, Floor, FloorPlan } from '@/types';
 import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay from './FloorPlanOverlay';
+
+const getFloorAtOrdinal = (
+  building: Building,
+  ordinal: number,
+): Floor | null => {
+  const ordinalDif = ordinal - building.defaultOrdinal;
+  const defaultIndex = building.floors.indexOf(building.defaultFloor);
+  const floorIndex = defaultIndex + ordinalDif;
+
+  if (!building.floors[floorIndex]) {
+    return null;
+  }
+
+  return {
+    buildingCode: building.code,
+    level: building.floors[floorIndex],
+  };
+};
 
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
@@ -54,8 +74,82 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
+
+  const [floorPlans, setFloorPlans] = useState<(FloorPlan | null)[] | null>(
+    null,
+  );
 
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
+
+  // fetch the floor plan from floor
+  useEffect(() => {
+    if (!buildings || !focusedFloor?.buildingCode || !focusedFloor?.level) {
+      return;
+    }
+
+    // some math to get the correct ordinal
+    const focusedBuilding = buildings[focusedFloor?.buildingCode];
+    const defaultIndex = focusedBuilding.floors.indexOf(
+      focusedBuilding.defaultFloor,
+    );
+    const focusedIndex = focusedBuilding.floors.indexOf(focusedFloor.level);
+    const ordinal =
+      focusedBuilding.defaultOrdinal + focusedIndex - defaultIndex;
+
+    // get all the floor plans
+    const promises = visibleBuildings.map(async (building) => {
+      const floor = getFloorAtOrdinal(building, ordinal);
+
+      if (floor) {
+        if (
+          floorPlanMap[floor.buildingCode] &&
+          floorPlanMap[floor.buildingCode][floor.level]
+        ) {
+          return floorPlanMap[floor.buildingCode][floor.level];
+        }
+
+        return getFloorPlan(floor).then((floorPlan) => {
+          // be careful of floor plans that doesn't have placements
+          if (floorPlan?.placement) {
+            dispatch(
+              addFloorToFloorPlanMap([
+                floor.buildingCode,
+                floor.level,
+                floorPlan,
+              ]),
+            );
+            return floorPlan;
+          } else {
+            return null;
+          }
+        });
+      } else {
+        return null;
+      }
+    });
+
+    Promise.all(promises).then((newFloorPlans) => setFloorPlans(newFloorPlans));
+  }, [
+    buildings,
+    dispatch,
+    floorPlanMap,
+    focusedFloor?.buildingCode,
+    focusedFloor?.level,
+    visibleBuildings,
+  ]);
+
+  const renderFloorPlanOverlay = () => {
+    if (!floorPlans) {
+      return;
+    }
+
+    return floorPlans.map((floorPlan, index) => {
+      if (floorPlan) {
+        return <FloorPlanOverlay key={index} floorPlan={floorPlan} />;
+      }
+    });
+  };
 
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
@@ -193,7 +287,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           <BuildingShape key={building.code} building={building} />
         ))}
 
-      {focusedFloor && <FloorPlanOverlay visibleBuildings={visibleBuildings} />}
+      {renderFloorPlanOverlay()}
 
       <NavLine />
     </Map>
