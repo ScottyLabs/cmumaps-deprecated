@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { getFloorPlan } from '@/lib/apiRoutes';
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { FloorPlan, getRoomTypeDetails, Room } from '@/types';
+import { Building, Floor, FloorPlan, getRoomTypeDetails, Room } from '@/types';
 
 import RoomPin, { hasIcon } from './RoomPin';
 import { positionOnMap } from './mapUtils';
@@ -31,37 +31,92 @@ export const getFloorCenter = (rooms: Room[]): Position => {
   return [(minX + maxX) / 2, (minY + maxY) / 2];
 };
 
+const getFloorAtOrdinal = (
+  building: Building,
+  ordinal: number,
+): Floor | null => {
+  const ordinalDif = ordinal - building.defaultOrdinal;
+  const defaultIndex = building.floors.indexOf(building.defaultFloor);
+  const floorIndex = defaultIndex + ordinalDif;
+
+  if (!building.floors[floorIndex]) {
+    return null;
+  }
+
+  return {
+    buildingCode: building.code,
+    level: building.floors[floorIndex],
+  };
+};
+
+interface Props {
+  visibleBuildings: Building[];
+}
+
 /**
  * The contents of a floor displayed on the map.
  */
-const FloorPlanOverlay = () => {
+const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
   const dispatch = useAppDispatch();
+
+  const buildings = useAppSelector((state) => state.data.buildings);
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-  const floor = useAppSelector((state) => state.ui.focusedFloor);
   const showRoomNames = useAppSelector((state) => state.ui.showRoomNames);
 
-  const [floorPlan, setFloorPlan] = useState<FloorPlan | null>(null);
+  const [floorPlans, setFloorPlans] = useState<FloorPlan[] | null>(null);
 
   // fetch the floor plan from floor
   useEffect(() => {
-    if (floor?.buildingCode && floor.level) {
-      getFloorPlan({
-        buildingCode: floor.buildingCode,
-        level: floor.level,
-      }).then((floorPlan) => {
-        // be careful of floor plans that doesn't have placements
-        if (floorPlan?.placement) {
-          setFloorPlan(floorPlan);
-        } else {
-          setFloorPlan(null);
-        }
-      });
+    if (!buildings || !focusedFloor?.buildingCode || !focusedFloor?.level) {
+      return;
     }
-  }, [floor?.buildingCode, floor?.level]);
 
-  if (!floorPlan) {
+    // some math to get the correct ordinal
+    const focusedBuilding = buildings[focusedFloor?.buildingCode];
+    const defaultIndex = focusedBuilding.floors.indexOf(
+      focusedBuilding.defaultFloor,
+    );
+    const focusedIndex = focusedBuilding.floors.indexOf(focusedFloor.level);
+    const ordinal =
+      focusedBuilding.defaultOrdinal + focusedIndex - defaultIndex;
+
+    // get all the floor plans
+    const promises = visibleBuildings.map(async (building) => {
+      const floor = getFloorAtOrdinal(building, ordinal);
+      if (floor) {
+        return getFloorPlan(floor).then((floorPlan) => {
+          // be careful of floor plans that doesn't have placements
+          if (floorPlan?.placement) {
+            return floorPlan;
+          } else {
+            return null;
+          }
+        });
+      }
+    });
+
+    Promise.all(promises).then((newFloorPlans) =>
+      setFloorPlans(
+        newFloorPlans.filter(
+          (floorPlan): floorPlan is FloorPlan => !!floorPlan,
+        ),
+      ),
+    );
+  }, [
+    buildings,
+    focusedFloor?.buildingCode,
+    focusedFloor?.level,
+    visibleBuildings,
+  ]);
+
+  if (!floorPlans) {
     return;
   }
+
+  console.log(floorPlans);
+
+  return;
 
   const { placement, rooms } = floorPlan;
 
