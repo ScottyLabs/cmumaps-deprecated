@@ -1,7 +1,8 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
-import questionMark from '@icons/question-mark.png';
+import questionMarkIcon from '@icons/question-mark.png';
+import scheduleIcon from '@icons/schedule.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -13,7 +14,7 @@ import MapDisplay from '@/components/buildings/MapDisplay';
 import { zoomOnObject, zoomOnRoom } from '@/components/buildings/mapUtils';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
-import SearchBar from '@/components/searchbar/SearchBar';
+import ToolBar from '@/components/toolbar/ToolBar';
 import { getFloorPlan } from '@/lib/apiRoutes';
 import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
 import {
@@ -272,8 +273,8 @@ const Page = ({ params, searchParams }: Props) => {
 
         {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
 
-        <SearchBar
-          mapRef={mapRef.current}
+        <ToolBar
+          map={mapRef.current}
           userPosition={{
             x: points[points.length - 1][0],
             y: points[points.length - 1][1],
@@ -283,7 +284,10 @@ const Page = ({ params, searchParams }: Props) => {
         {renderClerkIcon()}
 
         <div className="fixed bottom-2 right-2">
-          <Image alt="Question Mark" src={questionMark} height={45} />
+          <Image alt="Question Mark" src={questionMarkIcon} height={45} />
+        </div>
+        <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
+          <Image alt="Schedule" src={scheduleIcon} />
         </div>
       </div>
 

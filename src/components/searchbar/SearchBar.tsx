@@ -14,11 +14,11 @@ import { AbsoluteCoordinate } from '@/types';
 import SearchResults from './SearchResults';
 
 interface Props {
-  mapRef: mapkit.Map | null;
+  map: mapkit.Map | null;
   userPosition: AbsoluteCoordinate;
 }
 
-const SearchBar = ({ mapRef, userPosition }: Props) => {
+const SearchBar = ({ map, userPosition }: Props) => {
   const dispatch = useAppDispatch();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -138,7 +138,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
       >
         {searchQuery != '' && (
           <SearchResults
-            mapRef={mapRef}
+            map={map}
             query={searchQuery}
             userPosition={userPosition}
           />
@@ -152,10 +152,7 @@ const SearchBar = ({ mapRef, userPosition }: Props) => {
     return;
   }
   return (
-    <div
-      id="SearchBar"
-      className="box-shadow fixed top-4 z-10 mx-2 w-full rounded sm:w-96"
-    >
+    <div id="SearchBar" className="box-shadow rounded">
       {renderSearchQueryInput()}
       {searchQuery == '' && (
         <div className="mt-3">
