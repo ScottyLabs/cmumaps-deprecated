@@ -125,13 +125,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     let [buildingCode, floorLevel]: [BuildingCode, any] = floor
       .toUpperCase()
       .split(r);
-    console.log(
-      'searchme',
-      window?.location?.pathname,
-      buildingCode,
-      floorLevel,
-      roomid,
-    );
+
     // If building is not found, do nothing
     const building: Building | undefined = newBuildings[buildingCode];
 
@@ -145,7 +139,6 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       floorLevel = building.defaultFloor.split('-')[1];
     }
 
-    console.log('searchme1', floorLevel);
     dispatch(
       setFocusedFloor({ buildingCode: building.code, level: floorLevel }),
     );
