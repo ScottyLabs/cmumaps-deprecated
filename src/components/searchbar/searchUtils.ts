@@ -2,6 +2,11 @@ import { distance as levenDist } from 'fastest-levenshtein';
 
 import { Building, SearchMap, SearchRoom } from '@/types';
 
+export type RoomSearchResult = {
+  building: Building;
+  searchRoom: SearchRoom[];
+};
+
 // sort building by distance
 // if (userPosition) {
 //   buildings.sort(
@@ -30,11 +35,21 @@ function getRoomTokens(room: SearchRoom, building: Building): string[] {
     .map((token) => token.toLowerCase());
 }
 
-export const searchRoomsAll = (
+// export const searchFood = [
+//   buildings: Record<string, Building>,
+//   query: string,
+//   searchMap: SearchMap,
+// ]
+
+export const searchRoom = (
   buildings: Record<string, Building>,
   query: string,
   searchMap: SearchMap,
-) => {
+): RoomSearchResult[] => {
+  if (query.length == 0) {
+    return [];
+  }
+
   return Object.values(buildings)
     .map((building: Building) => ({
       Building: building,

@@ -64,7 +64,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
       setSearchQuery('');
       return;
     }
-  }, [room, buildings, building]);
+  }, [room, building, buildings]);
 
   // focus on the input if the search mode changed
   useEffect(() => {
@@ -72,6 +72,15 @@ const SearchBar = ({ map, userPosition }: Props) => {
       inputRef.current.focus();
     }
   }, [searchMode]);
+
+  // blur the input field when not searching (mainly used for clicking on the map to close search)
+  useEffect(() => {
+    if (!isSearchOpen) {
+      if (inputRef.current) {
+        inputRef.current.blur();
+      }
+    }
+  }, [isSearchOpen]);
 
   const handleCloseSearch = () => {
     dispatch(setIsSearchOpen(false));
@@ -86,16 +95,6 @@ const SearchBar = ({ map, userPosition }: Props) => {
   useEscapeKey(() => {
     handleCloseSearch();
   });
-
-  // blur the input field when not searching
-  // mainly used for clicking on the map to close search
-  useEffect(() => {
-    if (!isSearchOpen) {
-      if (inputRef.current) {
-        inputRef.current.blur();
-      }
-    }
-  }, [isSearchOpen]);
 
   const renderSearchQueryInput = () => {
     const renderCloseButton = () => (
@@ -158,13 +157,11 @@ const SearchBar = ({ map, userPosition }: Props) => {
             : 'h-0 opacity-0'
         }`}
       >
-        {searchQuery != '' && (
-          <SearchResults
-            map={map}
-            query={searchQuery}
-            userPosition={userPosition}
-          />
-        )}
+        <SearchResults
+          map={map}
+          query={searchQuery}
+          userPosition={userPosition}
+        />
       </div>
     );
   };
@@ -182,7 +179,6 @@ const SearchBar = ({ map, userPosition }: Props) => {
         </div>
       )}
       {renderSearchResults()}
-      {/* <p> ({eventsResults.toString()})</p> */}
     </div>
   );
 };
