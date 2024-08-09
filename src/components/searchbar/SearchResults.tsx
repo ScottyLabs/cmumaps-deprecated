@@ -1,11 +1,10 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 
-import { getFloorPlan } from '@/lib/apiRoutes';
 import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate, Building, SearchRoom } from '@/types';
 
-import { zoomOnObject, zoomOnRoom } from '../buildings/mapUtils';
+import { zoomOnObject, zoomOnSearchRoom } from '../buildings/mapUtils';
 import RoomPin from '../shared/RoomPin';
 import Roundel from '../shared/Roundel';
 import { searchRoomsAll } from './searchUtils';
@@ -120,38 +119,22 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
       </div>
     );
 
-    const handleClick = (searchRoom: SearchRoom) => () => {
-      if (!buildings || !mapRef) {
-        return;
-      }
-
-      const floor = searchRoom.floor;
-
-      if (floor?.buildingCode && floor.level) {
-        if (
-          floorPlanMap[floor.buildingCode] &&
-          floorPlanMap[floor.buildingCode][floor.level]
-        ) {
-          const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
-          const room = floorPlan.rooms[searchRoom.id];
-          zoomOnRoom(mapRef, room, floor, floorPlan, dispatch);
-        } else {
-          getFloorPlan(floor).then((floorPlan) => {
-            // be careful of floor plans that doesn't have placements !!!
-            if (floorPlan?.placement) {
-              const room = floorPlan.rooms[searchRoom.id];
-              zoomOnRoom(mapRef, room, floor, floorPlan, dispatch);
-            }
-          });
-        }
-      }
-    };
-
-    return rooms.map((room: SearchRoom) => (
-      <SearchResultWrapper key={room.id} handleClick={handleClick(room)}>
+    return rooms.map((searchRoom: SearchRoom) => (
+      <SearchResultWrapper
+        key={searchRoom.id}
+        handleClick={() => {
+          zoomOnSearchRoom(
+            mapRef,
+            searchRoom,
+            buildings,
+            floorPlanMap,
+            dispatch,
+          );
+        }}
+      >
         <div className="flex items-center space-x-3">
-          <RoomPin room={room} />
-          {renderText(room)}
+          <RoomPin room={searchRoom} />
+          {renderText(searchRoom)}
         </div>
       </SearchResultWrapper>
     ));

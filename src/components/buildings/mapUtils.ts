@@ -2,16 +2,58 @@ import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { Position } from 'geojson';
 import { Coordinate } from 'mapkit-react';
 
+import { getFloorPlan } from '@/lib/apiRoutes';
 import {
   claimRoom,
   setFocusedFloor,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
-import { Floor, FloorPlan, Placement, Room } from '@/types';
+import {
+  Building,
+  Floor,
+  FloorPlan,
+  FloorPlanMap,
+  Placement,
+  Room,
+  SearchRoom,
+} from '@/types';
 import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 import { getFloorCenter } from './FloorPlanView';
+
+export const zoomOnSearchRoom = (
+  mapRef: mapkit.Map | null,
+  searchRoom: SearchRoom,
+  buildings: Record<string, Building> | null,
+  floorPlanMap: FloorPlanMap,
+  dispatch: Dispatch<UnknownAction>,
+) => {
+  if (!buildings || !mapRef) {
+    return;
+  }
+
+  const floor = searchRoom.floor;
+
+  if (floor?.buildingCode && floor.level) {
+    if (
+      floorPlanMap[floor.buildingCode] &&
+      floorPlanMap[floor.buildingCode][floor.level]
+    ) {
+      const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
+      const room = floorPlan.rooms[searchRoom.id];
+      zoomOnRoom(mapRef, room, floor, floorPlan, dispatch);
+    } else {
+      getFloorPlan(floor).then((floorPlan) => {
+        // be careful of floor plans that doesn't have placements !!!
+        if (floorPlan?.placement) {
+          const room = floorPlan.rooms[searchRoom.id];
+          zoomOnRoom(mapRef, room, floor, floorPlan, dispatch);
+        }
+      });
+    }
+  }
+};
 
 export const zoomOnRoom = (
   mapRef: mapkit.Map,

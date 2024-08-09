@@ -142,13 +142,18 @@ const BuildingCard = ({ building }: Props) => {
         </div>
       );
     } else {
+      const handleClick = (eatery: SearchRoom) => () => {
+        dispatch(claimRoom(eatery));
+        // zoomOnRoom(mapRef, )
+      };
+
       return (
         <div className="mx-2 mb-3 max-h-96 space-y-3 overflow-y-auto">
           {eatingData.map(([eatery, eatingData]) => (
             <div
               key={eatery.id}
               className="cursor-pointer rounded border p-1"
-              onClick={() => dispatch(claimRoom(eatery))}
+              onClick={handleClick(eatery)}
             >
               <EateryInfo
                 room={eatery}
