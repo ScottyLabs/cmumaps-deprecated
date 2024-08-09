@@ -17,6 +17,9 @@ import { Building, SearchMap, SearchRoom } from '@/types';
 //   );
 // }
 
+// const [eventsResults, setEventsResults] = useState<Event[]>([]);
+// searchEvents(searchQuery).then(setEventsResults);
+
 function getRoomTokens(room: SearchRoom, building: Building): string[] {
   let tokens = [room.name, building.code, building.name];
   if (room.aliases) {

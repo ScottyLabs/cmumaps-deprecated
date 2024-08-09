@@ -7,11 +7,16 @@ import { IoIosClose } from 'react-icons/io';
 import QuickSearch from '@/components/searchbar/QuickSearch';
 import useEscapeKey from '@/hooks/useEscapeKey';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
-import { releaseRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
+import {
+  releaseRoom,
+  setIsSearchOpen,
+  setSearchMode,
+} from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
 import SearchResults from './SearchResults';
+import { searchModeToIcon } from './searchMode';
 
 interface Props {
   map: mapkit.Map | null;
@@ -28,11 +33,10 @@ const SearchBar = ({ map, userPosition }: Props) => {
 
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
+  const searchMode = useAppSelector((state) => state.ui.searchMode);
 
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  // const [eventsResults, setEventsResults] = useState<Event[]>([]);
-  // searchEvents(searchQuery).then(setEventsResults);
 
   // set the search query using room and building
   useEffect(() => {
@@ -42,14 +46,14 @@ const SearchBar = ({ map, userPosition }: Props) => {
       return;
     }
 
-    // if there is a selected room, the search query is
-    // the room alias if the room has an alias,
-    // otherwise it is the room floor name + the room name
     if (room) {
+      // the search query is the room alias if the room has an alias,
       if (room?.alias) {
         setSearchQuery(room.alias);
         return;
-      } else {
+      }
+      // otherwise it is the room floor name + the room name
+      else {
         setSearchQuery(room.floor.buildingCode + ' ' + room.name);
         return;
       }
@@ -62,11 +66,19 @@ const SearchBar = ({ map, userPosition }: Props) => {
     }
   }, [room, buildings, building]);
 
+  // focus on the input if the search mode changed
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [searchMode]);
+
   const handleCloseSearch = () => {
     dispatch(setIsSearchOpen(false));
     dispatch(setIsNavOpen(false));
     dispatch(setRecommendedPath([]));
     dispatch(releaseRoom(null));
+    dispatch(setSearchMode('rooms'));
     setSearchQuery('');
   };
 
@@ -95,18 +107,28 @@ const SearchBar = ({ map, userPosition }: Props) => {
       />
     );
 
+    let icon = searchIcon;
+
+    // check if the search bar is focused to determine icon
+    if (document.activeElement === inputRef.current) {
+      icon = searchModeToIcon[searchMode];
+    }
+
+    const placeholder = `You are searching ${searchMode} now...`;
+
     return (
       <div className="flex w-full items-center rounded bg-white p-1">
         <Image
           alt="Search Icon"
-          src={searchIcon}
+          src={icon}
           className="size-4.5 ml-4 opacity-60 invert"
+          width={20}
         />
 
         <input
           type="text"
           className="w-full rounded p-2 outline-none"
-          placeholder="Search"
+          placeholder={placeholder}
           ref={inputRef}
           value={searchQuery}
           onChange={(event) => {

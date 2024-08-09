@@ -1,21 +1,12 @@
-import courseIcon from '@icons/quick_search/course.svg';
-import eventIcon from '@icons/quick_search/event.svg';
-import foodIcon from '@icons/quick_search/food.svg';
-import restroomIcon from '@icons/quick_search/restroom.svg';
-import studyIcon from '@icons/quick_search/study.svg';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
 import React from 'react';
 
-import {
-  SearchMode,
-  SearchModeList,
-  setSearchMode,
-} from '@/lib/features/uiSlice';
+import { setSearchMode } from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
 
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
+import { SearchMode, SearchModeList, searchModeToIcon } from './searchMode';
 
 const QuickSearch = () => {
   const dispatch = useAppDispatch();
@@ -26,14 +17,6 @@ const QuickSearch = () => {
     events: 'Events',
     restrooms: 'Restrooms',
     study: 'Study',
-  };
-
-  const searchModeToIcon: Partial<Record<SearchMode, StaticImport>> = {
-    food: foodIcon,
-    courses: courseIcon,
-    events: eventIcon,
-    restrooms: restroomIcon,
-    study: studyIcon,
   };
 
   const searchModeToBgColor: Partial<Record<SearchMode, string>> = {
@@ -69,7 +52,7 @@ const QuickSearch = () => {
   };
 
   return (
-    <CollapsibleWrapper title="Quick Search">
+    <CollapsibleWrapper title="Search Modes">
       <div className="mx-2.5 mb-3 flex gap-2 overflow-x-auto rounded-xl border p-2">
         {SearchModeList.slice(1).map((searchMode) =>
           renderSearchModeHelper(searchMode),

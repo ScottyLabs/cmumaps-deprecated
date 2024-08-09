@@ -1,17 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+import { SearchMode } from '@/components/searchbar/searchMode';
 import { Building, Floor, Room } from '@/types';
-
-export const SearchModeList = [
-  'rooms',
-  'food',
-  'courses',
-  'events',
-  'restrooms',
-  'study',
-] as const;
-
-export type SearchMode = (typeof SearchModeList)[number];
 
 interface UIState {
   isMobile: boolean;
