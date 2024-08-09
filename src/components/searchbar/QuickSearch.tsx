@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 import React, { ReactElement } from 'react';
 
-import CollapsibleWrapper from './CollapsibleWrapper';
+import CollapsibleWrapper from '../common/CollapsibleWrapper';
 import classesIcon from '/public/assets/icons/quick_search/classes.svg';
 import foodIcon from '/public/assets/icons/quick_search/food.svg';
 import restroomIcon from '/public/assets/icons/quick_search/restroom.svg';
