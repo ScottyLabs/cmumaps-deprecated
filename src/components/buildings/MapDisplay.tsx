@@ -1,4 +1,3 @@
-import { min } from 'date-fns';
 import {
   Coordinate,
   FeatureVisibility,
@@ -7,34 +6,27 @@ import {
   PointOfInterestCategory,
 } from 'mapkit-react';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { setBuildings } from '@/lib/features/dataSlice';
 import {
-  claimRoom,
   deselectBuilding,
+  releaseRoom,
   setFocusedFloor,
   setIsSearchOpen,
-  setVisibleBuildings,
+  setShowRoomNames,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate, Building, BuildingCode, Room } from '@/types';
+import { Building } from '@/types';
 import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
 import BuildingShape from './BuildingShape';
-import FloorPlanOverlay, { getFloorCenter } from './FloorPlanOverlay';
-import { getBuildingDefaultFloorToFocus, zoomOnObject } from './mapUtils';
-
-interface MapDisplayProps {
-  mapRef: React.RefObject<mapkit.Map | null>;
-  points: number[][];
-}
+import FloorPlanOverlay from './FloorPlanOverlay';
 
 //#region Constants
 const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 200_000;
-const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 750_000;
+const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 600_000;
 
 const cameraBoundary = {
   centerLatitude: 40.44533940432823,
@@ -51,6 +43,11 @@ const initialRegion = {
 };
 //#endregion
 
+interface MapDisplayProps {
+  mapRef: React.RefObject<mapkit.Map | null>;
+  points: number[][];
+}
+
 const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const dispatch = useAppDispatch();
 
@@ -58,116 +55,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
-  const [showFloor, setShowFloor] = useState<boolean>(false);
-  const [showRoomNames, setShowRoomNames] = useState(false);
-
-  const showBuilding = (newBuilding: Building | null, updateMap: boolean) => {
-    // dispatch(focusBuilding(newBuilding));
-    if (newBuilding === null) {
-      return;
-    }
-
-    if (updateMap) {
-      // Updates viewbox based on OSM shape
-      const points: Coordinate[] = newBuilding.shapes.flat();
-
-      zoomOnObject(points);
-
-      setShowFloor(true);
-      setShowRoomNames(false);
-    }
-    // If no floor set, find default floor and set it to that
-    if (!updateMap && !focusedFloor && newBuilding.floors.length > 0) {
-      const floorLevel = newBuilding.defaultFloor;
-      dispatch(
-        setFocusedFloor({
-          buildingCode: newBuilding.code,
-          level: floorLevel,
-        }),
-      );
-    }
-  };
-
-  const showRoom = (
-    newRoom: Room,
-    newBuilding: Building | null,
-    convertToMap: (absolute: AbsoluteCoordinate) => Coordinate,
-    updateMap: boolean,
-  ) => {
-    if (newBuilding === null) {
-      return;
-    }
-
-    if (updateMap) {
-      const points: AbsoluteCoordinate[] = newRoom.polygon.coordinates.flat();
-      const coords: Coordinate[] = points.map((p) => convertToMap(p));
-      zoomOnObject(coords);
-
-      setShowFloor(true);
-      setShowRoomNames(true);
-    }
-  };
-
-  const zoomOnDefaultBuilding = (
-    newBuildings: Record<BuildingCode, Building>,
-    newFloors: FloorMap | null,
-  ) => {
-    // Gets from URL and sets the default building and floor and room
-
-    // Make sure that both buildings and the map are loaded
-    if (!newBuildings || !mapRef.current) {
-      return;
-    }
-
-    // Get defaults from URL
-    const [_, floor, roomid] = (window?.location?.pathname || '').split('/');
-    const r = new RegExp('-|#');
-    let [buildingCode, floorLevel]: [BuildingCode, any] = floor
-      .toUpperCase()
-      .split(r);
-
-    // If building is not found, do nothing
-    const building: Building | undefined = newBuildings[buildingCode];
-
-    if (!building) {
-      window.history.pushState({}, '', window.location.origin);
-      return;
-    }
-
-    // If floor is not specified, set it to the default floor
-    if (!floorLevel) {
-      floorLevel = building.defaultFloor.split('-')[1];
-    }
-
-    dispatch(
-      setFocusedFloor({ buildingCode: building.code, level: floorLevel }),
-    );
-    // dispatch(focusBuilding(building));
-
-    if (newFloors) {
-      const floor = building.floors.find(({ name }) => name == floorLevel)!; // .find({ level } => level == floorLevel)! once replace file format
-      const floorPlan = newFloors[`${building.code}-${floor.name}`];
-
-      const { rooms, placement } = floorPlan;
-      // Compute the center position of the bounding box of the current floor
-      // (Will be used as the rotation center)
-      const center: AbsoluteCoordinate | undefined = getFloorCenter(rooms);
-      const convertToMap = (absolute: AbsoluteCoordinate): Coordinate =>
-        positionOnMap(absolute, placement, center);
-
-      // If we also have the room in the URL, focus on that
-      if (floorPlan && roomid) {
-        const room = floorPlan.rooms.find((room: Room) => room.id === roomid);
-        room && dispatch(claimRoom(room));
-        room && showRoom(room, building, convertToMap, true);
-      } else {
-        // Otherwise, zoom on the just the building
-        showBuilding(building, true);
-      }
-    } else {
-      showBuilding(building, true);
-    }
-  };
+  const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
 
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
@@ -181,6 +69,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         minLongitude: region.centerLongitude - region.longitudeDelta / 2,
         maxLongitude: region.centerLongitude + region.longitudeDelta / 2,
       };
+
       const buildingsToFocus = Object.values(buildings).filter((building) => {
         const [buildingLats, buildingLongs] = building.shapes[0].reduce(
           (acc: [number[], number[]], point: Coordinate) => {
@@ -203,14 +92,14 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           isInLong(Math.max(...buildingLongs));
         return anyLatIn && anyLongIn;
       });
-      dispatch(setVisibleBuildings(buildingsToFocus));
 
-      const newShowFloors = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
-      setShowFloor(newShowFloors);
-      setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS);
+      setVisibleBuildings(buildingsToFocus);
+
+      const showFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
+      dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
 
       // there is no focused floor if we are not showing floors
-      if (!newShowFloors) {
+      if (!showFloor) {
         dispatch(setFocusedFloor(null));
       }
       // if we are showing floor, we will show the default floor of the centered building
@@ -234,14 +123,12 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
             !focusedFloor ||
             buildings[focusedFloor.buildingCode].code != centerBuilding.code
           ) {
-            dispatch(
-              setFocusedFloor(getBuildingDefaultFloorToFocus(centerBuilding)),
-            );
+            const newFocusFloor = {
+              buildingCode: centerBuilding.code,
+              level: centerBuilding.defaultFloor,
+            };
 
-            // // we should also show the building card when focus on the center buidling
-            // dispatch(
-            //   claimBuilding(getBuildingDefaultFloorToFocus(centerBuilding)),
-            // );
+            dispatch(setFocusedFloor(newFocusFloor));
           }
         }
       }
@@ -253,7 +140,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   // DO NOT DELETE THIS MYSTERIOUS CODE IT HELPS THE PINS TO LOAD FASTER
   // The working theory on why this works is that without any annotations, mapkit deletes the annotation layer
   // so when we want to conjure the pins, we need to create a new annotation layer, which takes ~3s for no apparent reason
-  useEffect(() => {
+  const handleLoad = () => {
     if (!mapRef.current) {
       return;
     }
@@ -270,7 +157,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       pinOptions,
     );
     mapRef.current?.addAnnotation(pinAnnotation);
-  }, [mapRef.current]);
+  };
 
   return (
     <Map
@@ -297,18 +184,16 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       onClick={() => {
         dispatch(setIsSearchOpen(false));
         dispatch(deselectBuilding());
+        dispatch(releaseRoom(null));
       }}
+      onLoad={handleLoad}
     >
       {buildings &&
         Object.values(buildings).map((building) => (
-          <BuildingShape
-            key={building.code}
-            building={building}
-            showFloor={showFloor}
-          />
+          <BuildingShape key={building.code} building={building} />
         ))}
 
-      {focusedFloor && <FloorPlanOverlay showRoomNames={showRoomNames} />}
+      {focusedFloor && <FloorPlanOverlay visibleBuildings={visibleBuildings} />}
 
       <NavLine />
     </Map>

@@ -1,21 +1,21 @@
-import Image from 'next/image';
-
-import React from 'react';
-
 import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
 import ButtonsRow from './ButtonsRow';
+import InfoCardImage from './InfoCardImage';
 import RoomSchedule from './RoomSchedule';
-
-// import RoomSchedule from './RoomSchedule';
 
 interface Props {
   room: Room;
 }
 
 const RoomCard = ({ room }: Props) => {
+  const buildings = useAppSelector((state) => state.data.buildings);
   const roomImageList = useAppSelector((state) => state.ui.roomImageList);
+
+  if (!buildings) {
+    return;
+  }
 
   const renderRoomImage = () => {
     const buildingCode = room.floor.buildingCode;
@@ -28,30 +28,36 @@ const RoomCard = ({ room }: Props) => {
       url = `/assets/location_images/building_room_images/${buildingCode}/${room.name}.jpg`;
     }
 
-    return (
-      <div className="relative h-36 w-full">
-        <Image
-          className="object-cover"
-          fill={true}
-          alt="Room Image"
-          src={url}
-          sizes="99vw"
-        />
-      </div>
-    );
+    return <InfoCardImage url={url} alt={room.name} />;
   };
 
   const renderButtonsRow = () => {
     return <ButtonsRow middleButton={<></>} />;
   };
 
+  const renderRoomTitle = () => {
+    const getText = () => {
+      if (room.alias) {
+        return room.alias;
+      }
+
+      if (
+        room.type == 'restroom' ||
+        room.type == 'stairs' ||
+        room.type == 'elevator'
+      ) {
+        return room.type;
+      }
+      return `${buildings[room.floor.buildingCode].name} ${room.name}`;
+    };
+
+    return <h2 className="ml-3 mt-2 font-bold">{getText()}</h2>;
+  };
+
   return (
     <div>
       {renderRoomImage()}
-      <div className="ml-3 mt-2 font-bold">{room.name}</div>
-      <div className="ml-3 text-sm text-gray-400">
-        No Room Schedule Available
-      </div>
+      {renderRoomTitle()}
       {renderButtonsRow()}
       <RoomSchedule />
     </div>

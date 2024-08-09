@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+import { SearchMode } from '@/components/searchbar/searchMode';
 import { Building, Floor, Room } from '@/types';
 
 interface UIState {
@@ -15,7 +16,9 @@ interface UIState {
 
   isCardWrapperCollapsed: boolean;
 
-  visibleBuildings: Building[];
+  showRoomNames: boolean;
+
+  searchMode: SearchMode;
 }
 
 const initialState: UIState = {
@@ -26,7 +29,8 @@ const initialState: UIState = {
   isSearchOpen: false,
   roomImageList: {},
   isCardWrapperCollapsed: true,
-  visibleBuildings: [],
+  showRoomNames: false,
+  searchMode: 'rooms',
 };
 
 const uiSlice = createSlice({
@@ -45,7 +49,9 @@ const uiSlice = createSlice({
         state.selectedBuilding = null;
       }
     },
-
+    setFocusedFloor(state, action: PayloadAction<Floor | null>) {
+      state.focusedFloor = action.payload;
+    },
     selectBuilding(state, action) {
       state.selectedBuilding = action.payload;
     },
@@ -53,24 +59,24 @@ const uiSlice = createSlice({
       state.selectedBuilding = null;
     },
 
-    setFocusedFloor(state, action: PayloadAction<Floor | null>) {
-      state.focusedFloor = action.payload;
-    },
-
-    setIsSearchOpen(state, action) {
-      state.isSearchOpen = action.payload;
-    },
-    setRoomImageList(state, action) {
+    setRoomImageList(state, action: PayloadAction<Record<string, string[]>>) {
       state.roomImageList = action.payload;
+    },
+    setIsSearchOpen(state, action: PayloadAction<boolean>) {
+      state.isSearchOpen = action.payload;
     },
     setIsCardWrapperCollapsed(state, action: PayloadAction<boolean>) {
       state.isCardWrapperCollapsed = action.payload;
     },
-    setIsMobile(state, action) {
+    setIsMobile(state, action: PayloadAction<boolean>) {
       state.isMobile = action.payload;
     },
-    setVisibleBuildings(state, action) {
-      state.visibleBuildings = action.payload;
+    setShowRoomNames(state, action: PayloadAction<boolean>) {
+      state.showRoomNames = action.payload;
+    },
+
+    setSearchMode(state, action: PayloadAction<SearchMode>) {
+      state.searchMode = action.payload;
     },
   },
 });
@@ -89,6 +95,7 @@ export const {
   setRoomImageList,
   setIsCardWrapperCollapsed,
   setIsMobile,
-  setVisibleBuildings,
+  setShowRoomNames,
+  setSearchMode,
 } = uiSlice.actions;
 export default uiSlice.reducer;

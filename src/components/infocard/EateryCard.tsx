@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import React, { useEffect, useState } from 'react';
 import { ImSpoonKnife } from 'react-icons/im';
 
@@ -9,6 +7,7 @@ import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
 import ButtonsRow from './ButtonsRow';
 import EateryInfo from './EateryInfo';
+import InfoCardImage from './InfoCardImage';
 
 interface Props {
   room: Room;
@@ -24,7 +23,7 @@ const Eaterycard = ({ room }: Props) => {
       setEatingData(newEatingData);
     };
     fetchEatingData();
-  }, [room.aliases]);
+  }, [room.alias]);
 
   const renderEateryImage = () => {
     if (eatingData) {
@@ -35,16 +34,7 @@ const Eaterycard = ({ room }: Props) => {
         .replace('é', 'e');
       const url = `/assets/location_images/eatery_images/${eateryName}.jpg`;
 
-      return (
-        <div className="relative h-36 w-full">
-          <Image
-            className="object-cover"
-            fill={true}
-            alt="Room Image"
-            src={url}
-          />
-        </div>
-      );
+      return <InfoCardImage url={url} alt={`${eateryName} Image`} />;
     }
   };
 
@@ -58,10 +48,10 @@ const Eaterycard = ({ room }: Props) => {
         <a href={eatingData.url} target="_blank" rel="noreferrer">
           <button
             type="button"
-            className="flex rounded-lg bg-[#1e86ff] px-2 py-1 text-white"
+            className="flex h-full items-center gap-2 rounded-lg bg-[#1e86ff] px-3 py-1 text-white"
           >
-            <ImSpoonKnife className="mr-2" />
-            <p className="text-xs">Menu</p>
+            <ImSpoonKnife className="mr-2 size-3.5" />
+            <p>Menu</p>
           </button>
         </a>
       );
@@ -70,10 +60,20 @@ const Eaterycard = ({ room }: Props) => {
     return <ButtonsRow middleButton={renderMiddleButton()} />;
   };
 
+  const renderInfo = () => {
+    const renderTitle = () => {
+      return <h2 className="font-bold">{room.alias}</h2>;
+    };
+
+    return (
+      <EateryInfo room={room} title={renderTitle()} eatingData={eatingData} />
+    );
+  };
+
   return (
     <div>
       {renderEateryImage()}
-      <EateryInfo room={room} eatingData={eatingData} />
+      {renderInfo()}
       {renderButtonsRow()}
     </div>
   );

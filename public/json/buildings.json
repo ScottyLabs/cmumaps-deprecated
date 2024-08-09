@@ -1532,7 +1532,8 @@
             "8",
             "9"
         ],
-        "defaultFloor": "4",
+        "defaultFloor": "5",
+        "defaultOrdinal": 0,
         "labelPosition": {
             "latitude": 40.44348909465742,
             "longitude": -79.9446062625
@@ -2692,6 +2693,7 @@
             "4"
         ],
         "defaultFloor": "3",
+        "defaultOrdinal": -1,
         "labelPosition": {
             "latitude": 40.443351484375,
             "longitude": -79.9455711596982
@@ -3565,7 +3567,7 @@
     },
     "TEP": {
         "code": "TEP",
-        "name": "Tepper Building",
+        "name": "Tepper School of Business",
         "osmId": "583510520",
         "floors": [
             "1",
@@ -3804,6 +3806,7 @@
             "9"
         ],
         "defaultFloor": "5",
+        "defaultOrdinal": -1,
         "labelPosition": {
             "latitude": 40.44262022343751,
             "longitude": -79.94534668359356

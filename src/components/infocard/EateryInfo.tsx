@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
-import { Room } from '@/types';
+import { Room, SearchRoom } from '@/types';
 import {
   IReadOnlyExtendedLocation,
   LocationState,
 } from '@/util/cmueats/types/locationTypes';
 
 interface Props {
-  room: Room;
+  room: Room | SearchRoom;
+  title: ReactElement;
   eatingData: IReadOnlyExtendedLocation | null;
 }
 
-const EateryInfo = ({ room, eatingData }: Props) => {
+const EateryInfo = ({ room, title, eatingData }: Props) => {
   if (!eatingData) {
-    return <div className="ml-3 mt-2 font-bold"> {room.alias}</div>;
+    return (
+      <div className="ml-3 mt-2 flex justify-between">
+        <h3>{room.alias || room.name}</h3>
+      </div>
+    );
   }
 
   const getLocationState = () => {
@@ -77,15 +82,15 @@ const EateryInfo = ({ room, eatingData }: Props) => {
   );
 
   const renderLocationTimeInfo = () => {
-    const floor = 'Second Floor';
-
     return (
       <div className="flex items-center justify-between">
-        <p className="text-gray-500">{floor}</p>
+        <p className="text-gray-500">{room.name}</p>
         <div className="flex items-center gap-2">
           {renderStatusCircle()}
           <p className={`${textColor}`}>
             {trimStatusMsg(eatingData.statusMsg)}
+            {/* Open (close in 12 hours) */}
+            {/* Closed (reopen in 12 hours) */}
           </p>
         </div>
       </div>
@@ -97,8 +102,8 @@ const EateryInfo = ({ room, eatingData }: Props) => {
   };
 
   return (
-    <div className="px-4 pt-2 pb-3 font-[500]">
-      <h3 className="font-bold">{room.alias}</h3>
+    <div className="px-4 pb-3 pt-2 font-[500]">
+      {title}
       {renderLocationTimeInfo()}
       <p className="mt-2 leading-4">{eatingData.shortDescription}</p>
     </div>

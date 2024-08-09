@@ -1,6 +1,29 @@
 import { distance as levenDist } from 'fastest-levenshtein';
 
-import { Building, SearchRoom } from '@/types';
+import { Building, SearchMap, SearchRoom } from '@/types';
+
+export type RoomSearchResult = {
+  building: Building;
+  searchRoom: SearchRoom[];
+};
+
+// sort building by distance
+// if (userPosition) {
+//   buildings.sort(
+//     (b, a) =>
+//       distance(
+//         [b.labelPosition.longitude, b.labelPosition.latitude],
+//         userPosition,
+//       ) -
+//       distance(
+//         [a.labelPosition.longitude, a.labelPosition.latitude],
+//         userPosition,
+//       ),
+//   );
+// }
+
+// const [eventsResults, setEventsResults] = useState<Event[]>([]);
+// searchEvents(searchQuery).then(setEventsResults);
 
 function getRoomTokens(room: SearchRoom, building: Building): string[] {
   let tokens = [room.name, building.code, building.name];
@@ -12,6 +35,33 @@ function getRoomTokens(room: SearchRoom, building: Building): string[] {
     .map((token) => token.toLowerCase());
 }
 
+// export const searchFood = [
+//   buildings: Record<string, Building>,
+//   query: string,
+//   searchMap: SearchMap,
+// ]
+
+export const searchRoom = (
+  buildings: Record<string, Building>,
+  query: string,
+  searchMap: SearchMap,
+): RoomSearchResult[] => {
+  if (query.length == 0) {
+    return [];
+  }
+
+  return Object.values(buildings)
+    .map((building: Building) => ({
+      Building: building,
+      Rooms: findRooms(query, building, searchMap[building.code]),
+    }))
+    .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
+    .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
+    .map(({ Building: building, Rooms: rooms }) => {
+      return { building, searchRoom: rooms[0] };
+    });
+};
+
 /*
 For search, we assume each user's word (query tokens taken by whitespace tokenization) is a part of 
 either a building name, a room name, or a room alias (call these target tokens). Then, for each target,
@@ -21,7 +71,7 @@ estimate the distance between query and target by taking the maximum of the scor
 Effectively, this computes the distance between the query token and it's most likely meaning. We then
 sum those distances to get a total distance for the query and target.
 */
-export const findRooms = (
+const findRooms = (
   query: string,
   building: Building,
   floorMap: Record<string, SearchRoom[]>,
