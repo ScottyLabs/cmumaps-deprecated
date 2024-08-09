@@ -61,20 +61,12 @@ const Eaterycard = ({ room }: Props) => {
   };
 
   const renderInfo = () => {
-    if (!eatingData) {
-      return (
-        <div className="ml-3 mt-2 flex justify-between">
-          <h3>{room.alias || room.name}</h3>
-          <p>No Info Available</p>
-        </div>
-      );
-    }
+    const renderName = () => {
+      return <h2 className="font-bold">{room.alias}</h2>;
+    };
 
     return (
-      <>
-        <h2 className="font-bold">{room.alias}</h2>
-        <EateryInfo room={room} eatingData={eatingData} />
-      </>
+      <EateryInfo room={room} name={renderName()} eatingData={eatingData} />
     );
   };
 
