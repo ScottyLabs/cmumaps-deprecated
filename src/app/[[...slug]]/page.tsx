@@ -265,7 +265,7 @@ const Page = ({ params, searchParams }: Props) => {
   return (
     <main className="relative h-screen">
       <div className="absolute z-10">
-        {!isNavOpen && !isSearchOpen && <InfoCard />}
+        {!isNavOpen && !isSearchOpen && <InfoCard map={mapRef.current} />}
         {isNavOpen && <NavCard />}
 
         {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}

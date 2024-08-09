@@ -29,7 +29,7 @@ const SearchResultWrapper = ({ children, handleClick }: WrapperProps) => {
 };
 
 interface SearchResultsProps {
-  mapRef: mapkit.Map | null;
+  map: mapkit.Map | null;
   query: string;
   userPosition: AbsoluteCoordinate;
 }
@@ -37,7 +37,7 @@ interface SearchResultsProps {
 /**
  * Displays the search results.
  */
-export default function SearchResults({ mapRef, query }: SearchResultsProps) {
+const SearchResults = ({ map, query }: SearchResultsProps) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
@@ -70,8 +70,8 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
 
   const renderBuildingResults = (building: Building) => {
     const handleClick = () => {
-      if (mapRef) {
-        zoomOnObject(mapRef, building.shapes.flat());
+      if (map) {
+        zoomOnObject(map, building.shapes.flat());
       }
       dispatch(selectBuilding(building));
       dispatch(setIsSearchOpen(false));
@@ -108,13 +108,7 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
       <SearchResultWrapper
         key={searchRoom.id}
         handleClick={() => {
-          zoomOnSearchRoom(
-            mapRef,
-            searchRoom,
-            buildings,
-            floorPlanMap,
-            dispatch,
-          );
+          zoomOnSearchRoom(map, searchRoom, buildings, floorPlanMap, dispatch);
         }}
       >
         <div className="flex items-center space-x-3">
@@ -141,4 +135,6 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
       })}
     </div>
   );
-}
+};
+
+export default SearchResults;
