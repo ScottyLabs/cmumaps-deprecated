@@ -2,6 +2,21 @@ import { distance as levenDist } from 'fastest-levenshtein';
 
 import { Building, SearchMap, SearchRoom } from '@/types';
 
+// sort building by distance
+// if (userPosition) {
+//   buildings.sort(
+//     (b, a) =>
+//       distance(
+//         [b.labelPosition.longitude, b.labelPosition.latitude],
+//         userPosition,
+//       ) -
+//       distance(
+//         [a.labelPosition.longitude, a.labelPosition.latitude],
+//         userPosition,
+//       ),
+//   );
+// }
+
 function getRoomTokens(room: SearchRoom, building: Building): string[] {
   let tokens = [room.name, building.code, building.name];
   if (room.aliases) {
