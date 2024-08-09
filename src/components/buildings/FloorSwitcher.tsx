@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 // import { AiOutlineExclamationCircle } from 'react-icons/ai';
-import { FaArrowUp } from 'react-icons/fa';
-import { FaArrowDown } from 'react-icons/fa';
+import { IoIosArrowUp } from 'react-icons/io';
+import { IoIosArrowDown } from 'react-icons/io';
 
 import { getIsCardOpen, setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -71,7 +71,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
             )
           }
         >
-          <FaArrowDown />
+          <IoIosArrowDown />
         </button>
       </div>
     );
@@ -120,7 +120,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
             )
           }
         >
-          <FaArrowUp />
+          <IoIosArrowUp />
         </button>
       </div>
     );
