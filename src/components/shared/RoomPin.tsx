@@ -9,8 +9,7 @@ import Image from 'next/image';
 
 import React from 'react';
 
-import { Room, getRoomTypeDetails } from '@/types';
-import titleCase from '@/util/titleCase';
+import { Room, SearchRoom, getRoomTypeDetails } from '@/types';
 
 const icons: { [type: string]: SVGElement } = {
   elevator: elevatorIcon,
@@ -30,10 +29,10 @@ const icons: { [type: string]: SVGElement } = {
 };
 
 interface RoomPinProps {
-  room: Room;
+  room: Room | SearchRoom;
 }
 
-export function hasIcon(room: Room) {
+export function hasIcon(room: Room | SearchRoom) {
   return room.type in icons;
 }
 
@@ -48,11 +47,15 @@ export default function RoomPin({ room }: RoomPinProps) {
 
   return (
     <div
-      className="flex items-center justify-center h-[20px] w-[20px] rounded-[4px]"
+      className="flex h-5 w-5 items-center justify-center rounded"
       style={{ background: roomColors.primary }}
-      title={titleCase(room.type)}
+      title={room.type}
     >
-      <Image className="size-[12px]" src={hasGraphic ? icon : pinIcon} />
+      <Image
+        alt={'Room Pin Alt Placeholder'}
+        className="size-3"
+        src={hasGraphic ? icon : pinIcon}
+      />
     </div>
   );
 }

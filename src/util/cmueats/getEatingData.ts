@@ -1,33 +1,33 @@
 import { DateTime } from 'luxon';
+
+import { getStatusMessage } from '../cmueats/queryLocations';
 import {
   currentlyOpen,
   minutesSinceSunday,
   getNextTimeSlot,
 } from '../cmueats/time';
-import { getStatusMessage } from '../cmueats/queryLocations';
+import { IReadOnlyExtendedLocation } from './types/locationTypes';
 
-export async function getEatingData(alias: string | undefined) {
-  if (!alias) {
-    return {};
-  }
-
+export const getEatingData = async (
+  alias: string,
+): Promise<IReadOnlyExtendedLocation | null> => {
   const now = DateTime.now().setZone('America/New_York');
   const WEEK_MINUTES = 7 * 24 * 60;
   const res = await fetch('https://dining.apis.scottylabs.org/locations/');
   let eatingData = await res.json();
 
   if (eatingData.length == 0) {
-    return {};
+    return null;
   }
   eatingData.locations = [
     eatingData.locations.find((e) => e.name == alias.toUpperCase()),
   ];
   if (!eatingData) {
-    return {};
+    return null;
   } else {
     eatingData = eatingData.locations[0];
     if (!eatingData) {
-      return {};
+      return null;
     }
     const { times } = eatingData;
     const timeSlot = times.find(({ start, end }: any) =>
@@ -73,4 +73,4 @@ export async function getEatingData(alias: string | undefined) {
     }
   }
   return eatingData || null;
-}
+};

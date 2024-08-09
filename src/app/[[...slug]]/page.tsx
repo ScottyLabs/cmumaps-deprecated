@@ -1,6 +1,9 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
+import questionMarkIcon from '@icons/question-mark.png';
+import scheduleIcon from '@icons/schedule.svg';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useRef } from 'react';
@@ -8,10 +11,11 @@ import { getSelectorsByUserAgent } from 'react-device-detect';
 
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
-import { zoomOnObject } from '@/components/buildings/mapUtils';
+import { zoomOnObject, zoomOnRoom } from '@/components/buildings/mapUtils';
 import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
-import SearchBar from '@/components/searchbar/SearchBar';
+import ToolBar from '@/components/toolbar/ToolBar';
+import { getFloorPlan } from '@/lib/apiRoutes';
 import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
@@ -20,7 +24,7 @@ import {
   selectBuilding,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building } from '@/types';
+import { Building, SearchRoom } from '@/types';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -52,10 +56,15 @@ const Page = ({ params, searchParams }: Props) => {
 
   // extracting data in the initial loading of the page
   useEffect(() => {
-    if (buildings && params.slug && params.slug.length > 0) {
-      // first slug is the building code
+    // makes all required things are loaded
+    if (mapRef.current && buildings && params.slug && params.slug.length > 0) {
       const code = params.slug[0];
-      if (code.includes('-')) {
+      if (!code.includes('-')) {
+        // only building code
+        const buildingCode = code;
+        dispatch(selectBuilding(buildings[buildingCode]));
+      } else {
+        // at least floor level
         const buildingCode = code.split('-')[0];
         const floorLevel = code.split('-')[1];
 
@@ -73,15 +82,31 @@ const Page = ({ params, searchParams }: Props) => {
           return;
         }
 
-        dispatch(selectBuilding(building));
-        zoomOnObject(mapRef, building.shapes.flat());
-        dispatch(setFocusedFloor({ buildingCode, level: floorLevel }));
-      } else {
-        const buildingCode = code;
-        dispatch(selectBuilding(buildings[buildingCode]));
+        const floor = { buildingCode, level: floorLevel };
+        const roomId = params.slug[1];
+
+        if (!roomId) {
+          // up to floor level
+          dispatch(selectBuilding(building));
+          zoomOnObject(mapRef.current, building.shapes.flat());
+          dispatch(setFocusedFloor(floor));
+        } else {
+          // up to room level
+          getFloorPlan(floor).then((floorPlan) => {
+            // be careful of floor plans that doesn't have placements !!!
+            if (floorPlan?.placement) {
+              const room = floorPlan.rooms[roomId];
+              if (room) {
+                if (mapRef.current) {
+                  zoomOnRoom(mapRef.current, room, floor, floorPlan, dispatch);
+                }
+              }
+            }
+          });
+        }
       }
     }
-  }, [buildings, dispatch, params.slug, router]);
+  }, [buildings, dispatch, params.slug, router, mapRef]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -137,12 +162,12 @@ const Page = ({ params, searchParams }: Props) => {
         .map((building) =>
           building.floors.map(async (floorLevel) => {
             // only loads GHC, WEH, and NSH for now
-            if (!['GHC', 'WEH', 'NSH'].includes(building.code)) {
-              return [null, null, null];
+            if (!['GHC', 'WEH', 'NSH', 'CUC'].includes(building.code)) {
+              return { buildingCode: '', floorLevel: '', searchRooms: [] };
             }
 
             if (building.code == 'CUC' && floorLevel !== '2') {
-              return [null, null, null];
+              return { buildingCode: '', floorLevel: '', searchRooms: [] };
             }
 
             const outlineResponse = await fetch(
@@ -150,20 +175,28 @@ const Page = ({ params, searchParams }: Props) => {
             );
             const outlineJson = await outlineResponse.json();
 
-            const searchRooms = outlineJson['rooms'];
+            const rooms = outlineJson['rooms'];
 
-            for (const roomId in searchRooms) {
-              searchRooms[roomId]['id'] = roomId;
-              delete searchRooms[roomId]['polygon'];
+            const searchRooms: SearchRoom[] = [];
+
+            for (const roomId in rooms) {
+              rooms[roomId].id = roomId;
+              rooms[roomId].alias = rooms[roomId]['aliases'][0];
+              rooms[roomId].floor = {
+                buildingCode: building.code,
+                level: floorLevel,
+              };
+              delete rooms[roomId].polygon;
+              searchRooms.push(rooms[roomId]);
             }
 
-            return [building.code, floorLevel, searchRooms];
+            return { buildingCode: building.code, floorLevel, searchRooms };
           }),
         )
         .flat(2);
 
       Promise.all(promises).then((responses) => {
-        responses.forEach(([buildingCode, floorLevel, searchRooms]) => {
+        responses.forEach(({ buildingCode, floorLevel, searchRooms }) => {
           if (buildingCode) {
             dispatch(
               addFloorToSearchMap([buildingCode, floorLevel, searchRooms]),
@@ -200,7 +233,8 @@ const Page = ({ params, searchParams }: Props) => {
   useEffect(() => {
     let url = window.location.origin + '/';
     if (selectedRoom) {
-      url += `${selectedRoom.floor}/${selectedRoom.id}`;
+      const floor = selectedRoom.floor;
+      url += `${floor.buildingCode}-${floor.level}/${selectedRoom.id}`;
       window.history.pushState({}, '', url);
     } else if (focusedFloor) {
       url += `${focusedFloor.buildingCode}`;
@@ -218,7 +252,7 @@ const Page = ({ params, searchParams }: Props) => {
   const renderClerkIcon = () => {
     if (isMobile) {
       return (
-        <div className="fixed right-2 bottom-10">
+        <div className="fixed bottom-10 right-2">
           <UserButton />
         </div>
       );
@@ -234,13 +268,13 @@ const Page = ({ params, searchParams }: Props) => {
   return (
     <main className="relative h-screen">
       <div className="absolute z-10">
-        {!isNavOpen && !isSearchOpen && <InfoCard />}
+        {!isNavOpen && !isSearchOpen && <InfoCard map={mapRef.current} />}
         {isNavOpen && <NavCard />}
 
         {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
 
-        <SearchBar
-          mapRef={mapRef.current}
+        <ToolBar
+          map={mapRef.current}
           userPosition={{
             x: points[points.length - 1][0],
             y: points[points.length - 1][1],
@@ -248,6 +282,13 @@ const Page = ({ params, searchParams }: Props) => {
         />
 
         {renderClerkIcon()}
+
+        <div className="fixed bottom-2 right-2">
+          <Image alt="Question Mark" src={questionMarkIcon} height={45} />
+        </div>
+        <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
+          <Image alt="Schedule" src={scheduleIcon} />
+        </div>
       </div>
 
       <MapDisplay mapRef={mapRef} points={points} />

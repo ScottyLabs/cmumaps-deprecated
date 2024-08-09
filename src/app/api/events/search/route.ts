@@ -1,10 +1,6 @@
-import { PrismaClient } from '@prisma/client';
-import { date } from 'joi';
 import { NextRequest } from 'next/server';
-import { start } from 'repl';
-import { pipeline } from 'stream';
 
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
 export async function searchEvents(query: string) {
   const events = await prisma.$runCommandRaw({

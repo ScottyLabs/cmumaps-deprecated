@@ -1,101 +1,89 @@
-import Image from 'next/image';
-
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 import { claimRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, Room } from '@/types';
+import { Building, SearchRoom } from '@/types';
 import { getEatingData } from '@/util/cmueats/getEatingData';
 import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
+import { zoomOnSearchRoom } from '../buildings/mapUtils';
 import ButtonsRow from './ButtonsRow';
 import EateryInfo from './EateryInfo';
-import searchIcon from '/public/assets/icons/search.svg';
+import InfoCardImage from './InfoCardImage';
 
 interface Props {
+  map: mapkit.Map | null;
   building: Building;
 }
 
-const BuildingCard = ({ building }: Props) => {
+const BuildingCard = ({ map, building }: Props) => {
   const dispatch = useAppDispatch();
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
-  const floorMap = useAppSelector((state) => state.data.searchMap);
+
+  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const buildings = useAppSelector((state) => state.data.buildings);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [eatingData, setEatingData] = useState<
-    [Room, IReadOnlyExtendedLocation | null][]
+    [SearchRoom, IReadOnlyExtendedLocation | null][]
   >([]);
 
-  // useEffect(() => {
-  //   const getEateries = () => {
-  //     return building.floors
-  //       .map((floor) => {
-  //         // remove this later!!!
-  //         if (!floorMap[`${building.code}`][`${floor.level}`]) {
-  //           return [];
-  //         }
-  //         const rooms = floorMap[`${building.code}`][`${floor.level}`];
-  //         // return Object.values(rooms).filter((room) => room.type == 'dining');
-  //         return rooms.filter(
-  //           (room) =>
-  //             room.aliases.includes('Revolution Noodle') ||
-  //             room.aliases.includes('Schatz Dining Room') ||
-  //             room.aliases.includes('Au Bon Pain at Skibo Café'),
-  //         );
-  //       })
-  //       .flat();
-  //   };
+  useEffect(() => {
+    const getEateries = () => {
+      return building.floors
+        .map((floorLevel) => {
+          // remove this later!!!
+          if (
+            !searchMap[`${building.code}`] ||
+            !searchMap[`${building.code}`][floorLevel]
+          ) {
+            return [];
+          }
+          const rooms = searchMap[`${building.code}`][`${floorLevel}`];
+          return rooms.filter((room) => room.type == 'dining');
+        })
+        .flat();
+    };
 
-  //   const fetchEatingData = async () => {
-  //     const eateries = getEateries();
+    const fetchEatingData = async () => {
+      const eateries = getEateries();
 
-  //     const newEatingData: [Room, IReadOnlyExtendedLocation | null][] =
-  //       await Promise.all(
-  //         eateries.map(async (eatery) => {
-  //           const data = await getEatingData(eatery.alias);
-  //           return [eatery, data];
-  //         }),
-  //       );
+      const newEatingData: [SearchRoom, IReadOnlyExtendedLocation | null][] =
+        await Promise.all(
+          eateries.map(async (eatery) => {
+            if (eatery.aliases[0]) {
+              const data = await getEatingData(eatery.aliases[0]);
+              return [eatery, data];
+            } else {
+              return [eatery, null];
+            }
+          }),
+        );
 
-  //     setEatingData(newEatingData);
-  //   };
+      setEatingData(newEatingData);
+    };
 
-  //   fetchEatingData();
-  // }, [building.code, building.floors, floorMap]);
+    fetchEatingData();
+  }, [building.code, building.floors, searchMap]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
 
-    return (
-      <div className="relative h-36 w-full">
-        <Image
-          className="object-cover"
-          fill={true}
-          alt="Building Image"
-          src={url}
-          sizes="99vw"
-        />
-      </div>
-    );
+    return <InfoCardImage url={url} alt={`${building.name} Image`} />;
   };
 
   const renderButtonsRow = () => {
-    const renderMiddleButton = () => (
-      <button
-        type="button"
-        className="flex items-center rounded-lg bg-[#1e86ff] px-3 py-1 text-white gap-2"
-      >
-        <Image alt="Search Icon" src={searchIcon} className="size-3.5" />
-        <p>Find rooms</p>
-      </button>
-    );
-
-    return <ButtonsRow middleButton={renderMiddleButton()} />;
+    return <ButtonsRow middleButton={<></>} />;
   };
 
   const renderEateryCarousel = () => {
+    const renderTitle = (eatery: SearchRoom) => {
+      return <h3> {eatery.alias}</h3>;
+    };
+
     if (isMobile) {
       const responsive = {
         superLargeDesktop: {
@@ -131,7 +119,7 @@ const BuildingCard = ({ building }: Props) => {
       };
 
       return (
-        <div className="ml-2 mb-1">
+        <div className="mb-1 ml-2">
           <p className="my-0 font-medium">Eateries nearby</p>
           <Carousel
             responsive={responsive}
@@ -147,7 +135,11 @@ const BuildingCard = ({ building }: Props) => {
                 onClick={() => dispatch(claimRoom(eatery))}
               >
                 <div className="carousel-item active">
-                  <EateryInfo room={eatery} eatingData={eatingData} />
+                  <EateryInfo
+                    room={eatery}
+                    title={renderTitle(eatery)}
+                    eatingData={eatingData}
+                  />
                 </div>
               </div>
             ))}
@@ -155,15 +147,24 @@ const BuildingCard = ({ building }: Props) => {
         </div>
       );
     } else {
+      const handleClick = (eatery: SearchRoom) => () => {
+        dispatch(claimRoom(eatery));
+        zoomOnSearchRoom(map, eatery, buildings, floorPlanMap, dispatch);
+      };
+
       return (
-        <div className="mx-2 mb-3 space-y-3">
+        <div className="mx-2 mb-3 max-h-96 space-y-3 overflow-y-auto">
           {eatingData.map(([eatery, eatingData]) => (
             <div
               key={eatery.id}
               className="cursor-pointer rounded border p-1"
-              onClick={() => dispatch(claimRoom(eatery))}
+              onClick={handleClick(eatery)}
             >
-              <EateryInfo room={eatery} eatingData={eatingData} />
+              <EateryInfo
+                room={eatery}
+                title={renderTitle(eatery)}
+                eatingData={eatingData}
+              />
             </div>
           ))}
         </div>
@@ -176,7 +177,7 @@ const BuildingCard = ({ building }: Props) => {
       {renderBuildingImage()}
       <h2 className="ml-3 mt-2">{building.name}</h2>
       {renderButtonsRow()}
-      {/* {renderEateryCarousel()} */}
+      {renderEateryCarousel()}
     </>
   );
 };

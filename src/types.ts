@@ -43,7 +43,7 @@ export const RoomTypeList = [
   'parking',
   'inaccessible',
   '', // not assigned
-];
+] as const;
 
 export type RoomType = (typeof RoomTypeList)[number];
 
@@ -133,9 +133,13 @@ export interface SearchRoom {
    */
   aliases: string[];
 
+  alias: string;
+
   type: RoomType;
 
   labelPosition: AbsoluteCoordinate;
+
+  floor: Floor;
 }
 
 export interface Room {
@@ -203,7 +207,7 @@ export interface Floor {
  */
 export interface FloorPlan {
   placement: Placement;
-  rooms: Room[];
+  rooms: Record<ID, Room>;
 }
 
 /**
@@ -233,7 +237,7 @@ export interface Building {
   /**
    * The ordinal of the default floor (the ordinal of the Cut is 0)
    */
-  defaultOrdinal: string;
+  defaultOrdinal: number;
 
   /**
    * The position of the label for the building's code.
@@ -256,3 +260,5 @@ export interface Building {
  * Used for searching purposes
  */
 export type SearchMap = Record<BuildingCode, Record<FloorLevel, SearchRoom[]>>;
+
+export type FloorPlanMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;

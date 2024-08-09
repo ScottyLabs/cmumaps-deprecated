@@ -44,7 +44,7 @@ const ButtonsRow = ({ middleButton }: Props) => {
           type="button"
           className="flex items-center rounded-full bg-[#b5b5b5] p-1.5"
         >
-          <Image alt="Share Icon" src={shareIcon} className="size-5 " />
+          <Image alt="Share Icon" src={shareIcon} className="size-5" />
         </button>
       </div>
     </div>

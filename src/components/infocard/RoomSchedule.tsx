@@ -8,7 +8,7 @@ import {
   eachDayOfInterval,
 } from 'date-fns';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa';
 
@@ -16,36 +16,47 @@ import { fetchEvents } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
 
 const RoomSchedule = () => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+
+  const today = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today;
+  }, []);
 
   const [currentWeek, setCurrentWeek] = useState<Date>(today);
   const [dayOfWeek, setDayOfWeek] = useState<number>(today.getDay());
-  const [thisWeeksEvents, setThisWeeksEvents] = useState<Event[][] | null>(
-    null,
+  const [weekEvents, setWeekEvents] = useState<Event[][] | null>(null);
+
+  const startOfCurrentWeek = useMemo(
+    () => startOfWeek(currentWeek, { weekStartsOn: 0 }),
+    [currentWeek],
+  );
+  const endOfCurrentWeek = useMemo(
+    () => endOfWeek(currentWeek, { weekStartsOn: 0 }),
+    [currentWeek],
   );
 
-  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
-
-  const startOfCurrentWeek = startOfWeek(currentWeek, { weekStartsOn: 0 });
-  const endOfCurrentWeek = endOfWeek(currentWeek, { weekStartsOn: 0 });
   const daysOfWeek = eachDayOfInterval({
     start: startOfCurrentWeek,
     end: endOfCurrentWeek,
   });
 
   useEffect(() => {
+    if (!selectedRoom) {
+      return;
+    }
+
     // fetch events for the current day
-    setThisWeeksEvents(null);
+    setWeekEvents(null);
 
     fetchEvents(
-      `${focusedFloor?.buildingCode} ${selectedRoom?.name}`,
+      `${selectedRoom.floor.buildingCode} ${selectedRoom.name}`,
       startOfCurrentWeek,
       endOfCurrentWeek,
-      setThisWeeksEvents,
+      setWeekEvents,
     );
-  }, [selectedRoom, currentWeek]);
+  }, [selectedRoom, currentWeek, startOfCurrentWeek, endOfCurrentWeek]);
 
   const renderDatePicker = () => {
     const renderDateRow = () => {
@@ -100,27 +111,43 @@ const RoomSchedule = () => {
       );
     };
 
-    const renderContent = () => {
-      return (
-        <p>
-          Yuxiang, please use the events returned by thisWeeksEvents ?
-          thisWeeksEvents[dayOfWeek] : null to populate
-        </p>
-      );
-    };
-
     return (
       <div>
         {renderDateRow()}
         {renderWeekRow()}
-        {renderContent()}
       </div>
     );
+  };
+
+  const renderContent = () => {
+    if (weekEvents) {
+      const formatDate = (time: Date) => {
+        const date = new Date(time);
+        const hoursUTC = date.getUTCHours().toString().padStart(2, '0');
+        const minutesUTC = date.getUTCMinutes().toString().padStart(2, '0');
+        return `${hoursUTC}:${minutesUTC}`;
+      };
+
+      return weekEvents[dayOfWeek].map((event) => {
+        const startTime = formatDate(event.startTime);
+        const endTime = formatDate(event.endTime);
+
+        return (
+          <div key={event.id} className="flex justify-between">
+            <p>{event.name}</p>
+            <p>
+              {startTime}-{endTime}
+            </p>
+          </div>
+        );
+      });
+    }
   };
 
   return (
     <div className="space-x-4 rounded-lg bg-white p-4 shadow">
       {renderDatePicker()}
+      {renderContent()}
     </div>
   );
 };
