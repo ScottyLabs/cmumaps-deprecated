@@ -51,21 +51,6 @@ export default function SearchResults({ mapRef, query }: SearchResultsProps) {
     }[]
   >([]);
 
-  // sort building by distance
-  // if (userPosition) {
-  //   buildings.sort(
-  //     (b, a) =>
-  //       distance(
-  //         [b.labelPosition.longitude, b.labelPosition.latitude],
-  //         userPosition,
-  //       ) -
-  //       distance(
-  //         [a.labelPosition.longitude, a.labelPosition.latitude],
-  //         userPosition,
-  //       ),
-  //   );
-  // }
-
   useEffect(() => {
     if (buildings) {
       setTimeout(() => {
