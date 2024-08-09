@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 import { useAppSelector } from '@/lib/hooks';
 
@@ -7,7 +7,11 @@ import CardWrapper from './CardWrapper';
 import EateryCard from './EateryCard';
 import RoomCard from './RoomCard';
 
-export default function InfoCard(): ReactElement {
+interface Props {
+  map: mapkit.Map | null;
+}
+
+const InfoCard = ({ map }: Props) => {
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
 
@@ -28,10 +32,12 @@ export default function InfoCard(): ReactElement {
   } else if (building) {
     return (
       <CardWrapper snapPoint={0.5}>
-        <BuildingCard building={building} />
+        <BuildingCard map={map} building={building} />
       </CardWrapper>
     );
   } else {
     return <></>;
   }
-}
+};
+
+export default InfoCard;

@@ -8,19 +8,24 @@ import { Building, SearchRoom } from '@/types';
 import { getEatingData } from '@/util/cmueats/getEatingData';
 import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
+import { zoomOnSearchRoom } from '../buildings/mapUtils';
 import ButtonsRow from './ButtonsRow';
 import EateryInfo from './EateryInfo';
 import InfoCardImage from './InfoCardImage';
 
 interface Props {
+  map: mapkit.Map | null;
   building: Building;
 }
 
-const BuildingCard = ({ building }: Props) => {
+const BuildingCard = ({ map, building }: Props) => {
   const dispatch = useAppDispatch();
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
-  const floorMap = useAppSelector((state) => state.data.searchMap);
+
+  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const buildings = useAppSelector((state) => state.data.buildings);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [eatingData, setEatingData] = useState<
     [SearchRoom, IReadOnlyExtendedLocation | null][]
@@ -32,12 +37,12 @@ const BuildingCard = ({ building }: Props) => {
         .map((floorLevel) => {
           // remove this later!!!
           if (
-            !floorMap[`${building.code}`] ||
-            !floorMap[`${building.code}`][floorLevel]
+            !searchMap[`${building.code}`] ||
+            !searchMap[`${building.code}`][floorLevel]
           ) {
             return [];
           }
-          const rooms = floorMap[`${building.code}`][`${floorLevel}`];
+          const rooms = searchMap[`${building.code}`][`${floorLevel}`];
           return rooms.filter((room) => room.type == 'dining');
         })
         .flat();
@@ -62,7 +67,7 @@ const BuildingCard = ({ building }: Props) => {
     };
 
     fetchEatingData();
-  }, [building.code, building.floors, floorMap]);
+  }, [building.code, building.floors, searchMap]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
@@ -144,7 +149,7 @@ const BuildingCard = ({ building }: Props) => {
     } else {
       const handleClick = (eatery: SearchRoom) => () => {
         dispatch(claimRoom(eatery));
-        // zoomOnRoom(mapRef, )
+        zoomOnSearchRoom(map, eatery, buildings, floorPlanMap, dispatch);
       };
 
       return (

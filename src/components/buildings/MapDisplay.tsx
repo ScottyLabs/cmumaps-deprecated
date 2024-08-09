@@ -24,11 +24,6 @@ import NavLine from '../navigation/NavLine';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay from './FloorPlanOverlay';
 
-interface MapDisplayProps {
-  mapRef: React.RefObject<mapkit.Map | null>;
-  points: number[][];
-}
-
 //#region Constants
 const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 200_000;
 const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 600_000;
@@ -47,6 +42,11 @@ const initialRegion = {
   longitudeDelta: 0.011960061265583022,
 };
 //#endregion
+
+interface MapDisplayProps {
+  mapRef: React.RefObject<mapkit.Map | null>;
+  points: number[][];
+}
 
 const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const dispatch = useAppDispatch();
