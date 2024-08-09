@@ -51,7 +51,7 @@ const RoomCard = ({ room }: Props) => {
       return `${buildings[room.floor.buildingCode].name} ${room.name}`;
     };
 
-    return <div className="ml-3 mt-2 font-bold">{getText()}</div>;
+    return <h2 className="ml-3 mt-2 font-bold">{getText()}</h2>;
   };
 
   return (
