@@ -1,53 +1,82 @@
+import courseIcon from '@icons/quick_search/course.svg';
+import eventIcon from '@icons/quick_search/event.svg';
+import foodIcon from '@icons/quick_search/food.svg';
+import restroomIcon from '@icons/quick_search/restroom.svg';
+import studyIcon from '@icons/quick_search/study.svg';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
-import React, { ReactElement } from 'react';
+import React from 'react';
+
+import {
+  SearchMode,
+  SearchModeList,
+  setSearchMode,
+} from '@/lib/features/uiSlice';
+import { useAppDispatch } from '@/lib/hooks';
 
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
-import classesIcon from '/public/assets/icons/quick_search/classes.svg';
-import foodIcon from '/public/assets/icons/quick_search/food.svg';
-import restroomIcon from '/public/assets/icons/quick_search/restroom.svg';
-import studyIcon from '/public/assets/icons/quick_search/study.svg';
 
-export interface QuickSearchProps {
-  setQuery: (q: string) => void;
-}
+const QuickSearch = () => {
+  const dispatch = useAppDispatch();
 
-/**
- * Displays the search results.
- */
-export default function QuickSearch({
-  setQuery,
-}: QuickSearchProps): ReactElement {
-  const renderIconHelper = (
-    name: string,
-    icon: StaticImport,
-    queryText: string,
-    backgroundColorClass: string,
-  ) => {
+  const searchModeToDisplayText: Partial<Record<SearchMode, string>> = {
+    food: 'Food',
+    courses: 'Courses',
+    events: 'Events',
+    restrooms: 'Restrooms',
+    study: 'Study',
+  };
+
+  const searchModeToIcon: Partial<Record<SearchMode, StaticImport>> = {
+    food: foodIcon,
+    courses: courseIcon,
+    events: eventIcon,
+    restrooms: restroomIcon,
+    study: studyIcon,
+  };
+
+  const searchModeToBgColor: Partial<Record<SearchMode, string>> = {
+    food: 'bg-[#FFBD59]',
+    courses: 'bg-[#C41230]',
+    events: 'bg-black',
+    restrooms: 'bg-[#EFB1F4]',
+    study: 'bg-[#A6E08B]',
+  };
+
+  const renderSearchModeHelper = (searchMode: SearchMode) => {
+    const displayText = searchModeToDisplayText[searchMode];
+    const icon = searchModeToIcon[searchMode];
+    const bgColorClass = searchModeToBgColor[searchMode];
+
+    if (!icon) {
+      return;
+    }
+
     return (
       <div
-        onClick={() => setQuery(queryText)}
+        onClick={() => dispatch(setSearchMode(searchMode))}
         className="flex flex-col items-center gap-1 p-2"
       >
         <div
-          className={`flex h-14 w-14 items-center justify-center rounded-full ${backgroundColorClass}`}
+          className={`flex h-14 w-14 cursor-pointer items-center justify-center rounded-full ${bgColorClass}`}
         >
-          <Image alt={name + ' icon'} src={icon} className="h-8 w-8"></Image>
+          <Image alt={displayText + ' icon'} src={icon} className="h-8 w-8" />
         </div>
-        <p className="text-sm text-[#8e8e8e]">{name}</p>
+        <p className="text-sm text-[#8e8e8e]">{displayText}</p>
       </div>
     );
   };
 
   return (
     <CollapsibleWrapper title="Quick Search">
-      <div className="mx-2.5 mb-3 grid grid-cols-4 gap-2 rounded-xl border bg-white p-2">
-        {renderIconHelper('Restroom', restroomIcon, 'Restroom', 'bg-[#EFB1F4]')}
-        {renderIconHelper('Study', studyIcon, 'Study', 'bg-[#A6E08B]')}
-        {renderIconHelper('Food', foodIcon, 'Dining', 'bg-[#FFBD59]')}
-        {renderIconHelper('Classes', classesIcon, 'Classes', 'bg-[#C41230]')}
+      <div className="mx-2.5 mb-3 flex gap-2 overflow-x-auto rounded-xl border p-2">
+        {SearchModeList.slice(1).map((searchMode) =>
+          renderSearchModeHelper(searchMode),
+        )}
       </div>
     </CollapsibleWrapper>
   );
-}
+};
+
+export default QuickSearch;

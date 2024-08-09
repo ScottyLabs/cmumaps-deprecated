@@ -156,7 +156,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
       {renderSearchQueryInput()}
       {searchQuery == '' && (
         <div className="mt-3">
-          <QuickSearch setQuery={setSearchQuery} />
+          <QuickSearch />
         </div>
       )}
       {renderSearchResults()}

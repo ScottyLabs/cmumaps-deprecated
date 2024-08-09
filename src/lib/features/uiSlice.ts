@@ -2,6 +2,17 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { Building, Floor, Room } from '@/types';
 
+export const SearchModeList = [
+  'rooms',
+  'food',
+  'courses',
+  'events',
+  'restrooms',
+  'study',
+] as const;
+
+export type SearchMode = (typeof SearchModeList)[number];
+
 interface UIState {
   isMobile: boolean;
 
@@ -16,6 +27,8 @@ interface UIState {
   isCardWrapperCollapsed: boolean;
 
   showRoomNames: boolean;
+
+  searchMode: SearchMode;
 }
 
 const initialState: UIState = {
@@ -27,6 +40,7 @@ const initialState: UIState = {
   roomImageList: {},
   isCardWrapperCollapsed: true,
   showRoomNames: false,
+  searchMode: 'rooms',
 };
 
 const uiSlice = createSlice({
@@ -70,6 +84,10 @@ const uiSlice = createSlice({
     setShowRoomNames(state, action: PayloadAction<boolean>) {
       state.showRoomNames = action.payload;
     },
+
+    setSearchMode(state, action: PayloadAction<SearchMode>) {
+      state.searchMode = action.payload;
+    },
   },
 });
 
@@ -88,5 +106,6 @@ export const {
   setIsCardWrapperCollapsed,
   setIsMobile,
   setShowRoomNames,
+  setSearchMode,
 } = uiSlice.actions;
 export default uiSlice.reducer;
