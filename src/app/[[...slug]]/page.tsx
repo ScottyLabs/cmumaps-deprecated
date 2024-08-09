@@ -1,6 +1,8 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
+import questionMark from '@icons/question-mark.png';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useRef } from 'react';
@@ -279,6 +281,10 @@ const Page = ({ params, searchParams }: Props) => {
         />
 
         {renderClerkIcon()}
+
+        <div className="fixed bottom-2 right-2">
+          <Image alt="Question Mark" src={questionMark} height={45} />
+        </div>
       </div>
 
       <MapDisplay mapRef={mapRef} points={points} />
