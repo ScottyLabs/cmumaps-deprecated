@@ -8,11 +8,11 @@ import {
 
 interface Props {
   room: Room | SearchRoom;
-  name: ReactElement;
+  title: ReactElement;
   eatingData: IReadOnlyExtendedLocation | null;
 }
 
-const EateryInfo = ({ room, name, eatingData }: Props) => {
+const EateryInfo = ({ room, title, eatingData }: Props) => {
   if (!eatingData) {
     return (
       <div className="ml-3 mt-2 flex justify-between">
@@ -105,7 +105,7 @@ const EateryInfo = ({ room, name, eatingData }: Props) => {
 
   return (
     <div className="px-4 pb-3 pt-2 font-[500]">
-      {name}
+      {title}
       {renderLocationTimeInfo()}
       <p className="mt-2 leading-4">{eatingData.shortDescription}</p>
     </div>
