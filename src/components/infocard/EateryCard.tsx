@@ -60,10 +60,28 @@ const Eaterycard = ({ room }: Props) => {
     return <ButtonsRow middleButton={renderMiddleButton()} />;
   };
 
+  const renderInfo = () => {
+    if (!eatingData) {
+      return (
+        <div className="ml-3 mt-2 flex justify-between">
+          <h3>{room.alias || room.name}</h3>
+          <p>No Info Available</p>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <h2 className="font-bold">{room.alias}</h2>
+        <EateryInfo room={room} eatingData={eatingData} />
+      </>
+    );
+  };
+
   return (
     <div>
       {renderEateryImage()}
-      <EateryInfo room={room} eatingData={eatingData} />
+      {renderInfo()}
       {renderButtonsRow()}
     </div>
   );

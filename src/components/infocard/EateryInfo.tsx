@@ -8,7 +8,7 @@ import {
 
 interface Props {
   room: Room | SearchRoom;
-  eatingData: IReadOnlyExtendedLocation | null;
+  eatingData: IReadOnlyExtendedLocation;
 }
 
 const EateryInfo = ({ room, eatingData }: Props) => {
@@ -16,7 +16,6 @@ const EateryInfo = ({ room, eatingData }: Props) => {
     return (
       <div className="ml-3 mt-2 flex justify-between">
         <h3>{room.alias || room.name}</h3>
-        <p>No Info Available</p>
       </div>
     );
   }
@@ -91,6 +90,8 @@ const EateryInfo = ({ room, eatingData }: Props) => {
           {renderStatusCircle()}
           <p className={`${textColor}`}>
             {trimStatusMsg(eatingData.statusMsg)}
+            {/* Open (close in 12 hours) */}
+            {/* Closed (reopen in 12 hours) */}
           </p>
         </div>
       </div>
@@ -103,7 +104,6 @@ const EateryInfo = ({ room, eatingData }: Props) => {
 
   return (
     <div className="px-4 pb-3 pt-2 font-[500]">
-      <h3 className="font-bold">{room.alias}</h3>
       {renderLocationTimeInfo()}
       <p className="mt-2 leading-4">{eatingData.shortDescription}</p>
     </div>
