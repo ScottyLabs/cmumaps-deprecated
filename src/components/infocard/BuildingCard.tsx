@@ -75,6 +75,10 @@ const BuildingCard = ({ building }: Props) => {
   };
 
   const renderEateryCarousel = () => {
+    const renderTitle = (eatery: SearchRoom) => {
+      return <h3> {eatery.alias}</h3>;
+    };
+
     if (isMobile) {
       const responsive = {
         superLargeDesktop: {
@@ -126,7 +130,11 @@ const BuildingCard = ({ building }: Props) => {
                 onClick={() => dispatch(claimRoom(eatery))}
               >
                 <div className="carousel-item active">
-                  <EateryInfo room={eatery} eatingData={eatingData} />
+                  <EateryInfo
+                    room={eatery}
+                    title={renderTitle(eatery)}
+                    eatingData={eatingData}
+                  />
                 </div>
               </div>
             ))}
@@ -134,10 +142,6 @@ const BuildingCard = ({ building }: Props) => {
         </div>
       );
     } else {
-      const renderName = (eatery: SearchRoom) => {
-        return <h3> {eatery.alias}</h3>;
-      };
-
       return (
         <div className="mx-2 mb-3 max-h-96 space-y-3 overflow-y-auto">
           {eatingData.map(([eatery, eatingData]) => (
@@ -148,7 +152,7 @@ const BuildingCard = ({ building }: Props) => {
             >
               <EateryInfo
                 room={eatery}
-                name={renderName(eatery)}
+                title={renderTitle(eatery)}
                 eatingData={eatingData}
               />
             </div>

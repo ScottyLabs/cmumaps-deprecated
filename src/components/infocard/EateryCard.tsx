@@ -61,12 +61,12 @@ const Eaterycard = ({ room }: Props) => {
   };
 
   const renderInfo = () => {
-    const renderName = () => {
+    const renderTitle = () => {
       return <h2 className="font-bold">{room.alias}</h2>;
     };
 
     return (
-      <EateryInfo room={room} name={renderName()} eatingData={eatingData} />
+      <EateryInfo room={room} title={renderTitle()} eatingData={eatingData} />
     );
   };
 
