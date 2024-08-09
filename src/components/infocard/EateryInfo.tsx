@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 import { Room, SearchRoom } from '@/types';
 import {
@@ -8,10 +8,11 @@ import {
 
 interface Props {
   room: Room | SearchRoom;
-  eatingData: IReadOnlyExtendedLocation;
+  name: ReactElement;
+  eatingData: IReadOnlyExtendedLocation | null;
 }
 
-const EateryInfo = ({ room, eatingData }: Props) => {
+const EateryInfo = ({ room, name, eatingData }: Props) => {
   if (!eatingData) {
     return (
       <div className="ml-3 mt-2 flex justify-between">
@@ -104,6 +105,7 @@ const EateryInfo = ({ room, eatingData }: Props) => {
 
   return (
     <div className="px-4 pb-3 pt-2 font-[500]">
+      {name}
       {renderLocationTimeInfo()}
       <p className="mt-2 leading-4">{eatingData.shortDescription}</p>
     </div>

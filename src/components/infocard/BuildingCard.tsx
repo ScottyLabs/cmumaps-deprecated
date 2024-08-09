@@ -134,6 +134,10 @@ const BuildingCard = ({ building }: Props) => {
         </div>
       );
     } else {
+      const renderName = (eatery: SearchRoom) => {
+        return <h3> {eatery.alias}</h3>;
+      };
+
       return (
         <div className="mx-2 mb-3 max-h-96 space-y-3 overflow-y-auto">
           {eatingData.map(([eatery, eatingData]) => (
@@ -142,7 +146,11 @@ const BuildingCard = ({ building }: Props) => {
               className="cursor-pointer rounded border p-1"
               onClick={() => dispatch(claimRoom(eatery))}
             >
-              <EateryInfo room={eatery} eatingData={eatingData} />
+              <EateryInfo
+                room={eatery}
+                name={renderName(eatery)}
+                eatingData={eatingData}
+              />
             </div>
           ))}
         </div>
