@@ -1,27 +1,72 @@
-import { Polyline } from 'mapkit-react';
+import { Annotation, Coordinate, Polyline } from 'mapkit-react';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Node } from '@/app/api/findPath/route';
-import { useAppSelector } from '@/lib/hooks';
+import { setUserPosition } from '@/lib/features/navSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 import { positionOnMap } from '../buildings/mapUtils';
 
 const NavLine = () => {
+  const dispatch = useAppDispatch();
+
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
+  console.log(recommendedPath);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  console.log(focusedFloor);
+  const userPosition = useAppSelector((state) => state.nav.userPosition);
+
+  // navigator.geolocation.watchPosition((pos)=>{
+  //   if (currentBlueDot) mapRef.current?.removeOverlay(currentBlueDot)
+  //   points.push([pos.coords.latitude, pos.coords.longitude])
+  //   const coord = new mapkit.Coordinate(pos.coords.latitude, pos.coords.longitude);
+
+  //     let circle = new mapkit.CircleOverlay(
+  //       coord,
+  //       max(min(20, pos.coords.accuracy), 30)
+  //     );
+  //     style.fillOpacity = min((pos.coords.altitude - 200) / 100, .5);
+  //     circle.style = style;
+  //     currentBlueDot = mapRef.current?.addOverlay(circle);
+  //   },
+  //   error,
+  //   options
+  // );
+  useEffect(() => {
+    setTimeout(() => {
+      navigator?.geolocation?.getCurrentPosition((pos) => {
+        const coord = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        };
+
+        dispatch(setUserPosition(coord));
+      });
+    }, 500);
+  }, []);
+
   return (
-    recommendedPath &&
-    recommendedPath.length && ( // This will be its own component at some point
-      <Polyline
-        selected={true}
-        points={(recommendedPath || []).map((n: Node) => n.coordinate)}
-        enabled={true}
-        strokeColor={'red'}
-        strokeOpacity={1}
-        lineWidth={5}
-      ></Polyline>
-    )
+    <>
+      {userPosition && (
+        <Annotation
+          latitude={userPosition.latitude}
+          longitude={userPosition.longitude}
+        >
+          <div>YOU ARE HERE</div>
+        </Annotation>
+      )}
+      {recommendedPath && recommendedPath.length && (
+        <Polyline
+          selected={true}
+          points={(recommendedPath || []).map((n: Node) => n.coordinate)}
+          enabled={true}
+          strokeColor={'red'}
+          strokeOpacity={1}
+          lineWidth={5}
+        ></Polyline>
+      )}
+    </>
   );
 };
 

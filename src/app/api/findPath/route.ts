@@ -17,6 +17,7 @@ export type Node = {
     };
   };
   roomId: string;
+  floor: Floor;
   coordinate: Coordinate;
 };
 export interface GraphResponse {
@@ -75,7 +76,6 @@ function findPath(
         const n_dist = neigh[1]['dist'];
         const nextNode = nodes[n_id];
         if (!nextNode) {
-          console.log('searchme', n_id, node);
           return;
         }
         queue.enqueue({
@@ -153,6 +153,7 @@ export async function POST(req: NextRequest) {
             outline.placement,
             center,
           ),
+          floor: { buildingCode, level },
         };
       });
       nodes = { ...nodes, ...f };
