@@ -177,9 +177,13 @@ const Page = ({ params, searchParams }: Props) => {
             const searchRooms: SearchRoom[] = [];
 
             for (const roomId in rooms) {
-              rooms[roomId]['id'] = roomId;
-              rooms[roomId]['alias'] = rooms[roomId]['aliases'][0];
-              delete rooms[roomId]['polygon'];
+              rooms[roomId].id = roomId;
+              rooms[roomId].alias = rooms[roomId]['aliases'][0];
+              rooms[roomId].floor = {
+                buildingCode: building.code,
+                level: floorLevel,
+              };
+              delete rooms[roomId].polygon;
               searchRooms.push(rooms[roomId]);
             }
 
