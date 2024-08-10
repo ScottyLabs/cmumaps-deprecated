@@ -27,6 +27,23 @@ export async function fetchEvents(
   }
 }
 
+export async function getDbRoomExists(roomName: string) {
+  const response = await fetch('/api/events/roomExists', {
+    method: 'GET',
+    headers: {
+      roomName,
+    },
+  });
+
+  try {
+    const body = await response.json();
+    return body;
+  } catch (e) {
+    console.error('Failed to fetch room', response);
+    return;
+  }
+}
+
 export async function searchEvents(query: string) {
   // console.log(query);
   const response = await fetch('/api/events/search', {
