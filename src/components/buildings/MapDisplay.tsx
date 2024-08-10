@@ -166,7 +166,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     const randomCoordinate = new mapkit.Coordinate(40.444, -79.945);
     const pinOptions = {
       url: {
-        1: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Blank_square.svg/2048px-Blank_square.svg.png',
+        1: '/assets/empty_pixel.png',
       },
       size: { width: 0, height: 0 },
     };
@@ -184,7 +184,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       initialRegion={initialRegion}
       includedPOICategories={[PointOfInterestCategory.Restaurant]}
       cameraBoundary={cameraBoundary}
-      minCameraDistance={100}
+      minCameraDistance={50}
       maxCameraDistance={1500}
       showsUserLocationControl
       mapType={MapType.MutedStandard}
