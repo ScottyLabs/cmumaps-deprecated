@@ -4,7 +4,7 @@ import { useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
 import RoomSearchResults from './RoomSearchResults';
-import { RoomSearchResult, searchFood, searchRoom } from './searchUtils';
+import { RoomSearchResult, searchRoom } from './searchUtils';
 
 interface SearchResultsProps {
   map: mapkit.Map | null;
@@ -28,21 +28,17 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
   useEffect(() => {
     if (buildings) {
       setTimeout(() => {
-        switch (searchMode) {
-          case 'rooms':
-            setRoomSearchResults(searchRoom(buildings, query, searchMap));
-            break;
-          case 'food':
-            // setRoomSearchResults(searchFood(buildings, query, searchMap));
-            break;
+        if (['rooms', 'food', 'restrooms'].includes(searchMode)) {
+          setRoomSearchResults(
+            searchRoom(buildings, query, searchMap, searchMode),
+          );
         }
       }, 500);
     }
   }, [buildings, query, searchMap, searchMode]);
 
-  switch (searchMode) {
-    case 'rooms':
-      return <RoomSearchResults map={map} searchResult={roomSearchResults} />;
+  if (['rooms', 'food', 'restrooms'].includes(searchMode)) {
+    return <RoomSearchResults map={map} searchResult={roomSearchResults} />;
   }
 };
 

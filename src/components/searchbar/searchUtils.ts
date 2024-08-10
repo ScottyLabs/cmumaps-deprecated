@@ -7,6 +7,12 @@ export type RoomSearchResult = {
   searchRoom: SearchRoom[];
 };
 
+const modeToType = {
+  food: 'dining',
+  restrooms: 'restroom',
+  study: 'classroom',
+};
+
 // sort building by distance
 // if (userPosition) {
 //   buildings.sort(
@@ -35,25 +41,19 @@ function getRoomTokens(room: SearchRoom, building: Building): string[] {
     .map((token) => token.toLowerCase());
 }
 
-// export const searchFood = [
-//   buildings: Record<string, Building>,
-//   query: string,
-//   searchMap: SearchMap,
-// ]
-
 export const searchRoom = (
   buildings: Record<string, Building>,
   query: string,
   searchMap: SearchMap,
+  mode: 'rooms' | 'food' | 'restrooms' | 'study',
 ): RoomSearchResult[] => {
   if (query.length == 0) {
     return [];
   }
-
   return Object.values(buildings)
     .map((building: Building) => ({
       Building: building,
-      Rooms: findRooms(query, building, searchMap[building.code]),
+      Rooms: findRooms(query, building, searchMap[building.code], mode),
     }))
     .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
     .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
@@ -75,6 +75,7 @@ const findRooms = (
   query: string,
   building: Building,
   floorMap: Record<string, SearchRoom[]>,
+  mode: 'rooms' | 'food' | 'restrooms' | 'study',
 ): [SearchRoom[], number] => {
   if (!floorMap || query.length < 3) {
     return [[], -1];
@@ -93,8 +94,10 @@ const findRooms = (
       .filter((token) => token.length > 0);
     return (
       Object.values(roomsObj)
-        // .filter((roomId: string, room: Room) => { // for new floors layout
         .filter((room: SearchRoom) => {
+          if (mode != 'rooms' && room.type != modeToType[mode]) {
+            return false;
+          }
           const roomTokens = getRoomTokens(room, building);
           let score = 0;
           for (const queryToken of queryTokens) {
