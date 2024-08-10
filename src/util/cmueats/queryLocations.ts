@@ -71,7 +71,6 @@ export function getStatusMessage(
   if (relTimeDiff === '0 minutes') {
     return `${action} now (${day} at ${time})`;
   }
-  // console.log(`${action} in ${relTimeDiff} (${day} at ${time})`);
   return `${action} in ${relTimeDiff} (${day} at ${time})`;
 }
 

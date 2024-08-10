@@ -79,20 +79,38 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           },
           [[], []],
         );
-        const isInLat = (value: number) =>
-          value >= boundingBox.minLatitude && value <= boundingBox.maxLatitude;
-        const isInLong = (value: number) =>
-          value >= boundingBox.minLongitude &&
-          value <= boundingBox.maxLongitude;
-        const anyLatIn =
-          isInLat(Math.min(...buildingLats)) ||
-          isInLat(Math.max(...buildingLats));
-        const anyLongIn =
-          isInLong(Math.min(...buildingLongs)) ||
-          isInLong(Math.max(...buildingLongs));
-        return anyLatIn && anyLongIn;
-      });
 
+        const buildingBoundingBox = {
+          minLatitude: Math.min(...buildingLats),
+          maxLatitude: Math.max(...buildingLats),
+          minLongitude: Math.min(...buildingLongs),
+          maxLongitude: Math.max(...buildingLongs),
+        };
+
+        const horizontalPoints = [
+          [boundingBox.minLatitude, -1],
+          [boundingBox.maxLatitude, -1],
+          [buildingBoundingBox.minLatitude, 1],
+          [buildingBoundingBox.maxLatitude, 1],
+        ];
+        const verticalPoints = [
+          [boundingBox.minLongitude, -1],
+          [boundingBox.maxLongitude, -1],
+          [buildingBoundingBox.minLongitude, 1],
+          [buildingBoundingBox.maxLongitude, 1],
+        ];
+        horizontalPoints.sort((a, b) => a[0] - b[0]);
+        verticalPoints.sort((a, b) => a[0] - b[0]);
+
+        const horizantalOverlap =
+          !(horizontalPoints[0][1] == -1 && horizontalPoints[1][1] == -1) &&
+          !(horizontalPoints[2][1] == -1 && horizontalPoints[3][1] == -1);
+        const verticalOverlap =
+          !(verticalPoints[0][1] == -1 && verticalPoints[1][1] == -1) &&
+          !(verticalPoints[2][1] == -1 && verticalPoints[3][1] == -1);
+
+        return horizantalOverlap && verticalOverlap;
+      });
       setVisibleBuildings(buildingsToFocus);
 
       const showFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;

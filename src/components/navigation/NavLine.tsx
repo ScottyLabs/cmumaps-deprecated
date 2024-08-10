@@ -12,9 +12,7 @@ const NavLine = () => {
   const dispatch = useAppDispatch();
 
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
-  console.log(recommendedPath);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
-  console.log(focusedFloor);
   const userPosition = useAppSelector((state) => state.nav.userPosition);
 
   // navigator.geolocation.watchPosition((pos)=>{

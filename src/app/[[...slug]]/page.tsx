@@ -231,21 +231,23 @@ const Page = ({ params, searchParams }: Props) => {
 
   // update the URL
   useEffect(() => {
-    let url = window.location.origin + '/';
-    if (selectedRoom) {
-      const floor = selectedRoom.floor;
-      url += `${floor.buildingCode}-${floor.level}/${selectedRoom.id}`;
-      window.history.pushState({}, '', url);
-    } else if (focusedFloor) {
-      url += `${focusedFloor.buildingCode}`;
-      url += `-${focusedFloor.level}`;
-      window.history.pushState({}, '', url);
-    } else if (selectedBuilding) {
-      url += selectedBuilding.code;
-      window.history.pushState({}, '', url);
-    } else {
-      window.history.pushState({}, '', url);
-    }
+    setTimeout(() => {
+      let url = window.location.origin + '/';
+      if (selectedRoom) {
+        const floor = selectedRoom.floor;
+        url += `${floor.buildingCode}-${floor.level}/${selectedRoom.id}`;
+        window.history.pushState({}, '', url);
+      } else if (focusedFloor) {
+        url += `${focusedFloor.buildingCode}`;
+        url += `-${focusedFloor.level}`;
+        window.history.pushState({}, '', url);
+      } else if (selectedBuilding) {
+        url += selectedBuilding.code;
+        window.history.pushState({}, '', url);
+      } else {
+        window.history.pushState({}, '', url);
+      }
+    }, 500);
     // use window instead of the next router to prevent rezooming in
   }, [selectedRoom, focusedFloor, selectedBuilding]);
 

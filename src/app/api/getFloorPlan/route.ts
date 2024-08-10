@@ -27,7 +27,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (e) {
     // Javascript Error Message
-    // console.log(e);
     return new NextResponse(
       JSON.stringify({
         error: String(e),

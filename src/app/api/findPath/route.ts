@@ -50,7 +50,6 @@ function findPath(
   } else if (!end) {
     return { error: 'End room not found' };
   }
-  console.log(start, end);
   // Dijkstras algorithm
   const visited = new Set();
 
