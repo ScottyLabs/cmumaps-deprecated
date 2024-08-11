@@ -31,6 +31,7 @@ const BuildingCard = ({ map, building }: Props) => {
     [SearchRoom, IReadOnlyExtendedLocation | null][]
   >([]);
 
+  // get eatery data
   useEffect(() => {
     const getEateries = () => {
       return building.floors
@@ -43,7 +44,7 @@ const BuildingCard = ({ map, building }: Props) => {
             return [];
           }
           const rooms = searchMap[`${building.code}`][`${floorLevel}`];
-          return rooms.filter((room) => room.type == 'dining');
+          return rooms.filter((room) => room.type == 'food');
         })
         .flat();
     };

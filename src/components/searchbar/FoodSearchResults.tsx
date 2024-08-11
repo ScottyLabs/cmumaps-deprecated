@@ -7,6 +7,7 @@ import { Building, SearchRoom } from '@/types';
 import { zoomOnObject, zoomOnSearchRoom } from '../buildings/mapUtils';
 import RoomPin from '../shared/RoomPin';
 import Roundel from '../shared/Roundel';
+import NoResultDisplay from './NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 import { RoomSearchResult } from './searchUtils';
 
@@ -25,11 +26,7 @@ const FoodSearchResults = ({ map, searchResult }: Props) => {
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   if (searchResult.length == 0) {
-    return (
-      <div className="text-l gap-4px px-20px py-40px flex h-32 items-center justify-center text-center font-light">
-        No Result Found
-      </div>
-    );
+    return <NoResultDisplay />;
   }
 
   const renderBuildingResults = (building: Building) => {
@@ -75,19 +72,17 @@ const FoodSearchResults = ({ map, searchResult }: Props) => {
     ));
   };
 
-  return (
-    <div id="searchResults">
-      {searchResult.map((buildingResult) => {
-        const building = buildingResult.building;
-        return (
-          <div key={building.code}>
-            {renderBuildingResults(building)}
-            {renderFoodResults(buildingResult.searchRoom)}
-          </div>
-        );
-      })}
-    </div>
-  );
+  console.log(searchResult);
+
+  return searchResult.map((buildingResult) => {
+    const building = buildingResult.building;
+    return (
+      <div key={building.code}>
+        {renderBuildingResults(building)}
+        {renderFoodResults(buildingResult.searchRoom)}
+      </div>
+    );
+  });
 };
 
 export default FoodSearchResults;
