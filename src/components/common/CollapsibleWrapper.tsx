@@ -7,11 +7,16 @@ const Collapsible = dynamic(() => import('react-collapsible'), { ssr: false });
 
 interface Props {
   title: string;
+  defaultOpenState?: boolean;
   children: React.ReactElement;
 }
 
-const CollapsibleWrapper = ({ title, children }: Props) => {
-  const [open, setOpen] = useState(false);
+const CollapsibleWrapper = ({
+  title,
+  defaultOpenState = true,
+  children,
+}: Props) => {
+  const [open, setOpen] = useState(defaultOpenState);
 
   const renderTrigger = () => (
     <div className="flex items-center justify-between rounded px-4 py-2">
@@ -23,13 +28,15 @@ const CollapsibleWrapper = ({ title, children }: Props) => {
   );
 
   return (
+    // someone can look more into why we need to provide onTriggerOpening, onOpening, onTriggerClosing, and onClosing to not throw an error...
     <Collapsible
+      open
       trigger={renderTrigger()}
       className="rounded bg-white"
       openedClassName="rounded bg-white"
-      onOpening={() => {
-        setOpen(true);
-      }}
+      onTriggerOpening={() => setOpen(true)}
+      onOpening={() => setOpen(true)}
+      onTriggerClosing={() => setOpen(false)}
       onClosing={() => {
         setOpen(false);
       }}
