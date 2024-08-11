@@ -263,3 +263,11 @@ export interface Building {
 export type SearchMap = Record<BuildingCode, Record<FloorLevel, SearchRoom[]>>;
 
 export type FloorPlanMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;
+
+export interface EateryData {
+  name: string;
+  url: string;
+  shortDescription: string;
+  // - statusMsg (updated to be…)
+  // - LocationState
+}

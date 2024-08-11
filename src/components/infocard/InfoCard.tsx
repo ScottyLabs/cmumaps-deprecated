@@ -16,7 +16,7 @@ const InfoCard = ({ map }: Props) => {
   const building = useAppSelector((state) => state.ui.selectedBuilding);
 
   if (room) {
-    if (room.type == 'dining') {
+    if (room.type == 'food') {
       return (
         <CardWrapper snapPoint={0.4}>
           <EateryCard room={room} />
