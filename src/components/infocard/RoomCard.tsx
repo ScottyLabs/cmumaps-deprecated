@@ -63,7 +63,7 @@ const RoomCard = ({ room }: Props) => {
       return (
         <div className="ml-3 mt-2">
           <h2>{getText()}</h2>
-          <p className="text-gray-500">No Room Schedule Available</p>
+          <p className="text-[--color-gray]">No Room Schedule Available</p>
         </div>
       );
     }

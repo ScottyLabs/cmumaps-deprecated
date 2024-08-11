@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --color-gray: #6b7280;
+  }
+}
+
 :root {
   --floor-switcher-height: 52px;
   --main-ui-padding: 12px;
