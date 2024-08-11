@@ -5,7 +5,7 @@ import { Room } from '@/types';
 import { getEatingData } from '@/util/cmueats/getEatingData';
 import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
-import ButtonsRow from './ButtonsRow';
+import ButtonsRow, { renderMiddleButtonHelper } from './ButtonsRow';
 import EateryInfo from './EateryInfo';
 import InfoCardImage from './InfoCardImage';
 
@@ -44,17 +44,9 @@ const Eaterycard = ({ room }: Props) => {
         return <></>;
       }
 
-      return (
-        <a href={eatingData.url} target="_blank" rel="noreferrer">
-          <button
-            type="button"
-            className="flex h-full items-center gap-2 rounded-lg bg-[#1e86ff] px-3 py-1 text-white"
-          >
-            <ImSpoonKnife className="mr-2 size-3.5" />
-            <p>Menu</p>
-          </button>
-        </a>
-      );
+      const icon = <ImSpoonKnife className="size-3.5" />;
+
+      return renderMiddleButtonHelper('Menu', icon, eatingData.url);
     };
 
     return <ButtonsRow middleButton={renderMiddleButton()} />;

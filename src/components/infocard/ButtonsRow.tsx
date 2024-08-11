@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 
 import { setEndRoom, setIsNavOpen } from '@/lib/features/navSlice';
@@ -11,6 +11,24 @@ import shareIcon from '/public/assets/icons/infocard/share.svg';
 interface Props {
   middleButton: React.JSX.Element;
 }
+
+export const renderMiddleButtonHelper = (
+  title: string,
+  icon: ReactElement,
+  url: string,
+) => {
+  return (
+    <a href={url} target="_blank" rel="noreferrer">
+      <button
+        type="button"
+        className="flex h-full items-center gap-2 rounded-lg bg-[#1e86ff] px-3 py-1 text-white"
+      >
+        {icon}
+        <p>{title}</p>
+      </button>
+    </a>
+  );
+};
 
 const ButtonsRow = ({ middleButton }: Props) => {
   const dispatch = useAppDispatch();
