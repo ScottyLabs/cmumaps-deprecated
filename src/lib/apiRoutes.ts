@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event } from '@prisma/client';
 
 import { Floor, FloorPlan, Room } from '@/types';
@@ -46,7 +47,6 @@ export async function getDbRoomExists(room: Room): Promise<boolean | null> {
 }
 
 export async function searchEvents(query: string) {
-  // console.log(query);
   const response = await fetch('/api/events/search', {
     method: 'GET',
     headers: {
