@@ -282,3 +282,17 @@ export interface EateryInfo {
 }
 
 export type EateryData = Record<EateryName, EateryInfo>;
+
+export type Department = string;
+export type CourseCode = string;
+export type CourseData = Record<Department, Record<CourseCode, Course>>;
+export interface Course {
+  name: string;
+  sections: Record<string, CourseSection>;
+}
+export interface CourseSection {
+  room: string;
+  dow: string;
+  startTime: string;
+  endTime: string;
+}
