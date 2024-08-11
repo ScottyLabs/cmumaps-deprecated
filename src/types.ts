@@ -278,6 +278,7 @@ export interface EateryInfo {
   shortDescription: string;
   statusMsg: string;
   locationState: LocationState;
+  hoursUntilStateChange: number;
 }
 
 export type EateryData = Record<EateryName, EateryInfo>;

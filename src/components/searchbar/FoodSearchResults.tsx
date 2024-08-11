@@ -3,9 +3,10 @@ import React from 'react';
 import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
+import { sortEateries } from '@/util/eateryUtils';
 
 import { zoomOnObject, zoomOnSearchRoom } from '../buildings/mapUtils';
-import RoomPin from '../shared/RoomPin';
+import EateryInfoDisplay from '../infocard/EateryInfoDisplay';
 import Roundel from '../shared/Roundel';
 import NoResultDisplay from './NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
@@ -17,13 +18,14 @@ interface Props {
 }
 
 /**
- * Displays the search results.
+ * Displays the food search results.
  */
 const FoodSearchResults = ({ map, searchResult }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
+  const eateryData = useAppSelector((state) => state.data.eateryData);
 
   if (searchResult.length == 0) {
     return <NoResultDisplay />;
@@ -50,26 +52,33 @@ const FoodSearchResults = ({ map, searchResult }: Props) => {
     );
   };
 
-  const renderFoodResults = (rooms: SearchRoom[]) => {
-    const renderText = (room: SearchRoom) => (
-      <div className="flex flex-col text-left">
-        <p>{room.alias}</p>
-      </div>
-    );
+  const renderFoodResults = (eateries: SearchRoom[]) => {
+    const renderTitle = (eatery: SearchRoom) => {
+      return <h3> {eatery.alias}</h3>;
+    };
 
-    return rooms.map((searchRoom: SearchRoom) => (
-      <SearchResultWrapper
-        key={searchRoom.id}
-        handleClick={() => {
-          zoomOnSearchRoom(map, searchRoom, buildings, floorPlanMap, dispatch);
-        }}
-      >
-        <div className="flex items-center space-x-3">
-          <RoomPin room={searchRoom} />
-          {renderText(searchRoom)}
-        </div>
-      </SearchResultWrapper>
-    ));
+    sortEateries(eateries, eateryData);
+
+    return eateries.map((eatery: SearchRoom) => {
+      const eateryInfo = eateryData[eatery.alias.toUpperCase()];
+
+      return (
+        <SearchResultWrapper
+          key={eatery.id}
+          handleClick={() => {
+            zoomOnSearchRoom(map, eatery, buildings, floorPlanMap, dispatch);
+          }}
+        >
+          <div className="w-full cursor-pointer rounded border p-1">
+            <EateryInfoDisplay
+              room={eatery}
+              title={renderTitle(eatery)}
+              eateryInfo={eateryInfo}
+            />
+          </div>
+        </SearchResultWrapper>
+      );
+    });
   };
 
   return searchResult.map((buildingResult) => {
