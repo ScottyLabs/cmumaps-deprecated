@@ -220,25 +220,23 @@ const Page = ({ params, searchParams }: Props) => {
     getBuildings();
   }, [dispatch]);
 
-  //#region Update the Page Title
-  // update the page title - building
+  // update the Page Title
   useEffect(() => {
-    if (selectedBuilding) {
-      const title = `${selectedBuilding.name} - CMU Maps`;
-      document.title = title;
-    }
-  }, [buildings, selectedBuilding]);
-
-  // update the page title - floor
-  useEffect(() => {
-    if (buildings && focusedFloor) {
+    let title = 'CMU Maps';
+    if (selectedRoom) {
+      if (selectedRoom.alias) {
+        title = `${selectedRoom.alias} - CMU Maps`;
+      } else {
+        title = `${selectedRoom.floor.buildingCode} ${selectedRoom.name} - CMU Maps`;
+      }
+    } else if (buildings && focusedFloor) {
       const buildingCode = buildings[focusedFloor.buildingCode].code;
-      const title = `${buildingCode} Floor ${focusedFloor.level} - CMU Maps`;
-      document.title = title;
+      title = `${buildingCode} Floor ${focusedFloor.level} - CMU Maps`;
+    } else if (selectedBuilding) {
+      title = `${selectedBuilding.name} - CMU Maps`;
     }
-  }, [buildings, focusedFloor, focusedFloor?.level]);
-
-  //#endregion
+    document.title = title;
+  }, [buildings, selectedBuilding, focusedFloor, selectedRoom]);
 
   // update the URL
   useEffect(() => {
@@ -247,17 +245,13 @@ const Page = ({ params, searchParams }: Props) => {
       if (selectedRoom) {
         const floor = selectedRoom.floor;
         url += `${floor.buildingCode}-${floor.level}/${selectedRoom.id}`;
-        window.history.pushState({}, '', url);
       } else if (focusedFloor) {
         url += `${focusedFloor.buildingCode}`;
         url += `-${focusedFloor.level}`;
-        window.history.pushState({}, '', url);
       } else if (selectedBuilding) {
         url += selectedBuilding.code;
-        window.history.pushState({}, '', url);
-      } else {
-        window.history.pushState({}, '', url);
       }
+      window.history.pushState({}, '', url);
     }, 500);
     // use window instead of the next router to prevent rezooming in
   }, [selectedRoom, focusedFloor, selectedBuilding]);
