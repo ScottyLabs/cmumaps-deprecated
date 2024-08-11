@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EateryInfo, EateryData } from '@/types';
+import { EateryInfo, EateryData, LocationState, SearchRoom } from '@/types';
 
 const daysOfWeek = [
   'Sunday', // 0
@@ -62,6 +62,7 @@ export const getEateryData = async (): Promise<EateryData> => {
   const closeHelper = (nextDate: Date, res: Partial<EateryInfo>) => {
     const hourDif = getHourDif(now, nextDate);
 
+    res.hoursUntilStateChange = hourDif;
     if (hourDif < 1) {
       res.locationState = 'OPENS_SOON';
       res.statusMsg = `Closed (${Math.round(hourDif * 60)} minutes until open)`;
@@ -89,6 +90,7 @@ export const getEateryData = async (): Promise<EateryData> => {
         const hourDif = getHourDif(now, endTime);
 
         // message depend on if more than an hour until closing
+        res.hoursUntilStateChange = hourDif;
         if (hourDif > 1) {
           res.locationState = 'OPEN';
           res.statusMsg = `Open (${Math.round(hourDif)} hours until close)`;
@@ -164,4 +166,35 @@ export const getEateryData = async (): Promise<EateryData> => {
   }
 
   return EateryInfo;
+};
+
+export const sortEateries = (
+  eateries: SearchRoom[],
+  eateryData: EateryData,
+) => {
+  const locationStateOrder: LocationState[] = [
+    'CLOSES_SOON',
+    'OPEN',
+    'OPENS_SOON',
+    'CLOSED',
+    'CLOSED_LONG_TERM',
+  ];
+
+  eateries.sort((eatery1, eatery2) => {
+    const eateryInfo1 = eateryData[eatery1.alias.toUpperCase()];
+    const eateryInfo2 = eateryData[eatery2.alias.toUpperCase()];
+
+    if (eateryInfo1.locationState == eateryInfo2.locationState) {
+      // less hours is better
+      return (
+        eateryInfo1.hoursUntilStateChange - eateryInfo2.hoursUntilStateChange
+      );
+    }
+
+    // lower in the ordering array is better
+    return (
+      locationStateOrder.indexOf(eateryInfo1.locationState) -
+      locationStateOrder.indexOf(eateryInfo2.locationState)
+    );
+  });
 };
