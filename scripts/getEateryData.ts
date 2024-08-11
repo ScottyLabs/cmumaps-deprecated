@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EateryData } from '../src/types';
+import { EateryInfo } from '../src/types';
 
 const daysOfWeek = [
   'Sunday', // 0
@@ -74,7 +74,7 @@ export const getEateryData = async () => {
 
   // helper function to assign statusMsg and locationState when the eatery is closed
   // determine if it is minutes, hours, or days
-  const closeHelper = (nextDate: Date, res: Partial<EateryData>) => {
+  const closeHelper = (nextDate: Date, res: Partial<EateryInfo>) => {
     const hourDif = getHourDif(now, nextDate);
 
     if (hourDif < 1) {
@@ -92,7 +92,7 @@ export const getEateryData = async () => {
   const getStatusMsgAndLocationState = (
     eatery: any,
     curTime: CmuEatsTimeIntervalType | undefined,
-    res: Partial<EateryData>,
+    res: Partial<EateryInfo>,
   ) => {
     // if the eatery opens today
     if (curTime) {
@@ -153,8 +153,8 @@ export const getEateryData = async () => {
     }
   };
 
-  const parseEatery = (eatery: any): EateryData => {
-    const res: Partial<EateryData> = {};
+  const parseEatery = (eatery: any): EateryInfo => {
+    const res: Partial<EateryInfo> = {};
     res.name = eatery.name;
     res.url = eatery.url;
     res.shortDescription = eatery.shortDescription;
@@ -169,7 +169,7 @@ export const getEateryData = async () => {
       getStatusMsgAndLocationState(eatery, curTime, res);
     }
 
-    return res as EateryData;
+    return res as EateryInfo;
   };
 
   console.log(cmueatsData.map((eatery: any) => parseEatery(eatery)));

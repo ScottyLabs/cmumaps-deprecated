@@ -17,7 +17,11 @@ import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import ToolBar from '@/components/toolbar/ToolBar';
 import { getFloorPlan } from '@/lib/apiRoutes';
-import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
+import {
+  addFloorToSearchMap,
+  setBuildings,
+  setEateryData,
+} from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
   setIsMobile,
@@ -149,7 +153,7 @@ const Page = ({ params, searchParams }: Props) => {
 
   // load the eatery data
   useEffect(() => {
-    getEateryData().then((data) => console.log(data));
+    getEateryData().then((eateryData) => dispatch(setEateryData(eateryData)));
   }, [dispatch]);
 
   // load the buidling and floor data
