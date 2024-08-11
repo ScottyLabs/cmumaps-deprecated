@@ -271,10 +271,13 @@ export type LocationState =
   | 'CLOSED'
   | 'CLOSED_LONG_TERM';
 
-export interface EateryData {
-  name: string;
+export type EateryName = string;
+export interface EateryInfo {
+  name: EateryName;
   url: string;
   shortDescription: string;
   statusMsg: string;
   locationState: LocationState;
 }
+
+export type EateryData = Record<EateryName, EateryInfo>;
