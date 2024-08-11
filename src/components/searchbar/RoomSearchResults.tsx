@@ -52,7 +52,7 @@ const RoomSearchResults = ({ map, searchResult }: Props) => {
 
   const renderRoomResults = (rooms: SearchRoom[], building: Building) => {
     const renderText = (room: SearchRoom) => (
-      <div className="flex flex-col text-left">
+      <div className="flex flex-col">
         <p>
           <span>
             {building.code} {room.name}

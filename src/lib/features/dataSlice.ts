@@ -17,7 +17,7 @@ interface DataState {
   eateryData: EateryData;
   searchMap: SearchMap;
   floorPlanMap: FloorPlanMap;
-  courseData: CourseData;
+  courseData: CourseData | null;
 }
 
 const initialState: DataState = {
@@ -25,7 +25,7 @@ const initialState: DataState = {
   eateryData: {},
   searchMap: {},
   floorPlanMap: {},
-  courseData: {},
+  courseData: null,
 };
 
 const dataSlice = createSlice({
