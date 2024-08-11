@@ -1,9 +1,12 @@
+import { Event } from '@prisma/client';
+
 import { useEffect, useState } from 'react';
 
 import { searchEvents } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
+import EventSearchResults from './EventSearchResults';
 import FoodSearchResults from './FoodSearchResults';
 import RoomSearchResults from './RoomSearchResults';
 import { RoomSearchResult, searchFood, searchRoom } from './searchUtils';
@@ -28,8 +31,6 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
   >([]);
   const [eventSearchResults, setEventSearchResults] = useState<Event[]>([]);
 
-  console.log(eventSearchResults);
-
   useEffect(() => {
     if (buildings) {
       setTimeout(() => {
@@ -47,7 +48,9 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
             searchFood(buildings, query, searchMap, searchMode),
           );
         } else if (searchMode === 'events') {
-          searchEvents(query).then(setEventSearchResults);
+          if (query.length > 0) {
+            searchEvents(query).then(setEventSearchResults);
+          }
         }
       }, 500);
     }
@@ -57,6 +60,8 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
     return <RoomSearchResults map={map} searchResult={roomSearchResults} />;
   } else if (searchMode == 'food') {
     return <FoodSearchResults map={map} searchResult={roomSearchResults} />;
+  } else if (searchMode == 'events') {
+    return <EventSearchResults map={map} searchResult={eventSearchResults} />;
   }
 };
 
