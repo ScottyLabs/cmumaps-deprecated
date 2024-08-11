@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
+import { Slide, ToastContainer } from 'react-toastify';
 
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
@@ -304,11 +305,25 @@ const Page = ({ params, searchParams }: Props) => {
             y: points[points.length - 1][1],
           }}
         />
+
+        {renderIcons()}
+
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={true}
+          closeOnClick
+          theme="colored"
+          transition={Slide}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+          }}
+        />
       </div>
 
       <MapDisplay mapRef={mapRef} points={points} />
-
-      {renderIcons()}
     </main>
   );
 };
