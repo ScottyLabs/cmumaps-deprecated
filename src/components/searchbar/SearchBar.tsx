@@ -154,8 +154,8 @@ const SearchBar = ({ map, userPosition }: Props) => {
   const renderSearchResults = () => {
     return (
       <div
-        className={`h-[46em] overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          showQuickSearch ? 'h-0 opacity-0' : 'h-[46em] opacity-100'
+        className={`overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
+          showQuickSearch ? 'h-0 opacity-0' : 'mt-1 h-[40em] opacity-100'
         }`}
       >
         <SearchResults
