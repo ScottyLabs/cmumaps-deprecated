@@ -2,17 +2,31 @@ import eventIcon from '@icons/quick_search/event.svg';
 import { Event } from '@prisma/client';
 import Image from 'next/image';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { searchEvents } from '@/lib/apiRoutes';
 
 import NoResultDisplay from './NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 
 interface Props {
   map: mapkit.Map | null;
-  searchResult: Event[];
+  query: string;
 }
 
-const EventSearchResults = ({ searchResult }: Props) => {
+const EventSearchResults = ({ query }: Props) => {
+  const [searchResult, setSearchResults] = useState<Event[]>([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (query.length > 0) {
+        searchEvents(query).then(setSearchResults);
+      } else {
+        setSearchResults([]);
+      }
+    }, 500);
+  }, [query]);
+
   if (searchResult.length == 0) {
     return <NoResultDisplay />;
   }
