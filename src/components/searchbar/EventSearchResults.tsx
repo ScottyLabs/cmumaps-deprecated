@@ -1,4 +1,6 @@
+import eventIcon from '@icons/quick_search/event.svg';
 import { Event } from '@prisma/client';
+import Image from 'next/image';
 
 import React from 'react';
 
@@ -22,7 +24,14 @@ const EventSearchResults = ({ searchResult }: Props) => {
         console.log('Not Implemented');
       }}
     >
-      <div>{event.name}</div>
+      <div className="flex gap-2 text-left">
+        <div className="invert">
+          <Image alt={'Event Icon'} src={eventIcon} className="h-8 w-8" />
+        </div>
+        <div className="truncate">
+          <p>{event.name}</p>
+        </div>
+      </div>
     </SearchResultWrapper>
   ));
 };

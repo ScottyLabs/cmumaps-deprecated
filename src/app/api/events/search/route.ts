@@ -36,6 +36,5 @@ export async function GET(req: NextRequest) {
   }
 
   const events = await searchEvents(query);
-  console.log(events);
   return Response.json(events);
 }
