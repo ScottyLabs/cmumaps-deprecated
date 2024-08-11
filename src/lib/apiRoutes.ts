@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event } from '@prisma/client';
 
-import { Floor, FloorPlan } from '@/types';
+import { Floor, FloorPlan, Room } from '@/types';
 
 export async function fetchEvents(
   roomName: string,
@@ -26,11 +27,13 @@ export async function fetchEvents(
   }
 }
 
-export async function getDbRoomExists(roomName: string) {
+export async function getDbRoomExists(room: Room): Promise<boolean | null> {
+  const dbRoomName = room.floor.buildingCode + ' ' + room.name;
+
   const response = await fetch('/api/events/roomExists', {
     method: 'GET',
     headers: {
-      roomName,
+      dbRoomName,
     },
   });
 
@@ -39,12 +42,11 @@ export async function getDbRoomExists(roomName: string) {
     return body;
   } catch (e) {
     console.error('Failed to fetch room', response);
-    return;
+    return null;
   }
 }
 
 export async function searchEvents(query: string) {
-  // console.log(query);
   const response = await fetch('/api/events/search', {
     method: 'GET',
     headers: {

@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ImSpoonKnife } from 'react-icons/im';
 
+import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
-import { getEatingData } from '@/util/cmueats/getEatingData';
-import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
-import ButtonsRow from './ButtonsRow';
-import EateryInfo from './EateryInfo';
+import ButtonsRow, { renderMiddleButtonHelper } from './ButtonsRow';
+import EateryInfoDisplay from './EateryInfoDisplay';
 import InfoCardImage from './InfoCardImage';
 
 interface Props {
@@ -14,20 +13,13 @@ interface Props {
 }
 
 const Eaterycard = ({ room }: Props) => {
-  const [eatingData, setEatingData] =
-    useState<IReadOnlyExtendedLocation | null>(null);
+  const eateryData = useAppSelector((state) => state.data.eateryData);
 
-  useEffect(() => {
-    const fetchEatingData = async () => {
-      const newEatingData = await getEatingData(room.alias);
-      setEatingData(newEatingData);
-    };
-    fetchEatingData();
-  }, [room.alias]);
+  const eateryInfo = eateryData[room.alias.toUpperCase()];
 
   const renderEateryImage = () => {
-    if (eatingData) {
-      const eateryName = eatingData.name
+    if (eateryInfo) {
+      const eateryName = eateryInfo.name
         .toLowerCase()
         .split(' ')
         .join('-')
@@ -40,21 +32,13 @@ const Eaterycard = ({ room }: Props) => {
 
   const renderButtonsRow = () => {
     const renderMiddleButton = () => {
-      if (!eatingData) {
+      if (!eateryInfo) {
         return <></>;
       }
 
-      return (
-        <a href={eatingData.url} target="_blank" rel="noreferrer">
-          <button
-            type="button"
-            className="flex h-full items-center gap-2 rounded-lg bg-[#1e86ff] px-3 py-1 text-white"
-          >
-            <ImSpoonKnife className="mr-2 size-3.5" />
-            <p>Menu</p>
-          </button>
-        </a>
-      );
+      const icon = <ImSpoonKnife className="size-3.5" />;
+
+      return renderMiddleButtonHelper('Menu', icon, eateryInfo.url);
     };
 
     return <ButtonsRow middleButton={renderMiddleButton()} />;
@@ -66,7 +50,11 @@ const Eaterycard = ({ room }: Props) => {
     };
 
     return (
-      <EateryInfo room={room} title={renderTitle()} eatingData={eatingData} />
+      <EateryInfoDisplay
+        room={room}
+        title={renderTitle()}
+        eateryInfo={eateryInfo}
+      />
     );
   };
 

@@ -38,6 +38,9 @@ const SearchBar = ({ map, userPosition }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const showQuickSearch =
+    searchQuery == '' && isSearchOpen && searchMode == 'rooms';
+
   // set the search query using room and building
   useEffect(() => {
     // return the building name if a building is selected
@@ -152,9 +155,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
     return (
       <div
         className={`overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          isSearchOpen && searchQuery != ''
-            ? 'h-[46em] opacity-100'
-            : 'h-0 opacity-0'
+          showQuickSearch ? 'h-0 opacity-0' : 'mt-1 h-[40em] opacity-100'
         }`}
       >
         <SearchResults
@@ -173,12 +174,12 @@ const SearchBar = ({ map, userPosition }: Props) => {
   return (
     <div id="SearchBar" className="box-shadow rounded">
       {renderSearchQueryInput()}
-      {searchQuery == '' && (
-        <div className="mt-3">
+      {showQuickSearch && (
+        <div className="mt-2">
           <QuickSearch />
         </div>
       )}
-      {renderSearchResults()}
+      {isSearchOpen && renderSearchResults()}
     </div>
   );
 };

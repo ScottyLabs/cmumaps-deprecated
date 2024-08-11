@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -7,28 +7,11 @@ import { Building, SearchRoom } from '@/types';
 import { zoomOnObject, zoomOnSearchRoom } from '../buildings/mapUtils';
 import RoomPin from '../shared/RoomPin';
 import Roundel from '../shared/Roundel';
+import NoResultDisplay from './NoResultDisplay';
+import SearchResultWrapper from './SearchResultWrapper';
 import { RoomSearchResult } from './searchUtils';
 
-interface WrapperProps {
-  children: ReactElement;
-  handleClick: () => void;
-}
-
-const SearchResultWrapper = ({ children, handleClick }: WrapperProps) => {
-  return (
-    <button
-      type="button"
-      className={
-        'flex h-12 w-full items-center justify-between gap-2 bg-gray-50 px-6 transition duration-150 ease-out hover:bg-[#efefef]'
-      }
-      onClick={handleClick}
-    >
-      {children}
-    </button>
-  );
-};
-
-interface RoomSearchResultsProps {
+interface Props {
   map: mapkit.Map | null;
   searchResult: RoomSearchResult[];
 }
@@ -36,18 +19,14 @@ interface RoomSearchResultsProps {
 /**
  * Displays the search results.
  */
-const SearchResults = ({ map, searchResult }: RoomSearchResultsProps) => {
+const RoomSearchResults = ({ map, searchResult }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   if (searchResult.length == 0) {
-    return (
-      <div className="text-l gap-4px px-20px py-40px flex h-32 items-center justify-center text-center font-light">
-        No Result Found
-      </div>
-    );
+    return <NoResultDisplay />;
   }
 
   const renderBuildingResults = (building: Building) => {
@@ -93,7 +72,7 @@ const SearchResults = ({ map, searchResult }: RoomSearchResultsProps) => {
           zoomOnSearchRoom(map, searchRoom, buildings, floorPlanMap, dispatch);
         }}
       >
-        <div className="flex items-center space-x-3">
+        <div className="flex h-12 items-center space-x-3">
           <RoomPin room={searchRoom} />
           {renderText(searchRoom)}
         </div>
@@ -101,22 +80,15 @@ const SearchResults = ({ map, searchResult }: RoomSearchResultsProps) => {
     ));
   };
 
-  return (
-    <div id="searchResults">
-      {searchResult.map((buildingResult) => {
-        const building = buildingResult['building'];
-        return (
-          <div key={building.code}>
-            {renderBuildingResults(building)}
-            {renderRoomResults(
-              buildingResult['searchRoom'].slice(0, 100),
-              building,
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
+  return searchResult.map((buildingResult) => {
+    const building = buildingResult.building;
+    return (
+      <div key={building.code}>
+        {renderBuildingResults(building)}
+        {renderRoomResults(buildingResult.searchRoom.slice(0, 100), building)}
+      </div>
+    );
+  });
 };
 
-export default SearchResults;
+export default RoomSearchResults;

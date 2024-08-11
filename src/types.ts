@@ -36,6 +36,7 @@ export const RoomTypeList = [
   'stairs',
   'elevator',
   'ramp',
+  'food',
   'dining',
   'store',
   'library',
@@ -262,3 +263,21 @@ export interface Building {
 export type SearchMap = Record<BuildingCode, Record<FloorLevel, SearchRoom[]>>;
 
 export type FloorPlanMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;
+
+export type LocationState =
+  | 'OPEN'
+  | 'CLOSES_SOON'
+  | 'OPENS_SOON'
+  | 'CLOSED'
+  | 'CLOSED_LONG_TERM';
+
+export type EateryName = string;
+export interface EateryInfo {
+  name: EateryName;
+  url: string;
+  shortDescription: string;
+  statusMsg: string;
+  locationState: LocationState;
+}
+
+export type EateryData = Record<EateryName, EateryInfo>;

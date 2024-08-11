@@ -5334,7 +5334,7 @@
                 "x": 406.29,
                 "y": 277.21
             },
-            "type": "dining",
+            "type": "food",
             "aliases": [
                 "Revolution Noodle"
             ],
@@ -16038,7 +16038,7 @@
             },
             "type": "dining",
             "aliases": [
-                "Skibo Café"
+                "Skibo Caf\u00e9"
             ],
             "polygon": {
                 "type": "Polygon",
@@ -16690,9 +16690,9 @@
                 "x": 567.27,
                 "y": 519.25
             },
-            "type": "dining",
+            "type": "food",
             "aliases": [
-                "Au Bon Pain at Skibo Café"
+                "Au Bon Pain at Skibo Caf\u00e9"
             ],
             "polygon": {
                 "type": "Polygon",
@@ -22188,7 +22188,7 @@
             },
             "type": "default",
             "aliases": [
-                "President’s Dining Room"
+                "President\u2019s Dining Room"
             ],
             "polygon": {
                 "type": "Polygon",
@@ -22988,7 +22988,7 @@
                 "x": 578.88,
                 "y": 110.02
             },
-            "type": "dining",
+            "type": "food",
             "aliases": [
                 "Schatz Dining Room"
             ],
