@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import { ImSpoonKnife } from 'react-icons/im';
 
+import { getDbRoomExists } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
@@ -15,7 +17,13 @@ const RoomCard = ({ room }: Props) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const roomImageList = useAppSelector((state) => state.ui.roomImageList);
 
-  if (!buildings) {
+  const [hasSchedule, setHasSchedule] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    getDbRoomExists(room).then((response) => setHasSchedule(response));
+  }, [room]);
+
+  if (!buildings || hasSchedule === null) {
     return;
   }
 
