@@ -4,9 +4,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 import { claimRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, SearchRoom } from '@/types';
-import { getEatingData } from '@/util/cmueats/getEatingData';
-import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
+import { Building, EateryInfo, SearchRoom } from '@/types';
 
 import { zoomOnSearchRoom } from '../buildings/mapUtils';
 import ButtonsRow from './ButtonsRow';
@@ -25,10 +23,11 @@ const BuildingCard = ({ map, building }: Props) => {
 
   const searchMap = useAppSelector((state) => state.data.searchMap);
   const buildings = useAppSelector((state) => state.data.buildings);
+  const eateryData = useAppSelector((state) => state.data.eateryData);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [eatingData, setEatingData] = useState<
-    [SearchRoom, IReadOnlyExtendedLocation | null][]
+    [SearchRoom, EateryInfo | null][]
   >([]);
 
   // get eatery data
@@ -49,26 +48,21 @@ const BuildingCard = ({ map, building }: Props) => {
         .flat();
     };
 
-    const fetchEatingData = async () => {
-      const eateries = getEateries();
+    const eateries = getEateries();
 
-      const newEatingData: [SearchRoom, IReadOnlyExtendedLocation | null][] =
-        await Promise.all(
-          eateries.map(async (eatery) => {
-            if (eatery.aliases[0]) {
-              const data = await getEatingData(eatery.aliases[0]);
-              return [eatery, data];
-            } else {
-              return [eatery, null];
-            }
-          }),
-        );
+    const newEatingData: [SearchRoom, EateryInfo | null][] = eateries.map(
+      (eatery) => {
+        if (eatery.aliases[0]) {
+          const data = eateryData[eatery.aliases[0].toUpperCase()];
+          return [eatery, data];
+        } else {
+          return [eatery, null];
+        }
+      },
+    );
 
-      setEatingData(newEatingData);
-    };
-
-    fetchEatingData();
-  }, [building.code, building.floors, searchMap]);
+    setEatingData(newEatingData);
+  }, [building.code, building.floors, eateryData, searchMap]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
@@ -129,7 +123,7 @@ const BuildingCard = ({ map, building }: Props) => {
             dotListClass="gap-2"
             customDot={<CustomDot />}
           >
-            {eatingData.map(([eatery, eatingData]) => (
+            {eatingData.map(([eatery, eateryInfo]) => (
               <div
                 key={eatery.id}
                 className="cursor-pointer rounded border p-1"
@@ -139,7 +133,7 @@ const BuildingCard = ({ map, building }: Props) => {
                   <EateryInfoDisplay
                     room={eatery}
                     title={renderTitle(eatery)}
-                    eatingData={eatingData}
+                    eateryInfo={eateryInfo}
                   />
                 </div>
               </div>
@@ -155,7 +149,7 @@ const BuildingCard = ({ map, building }: Props) => {
 
       return (
         <div className="mx-2 mb-3 max-h-96 space-y-3 overflow-y-auto">
-          {eatingData.map(([eatery, eatingData]) => (
+          {eatingData.map(([eatery, eateryInfo]) => (
             <div
               key={eatery.id}
               className="cursor-pointer rounded border p-1"
@@ -164,7 +158,7 @@ const BuildingCard = ({ map, building }: Props) => {
               <EateryInfoDisplay
                 room={eatery}
                 title={renderTitle(eatery)}
-                eatingData={eatingData}
+                eateryInfo={eateryInfo}
               />
             </div>
           ))}
