@@ -1,10 +1,13 @@
 import eventIcon from '@icons/quick_search/event.svg';
 import { Event } from '@prisma/client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { searchEvents } from '@/lib/apiRoutes';
+import { useAppSelector } from '@/lib/hooks';
 
 import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
 import LoadingDisplay from '../display_helpers/LoadingDisplay';
@@ -17,6 +20,10 @@ interface Props {
 }
 
 const EventSearchResults = ({ query }: Props) => {
+  const router = useRouter();
+
+  const searchMap = useAppSelector((state) => state.data.searchMap);
+
   const [searchResult, setSearchResults] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -69,13 +76,48 @@ const EventSearchResults = ({ query }: Props) => {
   };
 
   return searchResult.map((event) => {
+    const handleClick = (room: string) => () => {
+      const roomInfoArr = room.split(' ');
+
+      if (roomInfoArr.length > 2) {
+        toast.error('Weirdly formatted room name!');
+        return;
+      }
+
+      const buildingCode = roomInfoArr[0];
+      const roomName = roomInfoArr[1];
+      const floorLevel = roomName.charAt(0);
+
+      const buildingMap = searchMap[buildingCode];
+
+      if (!buildingMap) {
+        if (buildingCode == 'DNM') {
+          toast.error('This class do not meet!');
+        } else {
+          toast.error('Building not available!');
+        }
+        return;
+      }
+
+      if (!buildingMap[floorLevel]) {
+        toast.error('Floor not available!');
+      } else {
+        const floorMap = buildingMap[floorLevel];
+        const selectedRoom = floorMap.find((room) => room.name == roomName);
+
+        if (!selectedRoom) {
+          toast.error('Room not available!');
+        } else {
+          router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
+        }
+      }
+    };
+
     return (
       <SearchResultWrapper
         // key={event.id}
         key={event._id.$oid}
-        handleClick={() => {
-          console.log('Not Implemented');
-        }}
+        handleClick={handleClick(event.roomName)}
       >
         <div className="flex items-center gap-2 py-1 text-left">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-300">
