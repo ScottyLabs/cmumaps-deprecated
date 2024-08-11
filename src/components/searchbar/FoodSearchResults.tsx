@@ -18,7 +18,7 @@ interface Props {
 /**
  * Displays the search results.
  */
-const RoomSearchResults = ({ map, searchResult }: Props) => {
+const FoodSearchResults = ({ map, searchResult }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
@@ -53,18 +53,10 @@ const RoomSearchResults = ({ map, searchResult }: Props) => {
     );
   };
 
-  const renderRoomResults = (rooms: SearchRoom[], building: Building) => {
+  const renderFoodResults = (rooms: SearchRoom[]) => {
     const renderText = (room: SearchRoom) => (
       <div className="flex flex-col text-left">
-        <p>
-          <span>
-            {building.code} {room.name}
-          </span>
-          {room.type !== 'default' && (
-            <span className="px-[8px] text-gray-400">{room.type}</span>
-          )}
-          {room.alias && <span className="truncate">{room.alias}</span>}
-        </p>
+        <p>{room.alias}</p>
       </div>
     );
 
@@ -90,10 +82,7 @@ const RoomSearchResults = ({ map, searchResult }: Props) => {
         return (
           <div key={building.code}>
             {renderBuildingResults(building)}
-            {renderRoomResults(
-              buildingResult.searchRoom.slice(0, 100),
-              building,
-            )}
+            {renderFoodResults(buildingResult.searchRoom)}
           </div>
         );
       })}
@@ -101,4 +90,4 @@ const RoomSearchResults = ({ map, searchResult }: Props) => {
   );
 };
 
-export default RoomSearchResults;
+export default FoodSearchResults;
