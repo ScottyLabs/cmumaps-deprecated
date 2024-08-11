@@ -42,7 +42,7 @@ const EventSearchResults = ({ searchResult }: Props) => {
   return searchResult.map((event) => {
     return (
       <SearchResultWrapper
-        key={event.id}
+        key={event._id.$oid}
         handleClick={() => {
           console.log('Not Implemented');
         }}
