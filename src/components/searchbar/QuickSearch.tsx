@@ -54,7 +54,7 @@ const QuickSearch = () => {
 
   return (
     <CollapsibleWrapper title="Search Modes">
-      <div className="mx-2.5 mb-3 flex gap-2 overflow-x-auto rounded-xl border p-2">
+      <div className="no-scrollbar mx-2.5 mb-3 flex gap-2 overflow-x-auto rounded-xl border p-2">
         {SearchModeList.slice(1).map((searchMode) =>
           renderSearchModeHelper(searchMode),
         )}
