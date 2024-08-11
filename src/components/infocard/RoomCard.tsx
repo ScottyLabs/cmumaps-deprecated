@@ -41,20 +41,6 @@ const RoomCard = ({ room }: Props) => {
     return <InfoCardImage url={url} alt={room.name} />;
   };
 
-  const renderButtonsRow = () => {
-    const renderMiddleButton = () => {
-      const icon = <ImSpoonKnife className="size-3.5" />;
-
-      return renderMiddleButtonHelper(
-        'Reserve Room',
-        icon,
-        'https://25live.collegenet.com/pro/cmu#!/home/event/form',
-      );
-    };
-
-    return <ButtonsRow middleButton={renderMiddleButton()} />;
-  };
-
   const renderRoomTitle = () => {
     const getText = () => {
       if (room.alias) {
@@ -71,7 +57,34 @@ const RoomCard = ({ room }: Props) => {
       return `${buildings[room.floor.buildingCode].name} ${room.name}`;
     };
 
-    return <h2 className="ml-3 mt-2 font-bold">{getText()}</h2>;
+    if (hasSchedule) {
+      return <h2 className="ml-3 mt-2">{getText()}</h2>;
+    } else {
+      return (
+        <div className="ml-3 mt-2">
+          <h2>{getText()}</h2>
+          <p className="text-gray-500">No Room Schedule Available</p>
+        </div>
+      );
+    }
+  };
+
+  const renderButtonsRow = () => {
+    const renderMiddleButton = () => {
+      if (hasSchedule) {
+        const icon = <ImSpoonKnife className="size-3.5" />;
+
+        return renderMiddleButtonHelper(
+          'Reserve Room',
+          icon,
+          'https://25live.collegenet.com/pro/cmu#!/home/event/form',
+        );
+      } else {
+        return <></>;
+      }
+    };
+
+    return <ButtonsRow middleButton={renderMiddleButton()} />;
   };
 
   return (
@@ -79,7 +92,7 @@ const RoomCard = ({ room }: Props) => {
       {renderRoomImage()}
       {renderRoomTitle()}
       {renderButtonsRow()}
-      <RoomSchedule />
+      {hasSchedule && <RoomSchedule />}
     </div>
   );
 };

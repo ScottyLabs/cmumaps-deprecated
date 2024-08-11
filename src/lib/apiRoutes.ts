@@ -26,9 +26,7 @@ export async function fetchEvents(
   }
 }
 
-export async function getDbRoomExists(
-  room: Room,
-): Promise<boolean | undefined> {
+export async function getDbRoomExists(room: Room): Promise<boolean | null> {
   const dbRoomName = room.floor.buildingCode + ' ' + room.name;
 
   const response = await fetch('/api/events/roomExists', {
@@ -43,7 +41,7 @@ export async function getDbRoomExists(
     return body;
   } catch (e) {
     console.error('Failed to fetch room', response);
-    return;
+    return null;
   }
 }
 
