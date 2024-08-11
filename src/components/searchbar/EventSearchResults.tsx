@@ -18,6 +18,8 @@ const EventSearchResults = ({ searchResult }: Props) => {
   }
 
   const formatDbDateEvent = (start: Date, end: Date) => {
+    start = start?.$date || start;
+    end = end?.$date || end;
     const startDate = new Date(start);
     const endDate = new Date(end);
 
