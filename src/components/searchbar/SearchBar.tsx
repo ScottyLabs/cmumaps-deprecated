@@ -173,7 +173,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
   return (
     <div id="SearchBar" className="box-shadow rounded">
       {renderSearchQueryInput()}
-      {searchQuery == '' && (
+      {searchQuery == '' && isSearchOpen && (
         <div className="mt-3">
           <QuickSearch />
         </div>
