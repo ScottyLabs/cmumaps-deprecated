@@ -1,12 +1,14 @@
 import React, { ReactElement, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { IoIosArrowBack } from 'react-icons/io';
+
 import {
   setIsNavOpen,
   setRecommendedPath,
   setStartRoom,
 } from '@/lib/features/navSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+
 import CardWrapper from '../infocard/CardWrapper';
-import { IoIosArrowBack } from 'react-icons/io';
 
 /**
  * Displays the search results.
@@ -28,7 +30,7 @@ export default function NavCard(): ReactElement {
       .then((j) => {
         dispatch(setRecommendedPath(j));
       });
-  }, [startRoom, endRoom]);
+  }, [startRoom, endRoom, dispatch]);
   return (
     <CardWrapper snapPoint={0.5}>
       <div>

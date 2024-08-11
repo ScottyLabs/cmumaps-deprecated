@@ -4,7 +4,6 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 
-import QuickSearch from '@/components/searchbar/QuickSearch';
 import useEscapeKey from '@/hooks/useEscapeKey';
 import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
 import {
@@ -15,6 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
+import SearchModeSelector from './SearchModeSelector';
 import SearchResults from './SearchResults';
 import { searchModeToIcon } from './searchMode';
 
@@ -38,7 +38,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const showQuickSearch =
+  const showSearchModeSelector =
     searchQuery == '' && isSearchOpen && searchMode == 'rooms';
 
   // set the search query using room and building
@@ -155,7 +155,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
     return (
       <div
         className={`overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          showQuickSearch ? 'h-0 opacity-0' : 'mt-1 h-[40em] opacity-100'
+          showSearchModeSelector ? 'h-0 opacity-0' : 'mt-1 h-[40em] opacity-100'
         }`}
       >
         <SearchResults
@@ -174,9 +174,9 @@ const SearchBar = ({ map, userPosition }: Props) => {
   return (
     <div id="SearchBar" className="box-shadow rounded">
       {renderSearchQueryInput()}
-      {showQuickSearch && (
+      {showSearchModeSelector && (
         <div className="mt-2">
-          <QuickSearch />
+          <SearchModeSelector />
         </div>
       )}
       {isSearchOpen && renderSearchResults()}
