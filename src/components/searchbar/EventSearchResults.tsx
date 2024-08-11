@@ -47,13 +47,14 @@ const EventSearchResults = ({ searchResult }: Props) => {
           console.log('Not Implemented');
         }}
       >
-        <div className="flex gap-2 text-left">
-          <div className="invert">
-            <Image alt={'Event Icon'} src={eventIcon} className="h-8 w-8" />
+        <div className="my-3 flex items-center gap-2 text-left">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-300">
+            <Image alt={'Event Icon'} src={eventIcon} />
           </div>
           <div className="truncate">
             <p>{event.name}</p>
             {formatDbDateEvent(event.startTime, event.endTime)}
+            <p>{event.roomName}</p>
           </div>
         </div>
       </SearchResultWrapper>

@@ -10,7 +10,7 @@ const SearchResultWrapper = ({ children, handleClick }: Props) => {
     <button
       type="button"
       className={
-        'flex h-12 w-full items-center justify-between gap-2 bg-gray-50 px-6 transition duration-150 ease-out hover:bg-[#efefef]'
+        'flex w-full items-center justify-between gap-2 bg-gray-50 px-4 transition duration-150 ease-out hover:bg-[#efefef]'
       }
       onClick={handleClick}
     >
