@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   Building,
   BuildingCode,
+  CourseData,
   EateryData,
   FloorLevel,
   FloorPlan,
@@ -16,6 +17,7 @@ interface DataState {
   eateryData: EateryData;
   searchMap: SearchMap;
   floorPlanMap: FloorPlanMap;
+  courseData: CourseData;
 }
 
 const initialState: DataState = {
@@ -23,6 +25,7 @@ const initialState: DataState = {
   eateryData: {},
   searchMap: {},
   floorPlanMap: {},
+  courseData: {},
 };
 
 const dataSlice = createSlice({
@@ -34,6 +37,9 @@ const dataSlice = createSlice({
     },
     setEateryData(state, action) {
       state.eateryData = action.payload;
+    },
+    setCourseData(state, action) {
+      state.courseData = action.payload;
     },
     addFloorToSearchMap(
       state,
@@ -61,6 +67,7 @@ const dataSlice = createSlice({
 export const {
   setBuildings,
   setEateryData,
+  setCourseData,
   addFloorToSearchMap,
   addFloorToFloorPlanMap,
 } = dataSlice.actions;
