@@ -38,6 +38,7 @@ const QuickSearch = () => {
 
     return (
       <div
+        key={searchMode}
         onClick={() => dispatch(setSearchMode(searchMode))}
         className="flex flex-col items-center gap-1 p-2"
       >
