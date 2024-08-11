@@ -2,21 +2,26 @@ import React, { ReactElement } from 'react';
 
 interface Props {
   children: ReactElement;
-  handleClick: () => void;
+  handleClick?: () => void;
 }
 
 const SearchResultWrapper = ({ children, handleClick }: Props) => {
-  return (
-    <button
-      type="button"
-      className={
-        'my-3 flex w-full items-center justify-between gap-2 bg-gray-50 px-4 transition duration-150 ease-out hover:bg-[#efefef]'
-      }
-      onClick={handleClick}
-    >
-      {children}
-    </button>
-  );
+  let classNames =
+    'my-3 flex w-full items-center justify-between gap-2 bg-gray-50 px-4 text-left';
+  classNames += 'transition duration-150 ease-out';
+
+  if (handleClick) {
+    return (
+      <button
+        className={classNames + ' cursor-pointer hover:bg-[#efefef]'}
+        onClick={handleClick}
+      >
+        {children}
+      </button>
+    );
+  } else {
+    return <div className={classNames}> {children}</div>;
+  }
 };
 
 export default SearchResultWrapper;

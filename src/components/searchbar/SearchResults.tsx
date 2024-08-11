@@ -6,6 +6,7 @@ import { searchEvents } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
+import CourseSearchResults from './CourseSearchResults';
 import EventSearchResults from './EventSearchResults';
 import FoodSearchResults from './FoodSearchResults';
 import RoomSearchResults from './RoomSearchResults';
@@ -20,7 +21,7 @@ interface SearchResultsProps {
 /**
  * Displays the search results.
  */
-const SearchResults = ({ map, query }: SearchResultsProps) => {
+const SearchResults = ({ map, query, userPosition }: SearchResultsProps) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const searchMap = useAppSelector((state) => state.data.searchMap);
 
@@ -66,17 +67,11 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
     return <EventSearchResults map={map} searchResult={eventSearchResults} />;
   } else if (searchMode == 'courses') {
     return (
-      <div>
-        <p className="my-2 flex justify-center italic">
-          Will be added upon request! Just use schedule now...
-        </p>
-        <p className="my-2 ml-2">
-          {' '}
-          Do you want search by courses? Fill this{' '}
-          <span className="text-blue-500">Google Form</span> to request the
-          feature!
-        </p>
-      </div>
+      <CourseSearchResults
+        map={map}
+        query={query}
+        userPosition={userPosition}
+      />
     );
   }
 };

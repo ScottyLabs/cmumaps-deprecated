@@ -124,6 +124,8 @@ const RoomSchedule = () => {
       const formatDbDate = (time: Date) => {
         const date = new Date(time);
 
+        console.log(date);
+
         const hoursUTC = date.getUTCHours().toString().padStart(2, '0');
         const minutesUTC = date.getUTCMinutes().toString().padStart(2, '0');
         return `${hoursUTC}:${minutesUTC}`;

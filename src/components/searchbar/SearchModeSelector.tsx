@@ -8,7 +8,7 @@ import { useAppDispatch } from '@/lib/hooks';
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
 import { SearchMode, SearchModeList, searchModeToIcon } from './searchMode';
 
-const QuickSearch = () => {
+const SearchModeSelector = () => {
   const dispatch = useAppDispatch();
 
   const searchModeToDisplayText: Partial<Record<SearchMode, string>> = {
@@ -54,7 +54,7 @@ const QuickSearch = () => {
 
   return (
     <CollapsibleWrapper title="Search Modes">
-      <div className="mx-2.5 mb-3 flex gap-2 overflow-x-auto rounded-xl border p-2">
+      <div className="no-scrollbar mx-2.5 mb-3 flex gap-2 overflow-x-auto rounded-xl border p-2">
         {SearchModeList.slice(1).map((searchMode) =>
           renderSearchModeHelper(searchMode),
         )}
@@ -63,4 +63,4 @@ const QuickSearch = () => {
   );
 };
 
-export default QuickSearch;
+export default SearchModeSelector;

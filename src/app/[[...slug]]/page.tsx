@@ -30,7 +30,7 @@ import {
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
-import { getEateryData } from '@/util/getEateryData';
+import { getEateryData } from '@/util/eateryUtils';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -182,7 +182,7 @@ const Page = ({ params, searchParams }: Props) => {
             }
 
             const outlineResponse = await fetch(
-              `/json/${building.code}/${building.code}-${floorLevel}-outline.json`,
+              `/json/floor_plan/${building.code}/${building.code}-${floorLevel}-outline.json`,
             );
             const outlineJson = await outlineResponse.json();
 

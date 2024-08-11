@@ -124,12 +124,12 @@ export async function POST(req: NextRequest) {
     ]) {
       const graphPath = path.resolve(
         process.cwd(),
-        `./public/json/${buildingCode}/`,
+        `./public/json/floor_plan/${buildingCode}/`,
         `${buildingCode}-${level}-graph.json`,
       );
       const outlinePath = path.resolve(
         process.cwd(),
-        `./public/json/${buildingCode}/`,
+        `./public/json/floor_plan/${buildingCode}/`,
         `${buildingCode}-${level}-outline.json`,
       );
       if (!fs.existsSync(graphPath) || !fs.existsSync(outlinePath)) {
