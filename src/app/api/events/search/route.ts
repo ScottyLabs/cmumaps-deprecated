@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 import prisma from '@/lib/prisma';
@@ -10,7 +11,7 @@ export async function searchEvents(query: string) {
         $search: {
           index: 'roomNameIndex',
           text: {
-            query: '15-213',
+            query,
             path: {
               wildcard: '*',
             },
@@ -21,7 +22,11 @@ export async function searchEvents(query: string) {
     cursor: {},
   });
 
-  return events.cursor.firstBatch;
+  if (!events.cursor) {
+    return undefined;
+  }
+
+  return (events.cursor as Prisma.JsonObject).firstBatch;
 }
 
 export async function GET(req: NextRequest) {
