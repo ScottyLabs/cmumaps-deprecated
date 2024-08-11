@@ -5,7 +5,7 @@ import { EateryInfo, LocationState, Room, SearchRoom } from '@/types';
 interface Props {
   room: Room | SearchRoom;
   title: ReactElement;
-  eateryInfo: EateryInfo | undefined;
+  eateryInfo: EateryInfo | undefined | null;
 }
 
 const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {
