@@ -7,23 +7,29 @@ import { Building, SearchRoom } from '@/types';
 import { zoomOnObject, zoomOnSearchRoom } from '../buildings/mapUtils';
 import RoomPin from '../shared/RoomPin';
 import Roundel from '../shared/Roundel';
+import KeepTypingDisplay from './KeepTypingDisplay';
 import NoResultDisplay from './NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 import { RoomSearchResult } from './searchUtils';
 
 interface Props {
   map: mapkit.Map | null;
+  query: string;
   searchResult: RoomSearchResult[];
 }
 
 /**
  * Displays the search results.
  */
-const RoomSearchResults = ({ map, searchResult }: Props) => {
+const RoomSearchResults = ({ map, query, searchResult }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
+
+  if (query.length < 3) {
+    return <KeepTypingDisplay />;
+  }
 
   if (searchResult.length == 0) {
     return <NoResultDisplay />;

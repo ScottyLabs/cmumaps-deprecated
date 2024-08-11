@@ -50,7 +50,13 @@ const SearchResults = ({ map, query, userPosition }: SearchResultsProps) => {
   }, [buildings, query, searchMap, searchMode]);
 
   if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
-    return <RoomSearchResults map={map} searchResult={roomSearchResults} />;
+    return (
+      <RoomSearchResults
+        map={map}
+        query={query}
+        searchResult={roomSearchResults}
+      />
+    );
   } else if (searchMode == 'food') {
     return <FoodSearchResults map={map} searchResult={roomSearchResults} />;
   } else if (searchMode == 'events') {
