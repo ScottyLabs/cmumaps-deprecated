@@ -22,49 +22,27 @@ interface CmuEatsTimeIntervalType {
   end: CmuEatsTimeType;
 }
 
-export const getEateryData = () => {
-  const cmueatsData = [
-    {
-      conceptId: 113,
-      name: 'AU BON PAIN AT SKIBO CAFÉ',
-      shortDescription:
-        'Coffee/tea, espresso, soup, sandwiches/salads, grab-n-go, yogurt parfaits, fruit, snacks',
-      description:
-        'At Au Bon Pain café bakery, each signature recipe is uniquely crafted. You can enjoy delicious hot or iced coffee and teas, espresso drinks, a variety of cold beverages, soup, a customized made-to-order breakfast or lunch sandwich or salad, or you can grab a pre-made salad, sandwich, wrap, yogurt parfait, fresh fruit or snack. There is always something new to try ... healthy choices, comfort food, indulgent treats … try them all!  Nutritional information can be found at aubonpain.com/nutrition. To place a catering order, please email abpcmu@grcafes.com. For on-campus assistance, call 804-839-6774.',
-      url: 'https://apps.studentaffairs.cmu.edu/dining/conceptinfo/Concept/113',
-      location: 'Cohon Center, Second floor',
-      coordinates: { lat: 40.444107, lng: -79.942206 },
-      acceptsOnlineOrders: true,
-      times: [
-        {
-          start: { day: 0, hour: 1, minute: 0 },
-          end: { day: 0, hour: 2, minute: 0 },
-        },
-        {
-          start: { day: 1, hour: 8, minute: 0 },
-          end: { day: 1, hour: 14, minute: 0 },
-        },
-        {
-          start: { day: 3, hour: 8, minute: 0 },
-          end: { day: 3, hour: 14, minute: 0 },
-        },
-        {
-          start: { day: 4, hour: 8, minute: 0 },
-          end: { day: 4, hour: 14, minute: 0 },
-        },
-        {
-          start: { day: 5, hour: 8, minute: 0 },
-          end: { day: 5, hour: 14, minute: 0 },
-        },
-        {
-          start: { day: 6, hour: 8, minute: 0 },
-          end: { day: 6, hour: 15, minute: 0 },
-        },
-      ],
-    },
-  ];
+export const getEateryData = async () => {
+  // const cmueatsData = [
+  //   {
+  //     times: [
+  //       {
+  //         start: { day: 0, hour: 1, minute: 0 },
+  //         end: { day: 0, hour: 2, minute: 0 },
+  //       },
+  //       {
+  //         start: { day: 0, hour: 3, minute: 0 },
+  //         end: { day: 0, hour: 4, minute: 0 },
+  //       },
+  //     ],
+  //   },
+  // ];
+
+  const response = await fetch('https://dining.apis.scottylabs.org/locations/');
+  const cmueatsData = (await response.json())['locations'];
 
   const now = new Date();
+  const currentDay = now.getDay();
 
   // a ChatGPT generated function that converts CmuEatsTimeType to Date
   function convertToDate({ day, hour, minute }: CmuEatsTimeType): Date {
@@ -84,6 +62,7 @@ export const getEateryData = () => {
     return date;
   }
 
+  // get difference in hour between two times
   const getHourDif = (startTime: Date, endDate: Date) => {
     const timeDifference = endDate.getTime() - startTime.getTime();
 
@@ -93,29 +72,29 @@ export const getEateryData = () => {
     return hoursDifference;
   };
 
-  const closeHelper = (nextDate: Date, ans: Partial<EateryData>) => {
+  // helper function to assign statusMsg and locationState when the eatery is closed
+  // determine if it is minutes, hours, or days
+  const closeHelper = (nextDate: Date, res: Partial<EateryData>) => {
     const hourDif = getHourDif(now, nextDate);
 
     if (hourDif < 1) {
-      ans.locationState = 'OPENS_SOON';
-      ans.statusMsg = `Close (${Math.round(hourDif * 60)} minutes until open)`;
+      res.locationState = 'OPENS_SOON';
+      res.statusMsg = `Close (${Math.round(hourDif * 60)} minutes until open)`;
     } else if (hourDif < 24) {
-      ans.locationState = 'CLOSED';
-      ans.statusMsg = `Open (${Math.round(hourDif)} hours until open)`;
+      res.locationState = 'CLOSED';
+      res.statusMsg = `Open (${Math.round(hourDif)} hours until open)`;
     } else {
-      ans.locationState = 'CLOSED';
-      ans.statusMsg = `Close (${Math.ceil(hourDif / 24)} days until open on ${daysOfWeek[nextDate.getDay()]})`;
+      res.locationState = 'CLOSED';
+      res.statusMsg = `Close (${Math.ceil(hourDif / 24)} days until open on ${daysOfWeek[nextDate.getDay()]})`;
     }
   };
 
   const getStatusMsgAndLocationState = (
     eatery: any,
-    ans: Partial<EateryData>,
+    curTime: CmuEatsTimeIntervalType | undefined,
+    res: Partial<EateryData>,
   ) => {
-    const currentDay = now.getDay();
-    const curTime = eatery['times'].find(
-      (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
-    );
+    // if the eatery opens today
     if (curTime) {
       const startTime = convertToDate(curTime.start);
       const endTime = convertToDate(curTime.end);
@@ -126,74 +105,74 @@ export const getEateryData = () => {
 
         // message depend on if more than an hour until closing
         if (hourDif > 1) {
-          ans.locationState = 'OPEN';
-          ans.statusMsg = `Open (${Math.round(hourDif)} hours until close)`;
+          res.locationState = 'OPEN';
+          res.statusMsg = `Open (${Math.round(hourDif)} hours until close)`;
         } else {
-          ans.locationState = 'CLOSES_SOON';
-          ans.statusMsg = `Open (${Math.round(hourDif * 60)} minutes until close)`;
+          res.locationState = 'CLOSES_SOON';
+          res.statusMsg = `Open (${Math.round(hourDif * 60)} minutes until close)`;
         }
       }
       // when close
       else {
-        const getNextDate = (eatery: any): Date => {
-          // if today's session haven't started
-          if (now < startTime) {
-            return startTime;
-          }
+        // if today's time interval haven't started
+        if (now < startTime) {
+          closeHelper(startTime, res);
+        }
 
-          // otherwise get the next index
-          const todayIndex = eatery.times.findIndex(
-            (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
-          );
+        // otherwise get the next index
+        const todayIndex = eatery.times.findIndex(
+          (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
+        );
 
-          return convertToDate(
-            eatery.times[(todayIndex + 1) % eatery.times.length].start,
-          );
-        };
+        const nextTime = eatery.times[(todayIndex + 1) % eatery.times.length];
 
-        const nextDate = getNextDate(eatery);
-        closeHelper(nextDate, ans);
+        // edge case where are multiple time intervals in the same day
+        if (nextTime.start.day == currentDay) {
+          getStatusMsgAndLocationState(eatery, nextTime, res);
+          return;
+        }
+
+        const nextDate = convertToDate(nextTime.start);
+        closeHelper(nextDate, res);
       }
-    } else {
-      const makeWrapAround = (times: CmuEatsTimeType[]) => {
-        const firstElement = JSON.parse(JSON.stringify(times[0]));
+    }
+    // if the eatery is closed today
+    else {
+      // wrap the times by appending the first element to the end of the array
+      const firstElement = JSON.parse(JSON.stringify(eatery.times[0]));
+      firstElement.start.day += 7;
+      firstElement.end.day += 7;
+      eatery.times.push(firstElement);
 
-        // Modify the specified field in the copied element
-        firstElement.start.day += 7;
-        firstElement.end.day += 7;
-
-        // Push the modified copy to the destination list
-        times.push(firstElement);
-      };
-
-      makeWrapAround(eatery.times);
-
-      const nextDay = eatery.times.find(
+      // the next interval if the first interval where day is greater than today's day
+      const nextTimeInterval = eatery.times.find(
         (time: CmuEatsTimeIntervalType) => time.start.day > currentDay,
       );
-      const nextDate = convertToDate(nextDay.start);
-      closeHelper(nextDate, ans);
+      const nextDate = convertToDate(nextTimeInterval.start);
+      closeHelper(nextDate, res);
     }
   };
 
   const parseEatery = (eatery: any): EateryData => {
-    const ans: Partial<EateryData> = {};
-    ans.name = eatery.name;
-    ans.url = eatery.url;
-    ans.shortDescription = eatery.shortDescription;
+    const res: Partial<EateryData> = {};
+    res.name = eatery.name;
+    res.url = eatery.url;
+    res.shortDescription = eatery.shortDescription;
 
     if (eatery.times.length == 0) {
-      ans.locationState = 'CLOSED_LONG_TERM';
+      res.locationState = 'CLOSED_LONG_TERM';
     } else {
-      getStatusMsgAndLocationState(eatery, ans);
+      // the initial curTime is the first entry where the day is today's day
+      const curTime = eatery['times'].find(
+        (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
+      );
+      getStatusMsgAndLocationState(eatery, curTime, res);
     }
 
-    return ans as EateryData;
+    return res as EateryData;
   };
 
-  console.log(
-    cmueatsData.slice(0, 1).map((eatery: any) => parseEatery(eatery)),
-  );
+  console.log(cmueatsData.map((eatery: any) => parseEatery(eatery)));
 };
 
 getEateryData();
