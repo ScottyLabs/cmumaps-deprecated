@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
+import { Slide, ToastContainer } from 'react-toastify';
 
 import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
@@ -16,7 +17,11 @@ import InfoCard from '@/components/infocard/InfoCard';
 import NavCard from '@/components/navigation/NavCard';
 import ToolBar from '@/components/toolbar/ToolBar';
 import { getFloorPlan } from '@/lib/apiRoutes';
-import { addFloorToSearchMap, setBuildings } from '@/lib/features/dataSlice';
+import {
+  addFloorToSearchMap,
+  setBuildings,
+  setEateryData,
+} from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
   setIsMobile,
@@ -25,6 +30,7 @@ import {
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
+import { getEateryData } from '@/util/getEateryData';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -143,6 +149,11 @@ const Page = ({ params, searchParams }: Props) => {
       dispatch(setRoomImageList(roomImageList));
     };
     getRoomImageList();
+  }, [dispatch]);
+
+  // load the eatery data
+  useEffect(() => {
+    getEateryData().then((eateryData) => dispatch(setEateryData(eateryData)));
   }, [dispatch]);
 
   // load the buidling and floor data
@@ -267,6 +278,28 @@ const Page = ({ params, searchParams }: Props) => {
     }
   };
 
+  const renderIcons = () => {
+    return (
+      <>
+        {renderClerkIcon()}
+        <div className="fixed bottom-2 right-2">
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://docs.google.com/document/d/1mirPykjHd0catOj0PShZEil6EsoF1HgQW02tOO2ZnWs/edit#heading=h.j3w4ch974od3"
+          >
+            <Image alt="Question Mark" src={questionMarkIcon} height={45} />
+          </a>
+        </div>
+        {isMobile && (
+          <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
+            <Image alt="Schedule" src={scheduleIcon} />
+          </div>
+        )}
+      </>
+    );
+  };
+
   return (
     <main className="relative h-screen">
       <div className="absolute z-10">
@@ -283,14 +316,21 @@ const Page = ({ params, searchParams }: Props) => {
           }}
         />
 
-        {renderClerkIcon()}
+        {renderIcons()}
 
-        <div className="fixed bottom-2 right-2">
-          <Image alt="Question Mark" src={questionMarkIcon} height={45} />
-        </div>
-        <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
-          <Image alt="Schedule" src={scheduleIcon} />
-        </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={true}
+          closeOnClick
+          theme="colored"
+          transition={Slide}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+          }}
+        />
       </div>
 
       <MapDisplay mapRef={mapRef} points={points} />

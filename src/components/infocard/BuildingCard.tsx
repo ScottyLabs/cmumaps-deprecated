@@ -10,7 +10,7 @@ import { IReadOnlyExtendedLocation } from '@/util/cmueats/types/locationTypes';
 
 import { zoomOnSearchRoom } from '../buildings/mapUtils';
 import ButtonsRow from './ButtonsRow';
-import EateryInfo from './EateryInfo';
+import EateryInfoDisplay from './EateryInfoDisplay';
 import InfoCardImage from './InfoCardImage';
 
 interface Props {
@@ -31,6 +31,7 @@ const BuildingCard = ({ map, building }: Props) => {
     [SearchRoom, IReadOnlyExtendedLocation | null][]
   >([]);
 
+  // get eatery data
   useEffect(() => {
     const getEateries = () => {
       return building.floors
@@ -43,7 +44,7 @@ const BuildingCard = ({ map, building }: Props) => {
             return [];
           }
           const rooms = searchMap[`${building.code}`][`${floorLevel}`];
-          return rooms.filter((room) => room.type == 'dining');
+          return rooms.filter((room) => room.type == 'food');
         })
         .flat();
     };
@@ -135,7 +136,7 @@ const BuildingCard = ({ map, building }: Props) => {
                 onClick={() => dispatch(claimRoom(eatery))}
               >
                 <div className="carousel-item active">
-                  <EateryInfo
+                  <EateryInfoDisplay
                     room={eatery}
                     title={renderTitle(eatery)}
                     eatingData={eatingData}
@@ -160,7 +161,7 @@ const BuildingCard = ({ map, building }: Props) => {
               className="cursor-pointer rounded border p-1"
               onClick={handleClick(eatery)}
             >
-              <EateryInfo
+              <EateryInfoDisplay
                 room={eatery}
                 title={renderTitle(eatery)}
                 eatingData={eatingData}

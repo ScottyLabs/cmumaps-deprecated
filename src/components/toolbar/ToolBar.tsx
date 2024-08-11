@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
 import SearchBar from '../searchbar/SearchBar';
@@ -12,11 +13,18 @@ interface Props {
 }
 
 const ToolBar = ({ map, userPosition }: Props) => {
+  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
+
   return (
     <div className="fixed top-4 mx-2 w-full space-y-2 sm:w-96">
       <SearchBar map={map} userPosition={userPosition} />
-      <Schedule />
-      <Events />
+
+      {!isSearchOpen && (
+        <>
+          <Schedule />
+          <Events />
+        </>
+      )}
     </div>
   );
 };

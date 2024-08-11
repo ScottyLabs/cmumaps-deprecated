@@ -121,16 +121,17 @@ const RoomSchedule = () => {
 
   const renderContent = () => {
     if (weekEvents) {
-      const formatDate = (time: Date) => {
+      const formatDbDate = (time: Date) => {
         const date = new Date(time);
+
         const hoursUTC = date.getUTCHours().toString().padStart(2, '0');
         const minutesUTC = date.getUTCMinutes().toString().padStart(2, '0');
         return `${hoursUTC}:${minutesUTC}`;
       };
 
       return weekEvents[dayOfWeek].map((event) => {
-        const startTime = formatDate(event.startTime);
-        const endTime = formatDate(event.endTime);
+        const startTime = formatDbDate(event.startTime);
+        const endTime = formatDbDate(event.endTime);
 
         return (
           <div key={event.id} className="flex justify-between">
