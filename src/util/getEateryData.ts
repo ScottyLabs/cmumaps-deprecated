@@ -67,10 +67,10 @@ export const getEateryData = async (): Promise<EateryData> => {
       res.statusMsg = `Closed (${Math.round(hourDif * 60)} minutes until open)`;
     } else if (hourDif < 24) {
       res.locationState = 'CLOSED';
-      res.statusMsg = `Open (${Math.round(hourDif)} hours until open)`;
+      res.statusMsg = `Closed (${Math.round(hourDif)} hours until open)`;
     } else {
       res.locationState = 'CLOSED';
-      res.statusMsg = `Closed (${Math.ceil(hourDif / 24)} days until open on ${daysOfWeek[nextDate.getDay()]})`;
+      res.statusMsg = `Closed (open on ${daysOfWeek[nextDate.getDay()]})`;
     }
   };
 
