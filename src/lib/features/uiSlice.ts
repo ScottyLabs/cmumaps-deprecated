@@ -12,7 +12,6 @@ interface UIState {
 
   focusedFloor: Floor | null;
   isSearchOpen: boolean;
-  roomImageList: Record<string, string[]>;
 
   isCardWrapperCollapsed: boolean;
 
@@ -27,7 +26,6 @@ const initialState: UIState = {
   selectedBuilding: null,
   focusedFloor: null,
   isSearchOpen: false,
-  roomImageList: {},
   isCardWrapperCollapsed: true,
   showRoomNames: false,
   searchMode: 'rooms',
@@ -59,9 +57,6 @@ const uiSlice = createSlice({
       state.selectedBuilding = null;
     },
 
-    setRoomImageList(state, action: PayloadAction<Record<string, string[]>>) {
-      state.roomImageList = action.payload;
-    },
     setIsSearchOpen(state, action: PayloadAction<boolean>) {
       state.isSearchOpen = action.payload;
     },
@@ -92,7 +87,6 @@ export const {
   deselectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
-  setRoomImageList,
   setIsCardWrapperCollapsed,
   setIsMobile,
   setShowRoomNames,
