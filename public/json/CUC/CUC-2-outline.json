@@ -16038,7 +16038,7 @@
             },
             "type": "dining",
             "aliases": [
-                "Skibo Café"
+                "Skibo Caf\u00e9"
             ],
             "polygon": {
                 "type": "Polygon",
@@ -16692,7 +16692,7 @@
             },
             "type": "dining",
             "aliases": [
-                "Au Bon Pain at Skibo Café"
+                "Au Bon Pain at Skibo Caf\u00e9"
             ],
             "polygon": {
                 "type": "Polygon",
@@ -22188,7 +22188,7 @@
             },
             "type": "default",
             "aliases": [
-                "President’s Dining Room"
+                "President\u2019s Dining Room"
             ],
             "polygon": {
                 "type": "Polygon",
