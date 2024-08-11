@@ -1,7 +1,9 @@
+import { ImSpoonKnife } from 'react-icons/im';
+
 import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
-import ButtonsRow from './ButtonsRow';
+import ButtonsRow, { renderMiddleButtonHelper } from './ButtonsRow';
 import InfoCardImage from './InfoCardImage';
 import RoomSchedule from './RoomSchedule';
 
@@ -32,7 +34,17 @@ const RoomCard = ({ room }: Props) => {
   };
 
   const renderButtonsRow = () => {
-    return <ButtonsRow middleButton={<></>} />;
+    const renderMiddleButton = () => {
+      const icon = <ImSpoonKnife className="size-3.5" />;
+
+      return renderMiddleButtonHelper(
+        'Reserve Room',
+        icon,
+        'https://25live.collegenet.com/pro/cmu#!/home/event/form',
+      );
+    };
+
+    return <ButtonsRow middleButton={renderMiddleButton()} />;
   };
 
   const renderRoomTitle = () => {
