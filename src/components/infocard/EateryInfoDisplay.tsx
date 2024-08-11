@@ -69,7 +69,7 @@ const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {
   };
 
   return (
-    <div className="px-4 pb-3 pt-2 font-[500]">
+    <div className="px-4 pb-3 pt-2 text-left font-[500]">
       {title}
       {renderLocationTimeInfo()}
       <p className="mt-2 leading-4">{eateryInfo.shortDescription}</p>

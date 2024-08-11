@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     const buildingCode = req.headers.get('buildingCode');
     const floorLevel = req.headers.get('floorLevel');
 
-    const floorPlanPath = `public/json/${buildingCode}/${buildingCode}-${floorLevel}-outline.json`;
+    const floorPlanPath = `public/json/floor_plan/${buildingCode}/${buildingCode}-${floorLevel}-outline.json`;
 
     if (!fs.existsSync(floorPlanPath)) {
       return NextResponse.json({ status: 200 });

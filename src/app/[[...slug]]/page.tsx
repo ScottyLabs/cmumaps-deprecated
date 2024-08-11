@@ -182,7 +182,7 @@ const Page = ({ params, searchParams }: Props) => {
             }
 
             const outlineResponse = await fetch(
-              `/json/${building.code}/${building.code}-${floorLevel}-outline.json`,
+              `/json/floor_plan/${building.code}/${building.code}-${floorLevel}-outline.json`,
             );
             const outlineJson = await outlineResponse.json();
 
