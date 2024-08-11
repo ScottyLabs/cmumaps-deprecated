@@ -4,6 +4,8 @@ import Image from 'next/image';
 
 import React from 'react';
 
+import { formatDbDate } from '@/util/dbTime';
+
 import NoResultDisplay from './NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 
@@ -17,23 +19,30 @@ const EventSearchResults = ({ searchResult }: Props) => {
     return <NoResultDisplay />;
   }
 
-  return searchResult.map((event) => (
-    <SearchResultWrapper
-      key={event.id}
-      handleClick={() => {
-        console.log('Not Implemented');
-      }}
-    >
-      <div className="flex gap-2 text-left">
-        <div className="invert">
-          <Image alt={'Event Icon'} src={eventIcon} className="h-8 w-8" />
+  return searchResult.map((event) => {
+    console.log(event);
+    return (
+      <SearchResultWrapper
+        key={event.id}
+        handleClick={() => {
+          console.log('Not Implemented');
+        }}
+      >
+        <div className="flex gap-2 text-left">
+          <div className="invert">
+            <Image alt={'Event Icon'} src={eventIcon} className="h-8 w-8" />
+          </div>
+          <div className="truncate">
+            <p>{event.name}</p>
+            <p>
+              {formatDbDate(event.startTime, false)}-
+              {formatDbDate(event.endTime, false)}
+            </p>
+          </div>
         </div>
-        <div className="truncate">
-          <p>{event.name}</p>
-        </div>
-      </div>
-    </SearchResultWrapper>
-  ));
+      </SearchResultWrapper>
+    );
+  });
 };
 
 export default EventSearchResults;
