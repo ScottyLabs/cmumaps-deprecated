@@ -15,9 +15,6 @@ const lato = Lato({
 export const metadata: Metadata = {
   title: 'CMU Maps',
   description: 'Interactive map of the CMU campus',
-  icons: {
-    icon: '/favicons/smapslogo.png',
-  },
 };
 
 export default function RootLayout({
