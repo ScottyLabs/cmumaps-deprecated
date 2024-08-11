@@ -72,7 +72,7 @@ const RoomSearchResults = ({ map, searchResult }: Props) => {
           zoomOnSearchRoom(map, searchRoom, buildings, floorPlanMap, dispatch);
         }}
       >
-        <div className="flex items-center space-x-3">
+        <div className="flex h-12 items-center space-x-3">
           <RoomPin room={searchRoom} />
           {renderText(searchRoom)}
         </div>

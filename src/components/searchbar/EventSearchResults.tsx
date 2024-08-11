@@ -47,7 +47,7 @@ const EventSearchResults = ({ searchResult }: Props) => {
           console.log('Not Implemented');
         }}
       >
-        <div className="my-3 flex items-center gap-2 text-left">
+        <div className="flex items-center gap-2 py-1 text-left">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-300">
             <Image alt={'Event Icon'} src={eventIcon} />
           </div>

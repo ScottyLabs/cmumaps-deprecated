@@ -50,6 +50,8 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
         } else if (searchMode === 'events') {
           if (query.length > 0) {
             searchEvents(query).then(setEventSearchResults);
+          } else {
+            setEventSearchResults([]);
           }
         }
       }, 500);
