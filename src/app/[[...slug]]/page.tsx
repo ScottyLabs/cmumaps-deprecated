@@ -267,6 +267,28 @@ const Page = ({ params, searchParams }: Props) => {
     }
   };
 
+  const renderIcons = () => {
+    return (
+      <>
+        {renderClerkIcon()}
+        <div className="fixed bottom-2 right-2">
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://docs.google.com/document/d/1mirPykjHd0catOj0PShZEil6EsoF1HgQW02tOO2ZnWs/edit#heading=h.j3w4ch974od3"
+          >
+            <Image alt="Question Mark" src={questionMarkIcon} height={45} />
+          </a>
+        </div>
+        {isMobile && (
+          <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
+            <Image alt="Schedule" src={scheduleIcon} />
+          </div>
+        )}
+      </>
+    );
+  };
+
   return (
     <main className="relative h-screen">
       <div className="absolute z-10">
@@ -282,18 +304,11 @@ const Page = ({ params, searchParams }: Props) => {
             y: points[points.length - 1][1],
           }}
         />
-
-        {renderClerkIcon()}
-
-        <div className="fixed bottom-2 right-2">
-          <Image alt="Question Mark" src={questionMarkIcon} height={45} />
-        </div>
-        <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
-          <Image alt="Schedule" src={scheduleIcon} />
-        </div>
       </div>
 
       <MapDisplay mapRef={mapRef} points={points} />
+
+      {renderIcons()}
     </main>
   );
 };
