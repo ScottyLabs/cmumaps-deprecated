@@ -72,8 +72,6 @@ const FoodSearchResults = ({ map, searchResult }: Props) => {
     ));
   };
 
-  console.log(searchResult);
-
   return searchResult.map((buildingResult) => {
     const building = buildingResult.building;
     return (
