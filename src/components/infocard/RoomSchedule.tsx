@@ -14,6 +14,7 @@ import { FaChevronRight } from 'react-icons/fa';
 
 import { fetchEvents } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
+import { formatDbDate } from '@/util/dbTime';
 
 const RoomSchedule = () => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
@@ -121,16 +122,9 @@ const RoomSchedule = () => {
 
   const renderContent = () => {
     if (weekEvents) {
-      const formatDate = (time: Date) => {
-        const date = new Date(time);
-        const hoursUTC = date.getUTCHours().toString().padStart(2, '0');
-        const minutesUTC = date.getUTCMinutes().toString().padStart(2, '0');
-        return `${hoursUTC}:${minutesUTC}`;
-      };
-
       return weekEvents[dayOfWeek].map((event) => {
-        const startTime = formatDate(event.startTime);
-        const endTime = formatDate(event.endTime);
+        const startTime = formatDbDate(event.startTime, true);
+        const endTime = formatDbDate(event.endTime, true);
 
         return (
           <div key={event.id} className="flex justify-between">
