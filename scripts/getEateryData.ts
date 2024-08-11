@@ -1,12 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EateryData } from '../src/types';
 
-// Promise<EateryData[]>
+const daysOfWeek = [
+  'Sunday', // 0
+  'Monday', // 1
+  'Tuesday', // 2
+  'Wednesday', // 3
+  'Thursday', // 4
+  'Friday', // 5
+  'Saturday', // 6
+];
 
-export const getEateryData = async () => {
-  //   const res = await fetch('https://dining.apis.scottylabs.org/locations/');
-  //   const cmueatsData = (await res.json())['locations'];
+interface CmuEatsTimeType {
+  day: number;
+  hour: number;
+  minute: number;
+}
 
+interface CmuEatsTimeIntervalType {
+  start: CmuEatsTimeType;
+  end: CmuEatsTimeType;
+}
+
+export const getEateryData = () => {
   const cmueatsData = [
     {
       conceptId: 113,
@@ -48,19 +64,10 @@ export const getEateryData = async () => {
     },
   ];
 
-  const daysOfWeek = [
-    'Sunday', // 0
-    'Monday', // 1
-    'Tuesday', // 2
-    'Wednesday', // 3
-    'Thursday', // 4
-    'Friday', // 5
-    'Saturday', // 6
-  ];
-
   const now = new Date();
 
-  function convertToDate({ day, hour, minute }): Date {
+  // a ChatGPT generated function that converts CmuEatsTimeType to Date
+  function convertToDate({ day, hour, minute }: CmuEatsTimeType): Date {
     const now = new Date();
     const currentDay = now.getDay(); // 0 (Sunday) to 6 (Saturday)
 
@@ -77,7 +84,7 @@ export const getEateryData = async () => {
     return date;
   }
 
-  const getHourDif = (startTime, endDate) => {
+  const getHourDif = (startTime: Date, endDate: Date) => {
     const timeDifference = endDate.getTime() - startTime.getTime();
 
     // Convert milliseconds to hours
@@ -107,7 +114,7 @@ export const getEateryData = async () => {
   ) => {
     const currentDay = now.getDay();
     const curTime = eatery['times'].find(
-      (time) => time.start.day == currentDay,
+      (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
     );
     if (curTime) {
       const startTime = convertToDate(curTime.start);
@@ -115,9 +122,9 @@ export const getEateryData = async () => {
 
       // when open
       if (now >= startTime && now <= endTime) {
-        // see if more than an hour until closing
         const hourDif = getHourDif(now, endTime);
 
+        // message depend on if more than an hour until closing
         if (hourDif > 1) {
           ans.locationState = 'OPEN';
           ans.statusMsg = `Open (${Math.round(hourDif)} hours until close)`;
@@ -128,14 +135,15 @@ export const getEateryData = async () => {
       }
       // when close
       else {
-        const getNextDate = (eatery): Date => {
-          // today's session haven't started
+        const getNextDate = (eatery: any): Date => {
+          // if today's session haven't started
           if (now < startTime) {
             return startTime;
           }
 
+          // otherwise get the next index
           const todayIndex = eatery.times.findIndex(
-            (time) => time.start.day == currentDay,
+            (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
           );
 
           return convertToDate(
@@ -147,7 +155,7 @@ export const getEateryData = async () => {
         closeHelper(nextDate, ans);
       }
     } else {
-      const makeWrapAround = (times) => {
+      const makeWrapAround = (times: CmuEatsTimeType[]) => {
         const firstElement = JSON.parse(JSON.stringify(times[0]));
 
         // Modify the specified field in the copied element
@@ -160,7 +168,9 @@ export const getEateryData = async () => {
 
       makeWrapAround(eatery.times);
 
-      const nextDay = eatery.times.find((time) => time.start.day > currentDay);
+      const nextDay = eatery.times.find(
+        (time: CmuEatsTimeIntervalType) => time.start.day > currentDay,
+      );
       const nextDate = convertToDate(nextDay.start);
       closeHelper(nextDate, ans);
     }
