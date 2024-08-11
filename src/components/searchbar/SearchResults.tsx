@@ -6,7 +6,7 @@ import { AbsoluteCoordinate } from '@/types';
 
 import FoodSearchResults from './FoodSearchResults';
 import RoomSearchResults from './RoomSearchResults';
-import { RoomSearchResult, searchRoom } from './searchUtils';
+import { RoomSearchResult, searchFood, searchRoom } from './searchUtils';
 
 interface SearchResultsProps {
   map: mapkit.Map | null;
@@ -33,7 +33,7 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
   useEffect(() => {
     if (buildings) {
       setTimeout(() => {
-        if (['rooms', 'food', 'restrooms', 'study'].includes(searchMode)) {
+        if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
           setRoomSearchResults(
             searchRoom(
               buildings,
@@ -41,6 +41,10 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
               searchMap,
               searchMode as 'rooms' | 'food' | 'restrooms' | 'study',
             ),
+          );
+        } else if (searchMode === 'food') {
+          setRoomSearchResults(
+            searchFood(buildings, query, searchMap, searchMode),
           );
         } else if (searchMode === 'events') {
           searchEvents(query).then(setEventSearchResults);
