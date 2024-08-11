@@ -26,6 +26,7 @@ import {
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
+import { getEateryData } from '@/util/getEateryData';
 
 const points = [[40.44249719447571, -79.94314319195851]];
 
@@ -144,6 +145,11 @@ const Page = ({ params, searchParams }: Props) => {
       dispatch(setRoomImageList(roomImageList));
     };
     getRoomImageList();
+  }, [dispatch]);
+
+  // load the eatery data
+  useEffect(() => {
+    getEateryData().then((data) => console.log(data));
   }, [dispatch]);
 
   // load the buidling and floor data
