@@ -264,10 +264,17 @@ export type SearchMap = Record<BuildingCode, Record<FloorLevel, SearchRoom[]>>;
 
 export type FloorPlanMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;
 
+export type LocationState =
+  | 'OPEN'
+  | 'CLOSES_SOON'
+  | 'OPENS_SOON'
+  | 'CLOSED'
+  | 'CLOSED_LONG_TERM';
+
 export interface EateryData {
   name: string;
   url: string;
   shortDescription: string;
-  // - statusMsg (updated to be…)
-  // - LocationState
+  statusMsg: string;
+  locationState: LocationState;
 }
