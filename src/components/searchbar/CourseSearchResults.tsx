@@ -62,28 +62,31 @@ const CourseSearchResults = ({ query }: Props) => {
 
   const renderCourseResultHelper = (courseCode: string, course: Course) => {
     return Object.entries(course.sections).map(([sectionCode, section]) => (
-      <div key={courseCode} className="flex items-center gap-2 py-1 text-left">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-700">
-          <Image alt={'Event Icon'} src={courseIcon} />
-        </div>
-        <SearchResultWrapper
-          key={courseCode + sectionCode}
-          handleClick={() => {
-            console.log('later');
-          }}
+      <SearchResultWrapper
+        key={courseCode + sectionCode}
+        handleClick={() => {
+          console.log('later');
+        }}
+      >
+        <div
+          key={courseCode}
+          className="flex w-full items-center gap-2 py-1 text-left"
         >
-          <>
-            <p className="truncate">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-700">
+            <Image alt={'Event Icon'} src={courseIcon} />
+          </div>
+          <div className="truncate">
+            <p>
               {courseCode} {sectionCode}
             </p>
-            <p>{course.name}</p>
+            <p className="truncate">{course.name}</p>
             <p>
               {section.dow} {section.startTime} {section.endTime}
             </p>
             <p>{section.room}</p>
-          </>
-        </SearchResultWrapper>
-      </div>
+          </div>
+        </div>
+      </SearchResultWrapper>
     ));
   };
 
