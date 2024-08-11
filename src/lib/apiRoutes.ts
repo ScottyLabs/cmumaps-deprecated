@@ -1,6 +1,6 @@
 import { Event } from '@prisma/client';
 
-import { Floor, FloorPlan } from '@/types';
+import { Floor, FloorPlan, Room } from '@/types';
 
 export async function fetchEvents(
   roomName: string,
@@ -26,11 +26,15 @@ export async function fetchEvents(
   }
 }
 
-export async function getDbRoomExists(roomName: string) {
+export async function getDbRoomExists(
+  room: Room,
+): Promise<boolean | undefined> {
+  const dbRoomName = room.floor.buildingCode + ' ' + room.name;
+
   const response = await fetch('/api/events/roomExists', {
     method: 'GET',
     headers: {
-      roomName,
+      dbRoomName,
     },
   });
 
