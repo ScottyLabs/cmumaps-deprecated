@@ -6,9 +6,9 @@ import React, { useEffect, useState } from 'react';
 
 import { searchEvents } from '@/lib/apiRoutes';
 
-import KeepTypingDisplay from './KeepTypingDisplay';
-import LoadingDisplay from './LoadingDisplay';
-import NoResultDisplay from './NoResultDisplay';
+import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
+import LoadingDisplay from '../display_helpers/LoadingDisplay';
+import NoResultDisplay from '../display_helpers/NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 
 interface Props {
