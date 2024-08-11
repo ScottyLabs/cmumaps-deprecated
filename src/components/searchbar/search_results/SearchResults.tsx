@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
+import { RoomSearchResult, searchFood, searchRoom } from '../searchUtils';
 import CourseSearchResults from './CourseSearchResults';
 import EventSearchResults from './EventSearchResults';
 import FoodSearchResults from './FoodSearchResults';
 import RoomSearchResults from './RoomSearchResults';
-import { RoomSearchResult, searchFood, searchRoom } from './searchUtils';
 
 interface SearchResultsProps {
   map: mapkit.Map | null;

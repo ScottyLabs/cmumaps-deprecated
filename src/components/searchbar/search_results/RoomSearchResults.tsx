@@ -4,13 +4,13 @@ import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 
-import { zoomOnObject, zoomOnSearchRoom } from '../buildings/mapUtils';
-import RoomPin from '../shared/RoomPin';
-import Roundel from '../shared/Roundel';
-import KeepTypingDisplay from './KeepTypingDisplay';
-import NoResultDisplay from './NoResultDisplay';
+import { zoomOnObject, zoomOnSearchRoom } from '../../buildings/mapUtils';
+import RoomPin from '../../shared/RoomPin';
+import Roundel from '../../shared/Roundel';
+import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
+import NoResultDisplay from '../display_helpers/NoResultDisplay';
+import { RoomSearchResult } from '../searchUtils';
 import SearchResultWrapper from './SearchResultWrapper';
-import { RoomSearchResult } from './searchUtils';
 
 interface Props {
   map: mapkit.Map | null;

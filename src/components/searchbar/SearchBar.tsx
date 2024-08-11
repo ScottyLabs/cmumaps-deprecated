@@ -15,8 +15,8 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
 import SearchModeSelector from './SearchModeSelector';
-import SearchResults from './SearchResults';
 import { searchModeToIcon } from './searchMode';
+import SearchResults from './search_results/SearchResults';
 
 interface Props {
   map: mapkit.Map | null;

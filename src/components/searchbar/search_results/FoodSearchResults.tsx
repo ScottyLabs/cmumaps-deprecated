@@ -5,12 +5,12 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 import { sortEateries } from '@/util/eateryUtils';
 
-import { zoomOnObject, zoomOnSearchRoom } from '../buildings/mapUtils';
-import EateryInfoDisplay from '../infocard/EateryInfoDisplay';
-import Roundel from '../shared/Roundel';
-import NoResultDisplay from './NoResultDisplay';
+import { zoomOnObject, zoomOnSearchRoom } from '../../buildings/mapUtils';
+import EateryInfoDisplay from '../../infocard/EateryInfoDisplay';
+import Roundel from '../../shared/Roundel';
+import NoResultDisplay from '../display_helpers/NoResultDisplay';
+import { RoomSearchResult } from '../searchUtils';
 import SearchResultWrapper from './SearchResultWrapper';
-import { RoomSearchResult } from './searchUtils';
 
 interface Props {
   map: mapkit.Map | null;
