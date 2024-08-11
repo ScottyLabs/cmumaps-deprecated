@@ -21,7 +21,7 @@ import {
   addFloorToSearchMap,
   setBuildings,
   setEateryData,
-  setRoomImageList,
+  setAvailableRoomImages,
 } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
@@ -146,7 +146,7 @@ const Page = ({ params, searchParams }: Props) => {
         }
       }
 
-      dispatch(setRoomImageList(roomImageList));
+      dispatch(setAvailableRoomImages(roomImageList));
     };
     getRoomImageList();
   }, [dispatch]);

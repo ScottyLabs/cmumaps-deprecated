@@ -15,7 +15,9 @@ interface Props {
 
 const RoomCard = ({ room }: Props) => {
   const buildings = useAppSelector((state) => state.data.buildings);
-  const roomImageList = useAppSelector((state) => state.data.roomImageList);
+  const availableRoomImages = useAppSelector(
+    (state) => state.data.availableRoomImages,
+  );
 
   const [hasSchedule, setHasSchedule] = useState<boolean | null>(null);
 
@@ -34,7 +36,7 @@ const RoomCard = ({ room }: Props) => {
     let url = `/assets/location_images/building_room_images/${buildingCode}/${buildingCode}.jpg`;
 
     // but get the room image if it exists
-    if (roomImageList[buildingCode].includes(room.name + '.jpg')) {
+    if (availableRoomImages[buildingCode].includes(room.name + '.jpg')) {
       url = `/assets/location_images/building_room_images/${buildingCode}/${room.name}.jpg`;
     }
 
