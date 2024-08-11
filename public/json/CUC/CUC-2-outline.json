@@ -5334,7 +5334,7 @@
                 "x": 406.29,
                 "y": 277.21
             },
-            "type": "dining",
+            "type": "food",
             "aliases": [
                 "Revolution Noodle"
             ],
@@ -16690,7 +16690,7 @@
                 "x": 567.27,
                 "y": 519.25
             },
-            "type": "dining",
+            "type": "food",
             "aliases": [
                 "Au Bon Pain at Skibo Caf\u00e9"
             ],
@@ -22988,7 +22988,7 @@
                 "x": 578.88,
                 "y": 110.02
             },
-            "type": "dining",
+            "type": "food",
             "aliases": [
                 "Schatz Dining Room"
             ],

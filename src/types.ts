@@ -36,6 +36,7 @@ export const RoomTypeList = [
   'stairs',
   'elevator',
   'ramp',
+  'food',
   'dining',
   'store',
   'library',
