@@ -8,24 +8,24 @@ import { useAppDispatch } from '@/lib/hooks';
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
 import { SearchMode, SearchModeList, searchModeToIcon } from './searchMode';
 
+const searchModeToDisplayText: Partial<Record<SearchMode, string>> = {
+  food: 'Food',
+  courses: 'Courses',
+  events: 'Events',
+  restrooms: 'Restrooms',
+  study: 'Study',
+};
+
+const searchModeToBgColor: Partial<Record<SearchMode, string>> = {
+  food: 'bg-[#FFBD59]',
+  courses: 'bg-[#C41230]',
+  events: 'bg-black',
+  restrooms: 'bg-[#EFB1F4]',
+  study: 'bg-[#A6E08B]',
+};
+
 const SearchModeSelector = () => {
   const dispatch = useAppDispatch();
-
-  const searchModeToDisplayText: Partial<Record<SearchMode, string>> = {
-    food: 'Food',
-    courses: 'Courses',
-    events: 'Events',
-    restrooms: 'Restrooms',
-    study: 'Study',
-  };
-
-  const searchModeToBgColor: Partial<Record<SearchMode, string>> = {
-    food: 'bg-[#FFBD59]',
-    courses: 'bg-[#C41230]',
-    events: 'bg-black',
-    restrooms: 'bg-[#EFB1F4]',
-    study: 'bg-[#A6E08B]',
-  };
 
   const renderSearchModeHelper = (searchMode: SearchMode) => {
     const displayText = searchModeToDisplayText[searchMode];

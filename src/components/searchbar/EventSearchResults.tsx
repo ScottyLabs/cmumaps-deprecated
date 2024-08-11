@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { searchEvents } from '@/lib/apiRoutes';
 
 import KeepTypingDisplay from './KeepTypingDisplay';
+import LoadingDisplay from './LoadingDisplay';
 import NoResultDisplay from './NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 
@@ -17,16 +18,25 @@ interface Props {
 
 const EventSearchResults = ({ query }: Props) => {
   const [searchResult, setSearchResults] = useState<Event[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setTimeout(() => {
       if (query.length > 0) {
-        searchEvents(query).then(setSearchResults);
+        setIsLoading(true);
+        searchEvents(query).then((result) => {
+          setIsLoading(false);
+          setSearchResults(result);
+        });
       } else {
         setSearchResults([]);
       }
     }, 500);
   }, [query]);
+
+  if (isLoading) {
+    return <LoadingDisplay />;
+  }
 
   if (query.length == 0) {
     return <KeepTypingDisplay />;
