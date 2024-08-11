@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 import { searchEvents } from '@/lib/apiRoutes';
 
+import KeepTypingDisplay from './KeepTypingDisplay';
 import NoResultDisplay from './NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 
@@ -26,6 +27,10 @@ const EventSearchResults = ({ query }: Props) => {
       }
     }, 500);
   }, [query]);
+
+  if (query.length == 0) {
+    return <KeepTypingDisplay />;
+  }
 
   if (searchResult.length == 0) {
     return <NoResultDisplay />;
