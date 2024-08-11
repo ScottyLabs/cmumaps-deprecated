@@ -15,7 +15,7 @@ interface Props {
 
 const RoomCard = ({ room }: Props) => {
   const buildings = useAppSelector((state) => state.data.buildings);
-  const roomImageList = useAppSelector((state) => state.ui.roomImageList);
+  const roomImageList = useAppSelector((state) => state.data.roomImageList);
 
   const [hasSchedule, setHasSchedule] = useState<boolean | null>(null);
 

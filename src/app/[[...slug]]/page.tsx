@@ -21,11 +21,11 @@ import {
   addFloorToSearchMap,
   setBuildings,
   setEateryData,
+  setRoomImageList,
 } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
   setIsMobile,
-  setRoomImageList,
   selectBuilding,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
