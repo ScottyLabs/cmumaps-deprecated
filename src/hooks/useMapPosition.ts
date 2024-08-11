@@ -1,7 +1,8 @@
 'use client';
 
-import { MutableRefObject, useEffect, useRef } from 'react';
 import { CoordinateRegion } from 'mapkit-react';
+
+import { MutableRefObject, useEffect, useRef } from 'react';
 
 export interface UseMapPositionHandlers {
   onRegionChangeStart: () => void;
@@ -29,21 +30,28 @@ export default function useMapPosition(
 
   const update = () => {
     const map = mapRef.current;
-    if (!map) return;
+    if (!map) {
+      return;
+    }
 
     const width = window.innerWidth ?? 0;
-    if (!width) return;
+    if (!width) {
+      return;
+    }
 
     const { region } = map;
     const dist = region.span.longitudeDelta;
     const density = width / dist;
 
-    callback({
-      centerLatitude: region.center.latitude,
-      centerLongitude: region.center.longitude,
-      latitudeDelta: region.span.latitudeDelta,
-      longitudeDelta: region.span.longitudeDelta,
-    }, density);
+    callback(
+      {
+        centerLatitude: region.center.latitude,
+        centerLongitude: region.center.longitude,
+        latitudeDelta: region.span.latitudeDelta,
+        longitudeDelta: region.span.longitudeDelta,
+      },
+      density,
+    );
   };
 
   const updateAndTimeout = () => {
@@ -59,9 +67,11 @@ export default function useMapPosition(
   const onRegionChangeStart = () => {
     const { region } = mapRef.current!;
     if (
-      Math.abs(region.center.latitude - initialRegion.centerLatitude) < 1e-8
-      && Math.abs(region.center.longitude - initialRegion.centerLongitude) < 1e-8
-    ) return;
+      Math.abs(region.center.latitude - initialRegion.centerLatitude) < 1e-8 &&
+      Math.abs(region.center.longitude - initialRegion.centerLongitude) < 1e-8
+    ) {
+      return;
+    }
 
     if (timeout.current !== null) {
       window.clearTimeout(timeout.current);
@@ -78,12 +88,15 @@ export default function useMapPosition(
   };
 
   // Clear the timeout
-  useEffect(() => () => {
-    if (timeout.current !== null) {
-      clearTimeout(timeout.current);
-      timeout.current = null;
-    }
-  }, []);
+  useEffect(
+    () => () => {
+      if (timeout.current !== null) {
+        clearTimeout(timeout.current);
+        timeout.current = null;
+      }
+    },
+    [],
+  );
 
   return { onRegionChangeStart, onRegionChangeEnd };
 }
