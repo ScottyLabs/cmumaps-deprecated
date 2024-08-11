@@ -4,6 +4,7 @@ import { searchEvents } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
+import FoodSearchResults from './FoodSearchResults';
 import RoomSearchResults from './RoomSearchResults';
 import { RoomSearchResult, searchRoom } from './searchUtils';
 
@@ -27,6 +28,8 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
   >([]);
   const [eventSearchResults, setEventSearchResults] = useState<Event[]>([]);
 
+  console.log(eventSearchResults);
+
   useEffect(() => {
     if (buildings) {
       setTimeout(() => {
@@ -46,8 +49,10 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
     }
   }, [buildings, query, searchMap, searchMode]);
 
-  if (['rooms', 'food', 'restrooms', 'study'].includes(searchMode)) {
+  if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
     return <RoomSearchResults map={map} searchResult={roomSearchResults} />;
+  } else if (searchMode == 'food') {
+    return <FoodSearchResults map={map} searchResult={roomSearchResults} />;
   }
 };
 

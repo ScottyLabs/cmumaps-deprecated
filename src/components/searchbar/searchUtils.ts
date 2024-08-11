@@ -47,9 +47,10 @@ export const searchRoom = (
   searchMap: SearchMap,
   mode: 'rooms' | 'food' | 'restrooms' | 'study',
 ): RoomSearchResult[] => {
-  if (query.length == 0) {
+  if (query.length == 0 && mode == 'rooms') {
     return [];
   }
+
   return Object.values(buildings)
     .map((building: Building) => ({
       Building: building,
