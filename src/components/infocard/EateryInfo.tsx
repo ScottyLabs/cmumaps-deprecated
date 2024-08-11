@@ -84,7 +84,7 @@ const EateryInfo = ({ room, title, eatingData }: Props) => {
   const renderLocationTimeInfo = () => {
     return (
       <div className="flex items-center justify-between">
-        <p className="text-gray-500">{room.name}</p>
+        <p className="text-[--color-gray]">{room.name}</p>
         <div className="flex items-center gap-2">
           {renderStatusCircle()}
           <p className={`${textColor}`}>
