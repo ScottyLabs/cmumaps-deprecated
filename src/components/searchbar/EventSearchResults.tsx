@@ -4,8 +4,6 @@ import Image from 'next/image';
 
 import React from 'react';
 
-import { formatDbDate } from '@/util/dbTime';
-
 import NoResultDisplay from './NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 
@@ -19,8 +17,29 @@ const EventSearchResults = ({ searchResult }: Props) => {
     return <NoResultDisplay />;
   }
 
+  const formatDbDateEvent = (start: Date, end: Date) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const date = startDate.toDateString();
+
+    const getTime = (date: Date): string => {
+      const startHour = date.getHours().toString().padStart(2, '0');
+      const startMinute = date.getMinutes().toString().padStart(2, '0');
+      return `${startHour}:${startMinute}`;
+    };
+
+    const startTime = getTime(startDate);
+    const endTime = getTime(endDate);
+
+    return (
+      <p>
+        {date}, {startTime}-{endTime}
+      </p>
+    );
+  };
+
   return searchResult.map((event) => {
-    console.log(event);
     return (
       <SearchResultWrapper
         key={event.id}
@@ -34,10 +53,7 @@ const EventSearchResults = ({ searchResult }: Props) => {
           </div>
           <div className="truncate">
             <p>{event.name}</p>
-            <p>
-              {formatDbDate(event.startTime, false)}-
-              {formatDbDate(event.endTime, false)}
-            </p>
+            {formatDbDateEvent(event.startTime, event.endTime)}
           </div>
         </div>
       </SearchResultWrapper>
