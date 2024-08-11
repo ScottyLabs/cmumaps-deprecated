@@ -4,6 +4,7 @@ import {
   Map,
   MapType,
   PointOfInterestCategory,
+  CoordinateRegion,
 } from 'mapkit-react';
 
 import React, { useState } from 'react';
@@ -57,61 +58,71 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
 
+  const calculateVisibleBuildings = (region: CoordinateRegion) => {
+    if (!buildings) {
+      console.error('Buildings not loaded when calculating visible buildings!');
+      return;
+    }
+
+    const boundingBox = {
+      minLatitude: region.centerLatitude - region.latitudeDelta / 2,
+      maxLatitude: region.centerLatitude + region.latitudeDelta / 2,
+      minLongitude: region.centerLongitude - region.longitudeDelta / 2,
+      maxLongitude: region.centerLongitude + region.longitudeDelta / 2,
+    };
+
+    const buildingsToFocus = Object.values(buildings).filter((building) => {
+      const [buildingLats, buildingLongs] = building.shapes[0].reduce(
+        (acc: [number[], number[]], point: Coordinate) => {
+          acc[0].push(point.latitude);
+          acc[1].push(point.longitude);
+          return acc;
+        },
+        [[], []],
+      );
+
+      const buildingBoundingBox = {
+        minLatitude: Math.min(...buildingLats),
+        maxLatitude: Math.max(...buildingLats),
+        minLongitude: Math.min(...buildingLongs),
+        maxLongitude: Math.max(...buildingLongs),
+      };
+
+      const horizontalPoints = [
+        [boundingBox.minLatitude, -1],
+        [boundingBox.maxLatitude, -1],
+        [buildingBoundingBox.minLatitude, 1],
+        [buildingBoundingBox.maxLatitude, 1],
+      ];
+      const verticalPoints = [
+        [boundingBox.minLongitude, -1],
+        [boundingBox.maxLongitude, -1],
+        [buildingBoundingBox.minLongitude, 1],
+        [buildingBoundingBox.maxLongitude, 1],
+      ];
+      horizontalPoints.sort((a, b) => a[0] - b[0]);
+      verticalPoints.sort((a, b) => a[0] - b[0]);
+
+      const horizantalOverlap =
+        !(horizontalPoints[0][1] == -1 && horizontalPoints[1][1] == -1) &&
+        !(horizontalPoints[2][1] == -1 && horizontalPoints[3][1] == -1);
+      const verticalOverlap =
+        !(verticalPoints[0][1] == -1 && verticalPoints[1][1] == -1) &&
+        !(verticalPoints[2][1] == -1 && verticalPoints[3][1] == -1);
+
+      return horizantalOverlap && verticalOverlap;
+    });
+    setVisibleBuildings(buildingsToFocus);
+  };
+
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
     (region, density) => {
       if (!buildings) {
         return;
       }
-      const boundingBox = {
-        minLatitude: region.centerLatitude - region.latitudeDelta / 2,
-        maxLatitude: region.centerLatitude + region.latitudeDelta / 2,
-        minLongitude: region.centerLongitude - region.longitudeDelta / 2,
-        maxLongitude: region.centerLongitude + region.longitudeDelta / 2,
-      };
 
-      const buildingsToFocus = Object.values(buildings).filter((building) => {
-        const [buildingLats, buildingLongs] = building.shapes[0].reduce(
-          (acc: [number[], number[]], point: Coordinate) => {
-            acc[0].push(point.latitude);
-            acc[1].push(point.longitude);
-            return acc;
-          },
-          [[], []],
-        );
-
-        const buildingBoundingBox = {
-          minLatitude: Math.min(...buildingLats),
-          maxLatitude: Math.max(...buildingLats),
-          minLongitude: Math.min(...buildingLongs),
-          maxLongitude: Math.max(...buildingLongs),
-        };
-
-        const horizontalPoints = [
-          [boundingBox.minLatitude, -1],
-          [boundingBox.maxLatitude, -1],
-          [buildingBoundingBox.minLatitude, 1],
-          [buildingBoundingBox.maxLatitude, 1],
-        ];
-        const verticalPoints = [
-          [boundingBox.minLongitude, -1],
-          [boundingBox.maxLongitude, -1],
-          [buildingBoundingBox.minLongitude, 1],
-          [buildingBoundingBox.maxLongitude, 1],
-        ];
-        horizontalPoints.sort((a, b) => a[0] - b[0]);
-        verticalPoints.sort((a, b) => a[0] - b[0]);
-
-        const horizantalOverlap =
-          !(horizontalPoints[0][1] == -1 && horizontalPoints[1][1] == -1) &&
-          !(horizontalPoints[2][1] == -1 && horizontalPoints[3][1] == -1);
-        const verticalOverlap =
-          !(verticalPoints[0][1] == -1 && verticalPoints[1][1] == -1) &&
-          !(verticalPoints[2][1] == -1 && verticalPoints[3][1] == -1);
-
-        return horizantalOverlap && verticalOverlap;
-      });
-      setVisibleBuildings(buildingsToFocus);
+      calculateVisibleBuildings(region);
 
       const showFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
       dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
