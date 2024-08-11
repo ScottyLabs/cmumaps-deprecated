@@ -64,6 +64,20 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
     return <FoodSearchResults map={map} searchResult={roomSearchResults} />;
   } else if (searchMode == 'events') {
     return <EventSearchResults map={map} searchResult={eventSearchResults} />;
+  } else if (searchMode == 'courses') {
+    return (
+      <div>
+        <p className="my-2 flex justify-center italic">
+          Will be added upon request! Just use schedule now...
+        </p>
+        <p className="my-2 ml-2">
+          {' '}
+          Do you want search by courses? Fill this{' '}
+          <span className="text-blue-500">Google Form</span> to request the
+          feature!
+        </p>
+      </div>
+    );
   }
 };
 
