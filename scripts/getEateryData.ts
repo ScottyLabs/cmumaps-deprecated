@@ -26,13 +26,23 @@ export const getEateryData = async () => {
     return date;
   }
 
-  const getDif = (startTime, endDate) => {
+  const getHourDif = (startTime, endDate) => {
     const timeDifference = endDate.getTime() - startTime.getTime();
 
     // Convert milliseconds to hours
     const hoursDifference = timeDifference / (1000 * 60 * 60); // milliseconds to hours
 
     return hoursDifference;
+  };
+
+  const getNextOpenTime = (eatery, todayStartTime) => {
+    // today's session haven't started
+    if (now < todayStartTime) {
+      return todayStartTime;
+    }
+
+    // find next date
+    console.log(eatery);
   };
 
   const getStatusMsgAndLocationState = (
@@ -50,11 +60,27 @@ export const getEateryData = async () => {
       // when open
       if (now >= startTime && now <= endTime) {
         // see if more than an hour until closing
-        const dif = getDif(now, endTime);
+        const hourDif = getHourDif(now, endTime);
 
-        if (dif > 1) {
+        if (hourDif > 1) {
           ans.locationState = 'OPEN';
-          ans.statusMsg = `Open (${Math.round(dif)} hours until close)`;
+          ans.statusMsg = `Open (${Math.round(hourDif)} hours until close)`;
+        } else {
+          ans.locationState = 'CLOSES_SOON';
+          ans.statusMsg = `Open (${Math.round(hourDif * 60)} minutes until close)`;
+        }
+      }
+      // when close
+      else {
+        const nextOpenTime = getNextOpenTime(eatery, startTime);
+        const hourDif = getHourDif(now, nextOpenTime);
+
+        if (hourDif > 1) {
+          ans.locationState = 'OPENS_SOON';
+          ans.statusMsg = `Open (${Math.round(hourDif)} hours until open)`;
+        } else {
+          ans.locationState = 'OPENS_SOON';
+          ans.statusMsg = `Close (${Math.round(hourDif * 60)} minutes until open)`;
         }
       }
     }
@@ -75,13 +101,15 @@ export const getEateryData = async () => {
     return ans as EateryData;
   };
 
-  //   return cmueatsData.slice(20, 21).map((eatery: any) => {
-  //     parseEatery(eatery);
-  //   });
+  console.log(cmueatsData.map((eatery: any) => parseEatery(eatery)));
 
-  console.log(
-    cmueatsData.slice(23, 24).map((eatery: any) => parseEatery(eatery)),
-  );
+  //   console.log(
+  //     cmueatsData.slice(20, 21).map((eatery: any) => parseEatery(eatery)),
+  //   );
+
+  //   console.log(
+  //     cmueatsData.slice(23, 24).map((eatery: any) => parseEatery(eatery)),
+  //   );
 };
 
 getEateryData();
