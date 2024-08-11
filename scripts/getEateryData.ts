@@ -7,6 +7,16 @@ export const getEateryData = async () => {
   const res = await fetch('https://dining.apis.scottylabs.org/locations/');
   const cmueatsData = (await res.json())['locations'];
 
+  const daysOfWeek = [
+    'Sunday', // 0
+    'Monday', // 1
+    'Tuesday', // 2
+    'Wednesday', // 3
+    'Thursday', // 4
+    'Friday', // 5
+    'Saturday', // 6
+  ];
+
   const now = new Date();
 
   function convertToDate({ day, hour, minute }): Date {
@@ -42,6 +52,7 @@ export const getEateryData = async () => {
     }
 
     // find next date
+    console.log('here');
     console.log(eatery);
   };
 
@@ -83,6 +94,31 @@ export const getEateryData = async () => {
           ans.statusMsg = `Close (${Math.round(hourDif * 60)} minutes until open)`;
         }
       }
+    } else {
+      const makeWrapAround = (times) => {
+        const firstElement = JSON.parse(JSON.stringify(times[0]));
+
+        // Modify the specified field in the copied element
+        firstElement.start.day += 7;
+        firstElement.end.day += 7;
+
+        // Push the modified copy to the destination list
+        times.push(firstElement);
+      };
+
+      makeWrapAround(eatery.times);
+
+      const nextDay = eatery.times.find((time) => time.start.day > currentDay);
+      const nextDate = convertToDate(nextDay.start);
+      const hourDif = getHourDif(now, nextDate);
+
+      if (hourDif < 1) {
+        ans.locationState = 'OPENS_SOON';
+        ans.statusMsg = `Close (${Math.round(hourDif * 60)} minutes until open)`;
+      } else {
+        ans.locationState = 'CLOSED';
+        ans.statusMsg = `Close (${Math.ceil(hourDif / 24)} days until open on ${daysOfWeek[nextDate.getDay()]})`;
+      }
     }
   };
 
@@ -92,16 +128,20 @@ export const getEateryData = async () => {
     ans.url = eatery.url;
     ans.shortDescription = eatery.shortDescription;
 
+    console.log(JSON.stringify(eatery));
+
     if (eatery.times.length == 0) {
       ans.locationState = 'CLOSED_LONG_TERM';
+    } else {
+      getStatusMsgAndLocationState(eatery, ans);
     }
-
-    getStatusMsgAndLocationState(eatery, ans);
 
     return ans as EateryData;
   };
 
-  console.log(cmueatsData.map((eatery: any) => parseEatery(eatery)));
+  console.log(
+    cmueatsData.slice(0, 1).map((eatery: any) => parseEatery(eatery)),
+  );
 
   //   console.log(
   //     cmueatsData.slice(20, 21).map((eatery: any) => parseEatery(eatery)),
