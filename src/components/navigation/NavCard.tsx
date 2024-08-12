@@ -1,11 +1,7 @@
 import React, { ReactElement, useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 
-import {
-  setIsNavOpen,
-  setRecommendedPath,
-  setStartRoom,
-} from '@/lib/features/navSlice';
+import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 import CardWrapper from '../infocard/CardWrapper';
@@ -18,6 +14,8 @@ export default function NavCard(): ReactElement {
 
   const startRoom = useAppSelector((state) => state.ui.selectedRoom);
   const endRoom = useAppSelector((state) => state.nav.endRoom);
+
+  // calculate path from start to end
   useEffect(() => {
     fetch('/api/findPath', {
       method: 'POST',
@@ -31,6 +29,7 @@ export default function NavCard(): ReactElement {
         dispatch(setRecommendedPath(j));
       });
   }, [startRoom, endRoom, dispatch]);
+
   return (
     <CardWrapper snapPoint={0.5}>
       <div>
@@ -53,7 +52,7 @@ export default function NavCard(): ReactElement {
           <div>
             <input
               className="w-fit border"
-              placeholder="Desination"
+              placeholder="Destination"
               value={endRoom?.name}
             />
           </div>

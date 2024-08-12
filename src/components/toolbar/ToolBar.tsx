@@ -34,7 +34,7 @@ const ToolBar = ({ map, userPosition }: Props) => {
       )}
 
       {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
-      {isNavOpen && <NavCard />}
+      {isNavOpen && isCardOpen && <NavCard />}
       {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
     </div>
   );
