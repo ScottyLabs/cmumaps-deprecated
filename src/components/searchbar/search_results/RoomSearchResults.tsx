@@ -91,6 +91,7 @@ const RoomSearchResults = ({ map, query, searchResult }: Props) => {
         } else if (choosingRoomMode == 'end') {
           dispatch(setEndRoom(searchRoom));
         }
+        dispatch(setIsSearchOpen(false));
         dispatch(setChoosingRoomMode(null));
       } else {
         zoomOnSearchRoom(map, searchRoom, buildings, floorPlanMap, dispatch);
