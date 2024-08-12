@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 
 import prisma from '@/lib/prisma';
 
-export async function retrieveEvents(
+async function retrieveEvents(
   roomName: string | undefined,
   startDate: string,
   endDate: string,
