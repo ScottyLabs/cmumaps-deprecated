@@ -186,7 +186,9 @@ const SearchBar = ({ map, userPosition }: Props) => {
     return (
       <div
         className={`overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          showSearchModeSelector ? 'h-0 opacity-0' : 'mt-1 h-[40em] opacity-100'
+          showSearchModeSelector
+            ? 'h-0 opacity-0'
+            : 'mt-1 h-fit max-h-[40em] opacity-100'
         }`}
       >
         <SearchResults
