@@ -1,11 +1,12 @@
 import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
 import fs from 'fs';
+import { Position } from 'geojson';
 import { Coordinate } from 'mapkit-react';
 import { NextRequest } from 'next/server';
 import path from 'path';
 
-import { positionOnMap } from '@/components/buildings/mapUtils';
-import { Floor, Room } from '@/types';
+import { Floor, Placement, Room } from '@/types';
+import { latitudeRatio, longitudeRatio } from '@/util/geometry';
 
 export type Node = {
   pos: { x: number; y: number };
@@ -22,6 +23,33 @@ export type Node = {
 export interface GraphResponse {
   nodes: { [nodeId: string]: Node };
 }
+
+export function rotate(x: number, y: number, angle: number): number[] {
+  const radians = (Math.PI / 180) * angle;
+  const cos = Math.cos(radians);
+  const sin = Math.sin(radians);
+  const nx = cos * x + sin * y;
+  const ny = cos * y - sin * x;
+  return [nx, ny];
+}
+
+export const positionOnMap = (
+  absolute: Position,
+  placement: Placement,
+  center: Position,
+) => {
+  const [absoluteY, absoluteX] = rotate(
+    absolute[0] - center[0],
+    absolute[1] - center[1],
+    placement.angle,
+  );
+  return {
+    latitude:
+      absoluteY / latitudeRatio / placement.scale + placement.center.latitude,
+    longitude:
+      absoluteX / longitudeRatio / placement.scale + placement.center.longitude,
+  };
+};
 
 interface Path {
   node: Node;
