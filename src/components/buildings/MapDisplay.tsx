@@ -9,6 +9,7 @@ import {
 
 import React, { useState } from 'react';
 
+import { setIsNavOpen } from '@/lib/features/navSlice';
 import {
   deselectBuilding,
   releaseRoom,
@@ -214,6 +215,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         dispatch(setIsSearchOpen(false));
         dispatch(deselectBuilding());
         dispatch(releaseRoom(null));
+        dispatch(setIsNavOpen(false));
       }}
       onLoad={handleLoad}
     >

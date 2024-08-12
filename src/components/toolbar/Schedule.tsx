@@ -7,6 +7,9 @@ const Schedule = () => {
     <CollapsibleWrapper title="Schedule">
       <div className="px-5 pb-1">
         <p>First step: SIO</p>
+        <p>
+          Second step: Wait until tomorrow for the release of the feature...
+        </p>
       </div>
     </CollapsibleWrapper>
   );

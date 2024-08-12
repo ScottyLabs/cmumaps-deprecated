@@ -3,6 +3,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 
 import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { Room } from '@/types';
 
 import CardWrapper from '../infocard/CardWrapper';
 
@@ -30,32 +31,65 @@ export default function NavCard(): ReactElement {
       });
   }, [startRoom, endRoom, dispatch]);
 
+  const renderTop = () => {
+    return (
+      <div className="flex gap-1 py-2">
+        <IoIosArrowBack
+          size={20}
+          className="cursor-pointer text-gray-500"
+          onClick={() => dispatch(setIsNavOpen(false))}
+        />
+        <h1 className="font-bold">Navigation</h1>
+      </div>
+    );
+  };
+
+  const renderRoomInput = (
+    startRoom: Room | null,
+    placeHolder: string,
+    circleColor: string,
+  ) => {
+    const renderCircle = () => {
+      return <div className={`h-5 w-5 rounded-full ${circleColor}`} />;
+    };
+
+    const renderText = () => {
+      if (startRoom) {
+        return <p>{startRoom.name}</p>;
+      } else {
+        return <p className="text-[gray]">{placeHolder}</p>;
+      }
+    };
+
+    return (
+      <div className="flex w-fit gap-2 border p-1">
+        {renderCircle()}
+        <button className="w-64 text-left">{renderText()}</button>
+      </div>
+    );
+  };
+
+  const renderStartRoomInput = () => {
+    const placeHolder = 'Choose your starting location...';
+    const circleColor = 'bg-green-700';
+
+    return renderRoomInput(startRoom, placeHolder, circleColor);
+  };
+
+  const renderEndRoomInput = () => {
+    const placeHolder = 'Choose your destination...';
+    const circleColor = 'bg-red-700';
+
+    return renderRoomInput(endRoom, placeHolder, circleColor);
+  };
+
   return (
     <CardWrapper snapPoint={0.5}>
       <div>
-        <div className="my-2 flex gap-1">
-          <IoIosArrowBack
-            size={20}
-            className="cursor-pointer"
-            onClick={() => dispatch(setIsNavOpen(false))}
-          />
-          <h1 className="font-bold">Navigation</h1>
-        </div>
-        <div className="mb-2 ml-4 space-y-2">
-          <div>
-            <input
-              className="w-fit border"
-              placeholder="Choose your starting location..."
-              value={startRoom?.name}
-            />
-          </div>
-          <div>
-            <input
-              className="w-fit border"
-              placeholder="Destination"
-              value={endRoom?.name}
-            />
-          </div>
+        {renderTop()}
+        <div className="space-y-2 pb-2 pl-4">
+          {renderStartRoomInput()}
+          {renderEndRoomInput()}
         </div>
       </div>
     </CardWrapper>
