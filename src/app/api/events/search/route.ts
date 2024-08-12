@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 
 import prisma from '@/lib/prisma';
 
-export async function searchEvents(query: string) {
+async function searchEvents(query: string) {
   const events = await prisma.$runCommandRaw({
     aggregate: 'Event',
     pipeline: [
