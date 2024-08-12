@@ -21,19 +21,19 @@ export default function NavCard(): ReactElement {
   const endRoom = useAppSelector((state) => state.nav.endRoom);
 
   // calculate path from start to end
-  // useEffect(() => {
-  //   fetch('/api/findPath', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ rooms: [startRoom, endRoom] }),
-  //   })
-  //     .then((r) => r.json())
-  //     .then((j) => {
-  //       dispatch(setRecommendedPath(j));
-  //     });
-  // }, [startRoom, endRoom, dispatch]);
+  useEffect(() => {
+    fetch('/api/findPath', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ rooms: [startRoom, endRoom] }),
+    })
+      .then((r) => r.json())
+      .then((j) => {
+        dispatch(setRecommendedPath(j));
+      });
+  }, [startRoom, endRoom, dispatch]);
 
   const renderTop = () => {
     return (
