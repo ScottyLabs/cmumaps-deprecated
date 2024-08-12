@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { getFloorPlan } from '@/lib/apiRoutes';
 import { addFloorToFloorPlanMap } from '@/lib/features/dataSlice';
@@ -37,12 +37,25 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
 
   const dispatch = useAppDispatch();
   const buildings = useAppSelector((state) => state.data.buildings);
-  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 
   const [floorPlans, setFloorPlans] = useState<
     ((FloorPlan & Floor) | null)[] | null
   >(null);
+
+  const floorPlanMapRef = useRef({});
+
+  const addToFloorPlanMaps = useCallback(
+    (buildingCode: string, floorLevel: string, floorPlan: FloorPlan) => {
+      if (!floorPlanMapRef.current[buildingCode]) {
+        floorPlanMapRef.current[buildingCode] = {};
+      }
+      floorPlanMapRef.current[buildingCode][floorLevel] = floorPlan;
+
+      dispatch(addFloorToFloorPlanMap([buildingCode, floorLevel, floorPlan]));
+    },
+    [dispatch],
+  );
 
   // fetch the floor plan from floor
   useEffect(() => {
@@ -66,11 +79,11 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
 
       if (floor) {
         if (
-          floorPlanMap[floor.buildingCode] &&
-          floorPlanMap[floor.buildingCode][floor.level]
+          floorPlanMapRef.current[floor.buildingCode] &&
+          floorPlanMapRef.current[floor.buildingCode][floor.level]
         ) {
           return {
-            ...floorPlanMap[floor.buildingCode][floor.level],
+            ...floorPlanMapRef.current[floor.buildingCode][floor.level],
             buildingCode: floor.buildingCode,
             level: floor.level,
           };
@@ -79,6 +92,7 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
         return getFloorPlan(floor).then((floorPlan) => {
           // be careful of floor plans that doesn't have placements
           if (floorPlan?.placement) {
+            addToFloorPlanMaps(floor.buildingCode, floor.level, floorPlan);
             return {
               ...floorPlan,
               buildingCode: floor.buildingCode,
@@ -95,8 +109,9 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
 
     Promise.all(promises).then((newFloorPlans) => setFloorPlans(newFloorPlans));
   }, [
+    addToFloorPlanMaps,
     buildings,
-    floorPlanMap,
+    dispatch,
     focusedFloor?.buildingCode,
     focusedFloor.level,
     visibleBuildings,
