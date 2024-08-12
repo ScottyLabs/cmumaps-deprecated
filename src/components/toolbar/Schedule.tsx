@@ -24,7 +24,7 @@ const dayMap = {
 };
 
 const Schedule = () => {
-  const [scheduleData, setScheduleData] = useState([]);
+  const [scheduleData, setScheduleData] = useState<CourseData[]>([]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -55,40 +55,61 @@ const Schedule = () => {
     }
   };
 
-  const renderNoSchedule = () => {
+  const renderSchedule = () => {
+    const formatDate = (date: Date) => {
+      return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    };
+
     return (
-      <CollapsibleWrapper title="Schedule">
-        <div className="space-y-2 px-5 pb-2">
-          <p>
-            First step: download{' '}
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://s3.andrew.cmu.edu/sio/mpa/secure/export/schedule/F24_schedule.ics"
-            >
-              Calendar Export
-            </a>{' '}
-            from SIO
-          </p>
-          <p>
-            Second step: Import the .ics file here:
-            <input
-              type="file"
-              id="fileInput"
-              accept=".ics"
-              onChange={handleFileChange}
-            />
-          </p>
-        </div>
-      </CollapsibleWrapper>
+      <div className="no-scrollbar h-96 space-y-2 overflow-auto">
+        {scheduleData.map((course) => (
+          <div key={course.name + course.dow} className="border p-1">
+            <p>{course.name}</p>
+            <p>{course.instructors}</p>
+            <p>
+              {course.dow} {formatDate(course.start)}-{formatDate(course.end)}
+            </p>
+            <p>{course.room}</p>
+          </div>
+        ))}
+      </div>
     );
   };
 
-  if (scheduleData.length > 0) {
-    console.log(scheduleData);
-  } else {
-    return renderNoSchedule();
-  }
+  const renderNoSchedule = () => {
+    return (
+      <>
+        <p>
+          First step: download{' '}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://s3.andrew.cmu.edu/sio/mpa/secure/export/schedule/F24_schedule.ics"
+          >
+            Calendar Export
+          </a>{' '}
+          from SIO
+        </p>
+        <p>
+          Second step: Import the .ics file here:
+          <input
+            type="file"
+            id="fileInput"
+            accept=".ics"
+            onChange={handleFileChange}
+          />
+        </p>
+      </>
+    );
+  };
+
+  return (
+    <CollapsibleWrapper title="Schedule">
+      <div className="space-y-2 px-5 pb-2">
+        {scheduleData.length > 0 ? renderSchedule() : renderNoSchedule()}
+      </div>
+    </CollapsibleWrapper>
+  );
 };
 
 export default Schedule;
