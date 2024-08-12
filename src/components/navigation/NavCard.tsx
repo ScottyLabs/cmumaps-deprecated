@@ -1,7 +1,11 @@
 import React, { ReactElement, useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 
-import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
+import {
+  setChoosingRoomMode,
+  setIsNavOpen,
+  setRecommendedPath,
+} from '@/lib/features/navSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
@@ -48,6 +52,7 @@ export default function NavCard(): ReactElement {
     startRoom: Room | null,
     placeHolder: string,
     circleColor: string,
+    handleClick: () => void,
   ) => {
     const renderCircle = () => {
       return <div className={`h-5 w-5 rounded-full ${circleColor}`} />;
@@ -64,7 +69,9 @@ export default function NavCard(): ReactElement {
     return (
       <div className="flex w-fit gap-2 border p-1">
         {renderCircle()}
-        <button className="w-64 text-left">{renderText()}</button>
+        <button className="w-64 text-left" onClick={handleClick}>
+          {renderText()}
+        </button>
       </div>
     );
   };
@@ -73,14 +80,22 @@ export default function NavCard(): ReactElement {
     const placeHolder = 'Choose your starting location...';
     const circleColor = 'bg-green-700';
 
-    return renderRoomInput(startRoom, placeHolder, circleColor);
+    const handleClick = () => {
+      dispatch(setChoosingRoomMode('start'));
+    };
+
+    return renderRoomInput(startRoom, placeHolder, circleColor, handleClick);
   };
 
   const renderEndRoomInput = () => {
     const placeHolder = 'Choose your destination...';
     const circleColor = 'bg-red-700';
 
-    return renderRoomInput(endRoom, placeHolder, circleColor);
+    const handleClick = () => {
+      dispatch(setChoosingRoomMode('end'));
+    };
+
+    return renderRoomInput(endRoom, placeHolder, circleColor, handleClick);
   };
 
   return (
