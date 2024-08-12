@@ -1,11 +1,15 @@
 import searchIcon from '@icons/search.svg';
 import Image from 'next/image';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 
 import useEscapeKey from '@/hooks/useEscapeKey';
-import { setIsNavOpen, setRecommendedPath } from '@/lib/features/navSlice';
+import {
+  setChoosingRoomMode,
+  setIsNavOpen,
+  setRecommendedPath,
+} from '@/lib/features/navSlice';
 import {
   releaseRoom,
   setIsSearchOpen,
@@ -47,8 +51,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
     searchMode == 'rooms' &&
     !choosingRoomMode;
 
-  // set the search query using room and building
-  useEffect(() => {
+  const autoFillSearchQuery = useCallback(() => {
     // return the building name if a building is selected
     if (building?.name) {
       setSearchQuery(building?.name);
@@ -73,7 +76,12 @@ const SearchBar = ({ map, userPosition }: Props) => {
       setSearchQuery('');
       return;
     }
-  }, [room, building, buildings]);
+  }, [building, room]);
+
+  // set the search query using room and building
+  useEffect(() => {
+    autoFillSearchQuery();
+  }, [autoFillSearchQuery]);
 
   // focus on the input if the search mode changed
   useEffect(() => {
@@ -88,9 +96,10 @@ const SearchBar = ({ map, userPosition }: Props) => {
       if (choosingRoomMode) {
         inputRef.current.focus();
         setSearchQuery('');
+        dispatch(setSearchMode('rooms'));
       }
     }
-  }, [choosingRoomMode]);
+  }, [choosingRoomMode, dispatch]);
 
   // blur the input field when not searching (mainly used for clicking on the map to close search)
   useEffect(() => {
@@ -102,12 +111,18 @@ const SearchBar = ({ map, userPosition }: Props) => {
   }, [isSearchOpen]);
 
   const handleCloseSearch = () => {
-    dispatch(setIsSearchOpen(false));
-    dispatch(setIsNavOpen(false));
-    dispatch(setRecommendedPath([]));
-    dispatch(releaseRoom(null));
-    dispatch(setSearchMode('rooms'));
-    setSearchQuery('');
+    if (!choosingRoomMode) {
+      dispatch(setIsSearchOpen(false));
+      dispatch(setIsNavOpen(false));
+      dispatch(setRecommendedPath([]));
+      dispatch(releaseRoom(null));
+      dispatch(setSearchMode('rooms'));
+      setSearchQuery('');
+    } else {
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+      autoFillSearchQuery();
+    }
   };
 
   // close search if esc is pressed
