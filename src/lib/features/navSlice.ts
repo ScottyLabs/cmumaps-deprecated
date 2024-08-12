@@ -1,8 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Coordinate } from 'mapkit-react';
 
 import { Node } from '@/app/api/findPath/route';
 import { Room } from '@/types';
+
+type ChoosingRoomMode = 'start' | 'end' | null;
 
 interface NavState {
   endRoom: Room | null; // This can be expanded in the future to Building, ... node/ position?
@@ -10,6 +12,7 @@ interface NavState {
   recommendedPath: Node[] | null;
   isNavOpen: boolean;
   userPosition: Coordinate | null;
+  choosingRoomMode: ChoosingRoomMode;
 }
 
 const initialState: NavState = {
@@ -18,6 +21,7 @@ const initialState: NavState = {
   recommendedPath: null,
   isNavOpen: false,
   userPosition: null,
+  choosingRoomMode: null,
 };
 
 const navSlice = createSlice({
@@ -39,10 +43,14 @@ const navSlice = createSlice({
     setIsNavOpen(state, action) {
       state.isNavOpen = action.payload;
     },
+    setChoosingRoomMode(state, action: PayloadAction<ChoosingRoomMode>) {
+      state.choosingRoomMode = action.payload;
+    },
   },
 });
 
 export const {
+  setChoosingRoomMode,
   setEndRoom,
   setStartRoom,
   setRecommendedPath,

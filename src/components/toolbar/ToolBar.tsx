@@ -21,6 +21,9 @@ const ToolBar = ({ map, userPosition }: Props) => {
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const choosingRoomMode = useAppSelector(
+    (state) => state.nav.choosingRoomMode,
+  );
 
   return (
     <div className="fixed top-4 mx-2 w-full space-y-2 sm:w-96">
@@ -34,7 +37,7 @@ const ToolBar = ({ map, userPosition }: Props) => {
       )}
 
       {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
-      {isNavOpen && isCardOpen && <NavCard />}
+      {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard />}
       {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
     </div>
   );

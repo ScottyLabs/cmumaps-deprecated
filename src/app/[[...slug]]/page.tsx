@@ -215,7 +215,7 @@ const Page = ({ params, searchParams }: Props) => {
     getBuildings();
   }, [dispatch]);
 
-  // update the Page Title
+  // update the page title
   useEffect(() => {
     let title = 'CMU Maps';
     if (selectedRoom) {
@@ -235,19 +235,17 @@ const Page = ({ params, searchParams }: Props) => {
 
   // update the URL
   useEffect(() => {
-    setTimeout(() => {
-      let url = window.location.origin + '/';
-      if (selectedRoom) {
-        const floor = selectedRoom.floor;
-        url += `${floor.buildingCode}-${floor.level}/${selectedRoom.id}`;
-      } else if (focusedFloor) {
-        url += `${focusedFloor.buildingCode}`;
-        url += `-${focusedFloor.level}`;
-      } else if (selectedBuilding) {
-        url += selectedBuilding.code;
-      }
-      window.history.pushState({}, '', url);
-    }, 500);
+    let url = window.location.origin + '/';
+    if (selectedRoom) {
+      const floor = selectedRoom.floor;
+      url += `${floor.buildingCode}-${floor.level}/${selectedRoom.id}`;
+    } else if (focusedFloor) {
+      url += `${focusedFloor.buildingCode}`;
+      url += `-${focusedFloor.level}`;
+    } else if (selectedBuilding) {
+      url += selectedBuilding.code;
+    }
+    window.history.pushState({}, '', url);
     // use window instead of the next router to prevent rezooming in
   }, [selectedRoom, focusedFloor, selectedBuilding]);
 

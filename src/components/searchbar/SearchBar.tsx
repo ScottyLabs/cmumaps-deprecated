@@ -34,12 +34,18 @@ const SearchBar = ({ map, userPosition }: Props) => {
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
   const searchMode = useAppSelector((state) => state.ui.searchMode);
+  const choosingRoomMode = useAppSelector(
+    (state) => state.nav.choosingRoomMode,
+  );
 
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const showSearchModeSelector =
-    searchQuery == '' && isSearchOpen && searchMode == 'rooms';
+    searchQuery == '' &&
+    isSearchOpen &&
+    searchMode == 'rooms' &&
+    !choosingRoomMode;
 
   // set the search query using room and building
   useEffect(() => {
@@ -75,6 +81,16 @@ const SearchBar = ({ map, userPosition }: Props) => {
       inputRef.current.focus();
     }
   }, [searchMode]);
+
+  // focus on the input and clear text if the search mode changed to not null
+  useEffect(() => {
+    if (inputRef.current) {
+      if (choosingRoomMode) {
+        inputRef.current.focus();
+        setSearchQuery('');
+      }
+    }
+  }, [choosingRoomMode]);
 
   // blur the input field when not searching (mainly used for clicking on the map to close search)
   useEffect(() => {
