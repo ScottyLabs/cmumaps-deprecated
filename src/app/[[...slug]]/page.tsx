@@ -10,11 +10,8 @@ import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
 import { Slide, ToastContainer } from 'react-toastify';
 
-import FloorSwitcher from '@/components/buildings/FloorSwitcher';
 import MapDisplay from '@/components/buildings/MapDisplay';
 import { zoomOnObject, zoomOnRoom } from '@/components/buildings/mapUtils';
-import InfoCard from '@/components/infocard/InfoCard';
-import NavCard from '@/components/navigation/NavCard';
 import ToolBar from '@/components/toolbar/ToolBar';
 import { getFloorPlan } from '@/lib/apiRoutes';
 import {
@@ -53,10 +50,8 @@ const Page = ({ params, searchParams }: Props) => {
   const mapRef = useRef<mapkit.Map | null>(null);
 
   const buildings = useAppSelector((state) => state.data.buildings);
-  const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
-  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
@@ -256,23 +251,23 @@ const Page = ({ params, searchParams }: Props) => {
     // use window instead of the next router to prevent rezooming in
   }, [selectedRoom, focusedFloor, selectedBuilding]);
 
-  const renderClerkIcon = () => {
-    if (isMobile) {
-      return (
-        <div className="fixed bottom-10 right-2">
-          <UserButton />
-        </div>
-      );
-    } else {
-      return (
-        <div className="fixed right-2 top-2">
-          <UserButton />
-        </div>
-      );
-    }
-  };
-
   const renderIcons = () => {
+    const renderClerkIcon = () => {
+      if (isMobile) {
+        return (
+          <div className="fixed bottom-10 right-2">
+            <UserButton />
+          </div>
+        );
+      } else {
+        return (
+          <div className="fixed right-2 top-2">
+            <UserButton />
+          </div>
+        );
+      }
+    };
+
     return (
       <>
         {renderClerkIcon()}
@@ -297,11 +292,6 @@ const Page = ({ params, searchParams }: Props) => {
   return (
     <main className="relative h-screen">
       <div className="absolute z-10">
-        {!isNavOpen && !isSearchOpen && <InfoCard map={mapRef.current} />}
-        {isNavOpen && <NavCard />}
-
-        {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
-
         <ToolBar
           map={mapRef.current}
           userPosition={{
