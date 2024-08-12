@@ -17,23 +17,23 @@ import CardWrapper from '../infocard/CardWrapper';
 export default function NavCard(): ReactElement {
   const dispatch = useAppDispatch();
 
-  const startRoom = useAppSelector((state) => state.ui.selectedRoom);
+  const startRoom = useAppSelector((state) => state.nav.startRoom);
   const endRoom = useAppSelector((state) => state.nav.endRoom);
 
   // calculate path from start to end
-  useEffect(() => {
-    fetch('/api/findPath', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ rooms: [startRoom, endRoom] }),
-    })
-      .then((r) => r.json())
-      .then((j) => {
-        dispatch(setRecommendedPath(j));
-      });
-  }, [startRoom, endRoom, dispatch]);
+  // useEffect(() => {
+  //   fetch('/api/findPath', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ rooms: [startRoom, endRoom] }),
+  //   })
+  //     .then((r) => r.json())
+  //     .then((j) => {
+  //       dispatch(setRecommendedPath(j));
+  //     });
+  // }, [startRoom, endRoom, dispatch]);
 
   const renderTop = () => {
     return (
@@ -49,7 +49,7 @@ export default function NavCard(): ReactElement {
   };
 
   const renderRoomInput = (
-    startRoom: Room | null,
+    navRoom: Room | null,
     placeHolder: string,
     circleColor: string,
     handleClick: () => void,
@@ -59,8 +59,12 @@ export default function NavCard(): ReactElement {
     };
 
     const renderText = () => {
-      if (startRoom) {
-        return <p>{startRoom.name}</p>;
+      if (navRoom) {
+        return (
+          <p>
+            {navRoom.floor.buildingCode} {navRoom.name}
+          </p>
+        );
       } else {
         return <p className="text-[gray]">{placeHolder}</p>;
       }
