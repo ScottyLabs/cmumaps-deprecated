@@ -51,7 +51,7 @@ const NavLine = () => {
           <div>YOU ARE HERE</div>
         </Annotation>
       )}
-      {recommendedPath && recommendedPath.length && (
+      {recommendedPath && !!recommendedPath.length && (
         <Polyline
           selected={true}
           points={(recommendedPath || []).map((n: Node) => n.coordinate)}

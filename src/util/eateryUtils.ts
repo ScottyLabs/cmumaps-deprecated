@@ -148,6 +148,8 @@ export const getEateryData = async (): Promise<EateryData> => {
 
     if (eatery.times.length == 0) {
       res.locationState = 'CLOSED_LONG_TERM';
+      res.statusMsg = 'Closed until further notice';
+      res.hoursUntilStateChange = Infinity;
     } else {
       // the initial curTime is the first entry where the day is today's day
       const curTime = eatery['times'].find(
