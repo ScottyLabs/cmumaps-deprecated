@@ -14,6 +14,16 @@ interface BuildingShapeProps {
 
 const buildingCodeToShapeFillColor = {
   MOE: '#fde047',
+  STE: '#307454',
+  MUD: '#6900a9',
+  MOR: '#fde047',
+  DON: '#0025a9',
+  SCO: '#a90000',
+  WEL: '#a90000',
+  BOS: '#a90000',
+  MCG: '#a90000',
+  HEN: '#a90000',
+  ROF: '#ae12bc',
 };
 
 /**
@@ -50,7 +60,7 @@ export default function BuildingShape({ building }: BuildingShapeProps) {
         key={building.code}
         points={building.shapes}
         fillColor={getFillColor()}
-        fillOpacity={1}
+        fillOpacity={buildingCodeToShapeFillColor[building.code] ? 0.6 : 1}
         strokeColor={getStrokeColor()}
         enabled={false}
       />
