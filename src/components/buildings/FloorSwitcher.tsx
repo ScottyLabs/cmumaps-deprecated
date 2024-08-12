@@ -33,6 +33,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
     return;
   }
 
+  console.log(focusedFloor, buildings);
   const building = buildings[focusedFloor.buildingCode];
 
   // don't render the floor switcher if on mobile and the card covers the floor switcher
@@ -194,7 +195,6 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
       );
     }
   };
-
   return (
     <Wrapper>
       <>
