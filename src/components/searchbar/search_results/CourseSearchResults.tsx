@@ -1,4 +1,5 @@
 import courseIcon from '@icons/quick_search/course.svg';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -7,7 +8,7 @@ import { toast } from 'react-toastify';
 
 import { setCourseData } from '@/lib/features/dataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate, Course, CourseData } from '@/types';
+import { AbsoluteCoordinate, Course, CourseData, SearchMap } from '@/types';
 
 import SearchResultWrapper from './SearchResultWrapper';
 
@@ -16,6 +17,38 @@ interface Props {
   query: string;
   userPosition: AbsoluteCoordinate;
 }
+
+export const handleCourseClick =
+  (roomInfoArr: string[], searchMap: SearchMap, router: AppRouterInstance) =>
+  () => {
+    const buildingCode = roomInfoArr[0];
+    const roomName = roomInfoArr[1];
+    const floorLevel = roomName.charAt(0);
+
+    const buildingMap = searchMap[buildingCode];
+
+    if (!buildingMap) {
+      if (buildingCode == 'DNM') {
+        toast.error('This class do not meet!');
+      } else {
+        toast.error('Building not available!');
+      }
+      return;
+    }
+
+    if (!buildingMap[floorLevel]) {
+      toast.error('Floor not available!');
+    } else {
+      const floorMap = buildingMap[floorLevel];
+      const selectedRoom = floorMap.find((room) => room.name == roomName);
+
+      if (!selectedRoom) {
+        toast.error('Room not available!');
+      } else {
+        router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
+      }
+    }
+  };
 
 const CourseSearchResults = ({ query }: Props) => {
   const router = useRouter();
@@ -67,41 +100,14 @@ const CourseSearchResults = ({ query }: Props) => {
   }, [courseData, query]);
 
   const renderCourseResultHelper = (courseCode: string, course: Course) => {
-    const handleClick = (room: string) => () => {
-      const roomInfoArr = room.split(' ');
-      const buildingCode = roomInfoArr[0];
-      const roomName = roomInfoArr[1];
-      const floorLevel = roomName.charAt(0);
-
-      const buildingMap = searchMap[buildingCode];
-
-      if (!buildingMap) {
-        if (buildingCode == 'DNM') {
-          toast.error('This class do not meet!');
-        } else {
-          toast.error('Building not available!');
-        }
-        return;
-      }
-
-      if (!buildingMap[floorLevel]) {
-        toast.error('Floor not available!');
-      } else {
-        const floorMap = buildingMap[floorLevel];
-        const selectedRoom = floorMap.find((room) => room.name == roomName);
-
-        if (!selectedRoom) {
-          toast.error('Room not available!');
-        } else {
-          router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
-        }
-      }
-    };
-
     return Object.entries(course.sections).map(([sectionCode, section]) => (
       <SearchResultWrapper
         key={courseCode + sectionCode}
-        handleClick={handleClick(section.room)}
+        handleClick={handleCourseClick(
+          section.room.split(' '),
+          searchMap,
+          router,
+        )}
       >
         <div
           key={courseCode}
