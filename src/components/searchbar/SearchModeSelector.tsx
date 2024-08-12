@@ -19,7 +19,7 @@ const searchModeToDisplayText: Partial<Record<SearchMode, string>> = {
 const searchModeToBgColor: Partial<Record<SearchMode, string>> = {
   food: 'bg-[#FFBD59]',
   courses: 'bg-[#C41230]',
-  events: 'bg-black',
+  events: 'bg-[#87BCFB]',
   restrooms: 'bg-[#EFB1F4]',
   study: 'bg-[#A6E08B]',
 };
