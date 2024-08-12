@@ -1,3 +1,4 @@
+import { throttle } from 'lodash';
 import {
   Coordinate,
   FeatureVisibility,
@@ -58,6 +59,13 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
+
+  const throttledCalculateVisibleBuildings = throttle(
+    (region: CoordinateRegion) => {
+      calculateVisibleBuildings(region);
+    },
+    1000,
+  );
 
   const calculateVisibleBuildings = (region: CoordinateRegion) => {
     if (!buildings) {
@@ -123,7 +131,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         return;
       }
 
-      calculateVisibleBuildings(region);
+      throttledCalculateVisibleBuildings(region);
 
       const showFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
       dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
