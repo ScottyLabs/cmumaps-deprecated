@@ -76,21 +76,21 @@ const Schedule = () => {
     };
 
     return (
-      <div className="no-scrollbar h-96 space-y-2 overflow-auto">
+      <div className="no-scrollbar h-96 space-y-3 overflow-auto">
         {scheduleData.map((course) => (
           <div
             key={course.code + course.dow}
-            className="border p-1"
+            className="rounded border bg-gray-50 p-1"
             onClick={handleCourseClick(
               course.room.split('-'),
               searchMap,
               router,
             )}
           >
-            <h3 className="truncate">
+            <h3 className="truncate text-gray-700">
               {course.code} {course.name}
             </h3>
-            <div>
+            <div className="text-gray-500">
               <div className="flex justify-between">
                 <p>Section {course.section}</p>
                 <p>{course.instructors}</p>
