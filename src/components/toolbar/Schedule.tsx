@@ -1,11 +1,17 @@
 import ical from 'ical';
+import { useRouter } from 'next/navigation';
 
 import React, { useState } from 'react';
 
+import { useAppSelector } from '@/lib/hooks';
+
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
+import { handleCourseClick } from '../searchbar/search_results/CourseSearchResults';
 
 export interface CourseData {
   name: string;
+  code: string;
+  section: string;
   instructors: string;
   room: string;
   dow: string;
@@ -24,6 +30,10 @@ const dayMap = {
 };
 
 const Schedule = () => {
+  const router = useRouter();
+
+  const searchMap = useAppSelector((state) => state.data.searchMap);
+
   const [scheduleData, setScheduleData] = useState<CourseData[]>([]);
 
   const handleFileChange = (event) => {
@@ -39,8 +49,13 @@ const Schedule = () => {
           ical.parseICS(e.target.result as string),
         )) {
           const curCourse: Partial<CourseData> = {};
-          curCourse.name = course.summary;
-          curCourse.instructors = course.description.split('\n')[2];
+          curCourse.name = course.summary.split(' :: ')[0];
+          curCourse.code = course.summary.split(' :: ')[1].split(' ')[0];
+          curCourse.section = course.summary.slice(-1);
+          curCourse.instructors = course.description
+            .split('\n')[2]
+            .replace('Instructors:', '')
+            .replace('Instructor:', '');
           curCourse.room = course.location.replace(' ', '');
           curCourse.dow = course.rrule.options.byweekday
             .map((day) => dayMap[day])
@@ -63,13 +78,31 @@ const Schedule = () => {
     return (
       <div className="no-scrollbar h-96 space-y-2 overflow-auto">
         {scheduleData.map((course) => (
-          <div key={course.name + course.dow} className="border p-1">
-            <p>{course.name}</p>
-            <p>{course.instructors}</p>
-            <p>
-              {course.dow} {formatDate(course.start)}-{formatDate(course.end)}
-            </p>
-            <p>{course.room}</p>
+          <div
+            key={course.code + course.dow}
+            className="border p-1"
+            onClick={handleCourseClick(
+              course.room.split('-'),
+              searchMap,
+              router,
+            )}
+          >
+            <h3 className="truncate">
+              {course.code} {course.name}
+            </h3>
+            <div>
+              <div className="flex justify-between">
+                <p>Section {course.section}</p>
+                <p>{course.instructors}</p>
+              </div>
+              <div className="flex justify-between">
+                <p>
+                  {course.dow} {formatDate(course.start)}-
+                  {formatDate(course.end)}
+                </p>
+                <p>{course.room}</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
