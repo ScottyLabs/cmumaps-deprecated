@@ -1,4 +1,4 @@
-import { Annotation, Coordinate, Polyline } from 'mapkit-react';
+import { Annotation, Polyline } from 'mapkit-react';
 
 import React, { useEffect } from 'react';
 
@@ -6,13 +6,10 @@ import { Node } from '@/app/api/findPath/route';
 import { setUserPosition } from '@/lib/features/navSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
-import { positionOnMap } from '../buildings/mapUtils';
-
 const NavLine = () => {
   const dispatch = useAppDispatch();
 
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
-  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const userPosition = useAppSelector((state) => state.nav.userPosition);
 
   // navigator.geolocation.watchPosition((pos)=>{

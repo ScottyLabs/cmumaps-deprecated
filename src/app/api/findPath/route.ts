@@ -1,7 +1,6 @@
 import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
 import fs from 'fs';
 import { Coordinate } from 'mapkit-react';
-import type { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest } from 'next/server';
 import path from 'path';
 
@@ -28,12 +27,6 @@ interface Path {
   node: Node;
   currPath: Node[];
   length: number;
-}
-
-function getDistance(a: Coordinate, b: Coordinate) {
-  return Math.sqrt(
-    (a.latitude - b.latitude) ** 2 + (a.longitude - b.longitude) ** 2,
-  );
 }
 
 const comparePaths: ICompare<Path> = (a: Path, b: Path) => a.length - b.length;
