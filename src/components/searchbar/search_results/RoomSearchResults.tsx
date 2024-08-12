@@ -1,5 +1,11 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 
+import {
+  setChoosingRoomMode,
+  setEndRoom,
+  setStartRoom,
+} from '@/lib/features/navSlice';
 import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
@@ -26,6 +32,9 @@ const RoomSearchResults = ({ map, query, searchResult }: Props) => {
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
+  const choosingRoomMode = useAppSelector(
+    (state) => state.nav.choosingRoomMode,
+  );
 
   if (query.length < 3) {
     return <KeepTypingDisplay />;
@@ -37,11 +46,15 @@ const RoomSearchResults = ({ map, query, searchResult }: Props) => {
 
   const renderBuildingResults = (building: Building) => {
     const handleClick = () => {
-      if (map) {
-        zoomOnObject(map, building.shapes.flat());
+      if (choosingRoomMode) {
+        toast.error("Can't choose a building for navigation for now!");
+      } else {
+        if (map) {
+          zoomOnObject(map, building.shapes.flat());
+        }
+        dispatch(selectBuilding(building));
+        dispatch(setIsSearchOpen(false));
       }
-      dispatch(selectBuilding(building));
-      dispatch(setIsSearchOpen(false));
     };
 
     return (
@@ -71,12 +84,23 @@ const RoomSearchResults = ({ map, query, searchResult }: Props) => {
       </div>
     );
 
+    const handleClick = (searchRoom: SearchRoom) => () => {
+      if (choosingRoomMode) {
+        if (choosingRoomMode == 'start') {
+          dispatch(setStartRoom(searchRoom));
+        } else if (choosingRoomMode == 'end') {
+          dispatch(setEndRoom(searchRoom));
+        }
+        dispatch(setChoosingRoomMode(null));
+      } else {
+        zoomOnSearchRoom(map, searchRoom, buildings, floorPlanMap, dispatch);
+      }
+    };
+
     return rooms.map((searchRoom: SearchRoom) => (
       <SearchResultWrapper
         key={searchRoom.id}
-        handleClick={() => {
-          zoomOnSearchRoom(map, searchRoom, buildings, floorPlanMap, dispatch);
-        }}
+        handleClick={handleClick(searchRoom)}
       >
         <div className="flex h-12 items-center space-x-3">
           <RoomPin room={searchRoom} />
