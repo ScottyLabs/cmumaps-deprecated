@@ -25,16 +25,15 @@ const getFloorAtOrdinal = (
   };
 };
 
-interface Props {
-  visibleBuildings: Building[];
-}
+// interface Props {
+//   visibleBuildings: Building[];
+// }
 
 /**
  * The contents of a floor displayed on the map.
  */
-const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
+const FloorPlanOverlay = () => {
   const dispatch = useAppDispatch();
-  console.log(visibleBuildings);
   const buildings = useAppSelector((state) => state.data.buildings);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
