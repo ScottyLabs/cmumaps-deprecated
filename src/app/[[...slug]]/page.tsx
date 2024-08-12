@@ -194,7 +194,9 @@ const Page = ({ params, searchParams }: Props) => {
 
             for (const roomId in rooms) {
               rooms[roomId].id = roomId;
-              rooms[roomId].alias = rooms[roomId]['aliases'][0];
+              rooms[roomId].alias = rooms.length
+                ? rooms[roomId]['aliases'][0]
+                : '';
               rooms[roomId].floor = {
                 buildingCode: building.code,
                 level: floorLevel,
