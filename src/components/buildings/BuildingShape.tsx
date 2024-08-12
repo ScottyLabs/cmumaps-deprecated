@@ -12,6 +12,10 @@ interface BuildingShapeProps {
   building: Building;
 }
 
+const buildingCodeToShapeFillColor = {
+  MOE: '#fde047',
+};
+
 /**
  * The shape of a building on the map.
  */
@@ -31,11 +35,21 @@ export default function BuildingShape({ building }: BuildingShapeProps) {
       }
     };
 
+    const getFillColor = () => {
+      if (buildingCodeToShapeFillColor[building.code]) {
+        return buildingCodeToShapeFillColor[building.code];
+      } else if (building.floors.length == 0) {
+        return '#6b7280';
+      } else {
+        return '#9ca3af';
+      }
+    };
+
     return (
       <Polygon
         key={building.code}
         points={building.shapes}
-        fillColor={building.floors.length > 0 ? '#9ca3af' : '#6b7280'}
+        fillColor={getFillColor()}
         fillOpacity={1}
         strokeColor={getStrokeColor()}
         enabled={false}
