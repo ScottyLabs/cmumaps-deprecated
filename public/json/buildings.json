@@ -1,6 +1,68 @@
 {
+    "code": {
+        "name": "Scaife Hall",
+        "osmId": "27550292",
+        "floors": [
+            "B",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44182292525435,
+            "longitude": -79.94731900625
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4420146,
+                    "longitude": -79.9474045
+                },
+                {
+                    "latitude": 40.4416749,
+                    "longitude": -79.9475333
+                },
+                {
+                    "latitude": 40.4416203,
+                    "longitude": -79.9472383
+                },
+                {
+                    "latitude": 40.441688,
+                    "longitude": -79.9472157
+                },
+                {
+                    "latitude": 40.4417332,
+                    "longitude": -79.9471986
+                },
+                {
+                    "latitude": 40.4417832,
+                    "longitude": -79.947176
+                },
+                {
+                    "latitude": 40.4418193,
+                    "longitude": -79.947161
+                },
+                {
+                    "latitude": 40.441958,
+                    "longitude": -79.9471177
+                },
+                {
+                    "latitude": 40.4419684,
+                    "longitude": -79.947169
+                },
+                {
+                    "latitude": 40.4420146,
+                    "longitude": -79.9474045
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "code"
+    },
     "AH": {
-        "code": "AH",
         "name": "Alumni House",
         "osmId": "27630034",
         "floors": [],
@@ -62,10 +124,10 @@
                 "latitude": 40.444612,
                 "longitude": -79.941947
             }
-        ]
+        ],
+        "code": "AH"
     },
     "AN": {
-        "code": "AN",
         "name": "ANSYS Hall",
         "osmId": "1001941217",
         "floors": [
@@ -170,10 +232,10 @@
                 "latitude": 40.442133,
                 "longitude": -79.946449
             }
-        ]
+        ],
+        "code": "AN"
     },
     "BH": {
-        "code": "BH",
         "name": "Baker Hall",
         "osmId": "27590907",
         "floors": [
@@ -381,10 +443,10 @@
                 "latitude": 40.441926,
                 "longitude": -79.945734
             }
-        ]
+        ],
+        "code": "BH"
     },
     "PH": {
-        "code": "PH",
         "name": "Porter Hall",
         "osmId": "27549961",
         "floors": [
@@ -557,13 +619,18 @@
                 "latitude": 40.441777,
                 "longitude": -79.946921
             }
-        ]
+        ],
+        "code": "PH"
     },
     "BR": {
-        "code": "BR",
         "name": "Bramer House",
         "osmId": "27643509",
-        "floors": [],
+        "floors": [
+            "A",
+            "1",
+            "2",
+            "3"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.445953495292386,
@@ -622,10 +689,10 @@
                 "latitude": 40.445876,
                 "longitude": -79.941217
             }
-        ]
+        ],
+        "code": "BR"
     },
     "CIC": {
-        "code": "CIC",
         "name": "Collaborative Innovation Center",
         "osmId": "27591069",
         "floors": [],
@@ -719,10 +786,10 @@
                 "latitude": 40.443569,
                 "longitude": -79.946241
             }
-        ]
+        ],
+        "code": "CIC"
     },
     "CUC": {
-        "code": "CUC",
         "name": "Cohon University Center",
         "osmId": "27574394",
         "floors": [
@@ -993,19 +1060,14 @@
                 "latitude": 40.442665,
                 "longitude": -79.94141
             }
-        ]
+        ],
+        "code": "CUC"
     },
     "CFA": {
-        "code": "CFA",
         "name": "College of Fine Arts",
         "osmId": "27591225",
         "floors": [
-            "A",
-            "1",
-            "M",
-            "2",
-            "3",
-            "4"
+            "M"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -1035,12 +1097,12 @@
                     "longitude": -79.9425651
                 },
                 {
-                    "latitude": 40.4417148,
-                    "longitude": -79.9426148
+                    "latitude": 40.4417154,
+                    "longitude": -79.9426153
                 },
                 {
-                    "latitude": 40.4412289,
-                    "longitude": -79.9427893
+                    "latitude": 40.4412292,
+                    "longitude": -79.9427885
                 },
                 {
                     "latitude": 40.4411782,
@@ -1073,10 +1135,10 @@
                 "latitude": 40.441264,
                 "longitude": -79.943398
             }
-        ]
+        ],
+        "code": "CFA"
     },
     "CYH": {
-        "code": "CYH",
         "name": "Cyert Hall",
         "osmId": "27574718",
         "floors": [
@@ -1215,19 +1277,17 @@
                 "latitude": 40.443987,
                 "longitude": -79.943696
             }
-        ]
+        ],
+        "code": "CYH"
     },
     "DH": {
-        "code": "DH",
         "name": "Doherty Hall",
         "osmId": "27574545",
         "floors": [
             "B",
             "A",
             "1",
-            "2",
-            "3",
-            "4"
+            "2"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -1237,8 +1297,8 @@
         "shapes": [
             [
                 {
-                    "latitude": 40.4425276,
-                    "longitude": -79.9450633
+                    "latitude": 40.4425295,
+                    "longitude": -79.9450587
                 },
                 {
                     "latitude": 40.4426211,
@@ -1353,12 +1413,12 @@
                     "longitude": -79.9450917
                 },
                 {
-                    "latitude": 40.4424726,
-                    "longitude": -79.9450838
+                    "latitude": 40.442469,
+                    "longitude": -79.9450812
                 },
                 {
-                    "latitude": 40.4425276,
-                    "longitude": -79.9450633
+                    "latitude": 40.4425295,
+                    "longitude": -79.9450587
                 }
             ]
         ],
@@ -1383,15 +1443,17 @@
                 "latitude": 40.442237,
                 "longitude": -79.945137
             }
-        ]
+        ],
+        "code": "DH"
     },
     "FM": {
-        "code": "FM",
         "name": "Facilities Management Services Building",
         "osmId": "27590940",
         "floors": [
             "1",
-            "2"
+            "2",
+            "3",
+            "4"
         ],
         "defaultFloor": "1",
         "labelPosition": {
@@ -1515,10 +1577,10 @@
                 "latitude": 40.443222,
                 "longitude": -79.946913
             }
-        ]
+        ],
+        "code": "FM"
     },
     "GHC": {
-        "code": "GHC",
         "name": "Gates & Hillman Centers",
         "osmId": "27623372",
         "floors": [
@@ -1532,8 +1594,7 @@
             "8",
             "9"
         ],
-        "defaultFloor": "5",
-        "defaultOrdinal": 0,
+        "defaultFloor": "4",
         "labelPosition": {
             "latitude": 40.44348909465742,
             "longitude": -79.9446062625
@@ -1783,14 +1844,14 @@
                 "latitude": 40.443818,
                 "longitude": -79.945045
             }
-        ]
+        ],
+        "code": "GHC"
     },
     "HOA": {
-        "code": "HOA",
         "name": "Hall of the Arts",
         "osmId": "1002857138",
         "floors": [
-            "A",
+            "a",
             "1",
             "2",
             "3"
@@ -1816,15 +1877,15 @@
                 },
                 {
                     "latitude": 40.4410896,
-                    "longitude": -79.9423846
+                    "longitude": -79.9423847
                 },
                 {
-                    "latitude": 40.4409802,
-                    "longitude": -79.9424241
+                    "latitude": 40.4409792,
+                    "longitude": -79.9424263
                 },
                 {
-                    "latitude": 40.4409345,
-                    "longitude": -79.9422141
+                    "latitude": 40.440933,
+                    "longitude": -79.9422147
                 },
                 {
                     "latitude": 40.4407535,
@@ -1901,10 +1962,10 @@
                 "latitude": 40.441108,
                 "longitude": -79.942377
             }
-        ]
+        ],
+        "code": "HOA"
     },
     "HBH": {
-        "code": "HBH",
         "name": "Hamburg Hall",
         "osmId": "27591096",
         "floors": [
@@ -2067,10 +2128,10 @@
                 "latitude": 40.443777,
                 "longitude": -79.946198
             }
-        ]
+        ],
+        "code": "HBH"
     },
     "HH": {
-        "code": "HH",
         "name": "Hamerschlag Hall",
         "osmId": "27551077",
         "floors": [
@@ -2235,10 +2296,10 @@
                 "latitude": 40.442834,
                 "longitude": -79.946909
             }
-        ]
+        ],
+        "code": "HH"
     },
     "HL": {
-        "code": "HL",
         "name": "Hunt Library",
         "osmId": "27574204",
         "floors": [
@@ -2303,13 +2364,16 @@
                 "latitude": 40.440811,
                 "longitude": -79.943411
             }
-        ]
+        ],
+        "code": "HL"
     },
     "III": {
-        "code": "III",
         "name": "Integrated Innovation Institute",
         "osmId": "171450767",
-        "floors": [],
+        "floors": [
+            "1",
+            "2"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.444346849605054,
@@ -2384,10 +2448,10 @@
                 "latitude": 40.444422,
                 "longitude": -79.948052
             }
-        ]
+        ],
+        "code": "III"
     },
     "MM": {
-        "code": "MM",
         "name": "Margaret Morrison Carnegie Hall",
         "osmId": "27591314",
         "floors": [
@@ -2605,13 +2669,22 @@
                 "latitude": 40.442695,
                 "longitude": -79.941708
             }
-        ]
+        ],
+        "code": "MM"
     },
     "MI": {
-        "code": "MI",
         "name": "Mellon Institute",
         "osmId": "25795368",
-        "floors": [],
+        "floors": [
+            "1",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.446134268047665,
@@ -2678,11 +2751,12 @@
                 "latitude": 40.446604,
                 "longitude": -79.950581
             }
-        ]
+        ],
+        "code": "MI"
     },
     "NSH": {
-        "code": "NSH",
         "name": "Newell-Simon Hall",
+        "defaultOrdinal": -1,
         "osmId": "27551590",
         "floors": [
             "B",
@@ -2693,7 +2767,6 @@
             "4"
         ],
         "defaultFloor": "3",
-        "defaultOrdinal": -1,
         "labelPosition": {
             "latitude": 40.443351484375,
             "longitude": -79.9455711596982
@@ -2803,10 +2876,10 @@
                 "latitude": 40.443458,
                 "longitude": -79.946075
             }
-        ]
+        ],
+        "code": "NSH"
     },
     "PC": {
-        "code": "PC",
         "name": "Posner Center",
         "osmId": "27591276",
         "floors": [
@@ -2814,34 +2887,34 @@
         ],
         "defaultFloor": "1",
         "labelPosition": {
-            "latitude": 40.44140207801199,
-            "longitude": -79.9425046328125
+            "latitude": 40.44150469133797,
+            "longitude": -79.94246261718749
         },
         "shapes": [
             [
                 {
-                    "latitude": 40.4416299,
-                    "longitude": -79.9422016
+                    "latitude": 40.4416182,
+                    "longitude": -79.9421926
                 },
                 {
-                    "latitude": 40.4417134,
-                    "longitude": -79.9426081
+                    "latitude": 40.4417139,
+                    "longitude": -79.9426079
                 },
                 {
-                    "latitude": 40.4417148,
-                    "longitude": -79.9426148
+                    "latitude": 40.4417154,
+                    "longitude": -79.9426153
                 },
                 {
-                    "latitude": 40.4412289,
-                    "longitude": -79.9427893
+                    "latitude": 40.4412292,
+                    "longitude": -79.9427885
                 },
                 {
-                    "latitude": 40.4411435,
-                    "longitude": -79.9423742
+                    "latitude": 40.4411433,
+                    "longitude": -79.9423721
                 },
                 {
-                    "latitude": 40.4416299,
-                    "longitude": -79.9422016
+                    "latitude": 40.4416182,
+                    "longitude": -79.9421926
                 }
             ]
         ],
@@ -2866,10 +2939,10 @@
                 "latitude": 40.441104,
                 "longitude": -79.942377
             }
-        ]
+        ],
+        "code": "PC"
     },
     "POS": {
-        "code": "POS",
         "name": "Posner Hall",
         "osmId": "27591241",
         "floors": [
@@ -2880,62 +2953,62 @@
         ],
         "defaultFloor": "A",
         "labelPosition": {
-            "latitude": 40.44142172388264,
-            "longitude": -79.94209919375001
+            "latitude": 40.44144832861169,
+            "longitude": -79.94208255156249
         },
         "shapes": [
             [
                 {
-                    "latitude": 40.4416299,
-                    "longitude": -79.9422016
+                    "latitude": 40.4416182,
+                    "longitude": -79.9421926
                 },
                 {
-                    "latitude": 40.4415953,
-                    "longitude": -79.9420214
+                    "latitude": 40.4415849,
+                    "longitude": -79.9420249
                 },
                 {
-                    "latitude": 40.4415645,
-                    "longitude": -79.9418621
+                    "latitude": 40.4415541,
+                    "longitude": -79.9418622
                 },
                 {
-                    "latitude": 40.4409461,
-                    "longitude": -79.9421224
+                    "latitude": 40.4409443,
+                    "longitude": -79.9421211
                 },
                 {
-                    "latitude": 40.4409496,
-                    "longitude": -79.9421382
+                    "latitude": 40.4409477,
+                    "longitude": -79.9421368
                 },
                 {
-                    "latitude": 40.4409205,
-                    "longitude": -79.9421495
+                    "latitude": 40.4409184,
+                    "longitude": -79.9421479
                 },
                 {
-                    "latitude": 40.4409345,
-                    "longitude": -79.9422141
+                    "latitude": 40.440933,
+                    "longitude": -79.9422147
                 },
                 {
-                    "latitude": 40.4409802,
-                    "longitude": -79.9424241
+                    "latitude": 40.4409792,
+                    "longitude": -79.9424263
                 },
                 {
                     "latitude": 40.4410896,
-                    "longitude": -79.9423846
+                    "longitude": -79.9423847
                 },
                 {
-                    "latitude": 40.4411213,
-                    "longitude": -79.9423732
+                    "latitude": 40.4411215,
+                    "longitude": -79.9423726
                 },
                 {
-                    "latitude": 40.4411226,
-                    "longitude": -79.9423809
+                    "latitude": 40.4411231,
+                    "longitude": -79.9423797
                 },
                 {
-                    "latitude": 40.4411435,
-                    "longitude": -79.9423742
+                    "latitude": 40.4411433,
+                    "longitude": -79.9423721
                 },
                 {
-                    "latitude": 40.4416299,
-                    "longitude": -79.9422016
+                    "latitude": 40.4416182,
+                    "longitude": -79.9421926
                 }
             ]
         ],
@@ -2960,10 +3033,10 @@
                 "latitude": 40.441679,
                 "longitude": -79.942178
             }
-        ]
+        ],
+        "code": "POS"
     },
     "PCA": {
-        "code": "PCA",
         "name": "Purnell Center for the Arts",
         "osmId": "27574406",
         "floors": [
@@ -3106,10 +3179,10 @@
                 "latitude": 40.443983,
                 "longitude": -79.942888
             }
-        ]
+        ],
+        "code": "PCA"
     },
     "REH": {
-        "code": "REH",
         "name": "Roberts Engineering Hall",
         "osmId": "27590641",
         "floors": [
@@ -3209,10 +3282,10 @@
                 "latitude": 40.442834,
                 "longitude": -79.946912
             }
-        ]
+        ],
+        "code": "REH"
     },
     "SC": {
-        "code": "SC",
         "name": "Scott Hall",
         "osmId": null,
         "floors": [
@@ -3226,8 +3299,8 @@
         ],
         "defaultFloor": "5",
         "labelPosition": {
-            "latitude": 40.44297442421874,
-            "longitude": -79.94668291587035
+            "latitude": 40.44297523437501,
+            "longitude": -79.94668439922064
         },
         "shapes": [
             [
@@ -3260,16 +3333,16 @@
                     "longitude": -79.9464599
                 },
                 {
-                    "latitude": 40.4428381,
-                    "longitude": -79.946495
+                    "latitude": 40.4428358,
+                    "longitude": -79.9464958
                 },
                 {
-                    "latitude": 40.442844,
-                    "longitude": -79.9465215
+                    "latitude": 40.4428409,
+                    "longitude": -79.9465192
                 },
                 {
-                    "latitude": 40.4427271,
-                    "longitude": -79.9465647
+                    "latitude": 40.4427288,
+                    "longitude": -79.9465607
                 },
                 {
                     "latitude": 40.4427372,
@@ -3376,10 +3449,10 @@
                 "latitude": 40.442888,
                 "longitude": -79.947153
             }
-        ]
+        ],
+        "code": "SC"
     },
     "EDS": {
-        "code": "EDS",
         "name": "Smith Hall",
         "osmId": "27591104",
         "floors": [
@@ -3441,10 +3514,10 @@
                 "latitude": 40.444074,
                 "longitude": -79.945921
             }
-        ]
+        ],
+        "code": "EDS"
     },
     "TCS": {
-        "code": "TCS",
         "name": "TCS Hall",
         "osmId": "946491335",
         "floors": [
@@ -3563,13 +3636,16 @@
                 "latitude": 40.444555,
                 "longitude": -79.946906
             }
-        ]
+        ],
+        "code": "TCS"
     },
     "TEP": {
-        "code": "TEP",
-        "name": "Tepper School of Business",
+        "name": "Tepper Building",
         "osmId": "583510520",
         "floors": [
+            "C",
+            "B",
+            "A",
             "1",
             "2",
             "3",
@@ -3727,13 +3803,21 @@
                 "latitude": 40.444628,
                 "longitude": -79.946314
             }
-        ]
+        ],
+        "code": "TEP"
     },
     "WH": {
-        "code": "WH",
         "name": "Warner Hall",
         "osmId": "27574704",
-        "floors": [],
+        "floors": [
+            "A",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.444177,
@@ -3788,10 +3872,10 @@
                 "latitude": 40.444024,
                 "longitude": -79.943607
             }
-        ]
+        ],
+        "code": "WH"
     },
     "WEH": {
-        "code": "WEH",
         "name": "Wean Hall",
         "osmId": "27551364",
         "floors": [
@@ -3801,157 +3885,148 @@
             "4",
             "5",
             "6",
-            "7",
             "8",
             "9"
         ],
-        "defaultFloor": "5",
         "defaultOrdinal": -1,
+        "defaultFloor": "5",
         "labelPosition": {
-            "latitude": 40.44262022343751,
-            "longitude": -79.94534668359356
+            "latitude": 40.44268084296874,
+            "longitude": -79.94563372513628
         },
         "shapes": [
             [
                 {
-                    "latitude": 40.442844,
-                    "longitude": -79.9465215
+                    "latitude": 40.4428409,
+                    "longitude": -79.9465192
                 },
                 {
-                    "latitude": 40.4428381,
-                    "longitude": -79.946495
+                    "latitude": 40.4428358,
+                    "longitude": -79.9464958
                 },
                 {
-                    "latitude": 40.4427983,
-                    "longitude": -79.9463148
+                    "latitude": 40.4427968,
+                    "longitude": -79.9463137
                 },
                 {
-                    "latitude": 40.4428296,
-                    "longitude": -79.9463029
+                    "latitude": 40.4428303,
+                    "longitude": -79.9463012
                 },
                 {
-                    "latitude": 40.442844,
-                    "longitude": -79.9463714
+                    "latitude": 40.4428449,
+                    "longitude": -79.9463693
                 },
                 {
-                    "latitude": 40.442919,
-                    "longitude": -79.9463423
+                    "latitude": 40.4429186,
+                    "longitude": -79.946342
+                },
+                {
+                    "latitude": 40.4428224,
+                    "longitude": -79.9458934
+                },
+                {
+                    "latitude": 40.4428588,
+                    "longitude": -79.94588
+                },
+                {
+                    "latitude": 40.4428405,
+                    "longitude": -79.9457949
+                },
+                {
+                    "latitude": 40.4428368,
+                    "longitude": -79.9457777
+                },
+                {
+                    "latitude": 40.4428284,
+                    "longitude": -79.9457808
                 },
                 {
                     "latitude": 40.4428238,
-                    "longitude": -79.9458945
+                    "longitude": -79.9457596
                 },
                 {
-                    "latitude": 40.4428606,
-                    "longitude": -79.9458813
+                    "latitude": 40.4428218,
+                    "longitude": -79.9457504
                 },
                 {
-                    "latitude": 40.4428425,
-                    "longitude": -79.9457942
+                    "latitude": 40.4428661,
+                    "longitude": -79.945734
                 },
                 {
-                    "latitude": 40.4428383,
-                    "longitude": -79.9457742
+                    "latitude": 40.4428648,
+                    "longitude": -79.9457282
                 },
                 {
-                    "latitude": 40.4428299,
-                    "longitude": -79.9457772
+                    "latitude": 40.4427709,
+                    "longitude": -79.9452911
                 },
                 {
-                    "latitude": 40.4428263,
-                    "longitude": -79.9457587
+                    "latitude": 40.4428283,
+                    "longitude": -79.9452698
                 },
                 {
-                    "latitude": 40.4428245,
-                    "longitude": -79.9457523
+                    "latitude": 40.4428058,
+                    "longitude": -79.945165
                 },
                 {
-                    "latitude": 40.4428679,
-                    "longitude": -79.9457353
+                    "latitude": 40.4427559,
+                    "longitude": -79.9451835
                 },
                 {
-                    "latitude": 40.4428662,
-                    "longitude": -79.9457277
+                    "latitude": 40.4427309,
+                    "longitude": -79.945067
                 },
                 {
-                    "latitude": 40.4427706,
-                    "longitude": -79.9452785
+                    "latitude": 40.442546,
+                    "longitude": -79.9451355
                 },
                 {
-                    "latitude": 40.4428178,
-                    "longitude": -79.9452619
+                    "latitude": 40.4425295,
+                    "longitude": -79.9450587
                 },
                 {
-                    "latitude": 40.4427998,
-                    "longitude": -79.9451738
-                },
-                {
-                    "latitude": 40.4427539,
-                    "longitude": -79.9451906
-                },
-                {
-                    "latitude": 40.4427288,
-                    "longitude": -79.9450721
-                },
-                {
-                    "latitude": 40.4425439,
-                    "longitude": -79.9451405
-                },
-                {
-                    "latitude": 40.4425276,
-                    "longitude": -79.9450633
+                    "latitude": 40.442469,
+                    "longitude": -79.9450812
                 },
                 {
                     "latitude": 40.4424726,
-                    "longitude": -79.9450838
+                    "longitude": -79.9450977
                 },
                 {
-                    "latitude": 40.4424753,
-                    "longitude": -79.9450967
+                    "latitude": 40.4424856,
+                    "longitude": -79.9451583
                 },
                 {
-                    "latitude": 40.442488,
-                    "longitude": -79.9451601
+                    "latitude": 40.4424197,
+                    "longitude": -79.9451827
                 },
                 {
-                    "latitude": 40.4424364,
-                    "longitude": -79.9451779
+                    "latitude": 40.442561,
+                    "longitude": -79.9458413
                 },
                 {
-                    "latitude": 40.4424572,
-                    "longitude": -79.94528
+                    "latitude": 40.4424656,
+                    "longitude": -79.9458766
                 },
                 {
-                    "latitude": 40.4424424,
-                    "longitude": -79.9452855
+                    "latitude": 40.4424257,
+                    "longitude": -79.9458914
                 },
                 {
-                    "latitude": 40.4425598,
-                    "longitude": -79.9458404
+                    "latitude": 40.4424612,
+                    "longitude": -79.9460569
                 },
                 {
-                    "latitude": 40.442466,
-                    "longitude": -79.9458785
+                    "latitude": 40.442609,
+                    "longitude": -79.9460022
                 },
                 {
-                    "latitude": 40.4424287,
-                    "longitude": -79.9458936
+                    "latitude": 40.4427288,
+                    "longitude": -79.9465607
                 },
                 {
-                    "latitude": 40.4424621,
-                    "longitude": -79.9460548
-                },
-                {
-                    "latitude": 40.4426089,
-                    "longitude": -79.9460024
-                },
-                {
-                    "latitude": 40.4427271,
-                    "longitude": -79.9465647
-                },
-                {
-                    "latitude": 40.442844,
-                    "longitude": -79.9465215
+                    "latitude": 40.4428409,
+                    "longitude": -79.9465192
                 }
             ]
         ],
@@ -4000,10 +4075,10 @@
                 "latitude": 40.442794,
                 "longitude": -79.945372
             }
-        ]
+        ],
+        "code": "WEH"
     },
     "WWG": {
-        "code": "WWG",
         "name": "West Wing",
         "osmId": "27591351",
         "floors": [],
@@ -4068,34 +4143,18 @@
                 }
             ]
         ],
-        "hitbox": [
-            {
-                "latitude": 40.442514,
-                "longitude": -79.940525
-            },
-            {
-                "latitude": 40.442667,
-                "longitude": -79.94124
-            },
-            {
-                "latitude": 40.442968,
-                "longitude": -79.94114
-            },
-            {
-                "latitude": 40.44281,
-                "longitude": -79.940435
-            },
-            {
-                "latitude": 40.442514,
-                "longitude": -79.940525
-            }
-        ]
+        "hitbox": null,
+        "code": "WWG"
     },
     "WF": {
-        "code": "WF",
         "name": "Whitfield Hall",
         "osmId": "44157441",
-        "floors": [],
+        "floors": [
+            "A",
+            "1",
+            "2",
+            "3"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.448412049999995,
@@ -4146,14 +4205,15 @@
                 "latitude": 40.448484,
                 "longitude": -79.950447
             }
-        ]
+        ],
+        "code": "WF"
     },
     "WQ": {
-        "code": "WQ",
         "name": "WQED Building",
         "osmId": "544174673",
         "floors": [
             "1",
+            "2",
             "3"
         ],
         "defaultFloor": "1",
@@ -4350,13 +4410,18 @@
                 "latitude": 40.447113,
                 "longitude": -79.94436
             }
-        ]
+        ],
+        "code": "WQ"
     },
     "2SC": {
-        "code": "2SC",
         "name": "205 S. Craig",
         "osmId": "172944549",
-        "floors": [],
+        "floors": [
+            "B",
+            "1",
+            "2",
+            "3"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.44614285,
@@ -4407,13 +4472,20 @@
                 "latitude": 40.446078,
                 "longitude": -79.948789
             }
-        ]
+        ],
+        "code": "2SC"
     },
     "3SC": {
-        "code": "3SC",
         "name": "300 S. Craig (Police)",
         "osmId": "34262288",
-        "floors": [],
+        "floors": [
+            "A",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.44557104052274,
@@ -4484,10 +4556,10 @@
                 "latitude": 40.445273,
                 "longitude": -79.94884
             }
-        ]
+        ],
+        "code": "3SC"
     },
     "4SC": {
-        "code": "4SC",
         "name": "407 S. Craig",
         "osmId": "44157443",
         "floors": [
@@ -4497,42 +4569,42 @@
         ],
         "defaultFloor": "1",
         "labelPosition": {
-            "latitude": 40.444994099999995,
-            "longitude": -79.94839879999999
+            "latitude": 40.44501056874999,
+            "longitude": -79.94836685758234
         },
         "shapes": [
             [
                 {
-                    "latitude": 40.4449103,
-                    "longitude": -79.9486162
+                    "latitude": 40.444921,
+                    "longitude": -79.9486356
                 },
                 {
-                    "latitude": 40.4450483,
-                    "longitude": -79.9486319
+                    "latitude": 40.44506,
+                    "longitude": -79.9486507
                 },
                 {
-                    "latitude": 40.4450516,
-                    "longitude": -79.9485822
+                    "latitude": 40.4450628,
+                    "longitude": -79.9486104
                 },
                 {
-                    "latitude": 40.4450625,
-                    "longitude": -79.9484159
+                    "latitude": 40.4450805,
+                    "longitude": -79.9483808
                 },
                 {
-                    "latitude": 40.4450779,
-                    "longitude": -79.9481816
+                    "latitude": 40.4450896,
+                    "longitude": -79.9482057
                 },
                 {
-                    "latitude": 40.4449399,
-                    "longitude": -79.9481657
+                    "latitude": 40.4449507,
+                    "longitude": -79.9481962
                 },
                 {
-                    "latitude": 40.444939,
-                    "longitude": -79.9481788
+                    "latitude": 40.4449214,
+                    "longitude": -79.9486301
                 },
                 {
-                    "latitude": 40.4449103,
-                    "longitude": -79.9486162
+                    "latitude": 40.444921,
+                    "longitude": -79.9486356
                 }
             ]
         ],
@@ -4557,47 +4629,50 @@
                 "latitude": 40.444913,
                 "longitude": -79.94812
             }
-        ]
+        ],
+        "code": "4SC"
     },
     "CC": {
-        "code": "CC",
         "name": "417 S. Craig",
         "osmId": "172661493",
-        "floors": [],
+        "floors": [
+            "2",
+            "3"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
-            "latitude": 40.44462939140055,
-            "longitude": -79.94849752500001
+            "latitude": 40.44472297366388,
+            "longitude": -79.94852685625001
         },
         "shapes": [
             [
                 {
-                    "latitude": 40.4447151,
-                    "longitude": -79.9484049
+                    "latitude": 40.4447289,
+                    "longitude": -79.948429
                 },
                 {
-                    "latitude": 40.444778,
-                    "longitude": -79.9484088
+                    "latitude": 40.4447933,
+                    "longitude": -79.948437
                 },
                 {
-                    "latitude": 40.444771,
-                    "longitude": -79.9486025
+                    "latitude": 40.4447878,
+                    "longitude": -79.9486132
                 },
                 {
-                    "latitude": 40.4445495,
-                    "longitude": -79.9485748
+                    "latitude": 40.4446485,
+                    "longitude": -79.9486043
                 },
                 {
-                    "latitude": 40.4445518,
-                    "longitude": -79.9484066
+                    "latitude": 40.4446513,
+                    "longitude": -79.9484448
                 },
                 {
-                    "latitude": 40.4447146,
-                    "longitude": -79.9484169
+                    "latitude": 40.4447258,
+                    "longitude": -79.9484437
                 },
                 {
-                    "latitude": 40.4447151,
-                    "longitude": -79.9484049
+                    "latitude": 40.4447289,
+                    "longitude": -79.948429
                 }
             ]
         ],
@@ -4622,13 +4697,20 @@
                 "latitude": 40.444809,
                 "longitude": -79.948396
             }
-        ]
+        ],
+        "code": "CC"
     },
     "UT": {
-        "code": "UT",
         "name": "4516 Henry (UTDC)",
         "osmId": "29094259",
-        "floors": [],
+        "floors": [
+            "A",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.4460427,
@@ -4679,13 +4761,18 @@
                 "latitude": 40.445792,
                 "longitude": -79.949403
             }
-        ]
+        ],
+        "code": "UT"
     },
     "FRB": {
-        "code": "FRB",
         "name": "4615 Forbes (CTTEC)",
         "osmId": "44157444",
-        "floors": [],
+        "floors": [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.4447330359375,
@@ -4768,13 +4855,18 @@
                 "latitude": 40.444532,
                 "longitude": -79.948046
             }
-        ]
+        ],
+        "code": "FRB"
     },
     "INI": {
-        "code": "INI",
         "name": "4616 Henry",
         "osmId": "44156184",
-        "floors": [],
+        "floors": [
+            "B",
+            "A",
+            "1",
+            "2"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.44605775,
@@ -4825,13 +4917,16 @@
                 "latitude": 40.44616,
                 "longitude": -79.948277
             }
-        ]
+        ],
+        "code": "INI"
     },
     "PO": {
-        "code": "PO",
         "name": "620 Henry",
         "osmId": "543159704",
-        "floors": [],
+        "floors": [
+            "1",
+            "2"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.446319450000004,
@@ -4882,13 +4977,18 @@
                 "latitude": 40.446222,
                 "longitude": -79.947866
             }
-        ]
+        ],
+        "code": "PO"
     },
     "MC": {
-        "code": "MC",
         "name": "4721 Fifth Ave (CDFD)",
         "osmId": "545283494",
-        "floors": [],
+        "floors": [
+            "A",
+            "1",
+            "2",
+            "3"
+        ],
         "defaultFloor": "1",
         "labelPosition": {
             "latitude": 40.4476431,
@@ -4955,6 +5055,2210 @@
                 "latitude": 40.447835,
                 "longitude": -79.946584
             }
-        ]
+        ],
+        "code": "MC"
+    },
+    "BOS": {
+        "name": "Boss House",
+        "osmId": "27591450",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44161983158645,
+            "longitude": -79.939328925
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4417157,
+                    "longitude": -79.9394868
+                },
+                {
+                    "latitude": 40.441773,
+                    "longitude": -79.9393537
+                },
+                {
+                    "latitude": 40.4417392,
+                    "longitude": -79.9393268
+                },
+                {
+                    "latitude": 40.4416389,
+                    "longitude": -79.9392545
+                },
+                {
+                    "latitude": 40.441492,
+                    "longitude": -79.93915
+                },
+                {
+                    "latitude": 40.4414356,
+                    "longitude": -79.9392824
+                },
+                {
+                    "latitude": 40.4417157,
+                    "longitude": -79.9394868
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "BOS"
+    },
+    "CLY": {
+        "name": "Clyde House",
+        "osmId": "545283472",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.4482451,
+            "longitude": -79.9460966
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.448129,
+                    "longitude": -79.9461073
+                },
+                {
+                    "latitude": 40.4482119,
+                    "longitude": -79.9462426
+                },
+                {
+                    "latitude": 40.4483612,
+                    "longitude": -79.9460859
+                },
+                {
+                    "latitude": 40.4482783,
+                    "longitude": -79.9459506
+                },
+                {
+                    "latitude": 40.448129,
+                    "longitude": -79.9461073
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "CLY"
+    },
+    "DON": {
+        "name": "Donner House",
+        "osmId": "27591346",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44190828984376,
+            "longitude": -79.94018101549158
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4419826,
+                    "longitude": -79.9401816
+                },
+                {
+                    "latitude": 40.4421562,
+                    "longitude": -79.9397718
+                },
+                {
+                    "latitude": 40.4420569,
+                    "longitude": -79.9396982
+                },
+                {
+                    "latitude": 40.4420489,
+                    "longitude": -79.9397202
+                },
+                {
+                    "latitude": 40.4418898,
+                    "longitude": -79.9400941
+                },
+                {
+                    "latitude": 40.4418229,
+                    "longitude": -79.9400469
+                },
+                {
+                    "latitude": 40.441811,
+                    "longitude": -79.9400381
+                },
+                {
+                    "latitude": 40.4417559,
+                    "longitude": -79.9401735
+                },
+                {
+                    "latitude": 40.4418887,
+                    "longitude": -79.9402715
+                },
+                {
+                    "latitude": 40.4418851,
+                    "longitude": -79.9402788
+                },
+                {
+                    "latitude": 40.4417331,
+                    "longitude": -79.9406389
+                },
+                {
+                    "latitude": 40.4417705,
+                    "longitude": -79.9406679
+                },
+                {
+                    "latitude": 40.4417647,
+                    "longitude": -79.9406806
+                },
+                {
+                    "latitude": 40.4417589,
+                    "longitude": -79.9406972
+                },
+                {
+                    "latitude": 40.4418201,
+                    "longitude": -79.9407413
+                },
+                {
+                    "latitude": 40.442038,
+                    "longitude": -79.9402225
+                },
+                {
+                    "latitude": 40.4419826,
+                    "longitude": -79.9401816
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "DON"
+    },
+    "FAF": {
+        "name": "Fairfax Apartments",
+        "osmId": "152567349",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44682016328125,
+            "longitude": -79.94829747845878
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4468879,
+                    "longitude": -79.9484646
+                },
+                {
+                    "latitude": 40.446941,
+                    "longitude": -79.9477699
+                },
+                {
+                    "latitude": 40.4468336,
+                    "longitude": -79.947761
+                },
+                {
+                    "latitude": 40.4468267,
+                    "longitude": -79.947845
+                },
+                {
+                    "latitude": 40.4465103,
+                    "longitude": -79.9477995
+                },
+                {
+                    "latitude": 40.446494,
+                    "longitude": -79.9479577
+                },
+                {
+                    "latitude": 40.4467981,
+                    "longitude": -79.9479926
+                },
+                {
+                    "latitude": 40.4467826,
+                    "longitude": -79.9482062
+                },
+                {
+                    "latitude": 40.4464866,
+                    "longitude": -79.948174
+                },
+                {
+                    "latitude": 40.4464723,
+                    "longitude": -79.948335
+                },
+                {
+                    "latitude": 40.4467826,
+                    "longitude": -79.9483832
+                },
+                {
+                    "latitude": 40.4467785,
+                    "longitude": -79.9484691
+                },
+                {
+                    "latitude": 40.4468859,
+                    "longitude": -79.9484755
+                },
+                {
+                    "latitude": 40.4468879,
+                    "longitude": -79.9484646
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "FAF"
+    },
+    "FCL": {
+        "name": "Fifth and Clyde House",
+        "osmId": "1007453778",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44743459164746,
+            "longitude": -79.94593354062499
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4478066,
+                    "longitude": -79.946068
+                },
+                {
+                    "latitude": 40.4477984,
+                    "longitude": -79.9460669
+                },
+                {
+                    "latitude": 40.447756,
+                    "longitude": -79.9460615
+                },
+                {
+                    "latitude": 40.4477575,
+                    "longitude": -79.9460418
+                },
+                {
+                    "latitude": 40.4477423,
+                    "longitude": -79.9460399
+                },
+                {
+                    "latitude": 40.447744,
+                    "longitude": -79.9460165
+                },
+                {
+                    "latitude": 40.4476932,
+                    "longitude": -79.94601
+                },
+                {
+                    "latitude": 40.4477119,
+                    "longitude": -79.9457603
+                },
+                {
+                    "latitude": 40.4476164,
+                    "longitude": -79.945748
+                },
+                {
+                    "latitude": 40.4476131,
+                    "longitude": -79.9457919
+                },
+                {
+                    "latitude": 40.447583,
+                    "longitude": -79.945788
+                },
+                {
+                    "latitude": 40.4474854,
+                    "longitude": -79.9457755
+                },
+                {
+                    "latitude": 40.4474808,
+                    "longitude": -79.9458269
+                },
+                {
+                    "latitude": 40.447535,
+                    "longitude": -79.9458636
+                },
+                {
+                    "latitude": 40.4475306,
+                    "longitude": -79.9459669
+                },
+                {
+                    "latitude": 40.4474828,
+                    "longitude": -79.9460471
+                },
+                {
+                    "latitude": 40.4474653,
+                    "longitude": -79.9460457
+                },
+                {
+                    "latitude": 40.4473443,
+                    "longitude": -79.9460301
+                },
+                {
+                    "latitude": 40.4473791,
+                    "longitude": -79.9455618
+                },
+                {
+                    "latitude": 40.4478399,
+                    "longitude": -79.945621
+                },
+                {
+                    "latitude": 40.4478066,
+                    "longitude": -79.946068
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "FCL"
+    },
+    "FIF": {
+        "name": "Fifth Neville Apartments",
+        "osmId": "545283450",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44736527379483,
+            "longitude": -79.94661442812499
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4472718,
+                    "longitude": -79.9469405
+                },
+                {
+                    "latitude": 40.4473871,
+                    "longitude": -79.9469556
+                },
+                {
+                    "latitude": 40.4474077,
+                    "longitude": -79.9466861
+                },
+                {
+                    "latitude": 40.4476272,
+                    "longitude": -79.946715
+                },
+                {
+                    "latitude": 40.4476387,
+                    "longitude": -79.946563
+                },
+                {
+                    "latitude": 40.4473039,
+                    "longitude": -79.9465189
+                },
+                {
+                    "latitude": 40.4472718,
+                    "longitude": -79.9469405
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "FIF"
+    },
+    "FBA": {
+        "name": "Forbes Beeler Apartments",
+        "osmId": "1203786280",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.444389693750004,
+            "longitude": -79.93915859504517
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4445208,
+                    "longitude": -79.9404393
+                },
+                {
+                    "latitude": 40.4443663,
+                    "longitude": -79.9404584
+                },
+                {
+                    "latitude": 40.4442298,
+                    "longitude": -79.9390369
+                },
+                {
+                    "latitude": 40.4441173,
+                    "longitude": -79.9390447
+                },
+                {
+                    "latitude": 40.4440701,
+                    "longitude": -79.9388465
+                },
+                {
+                    "latitude": 40.4444935,
+                    "longitude": -79.9387319
+                },
+                {
+                    "latitude": 40.4445571,
+                    "longitude": -79.9393432
+                },
+                {
+                    "latitude": 40.4444426,
+                    "longitude": -79.9393671
+                },
+                {
+                    "latitude": 40.4445208,
+                    "longitude": -79.9404393
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "FBA"
+    },
+    "GQ1": {
+        "name": "Greek Quad",
+        "osmId": "27630030",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44531072632608,
+            "longitude": -79.94146966250001
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4453234,
+                    "longitude": -79.9416794
+                },
+                {
+                    "latitude": 40.4453626,
+                    "longitude": -79.9416536
+                },
+                {
+                    "latitude": 40.4453561,
+                    "longitude": -79.9416279
+                },
+                {
+                    "latitude": 40.4453887,
+                    "longitude": -79.9416107
+                },
+                {
+                    "latitude": 40.4453561,
+                    "longitude": -79.9415077
+                },
+                {
+                    "latitude": 40.4454606,
+                    "longitude": -79.9414305
+                },
+                {
+                    "latitude": 40.4454736,
+                    "longitude": -79.9414734
+                },
+                {
+                    "latitude": 40.4455455,
+                    "longitude": -79.9414305
+                },
+                {
+                    "latitude": 40.4455847,
+                    "longitude": -79.9415506
+                },
+                {
+                    "latitude": 40.4456173,
+                    "longitude": -79.9415249
+                },
+                {
+                    "latitude": 40.4456304,
+                    "longitude": -79.9415506
+                },
+                {
+                    "latitude": 40.4456696,
+                    "longitude": -79.9415163
+                },
+                {
+                    "latitude": 40.4456043,
+                    "longitude": -79.9412846
+                },
+                {
+                    "latitude": 40.4454279,
+                    "longitude": -79.9413876
+                },
+                {
+                    "latitude": 40.4454148,
+                    "longitude": -79.9413446
+                },
+                {
+                    "latitude": 40.445245,
+                    "longitude": -79.9414305
+                },
+                {
+                    "latitude": 40.4453234,
+                    "longitude": -79.9416794
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "GQ1"
+    },
+    "GQ2": {
+        "name": "Greek Quad",
+        "osmId": "27630032",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.445793675,
+            "longitude": -79.9415678875333
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4457414,
+                    "longitude": -79.9420828
+                },
+                {
+                    "latitude": 40.4459243,
+                    "longitude": -79.9419884
+                },
+                {
+                    "latitude": 40.4458329,
+                    "longitude": -79.9417566
+                },
+                {
+                    "latitude": 40.4458721,
+                    "longitude": -79.9417309
+                },
+                {
+                    "latitude": 40.445846,
+                    "longitude": -79.9416536
+                },
+                {
+                    "latitude": 40.4458786,
+                    "longitude": -79.9416365
+                },
+                {
+                    "latitude": 40.4458198,
+                    "longitude": -79.9414562
+                },
+                {
+                    "latitude": 40.4457153,
+                    "longitude": -79.9415163
+                },
+                {
+                    "latitude": 40.445748,
+                    "longitude": -79.9416107
+                },
+                {
+                    "latitude": 40.4457218,
+                    "longitude": -79.9416279
+                },
+                {
+                    "latitude": 40.4457872,
+                    "longitude": -79.9417996
+                },
+                {
+                    "latitude": 40.4457676,
+                    "longitude": -79.9418081
+                },
+                {
+                    "latitude": 40.4458068,
+                    "longitude": -79.9419283
+                },
+                {
+                    "latitude": 40.4457349,
+                    "longitude": -79.9419626
+                },
+                {
+                    "latitude": 40.445748,
+                    "longitude": -79.9420227
+                },
+                {
+                    "latitude": 40.4457218,
+                    "longitude": -79.9420313
+                },
+                {
+                    "latitude": 40.4457414,
+                    "longitude": -79.9420828
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "GQ2"
+    },
+    "GQ3": {
+        "name": "Greek Quad",
+        "osmId": "27630031",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.4450429140625,
+            "longitude": -79.94179094217385
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.445037,
+                    "longitude": -79.9419981
+                },
+                {
+                    "latitude": 40.4451327,
+                    "longitude": -79.9419445
+                },
+                {
+                    "latitude": 40.4451023,
+                    "longitude": -79.9418509
+                },
+                {
+                    "latitude": 40.4451775,
+                    "longitude": -79.9418088
+                },
+                {
+                    "latitude": 40.4451299,
+                    "longitude": -79.9416622
+                },
+                {
+                    "latitude": 40.445056,
+                    "longitude": -79.9417036
+                },
+                {
+                    "latitude": 40.4450283,
+                    "longitude": -79.9416183
+                },
+                {
+                    "latitude": 40.4449314,
+                    "longitude": -79.9416726
+                },
+                {
+                    "latitude": 40.445037,
+                    "longitude": -79.9419981
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "GQ3"
+    },
+    "GQ4": {
+        "name": "Greek Quad",
+        "osmId": "27630033",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.445169612499996,
+            "longitude": -79.94227538499
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4450513,
+                    "longitude": -79.9421502
+                },
+                {
+                    "latitude": 40.4451586,
+                    "longitude": -79.9424723
+                },
+                {
+                    "latitude": 40.4452597,
+                    "longitude": -79.9424142
+                },
+                {
+                    "latitude": 40.4452295,
+                    "longitude": -79.9423237
+                },
+                {
+                    "latitude": 40.4453037,
+                    "longitude": -79.9422811
+                },
+                {
+                    "latitude": 40.4452521,
+                    "longitude": -79.9421262
+                },
+                {
+                    "latitude": 40.4451793,
+                    "longitude": -79.942168
+                },
+                {
+                    "latitude": 40.4451538,
+                    "longitude": -79.9420913
+                },
+                {
+                    "latitude": 40.4450513,
+                    "longitude": -79.9421502
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "GQ4"
+    },
+    "GQ5": {
+        "name": "Greek Quad",
+        "osmId": "27630035",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44486034088768,
+            "longitude": -79.94251450624998
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4447014,
+                    "longitude": -79.9424973
+                },
+                {
+                    "latitude": 40.4447436,
+                    "longitude": -79.9426296
+                },
+                {
+                    "latitude": 40.4448154,
+                    "longitude": -79.94259
+                },
+                {
+                    "latitude": 40.444845,
+                    "longitude": -79.9426826
+                },
+                {
+                    "latitude": 40.4449636,
+                    "longitude": -79.9426171
+                },
+                {
+                    "latitude": 40.4449328,
+                    "longitude": -79.9425207
+                },
+                {
+                    "latitude": 40.4449974,
+                    "longitude": -79.942485
+                },
+                {
+                    "latitude": 40.4449563,
+                    "longitude": -79.9423566
+                },
+                {
+                    "latitude": 40.4447014,
+                    "longitude": -79.9424973
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "GQ5"
+    },
+    "GQ6": {
+        "name": "Greek Quad",
+        "osmId": "27630262",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.444666487499994,
+            "longitude": -79.94148357913474
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4447863,
+                    "longitude": -79.9416055
+                },
+                {
+                    "latitude": 40.4446884,
+                    "longitude": -79.941662
+                },
+                {
+                    "latitude": 40.4446587,
+                    "longitude": -79.9415734
+                },
+                {
+                    "latitude": 40.4445805,
+                    "longitude": -79.9416186
+                },
+                {
+                    "latitude": 40.4445307,
+                    "longitude": -79.9414697
+                },
+                {
+                    "latitude": 40.4446089,
+                    "longitude": -79.9414245
+                },
+                {
+                    "latitude": 40.4445787,
+                    "longitude": -79.9413344
+                },
+                {
+                    "latitude": 40.4446766,
+                    "longitude": -79.9412778
+                },
+                {
+                    "latitude": 40.4447863,
+                    "longitude": -79.9416055
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "GQ6"
+    },
+    "HAM": {
+        "name": "Hamerschlag House",
+        "osmId": "27591466",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44135313142273,
+            "longitude": -79.93879856796875
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4414603,
+                    "longitude": -79.9391227
+                },
+                {
+                    "latitude": 40.441437,
+                    "longitude": -79.9390818
+                },
+                {
+                    "latitude": 40.4413318,
+                    "longitude": -79.9390067
+                },
+                {
+                    "latitude": 40.4413712,
+                    "longitude": -79.9389629
+                },
+                {
+                    "latitude": 40.4413792,
+                    "longitude": -79.9388957
+                },
+                {
+                    "latitude": 40.4414781,
+                    "longitude": -79.938967
+                },
+                {
+                    "latitude": 40.4415226,
+                    "longitude": -79.9389773
+                },
+                {
+                    "latitude": 40.4415442,
+                    "longitude": -79.9388153
+                },
+                {
+                    "latitude": 40.4412845,
+                    "longitude": -79.9386359
+                },
+                {
+                    "latitude": 40.4412429,
+                    "longitude": -79.9386898
+                },
+                {
+                    "latitude": 40.4412026,
+                    "longitude": -79.9386627
+                },
+                {
+                    "latitude": 40.441183,
+                    "longitude": -79.9387486
+                },
+                {
+                    "latitude": 40.4412762,
+                    "longitude": -79.9388204
+                },
+                {
+                    "latitude": 40.4412313,
+                    "longitude": -79.9389299
+                },
+                {
+                    "latitude": 40.4411399,
+                    "longitude": -79.9388624
+                },
+                {
+                    "latitude": 40.4410737,
+                    "longitude": -79.9389643
+                },
+                {
+                    "latitude": 40.4411073,
+                    "longitude": -79.9390459
+                },
+                {
+                    "latitude": 40.4413678,
+                    "longitude": -79.9392308
+                },
+                {
+                    "latitude": 40.4414603,
+                    "longitude": -79.9391227
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "HAM"
+    },
+    "HEN": {
+        "name": "Henderson House",
+        "osmId": "27591488",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.440939860937505,
+            "longitude": -79.93940279657708
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4411366,
+                    "longitude": -79.9390797
+                },
+                {
+                    "latitude": 40.441051,
+                    "longitude": -79.9390146
+                },
+                {
+                    "latitude": 40.4408687,
+                    "longitude": -79.93943
+                },
+                {
+                    "latitude": 40.4409592,
+                    "longitude": -79.9394963
+                },
+                {
+                    "latitude": 40.4411366,
+                    "longitude": -79.9390797
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "HEN"
+    },
+    "HIL": {
+        "name": "Highlands Apartments",
+        "osmId": "545283486",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44832795,
+            "longitude": -79.94633720000002
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.448179,
+                    "longitude": -79.9463986
+                },
+                {
+                    "latitude": 40.4482496,
+                    "longitude": -79.9465141
+                },
+                {
+                    "latitude": 40.4484769,
+                    "longitude": -79.9462758
+                },
+                {
+                    "latitude": 40.4484063,
+                    "longitude": -79.9461603
+                },
+                {
+                    "latitude": 40.448179,
+                    "longitude": -79.9463986
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "HIL"
+    },
+    "MMA": {
+        "name": "Margaret Morrison Apartments Greek Housing",
+        "osmId": "27591681",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44167765335146,
+            "longitude": -79.93844062656251
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4418677,
+                    "longitude": -79.9386799
+                },
+                {
+                    "latitude": 40.4415755,
+                    "longitude": -79.9384736
+                },
+                {
+                    "latitude": 40.4416412,
+                    "longitude": -79.9383064
+                },
+                {
+                    "latitude": 40.441936,
+                    "longitude": -79.9385247
+                },
+                {
+                    "latitude": 40.4418677,
+                    "longitude": -79.9386799
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "MMA"
+    },
+    "MCG": {
+        "name": "McGill House",
+        "osmId": "27591456",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.441716910823196,
+            "longitude": -79.9390226859375
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4418379,
+                    "longitude": -79.9391997
+                },
+                {
+                    "latitude": 40.4418939,
+                    "longitude": -79.939064
+                },
+                {
+                    "latitude": 40.4416111,
+                    "longitude": -79.9388564
+                },
+                {
+                    "latitude": 40.4415577,
+                    "longitude": -79.9389929
+                },
+                {
+                    "latitude": 40.4417029,
+                    "longitude": -79.9391005
+                },
+                {
+                    "latitude": 40.4418043,
+                    "longitude": -79.9391731
+                },
+                {
+                    "latitude": 40.4418379,
+                    "longitude": -79.9391997
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "MCG"
+    },
+    "MOE": {
+        "name": "Morewood E-Tower",
+        "osmId": "1002531075",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.445094178125,
+            "longitude": -79.94346148719623
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4452139,
+                    "longitude": -79.9435829
+                },
+                {
+                    "latitude": 40.4451675,
+                    "longitude": -79.9434437
+                },
+                {
+                    "latitude": 40.4451518,
+                    "longitude": -79.943398
+                },
+                {
+                    "latitude": 40.4450358,
+                    "longitude": -79.9430589
+                },
+                {
+                    "latitude": 40.4449304,
+                    "longitude": -79.9431218
+                },
+                {
+                    "latitude": 40.445032,
+                    "longitude": -79.9434204
+                },
+                {
+                    "latitude": 40.4449347,
+                    "longitude": -79.9434746
+                },
+                {
+                    "latitude": 40.444938,
+                    "longitude": -79.9434836
+                },
+                {
+                    "latitude": 40.4449192,
+                    "longitude": -79.9434956
+                },
+                {
+                    "latitude": 40.4449365,
+                    "longitude": -79.9435473
+                },
+                {
+                    "latitude": 40.4449272,
+                    "longitude": -79.9435535
+                },
+                {
+                    "latitude": 40.4449313,
+                    "longitude": -79.9435644
+                },
+                {
+                    "latitude": 40.4449348,
+                    "longitude": -79.9435737
+                },
+                {
+                    "latitude": 40.4449438,
+                    "longitude": -79.9435678
+                },
+                {
+                    "latitude": 40.4449459,
+                    "longitude": -79.9435741
+                },
+                {
+                    "latitude": 40.4449656,
+                    "longitude": -79.9435623
+                },
+                {
+                    "latitude": 40.4449828,
+                    "longitude": -79.9436117
+                },
+                {
+                    "latitude": 40.44508,
+                    "longitude": -79.9435553
+                },
+                {
+                    "latitude": 40.4451095,
+                    "longitude": -79.943643
+                },
+                {
+                    "latitude": 40.4452139,
+                    "longitude": -79.9435829
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "MOE"
+    },
+    "MOR": {
+        "name": "Morewood Gardens",
+        "osmId": "544174675",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44542686132125,
+            "longitude": -79.94324893671877
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4451675,
+                    "longitude": -79.9434437
+                },
+                {
+                    "latitude": 40.4451948,
+                    "longitude": -79.9434284
+                },
+                {
+                    "latitude": 40.4452455,
+                    "longitude": -79.9435796
+                },
+                {
+                    "latitude": 40.4455192,
+                    "longitude": -79.9434162
+                },
+                {
+                    "latitude": 40.44553,
+                    "longitude": -79.9434504
+                },
+                {
+                    "latitude": 40.4456125,
+                    "longitude": -79.9434009
+                },
+                {
+                    "latitude": 40.4455899,
+                    "longitude": -79.9433349
+                },
+                {
+                    "latitude": 40.4455102,
+                    "longitude": -79.9433811
+                },
+                {
+                    "latitude": 40.4455055,
+                    "longitude": -79.9433689
+                },
+                {
+                    "latitude": 40.4455525,
+                    "longitude": -79.9433422
+                },
+                {
+                    "latitude": 40.4455467,
+                    "longitude": -79.943326
+                },
+                {
+                    "latitude": 40.445718,
+                    "longitude": -79.9432229
+                },
+                {
+                    "latitude": 40.4457252,
+                    "longitude": -79.9432424
+                },
+                {
+                    "latitude": 40.4457426,
+                    "longitude": -79.9432315
+                },
+                {
+                    "latitude": 40.4457361,
+                    "longitude": -79.9432134
+                },
+                {
+                    "latitude": 40.445857,
+                    "longitude": -79.9431427
+                },
+                {
+                    "latitude": 40.4458501,
+                    "longitude": -79.9431203
+                },
+                {
+                    "latitude": 40.445936,
+                    "longitude": -79.94307
+                },
+                {
+                    "latitude": 40.4458775,
+                    "longitude": -79.9428975
+                },
+                {
+                    "latitude": 40.4459307,
+                    "longitude": -79.9428698
+                },
+                {
+                    "latitude": 40.4459127,
+                    "longitude": -79.9428114
+                },
+                {
+                    "latitude": 40.4459059,
+                    "longitude": -79.9428154
+                },
+                {
+                    "latitude": 40.4458832,
+                    "longitude": -79.9427489
+                },
+                {
+                    "latitude": 40.4459274,
+                    "longitude": -79.9427186
+                },
+                {
+                    "latitude": 40.4458853,
+                    "longitude": -79.9425953
+                },
+                {
+                    "latitude": 40.4457943,
+                    "longitude": -79.9426489
+                },
+                {
+                    "latitude": 40.4457882,
+                    "longitude": -79.9426307
+                },
+                {
+                    "latitude": 40.4457775,
+                    "longitude": -79.9426365
+                },
+                {
+                    "latitude": 40.4457807,
+                    "longitude": -79.9426461
+                },
+                {
+                    "latitude": 40.4457167,
+                    "longitude": -79.9426802
+                },
+                {
+                    "latitude": 40.4457356,
+                    "longitude": -79.9427335
+                },
+                {
+                    "latitude": 40.4457403,
+                    "longitude": -79.9427308
+                },
+                {
+                    "latitude": 40.4457744,
+                    "longitude": -79.9428307
+                },
+                {
+                    "latitude": 40.4457848,
+                    "longitude": -79.9428246
+                },
+                {
+                    "latitude": 40.4458187,
+                    "longitude": -79.9429295
+                },
+                {
+                    "latitude": 40.4457839,
+                    "longitude": -79.9429525
+                },
+                {
+                    "latitude": 40.4457914,
+                    "longitude": -79.9429737
+                },
+                {
+                    "latitude": 40.4457444,
+                    "longitude": -79.9430015
+                },
+                {
+                    "latitude": 40.4457508,
+                    "longitude": -79.9430251
+                },
+                {
+                    "latitude": 40.4456009,
+                    "longitude": -79.9431108
+                },
+                {
+                    "latitude": 40.4455915,
+                    "longitude": -79.9430832
+                },
+                {
+                    "latitude": 40.4455216,
+                    "longitude": -79.9431249
+                },
+                {
+                    "latitude": 40.4455187,
+                    "longitude": -79.9431171
+                },
+                {
+                    "latitude": 40.4455024,
+                    "longitude": -79.9431088
+                },
+                {
+                    "latitude": 40.4454947,
+                    "longitude": -79.943113
+                },
+                {
+                    "latitude": 40.4454139,
+                    "longitude": -79.9428957
+                },
+                {
+                    "latitude": 40.445432,
+                    "longitude": -79.9428837
+                },
+                {
+                    "latitude": 40.4454184,
+                    "longitude": -79.9428433
+                },
+                {
+                    "latitude": 40.4453053,
+                    "longitude": -79.9429113
+                },
+                {
+                    "latitude": 40.4453331,
+                    "longitude": -79.9429946
+                },
+                {
+                    "latitude": 40.4453164,
+                    "longitude": -79.9430037
+                },
+                {
+                    "latitude": 40.4452291,
+                    "longitude": -79.9430519
+                },
+                {
+                    "latitude": 40.4452842,
+                    "longitude": -79.9432203
+                },
+                {
+                    "latitude": 40.4452791,
+                    "longitude": -79.9432243
+                },
+                {
+                    "latitude": 40.4452956,
+                    "longitude": -79.9432693
+                },
+                {
+                    "latitude": 40.4453098,
+                    "longitude": -79.9433053
+                },
+                {
+                    "latitude": 40.4452428,
+                    "longitude": -79.9433446
+                },
+                {
+                    "latitude": 40.4451518,
+                    "longitude": -79.943398
+                },
+                {
+                    "latitude": 40.4451675,
+                    "longitude": -79.9434437
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "MOR"
+    },
+    "MUD": {
+        "name": "Mudge House",
+        "osmId": "27591703",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.446992600829674,
+            "longitude": -79.94268090625
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4467342,
+                    "longitude": -79.9427595
+                },
+                {
+                    "latitude": 40.44674,
+                    "longitude": -79.9425872
+                },
+                {
+                    "latitude": 40.446823,
+                    "longitude": -79.9425892
+                },
+                {
+                    "latitude": 40.4468273,
+                    "longitude": -79.942583
+                },
+                {
+                    "latitude": 40.4468346,
+                    "longitude": -79.9425775
+                },
+                {
+                    "latitude": 40.4468441,
+                    "longitude": -79.9425732
+                },
+                {
+                    "latitude": 40.4468524,
+                    "longitude": -79.942572
+                },
+                {
+                    "latitude": 40.4468587,
+                    "longitude": -79.9425727
+                },
+                {
+                    "latitude": 40.4468659,
+                    "longitude": -79.9425754
+                },
+                {
+                    "latitude": 40.4468708,
+                    "longitude": -79.9425795
+                },
+                {
+                    "latitude": 40.4468757,
+                    "longitude": -79.9425859
+                },
+                {
+                    "latitude": 40.4468801,
+                    "longitude": -79.9425957
+                },
+                {
+                    "latitude": 40.4469698,
+                    "longitude": -79.9425961
+                },
+                {
+                    "latitude": 40.446976,
+                    "longitude": -79.9425875
+                },
+                {
+                    "latitude": 40.4469834,
+                    "longitude": -79.9425814
+                },
+                {
+                    "latitude": 40.4469921,
+                    "longitude": -79.9425796
+                },
+                {
+                    "latitude": 40.4470013,
+                    "longitude": -79.9425808
+                },
+                {
+                    "latitude": 40.4470094,
+                    "longitude": -79.942583
+                },
+                {
+                    "latitude": 40.4470175,
+                    "longitude": -79.9425876
+                },
+                {
+                    "latitude": 40.447024,
+                    "longitude": -79.9425936
+                },
+                {
+                    "latitude": 40.4470291,
+                    "longitude": -79.9426029
+                },
+                {
+                    "latitude": 40.4471089,
+                    "longitude": -79.942604
+                },
+                {
+                    "latitude": 40.4471038,
+                    "longitude": -79.942777
+                },
+                {
+                    "latitude": 40.4467342,
+                    "longitude": -79.9427595
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "MUD"
+    },
+    "NVL": {
+        "name": "Neville Apartments",
+        "osmId": "545283419",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.4474845375,
+            "longitude": -79.9472160930127
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4474146,
+                    "longitude": -79.9472937
+                },
+                {
+                    "latitude": 40.4474859,
+                    "longitude": -79.9473031
+                },
+                {
+                    "latitude": 40.4474825,
+                    "longitude": -79.9473474
+                },
+                {
+                    "latitude": 40.4475555,
+                    "longitude": -79.947357
+                },
+                {
+                    "latitude": 40.4475638,
+                    "longitude": -79.9472484
+                },
+                {
+                    "latitude": 40.4475476,
+                    "longitude": -79.9472463
+                },
+                {
+                    "latitude": 40.447563,
+                    "longitude": -79.9470448
+                },
+                {
+                    "latitude": 40.4474349,
+                    "longitude": -79.947028
+                },
+                {
+                    "latitude": 40.4474146,
+                    "longitude": -79.9472937
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "NVL"
+    },
+    "ROF": {
+        "name": "Residence on Fifth",
+        "osmId": "739910512",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.4468741875,
+            "longitude": -79.94669515346213
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4469682,
+                    "longitude": -79.9470528
+                },
+                {
+                    "latitude": 40.446736,
+                    "longitude": -79.9469506
+                },
+                {
+                    "latitude": 40.4467677,
+                    "longitude": -79.9465193
+                },
+                {
+                    "latitude": 40.447004,
+                    "longitude": -79.9465508
+                },
+                {
+                    "latitude": 40.4469682,
+                    "longitude": -79.9470528
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "ROF"
+    },
+    "RES": {
+        "name": "Resnik House",
+        "osmId": "27591352",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44248973749999,
+            "longitude": -79.93977246386947
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4426874,
+                    "longitude": -79.9403836
+                },
+                {
+                    "latitude": 40.4425764,
+                    "longitude": -79.9404262
+                },
+                {
+                    "latitude": 40.4425716,
+                    "longitude": -79.9404077
+                },
+                {
+                    "latitude": 40.4425406,
+                    "longitude": -79.9404203
+                },
+                {
+                    "latitude": 40.4425015,
+                    "longitude": -79.9404362
+                },
+                {
+                    "latitude": 40.4424793,
+                    "longitude": -79.9403422
+                },
+                {
+                    "latitude": 40.4424886,
+                    "longitude": -79.9403381
+                },
+                {
+                    "latitude": 40.442401,
+                    "longitude": -79.9399308
+                },
+                {
+                    "latitude": 40.4423873,
+                    "longitude": -79.9399325
+                },
+                {
+                    "latitude": 40.4423777,
+                    "longitude": -79.9399305
+                },
+                {
+                    "latitude": 40.4423693,
+                    "longitude": -79.939922
+                },
+                {
+                    "latitude": 40.4423645,
+                    "longitude": -79.9399105
+                },
+                {
+                    "latitude": 40.4423623,
+                    "longitude": -79.9398986
+                },
+                {
+                    "latitude": 40.4423628,
+                    "longitude": -79.939886
+                },
+                {
+                    "latitude": 40.4423665,
+                    "longitude": -79.9398755
+                },
+                {
+                    "latitude": 40.442373,
+                    "longitude": -79.9398672
+                },
+                {
+                    "latitude": 40.4424092,
+                    "longitude": -79.9398551
+                },
+                {
+                    "latitude": 40.4423559,
+                    "longitude": -79.9398111
+                },
+                {
+                    "latitude": 40.442336,
+                    "longitude": -79.939725
+                },
+                {
+                    "latitude": 40.4423699,
+                    "longitude": -79.939645
+                },
+                {
+                    "latitude": 40.4424526,
+                    "longitude": -79.9396149
+                },
+                {
+                    "latitude": 40.4424914,
+                    "longitude": -79.9396369
+                },
+                {
+                    "latitude": 40.4425918,
+                    "longitude": -79.939601
+                },
+                {
+                    "latitude": 40.4425967,
+                    "longitude": -79.9396243
+                },
+                {
+                    "latitude": 40.4426183,
+                    "longitude": -79.9396179
+                },
+                {
+                    "latitude": 40.4426371,
+                    "longitude": -79.9397077
+                },
+                {
+                    "latitude": 40.4426166,
+                    "longitude": -79.9397152
+                },
+                {
+                    "latitude": 40.4426246,
+                    "longitude": -79.9397516
+                },
+                {
+                    "latitude": 40.4426484,
+                    "longitude": -79.9397469
+                },
+                {
+                    "latitude": 40.4426676,
+                    "longitude": -79.9398448
+                },
+                {
+                    "latitude": 40.4426327,
+                    "longitude": -79.9398572
+                },
+                {
+                    "latitude": 40.4425396,
+                    "longitude": -79.9398909
+                },
+                {
+                    "latitude": 40.4425853,
+                    "longitude": -79.9400997
+                },
+                {
+                    "latitude": 40.4426295,
+                    "longitude": -79.9403091
+                },
+                {
+                    "latitude": 40.4426678,
+                    "longitude": -79.9402977
+                },
+                {
+                    "latitude": 40.4426874,
+                    "longitude": -79.9403836
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "RES"
+    },
+    "ROS1": {
+        "name": "Roselawn Terrace",
+        "osmId": "27591588",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44206490876132,
+            "longitude": -79.938436025
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4420999,
+                    "longitude": -79.9385321
+                },
+                {
+                    "latitude": 40.4418943,
+                    "longitude": -79.9383851
+                },
+                {
+                    "latitude": 40.4419396,
+                    "longitude": -79.9382759
+                },
+                {
+                    "latitude": 40.4421451,
+                    "longitude": -79.9384218
+                },
+                {
+                    "latitude": 40.4420999,
+                    "longitude": -79.9385321
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "ROS1"
+    },
+    "ROS2": {
+        "name": "Roselawn Terrace",
+        "osmId": "27591593",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.4418084,
+            "longitude": -79.9382484
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4418864,
+                    "longitude": -79.9383751
+                },
+                {
+                    "latitude": 40.441932,
+                    "longitude": -79.9382655
+                },
+                {
+                    "latitude": 40.4417295,
+                    "longitude": -79.9381217
+                },
+                {
+                    "latitude": 40.4416848,
+                    "longitude": -79.9382303
+                },
+                {
+                    "latitude": 40.4418864,
+                    "longitude": -79.9383751
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "ROS2"
+    },
+    "ROS3": {
+        "name": "Roselawn Terrace",
+        "osmId": "27591583",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.442199240601745,
+            "longitude": -79.93811677500001
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4422796,
+                    "longitude": -79.9381002
+                },
+                {
+                    "latitude": 40.442073,
+                    "longitude": -79.9379554
+                },
+                {
+                    "latitude": 40.4420273,
+                    "longitude": -79.938066
+                },
+                {
+                    "latitude": 40.4422336,
+                    "longitude": -79.9382136
+                },
+                {
+                    "latitude": 40.4422796,
+                    "longitude": -79.9381002
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "ROS3"
+    },
+    "SCO": {
+        "name": "Scobell House",
+        "osmId": "27591482",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44139034375,
+            "longitude": -79.93952597039365
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4414729,
+                    "longitude": -79.9394724
+                },
+                {
+                    "latitude": 40.4413823,
+                    "longitude": -79.9394047
+                },
+                {
+                    "latitude": 40.4412213,
+                    "longitude": -79.9397873
+                },
+                {
+                    "latitude": 40.4413118,
+                    "longitude": -79.9398514
+                },
+                {
+                    "latitude": 40.4414729,
+                    "longitude": -79.9394724
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "SCO"
+    },
+    "SPT": {
+        "name": "Spirit House",
+        "osmId": "27591497",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.4423305,
+            "longitude": -79.93792979999999
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4424058,
+                    "longitude": -79.9379211
+                },
+                {
+                    "latitude": 40.4422873,
+                    "longitude": -79.9378483
+                },
+                {
+                    "latitude": 40.4422552,
+                    "longitude": -79.9379384
+                },
+                {
+                    "latitude": 40.4423737,
+                    "longitude": -79.9380113
+                },
+                {
+                    "latitude": 40.4424058,
+                    "longitude": -79.9379211
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "SPT"
+    },
+    "STE": {
+        "name": "Stever House",
+        "osmId": "27591700",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44630507764862,
+            "longitude": -79.94267864375001
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4460175,
+                    "longitude": -79.9427927
+                },
+                {
+                    "latitude": 40.4460205,
+                    "longitude": -79.9426991
+                },
+                {
+                    "latitude": 40.4460653,
+                    "longitude": -79.9427019
+                },
+                {
+                    "latitude": 40.4460659,
+                    "longitude": -79.9426545
+                },
+                {
+                    "latitude": 40.4460439,
+                    "longitude": -79.94266
+                },
+                {
+                    "latitude": 40.4460293,
+                    "longitude": -79.9425916
+                },
+                {
+                    "latitude": 40.4461192,
+                    "longitude": -79.9425688
+                },
+                {
+                    "latitude": 40.4461127,
+                    "longitude": -79.9425301
+                },
+                {
+                    "latitude": 40.4461618,
+                    "longitude": -79.9425167
+                },
+                {
+                    "latitude": 40.4461639,
+                    "longitude": -79.942527
+                },
+                {
+                    "latitude": 40.4461857,
+                    "longitude": -79.9425236
+                },
+                {
+                    "latitude": 40.4462007,
+                    "longitude": -79.9426017
+                },
+                {
+                    "latitude": 40.4462216,
+                    "longitude": -79.9425945
+                },
+                {
+                    "latitude": 40.4462481,
+                    "longitude": -79.9425964
+                },
+                {
+                    "latitude": 40.446249,
+                    "longitude": -79.9425432
+                },
+                {
+                    "latitude": 40.4462978,
+                    "longitude": -79.9425458
+                },
+                {
+                    "latitude": 40.4462976,
+                    "longitude": -79.9425634
+                },
+                {
+                    "latitude": 40.4465728,
+                    "longitude": -79.9425744
+                },
+                {
+                    "latitude": 40.4465709,
+                    "longitude": -79.942671
+                },
+                {
+                    "latitude": 40.4465256,
+                    "longitude": -79.9426682
+                },
+                {
+                    "latitude": 40.4465317,
+                    "longitude": -79.9427101
+                },
+                {
+                    "latitude": 40.4465365,
+                    "longitude": -79.942711
+                },
+                {
+                    "latitude": 40.4465358,
+                    "longitude": -79.9427251
+                },
+                {
+                    "latitude": 40.4465539,
+                    "longitude": -79.9427254
+                },
+                {
+                    "latitude": 40.4465522,
+                    "longitude": -79.9427936
+                },
+                {
+                    "latitude": 40.4463291,
+                    "longitude": -79.9427839
+                },
+                {
+                    "latitude": 40.4463281,
+                    "longitude": -79.9428046
+                },
+                {
+                    "latitude": 40.4460175,
+                    "longitude": -79.9427927
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "STE"
+    },
+    "WEL": {
+        "name": "Welch House",
+        "osmId": "27591484",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.441181115625,
+            "longitude": -79.93942506223891
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4412801,
+                    "longitude": -79.939332
+                },
+                {
+                    "latitude": 40.4411878,
+                    "longitude": -79.9392667
+                },
+                {
+                    "latitude": 40.4410267,
+                    "longitude": -79.9396495
+                },
+                {
+                    "latitude": 40.4411209,
+                    "longitude": -79.9397112
+                },
+                {
+                    "latitude": 40.4412801,
+                    "longitude": -79.939332
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "WEL"
+    },
+    "WOO": {
+        "name": "Woodlawn Apartments",
+        "osmId": "27591503",
+        "floors": [],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.442442400000004,
+            "longitude": -79.9377166
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.442546,
+                    "longitude": -79.9376354
+                },
+                {
+                    "latitude": 40.4424408,
+                    "longitude": -79.9375581
+                },
+                {
+                    "latitude": 40.4423388,
+                    "longitude": -79.9377978
+                },
+                {
+                    "latitude": 40.4424441,
+                    "longitude": -79.9378751
+                },
+                {
+                    "latitude": 40.442546,
+                    "longitude": -79.9376354
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "WOO"
+    },
+    "SH": {
+        "name": "Scaife Hall",
+        "osmId": "27550292",
+        "floors": [
+            "B",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "defaultFloor": "1",
+        "labelPosition": {
+            "latitude": 40.44182292525435,
+            "longitude": -79.94731900625
+        },
+        "shapes": [
+            [
+                {
+                    "latitude": 40.4420146,
+                    "longitude": -79.9474045
+                },
+                {
+                    "latitude": 40.4416749,
+                    "longitude": -79.9475333
+                },
+                {
+                    "latitude": 40.4416203,
+                    "longitude": -79.9472383
+                },
+                {
+                    "latitude": 40.441688,
+                    "longitude": -79.9472157
+                },
+                {
+                    "latitude": 40.4417332,
+                    "longitude": -79.9471986
+                },
+                {
+                    "latitude": 40.4417832,
+                    "longitude": -79.947176
+                },
+                {
+                    "latitude": 40.4418193,
+                    "longitude": -79.947161
+                },
+                {
+                    "latitude": 40.441958,
+                    "longitude": -79.9471177
+                },
+                {
+                    "latitude": 40.4419684,
+                    "longitude": -79.947169
+                },
+                {
+                    "latitude": 40.4420146,
+                    "longitude": -79.9474045
+                }
+            ]
+        ],
+        "hitbox": null,
+        "code": "SH"
     }
 }
