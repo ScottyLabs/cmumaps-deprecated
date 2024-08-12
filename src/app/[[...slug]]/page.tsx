@@ -178,34 +178,31 @@ const Page = ({ params, searchParams }: Props) => {
             const outlineResponse = await fetch(
               `/json/floor_plan/${building.code}/${building.code}-${floorLevel}-outline.json`,
             );
-            let outlineJson = {};
             try {
-              outlineJson = await outlineResponse.json();
+              const outlineJson = await outlineResponse.json();
+
+              const rooms = outlineJson['rooms'];
+
+              const searchRooms: SearchRoom[] = [];
+
+              for (const roomId in rooms) {
+                rooms[roomId].id = roomId;
+                rooms[roomId].alias = rooms[roomId]['aliases'][0];
+                rooms[roomId].floor = {
+                  buildingCode: building.code,
+                  level: floorLevel,
+                };
+                delete rooms[roomId].polygon;
+                searchRooms.push(rooms[roomId]);
+              }
+
+              return { buildingCode: building.code, floorLevel, searchRooms };
             } catch {
               console.error(
                 'Failed to load ' + building.code + '-' + floorLevel,
               );
               return { buildingCode: '', floorLevel: '', searchRooms: [] };
             }
-
-            const rooms = outlineJson['rooms'];
-
-            const searchRooms: SearchRoom[] = [];
-
-            for (const roomId in rooms) {
-              rooms[roomId].id = roomId;
-              rooms[roomId].alias = rooms.length
-                ? rooms[roomId]['aliases'][0]
-                : '';
-              rooms[roomId].floor = {
-                buildingCode: building.code,
-                level: floorLevel,
-              };
-              delete rooms[roomId].polygon;
-              searchRooms.push(rooms[roomId]);
-            }
-
-            return { buildingCode: building.code, floorLevel, searchRooms };
           }),
         )
         .flat(2);
