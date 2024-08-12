@@ -275,7 +275,7 @@ const Page = ({ params, searchParams }: Props) => {
     return (
       <>
         {renderClerkIcon()}
-        <div className="fixed bottom-2 right-2">
+        <div className="fixed bottom-16 right-3">
           <a
             target="_blank"
             rel="noreferrer"
