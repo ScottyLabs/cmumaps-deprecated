@@ -128,7 +128,7 @@ const BuildingCard = ({ map, building }: Props) => {
       sortEateries(eateries, eateryData);
 
       return (
-        <div className="mx-2 mb-3 max-h-96 space-y-3 overflow-y-auto">
+        <div className="max-h-96 space-y-3 overflow-y-auto px-2 pb-3">
           {eateries.map((eatery) => {
             const eateryInfo = eateryData[eatery.alias.toUpperCase()];
 
