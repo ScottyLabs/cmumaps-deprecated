@@ -119,7 +119,7 @@ const Schedule = () => {
             rel="noreferrer"
             href="https://s3.andrew.cmu.edu/sio/mpa/secure/export/schedule/F24_schedule.ics"
           >
-            Calendar Export
+            <span className="text-blue-600 underline">Calendar Export</span>
           </a>{' '}
           from SIO
         </p>
