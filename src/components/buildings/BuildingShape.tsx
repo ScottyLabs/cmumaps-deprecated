@@ -18,15 +18,26 @@ interface BuildingShapeProps {
 export default function BuildingShape({ building }: BuildingShapeProps) {
   const dispatch = useAppDispatch();
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
   const renderBuildingPolygon = () => {
+    const getStrokeColor = () => {
+      if (selectedBuilding?.code == building.code) {
+        return '#fde047';
+      } else if (building.floors.length > 0) {
+        return '#6b7280';
+      } else {
+        return '#374151';
+      }
+    };
+
     return (
       <Polygon
         key={building.code}
         points={building.shapes}
         fillColor={building.floors.length > 0 ? '#9ca3af' : '#6b7280'}
         fillOpacity={1}
-        strokeColor={building.floors.length > 0 ? '#6b7280' : '#374151'}
+        strokeColor={getStrokeColor()}
         enabled={false}
       />
     );

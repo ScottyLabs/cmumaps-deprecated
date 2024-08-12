@@ -3,7 +3,12 @@ import React, { ReactElement, useState } from 'react';
 import { IoIosArrowUp } from 'react-icons/io';
 import { IoIosArrowDown } from 'react-icons/io';
 
-import { getIsCardOpen, setFocusedFloor } from '@/lib/features/uiSlice';
+import {
+  getIsCardOpen,
+  selectBuilding,
+  setFocusedFloor,
+  setIsSearchOpen,
+} from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Floor } from '@/types';
 
@@ -197,9 +202,15 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
   return (
     <Wrapper>
       <>
-        <div className="p-1">
+        <button
+          className="p-1"
+          onClick={() => {
+            dispatch(selectBuilding(building));
+            dispatch(setIsSearchOpen(false));
+          }}
+        >
           <Roundel code={building.code} />
-        </div>
+        </button>
         {showFloorPicker ? renderFloorPicker() : renderDefaultView()}
       </>
     </Wrapper>

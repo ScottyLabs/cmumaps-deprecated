@@ -154,7 +154,9 @@ const BuildingCard = ({ map, building }: Props) => {
   return (
     <>
       {renderBuildingImage()}
-      <h2 className="ml-3 mt-2">{building.name}</h2>
+      <h2 className="ml-3 mt-2">
+        {building.name} ({building.code})
+      </h2>
       {renderButtonsRow()}
       {renderEateryCarousel()}
     </>
