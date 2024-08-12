@@ -180,11 +180,18 @@ const Page = ({ params, searchParams }: Props) => {
             if (building.code == 'CUC' && floorLevel !== '2') {
               return { buildingCode: '', floorLevel: '', searchRooms: [] };
             }
-
             const outlineResponse = await fetch(
               `/json/floor_plan/${building.code}/${building.code}-${floorLevel}-outline.json`,
             );
-            const outlineJson = await outlineResponse.json();
+            let outlineJson = {};
+            try {
+              outlineJson = await outlineResponse.json();
+            } catch {
+              console.error(
+                'Failed to load ' + building.code + '-' + floorLevel,
+              );
+              return { buildingCode: '', floorLevel: '', searchRooms: [] };
+            }
 
             const rooms = outlineJson['rooms'];
 

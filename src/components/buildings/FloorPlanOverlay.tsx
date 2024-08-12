@@ -11,7 +11,7 @@ const getFloorAtOrdinal = (
   building: Building,
   ordinal: number,
 ): Floor | null => {
-  const ordinalDif = ordinal - building.defaultOrdinal;
+  const ordinalDif = ordinal - (building.defaultOrdinal || 0);
   const defaultIndex = building.floors.indexOf(building.defaultFloor);
   const floorIndex = defaultIndex + ordinalDif;
 
@@ -56,8 +56,7 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
     );
     const focusedIndex = focusedBuilding.floors.indexOf(focusedFloor.level);
     const ordinal =
-      focusedBuilding.defaultOrdinal + focusedIndex - defaultIndex;
-
+      (focusedBuilding?.defaultOrdinal || 0) + focusedIndex - defaultIndex;
     // get all the floor plans
     const promises = visibleBuildings.map(async (building) => {
       const floor = getFloorAtOrdinal(building, ordinal);
@@ -97,7 +96,6 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
         return null;
       }
     });
-
     Promise.all(promises).then((newFloorPlans) => setFloorPlans(newFloorPlans));
   }, [
     buildings,
@@ -111,7 +109,6 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
   if (!floorPlans) {
     return;
   }
-
   return floorPlans.map((floorPlan) => {
     if (floorPlan) {
       return (
