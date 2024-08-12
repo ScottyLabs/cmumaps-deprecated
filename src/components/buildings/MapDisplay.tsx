@@ -28,7 +28,7 @@ import FloorPlanOverlay from './FloorPlanOverlay';
 
 //#region Constants
 const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 200_000;
-const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 600_000;
+const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 750_000;
 
 const cameraBoundary = {
   centerLatitude: 40.44533940432823,

@@ -34,7 +34,7 @@ interface Props {
  */
 const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
   const dispatch = useAppDispatch();
-
+  console.log(visibleBuildings);
   const buildings = useAppSelector((state) => state.data.buildings);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
@@ -59,44 +59,46 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
       const ordinal =
         (focusedBuilding?.defaultOrdinal || 0) + focusedIndex - defaultIndex;
       // get all the floor plans
-      const promises = visibleBuildings.map(async (building) => {
-        const floor = getFloorAtOrdinal(building, ordinal);
+      const promises = [buildings[focusedFloor.buildingCode]].map(
+        async (building) => {
+          const floor = getFloorAtOrdinal(building, ordinal);
 
-        if (floor) {
-          if (
-            floorPlanMap[floor.buildingCode] &&
-            floorPlanMap[floor.buildingCode][floor.level]
-          ) {
-            return {
-              ...floorPlanMap[floor.buildingCode][floor.level],
-              buildingCode: floor.buildingCode,
-              level: floor.level,
-            };
-          }
-
-          return getFloorPlan(floor).then((floorPlan) => {
-            // be careful of floor plans that doesn't have placements
-            if (floorPlan?.placement) {
-              dispatch(
-                addFloorToFloorPlanMap([
-                  floor.buildingCode,
-                  floor.level,
-                  floorPlan,
-                ]),
-              );
+          if (floor) {
+            if (
+              floorPlanMap[floor.buildingCode] &&
+              floorPlanMap[floor.buildingCode][floor.level]
+            ) {
               return {
-                ...floorPlan,
+                ...floorPlanMap[floor.buildingCode][floor.level],
                 buildingCode: floor.buildingCode,
                 level: floor.level,
               };
-            } else {
-              return null;
             }
-          });
-        } else {
-          return null;
-        }
-      });
+
+            return getFloorPlan(floor).then((floorPlan) => {
+              // be careful of floor plans that doesn't have placements
+              if (floorPlan?.placement) {
+                dispatch(
+                  addFloorToFloorPlanMap([
+                    floor.buildingCode,
+                    floor.level,
+                    floorPlan,
+                  ]),
+                );
+                return {
+                  ...floorPlan,
+                  buildingCode: floor.buildingCode,
+                  level: floor.level,
+                };
+              } else {
+                return null;
+              }
+            });
+          } else {
+            return null;
+          }
+        },
+      );
       Promise.all(promises).then((newFloorPlans) =>
         setFloorPlans(newFloorPlans),
       );
@@ -107,7 +109,6 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
     floorPlanMap,
     focusedFloor?.buildingCode,
     focusedFloor?.level,
-    visibleBuildings,
   ]);
 
   if (!floorPlans) {
