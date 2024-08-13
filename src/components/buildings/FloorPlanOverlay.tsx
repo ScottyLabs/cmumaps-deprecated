@@ -31,7 +31,7 @@ interface Props {
  * The contents of a floor displayed on the map.
  */
 const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
-  visibleBuildings;
+  console.log(visibleBuildings);
 
   const dispatch = useAppDispatch();
   const buildings = useAppSelector((state) => state.data.buildings);
@@ -94,7 +94,7 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
   return overlayData.map((floorPlan) => {
     if (floorPlan) {
       return (
-        // key is the key to prevent re-rendering
+        // key is the key to prevent re-rendering mmmm
         <FloorPlanView
           key={floorPlan.buildingCode + floorPlan.level}
           floorPlan={floorPlan.floorPlan}
