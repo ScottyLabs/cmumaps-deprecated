@@ -4,20 +4,25 @@ import React from 'react';
 
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { FloorPlan, getRoomTypeDetails } from '@/types';
+import { Floor, FloorPlan, getRoomTypeDetails } from '@/types';
 
 import RoomPin, { hasIcon } from '../shared/RoomPin';
 
 interface Props {
-  floorPlan: FloorPlan;
+  floor: Floor;
+  floorPlanMap: Record<string, Record<string, FloorPlan>>;
 }
 
-const FloorPlanView = ({ floorPlan }: Props) => {
+const FloorPlanView = ({ floor, floorPlanMap }: Props) => {
+  const floorPlan = floorPlanMap?.[floor.buildingCode]?.[floor.level];
   const dispatch = useAppDispatch();
 
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const showRoomNames = useAppSelector((state) => state.ui.showRoomNames);
-
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  if (!floorPlan) {
+    return <></>;
+  }
   return Object.entries(floorPlan).map(([roomId, room]) => {
     const roomColors = getRoomTypeDetails(room.type);
 
@@ -52,25 +57,30 @@ const FloorPlanView = ({ floorPlan }: Props) => {
           fillRule="nonzero"
         />
 
-        <Annotation
-          latitude={room.labelPosition.latitude}
-          longitude={room.labelPosition.longitude}
-          onSelect={() => dispatch(claimRoom(room))}
-          onDeselect={() => dispatch(releaseRoom(room))}
-          visible={showRoomNames || showIcon}
-        >
-          <div className={`relative width-[${iconSize}] height-[${iconSize}] `}>
-            <RoomPin room={{ ...room, id: roomId }} />
-            {(showRoomNames || room.alias) && (
+        {focusedFloor.buildingCode == floor.buildingCode &&
+          focusedFloor.level == floor.level && (
+            <Annotation
+              latitude={room.labelPosition.latitude}
+              longitude={room.labelPosition.longitude}
+              onSelect={() => dispatch(claimRoom(room))}
+              onDeselect={() => dispatch(releaseRoom(room))}
+              visible={showRoomNames || showIcon}
+            >
               <div
-                className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
+                className={`relative width-[${iconSize}] height-[${iconSize}] `}
               >
-                {showRoomNames && <div>{room.name}</div>}
-                {room.alias && <div>{room.alias}</div>}
+                <RoomPin room={{ ...room, id: roomId }} />
+                {(showRoomNames || room.alias) && (
+                  <div
+                    className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
+                  >
+                    {showRoomNames && <div>{room.name}</div>}
+                    {room.alias && <div>{room.alias}</div>}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </Annotation>
+            </Annotation>
+          )}
       </div>
     );
   });

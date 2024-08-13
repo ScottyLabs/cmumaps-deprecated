@@ -6,7 +6,7 @@ import scheduleIcon from '@icons/schedule.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
 import { Slide, ToastContainer } from 'react-toastify';
 
@@ -19,7 +19,6 @@ import {
   setEateryData,
   setAvailableRoomImages,
   setSearchMap,
-  setFloorPlanMap,
 } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
@@ -27,6 +26,7 @@ import {
   selectBuilding,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { FloorPlan } from '@/types';
 import { getEateryData } from '@/util/eateryUtils';
 
 const points = [[40.44249719447571, -79.94314319195851]];
@@ -54,7 +54,10 @@ const Page = ({ params, searchParams }: Props) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
-
+  const [floorPlanMap, setFloorPlanMap] = useState<Record<
+    string,
+    Record<string, FloorPlan>
+  > | null>(null);
   // extracting data in the initial loading of the page
   useEffect(() => {
     // makes all required things are loaded
@@ -168,9 +171,7 @@ const Page = ({ params, searchParams }: Props) => {
 
     // set floorPlanMap
     fetch('/json/floorPlanMap.json').then((response) =>
-      response
-        .json()
-        .then((floorPlanMap) => dispatch(setFloorPlanMap(floorPlanMap))),
+      response.json().then((floorPlanMap) => setFloorPlanMap(floorPlanMap)),
     );
   }, [dispatch]);
 
@@ -274,7 +275,7 @@ const Page = ({ params, searchParams }: Props) => {
         />
       </div>
 
-      <MapDisplay mapRef={mapRef} points={points} />
+      <MapDisplay floorPlanMap={floorPlanMap} mapRef={mapRef} points={points} />
     </main>
   );
 };
