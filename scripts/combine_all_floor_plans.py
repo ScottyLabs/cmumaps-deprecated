@@ -83,6 +83,7 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
 
                     for room_id in content["rooms"]:
                         room = content["rooms"][room_id]
+                        room["id"] = room_id
                         room["labelPosition"] = position_on_map(
                             room["labelPosition"], placement, floor_center
                         )
@@ -98,7 +99,7 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
                                     )
                                 )
                             new_coordinates.append(new_ring)
-                        room["polygon"]["coordinates"] = new_coordinates
+                        room["coordinates"] = new_coordinates
 
                     floor_plan_map[building_code][floor_level] = content["rooms"]
 
