@@ -15,10 +15,10 @@ import { zoomOnObject, zoomOnRoom } from '@/components/buildings/mapUtils';
 import ToolBar from '@/components/toolbar/ToolBar';
 import { getFloorPlan } from '@/lib/apiRoutes';
 import {
-  addFloorToSearchMap,
   setBuildings,
   setEateryData,
   setAvailableRoomImages,
+  setSearchMap,
 } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
@@ -26,7 +26,6 @@ import {
   selectBuilding,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, SearchRoom } from '@/types';
 import { getEateryData } from '@/util/eateryUtils';
 
 const points = [[40.44249719447571, -79.94314319195851]];
@@ -156,69 +155,15 @@ const Page = ({ params, searchParams }: Props) => {
     if (!dispatch) {
       return;
     }
+    // set buildings
+    fetch('/json/buildings.json').then((response) =>
+      response.json().then((buildings) => dispatch(setBuildings(buildings))),
+    );
 
-    const getBuildings = async () => {
-      // set buildings
-      const response = await fetch('/json/buildings.json');
-      const buildings: Building[] = await response.json();
-      dispatch(setBuildings(buildings));
-
-      // set floors
-      const promises = Object.values(buildings)
-        .map((building) =>
-          building.floors.map(async (floorLevel) => {
-            // only loads GHC, WEH, and NSH for now
-            if (!['GHC', 'WEH', 'NSH', 'CUC'].includes(building.code)) {
-              return { buildingCode: '', floorLevel: '', searchRooms: [] };
-            }
-
-            if (building.code == 'CUC' && floorLevel !== '2') {
-              return { buildingCode: '', floorLevel: '', searchRooms: [] };
-            }
-            const outlineResponse = await fetch(
-              `/json/floor_plan/${building.code}/${building.code}-${floorLevel}-outline.json`,
-            );
-            try {
-              const outlineJson = await outlineResponse.json();
-
-              const rooms = outlineJson['rooms'];
-
-              const searchRooms: SearchRoom[] = [];
-
-              for (const roomId in rooms) {
-                rooms[roomId].id = roomId;
-                rooms[roomId].alias = rooms[roomId]['aliases'][0];
-                rooms[roomId].floor = {
-                  buildingCode: building.code,
-                  level: floorLevel,
-                };
-                delete rooms[roomId].polygon;
-                searchRooms.push(rooms[roomId]);
-              }
-
-              return { buildingCode: building.code, floorLevel, searchRooms };
-            } catch {
-              console.error(
-                'Failed to load ' + building.code + '-' + floorLevel,
-              );
-              return { buildingCode: '', floorLevel: '', searchRooms: [] };
-            }
-          }),
-        )
-        .flat(2);
-
-      Promise.all(promises).then((responses) => {
-        responses.forEach(({ buildingCode, floorLevel, searchRooms }) => {
-          if (buildingCode) {
-            dispatch(
-              addFloorToSearchMap([buildingCode, floorLevel, searchRooms]),
-            );
-          }
-        });
-      });
-    };
-
-    getBuildings();
+    // set searchMap
+    fetch('/json/searchMap.json').then((response) =>
+      response.json().then((buildings) => dispatch(setSearchMap(buildings))),
+    );
   }, [dispatch]);
 
   // update the page title

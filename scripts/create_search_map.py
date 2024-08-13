@@ -35,5 +35,5 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
 
                 search_map[building_code][floor_level] = search_rooms
 
-with open("public/json/search-rooms.json", "w") as file:
+with open("public/json/searchMap.json", "w") as file:
     file.write(json.dumps(search_map))

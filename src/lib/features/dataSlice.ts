@@ -9,7 +9,6 @@ import {
   FloorPlan,
   FloorPlanMap,
   SearchMap,
-  SearchRoom,
 } from '@/types';
 
 interface DataState {
@@ -47,16 +46,10 @@ const dataSlice = createSlice({
       state.availableRoomImages = action.payload;
     },
 
-    addFloorToSearchMap(
-      state,
-      action: { payload: [BuildingCode, FloorLevel, SearchRoom[]] },
-    ) {
-      const [buidlingCode, floorLevel, floorPlan] = action.payload;
-      if (!state.searchMap[buidlingCode]) {
-        state.searchMap[buidlingCode] = {};
-      }
-      state.searchMap[buidlingCode][floorLevel] = floorPlan;
+    setSearchMap(state, action) {
+      state.searchMap = action.payload;
     },
+
     addFloorToFloorPlanMap(
       state,
       action: { payload: [BuildingCode, FloorLevel, FloorPlan] },
@@ -74,7 +67,7 @@ export const {
   setBuildings,
   setEateryData,
   setCourseData,
-  addFloorToSearchMap,
+  setSearchMap,
   addFloorToFloorPlanMap,
   setAvailableRoomImages,
 } = dataSlice.actions;
