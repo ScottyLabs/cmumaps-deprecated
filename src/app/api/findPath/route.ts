@@ -1,4 +1,5 @@
 import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
+import { Console } from 'console';
 import fs from 'fs';
 import { Position } from 'geojson';
 import { Coordinate } from 'mapkit-react';
@@ -126,9 +127,35 @@ const getFloorCenter = (rooms: Room[]): Position => {
   return [(minX + maxX) / 2, (minY + maxY) / 2];
 };
 export async function POST(req: NextRequest) {
+  console.log('findPath');
   let nodes = {};
-  for (const buildingCode of ['GHC', 'WEH', 'NSH']) {
+  for (const buildingCode of [
+    'AN',
+    'BH',
+    'CFA',
+    'CUC',
+    'DH',
+    'GHC',
+    'HBH',
+    'HH',
+    'HL',
+    'HOA',
+    'MI',
+    'MM',
+    'NSH',
+    'outside',
+    'PH',
+    'POS',
+    'RES',
+    'SC',
+    'TCS',
+    'TEP',
+    'WEH',
+  ]) {
     for (const level of [
+      'LL',
+      'PH',
+      'EV',
       'A',
       'B',
       'C',
@@ -160,9 +187,14 @@ export async function POST(req: NextRequest) {
         fs.readFileSync(graphPath, 'utf-8'),
       );
       const outline = JSON.parse(fs.readFileSync(outlinePath, 'utf-8'));
-
+      if (!outline.placement) {
+        continue;
+      }
       const rooms = outline.rooms;
       const center = getFloorCenter(rooms);
+      if (!outline.placement) {
+        console.log(buildingCode, level);
+      }
 
       Object.keys(f).forEach((id: string) => {
         const node = f[id];
@@ -181,9 +213,12 @@ export async function POST(req: NextRequest) {
   }
   const { rooms } = await req.json();
   if (!rooms || rooms.length !== 2) {
-    return Response.error();
+    return Response.json({ error: 'Invalid rooms' }, { status: 400 });
   }
+  console.log(rooms);
   // Find the path
   const recommendedPath = findPath(rooms, nodes);
+  console.log(recommendedPath);
+
   return Response.json(recommendedPath);
 }
