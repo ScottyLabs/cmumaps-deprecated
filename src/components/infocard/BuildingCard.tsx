@@ -38,6 +38,10 @@ const BuildingCard = ({ map, building }: Props) => {
   };
 
   const renderEateryCarousel = () => {
+    if (!eateryData) {
+      return;
+    }
+
     const renderTitle = (eatery: SearchRoom) => {
       return <h3> {eatery.alias}</h3>;
     };

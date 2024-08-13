@@ -13,7 +13,7 @@ import {
 
 interface DataState {
   buildings: Record<BuildingCode, Building> | null;
-  eateryData: EateryData;
+  eateryData: EateryData | null;
   searchMap: SearchMap;
   floorPlanMap: FloorPlanMap;
   courseData: CourseData | null;
@@ -22,7 +22,7 @@ interface DataState {
 
 const initialState: DataState = {
   buildings: null,
-  eateryData: {},
+  eateryData: null,
   searchMap: {},
   floorPlanMap: {},
   courseData: null,
