@@ -121,7 +121,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
       return horizantalOverlap && verticalOverlap;
     });
-    setVisibleBuildings(buildingsToFocus);
+    if (buildingsToFocus.length != visibleBuildings.length) {
+      setVisibleBuildings(buildingsToFocus);
+    }
   };
 
   // React to pan/zoom events

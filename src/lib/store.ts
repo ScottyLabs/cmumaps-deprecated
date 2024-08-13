@@ -1,11 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import uiSlice from './features/uiSlice';
-import navSlice from './features/navSlice';
+
+import { apiSlice } from './features/apiSlice';
 import dataSlice from './features/dataSlice';
+import navSlice from './features/navSlice';
+import uiSlice from './features/uiSlice';
 
 export const makeStore = () => {
   return configureStore({
-    reducer: { ui: uiSlice, nav: navSlice, data: dataSlice },
+    reducer: {
+      ui: uiSlice,
+      nav: navSlice,
+      data: dataSlice,
+      [apiSlice.reducerPath]: apiSlice.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(apiSlice.middleware),
   });
 };
 

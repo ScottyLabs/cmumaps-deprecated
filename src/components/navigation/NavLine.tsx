@@ -29,16 +29,14 @@ const NavLine = () => {
   //   options
   // );
   useEffect(() => {
-    setTimeout(() => {
-      navigator?.geolocation?.getCurrentPosition((pos) => {
-        const coord = {
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-        };
+    navigator?.geolocation?.getCurrentPosition((pos) => {
+      const coord = {
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+      };
 
-        dispatch(setUserPosition(coord));
-      });
-    }, 500);
+      dispatch(setUserPosition(coord));
+    });
   }, []);
 
   return (

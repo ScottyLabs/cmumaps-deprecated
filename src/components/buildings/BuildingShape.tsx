@@ -31,7 +31,7 @@ const buildingCodeToShapeFillColor = {
  */
 export default function BuildingShape({ building }: BuildingShapeProps) {
   const dispatch = useAppDispatch();
-  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const focusedFloor = useAppSelector((state) => state.ui.isFocusedFloor);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
   const renderBuildingPolygon = () => {

@@ -30,22 +30,20 @@ const SearchResults = ({ map, query, userPosition }: SearchResultsProps) => {
 
   useEffect(() => {
     if (buildings) {
-      setTimeout(() => {
-        if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
-          setRoomSearchResults(
-            searchRoom(
-              buildings,
-              query,
-              searchMap,
-              searchMode as 'rooms' | 'food' | 'restrooms' | 'study',
-            ),
-          );
-        } else if (searchMode === 'food') {
-          setRoomSearchResults(
-            searchFood(buildings, query, searchMap, searchMode),
-          );
-        }
-      }, 500);
+      if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
+        setRoomSearchResults(
+          searchRoom(
+            buildings,
+            query,
+            searchMap,
+            searchMode as 'rooms' | 'food' | 'restrooms' | 'study',
+          ),
+        );
+      } else if (searchMode === 'food') {
+        setRoomSearchResults(
+          searchFood(buildings, query, searchMap, searchMode),
+        );
+      }
     }
   }, [buildings, query, searchMap, searchMode]);
 

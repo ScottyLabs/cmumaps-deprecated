@@ -11,6 +11,8 @@ interface UIState {
   selectedBuilding: Building | null;
 
   focusedFloor: Floor | null;
+  isFocusedFloor: boolean;
+
   isSearchOpen: boolean;
 
   isCardWrapperCollapsed: boolean;
@@ -25,6 +27,7 @@ const initialState: UIState = {
   selectedRoom: null,
   selectedBuilding: null,
   focusedFloor: null,
+  isFocusedFloor: false,
   isSearchOpen: false,
   isCardWrapperCollapsed: true,
   showRoomNames: false,
@@ -49,6 +52,7 @@ const uiSlice = createSlice({
     },
     setFocusedFloor(state, action: PayloadAction<Floor | null>) {
       state.focusedFloor = action.payload;
+      state.isFocusedFloor = !!action.payload;
     },
     selectBuilding(state, action) {
       state.selectedBuilding = action.payload;

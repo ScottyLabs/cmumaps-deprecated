@@ -33,101 +33,33 @@ interface Props {
  * The contents of a floor displayed on the map.
  */
 const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
-  visibleBuildings;
-
-  const dispatch = useAppDispatch();
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 
-  const [floorPlans, setFloorPlans] = useState<
-    ((FloorPlan & Floor) | null)[] | null
-  >(null);
-
-  const floorPlanMapRef = useRef({});
-
-  const addToFloorPlanMaps = useCallback(
-    (buildingCode: string, floorLevel: string, floorPlan: FloorPlan) => {
-      if (!floorPlanMapRef.current[buildingCode]) {
-        floorPlanMapRef.current[buildingCode] = {};
-      }
-      floorPlanMapRef.current[buildingCode][floorLevel] = floorPlan;
-
-      dispatch(addFloorToFloorPlanMap([buildingCode, floorLevel, floorPlan]));
-    },
-    [dispatch],
-  );
-
   // fetch the floor plan from floor
-  useEffect(() => {
-    if (!buildings || !focusedFloor?.buildingCode || !focusedFloor?.level) {
-      return;
-    }
-
-    // some math to get the correct ordinal
-    const focusedBuilding = buildings[focusedFloor?.buildingCode];
-    const defaultIndex = focusedBuilding.floors.indexOf(
-      focusedBuilding.defaultFloor,
-    );
-
-    const focusedIndex = focusedBuilding.floors.indexOf(focusedFloor.level);
-    const ordinal =
-      (focusedBuilding?.defaultOrdinal || 0) + focusedIndex - defaultIndex;
-
-    // get all the floor plans
-    const promises = visibleBuildings.map(async (building) => {
-      const floor = getFloorAtOrdinal(building, ordinal);
-
-      if (floor) {
-        if (
-          floorPlanMapRef.current[floor.buildingCode] &&
-          floorPlanMapRef.current[floor.buildingCode][floor.level]
-        ) {
-          return {
-            ...floorPlanMapRef.current[floor.buildingCode][floor.level],
-            buildingCode: floor.buildingCode,
-            level: floor.level,
-          };
-        }
-
-        return getFloorPlan(floor).then((floorPlan) => {
-          // be careful of floor plans that doesn't have placements
-          if (floorPlan?.placement) {
-            addToFloorPlanMaps(floor.buildingCode, floor.level, floorPlan);
-            return {
-              ...floorPlan,
-              buildingCode: floor.buildingCode,
-              level: floor.level,
-            };
-          } else {
-            return null;
-          }
-        });
-      } else {
-        return null;
-      }
-    });
-
-    Promise.all(promises).then((newFloorPlans) => setFloorPlans(newFloorPlans));
-  }, [
-    addToFloorPlanMaps,
-    buildings,
-    dispatch,
-    focusedFloor?.buildingCode,
-    focusedFloor.level,
-    visibleBuildings,
-  ]);
-
-  if (!floorPlans) {
+  if (!buildings || !focusedFloor?.buildingCode || !focusedFloor?.level) {
     return;
   }
-  return floorPlans.map((floorPlan) => {
-    if (floorPlan) {
+
+  // some math to get the correct ordinal
+  const focusedBuilding = buildings[focusedFloor?.buildingCode];
+  const defaultIndex = focusedBuilding.floors.indexOf(
+    focusedBuilding.defaultFloor,
+  );
+
+  const focusedIndex = focusedBuilding.floors.indexOf(focusedFloor.level);
+  const ordinal =
+    (focusedBuilding?.defaultOrdinal || 0) + focusedIndex - defaultIndex;
+
+  const visibleFloors = visibleBuildings.map((building) =>
+    getFloorAtOrdinal(building, ordinal),
+  );
+
+  return visibleFloors.map((floor) => {
+    if (floor) {
       return (
         // key is the key to prevent re-rendering
-        <FloorPlanView
-          key={floorPlan.buildingCode + floorPlan.level}
-          floorPlan={floorPlan}
-        />
+        <FloorPlanView key={floor.buildingCode + floor.level} floor={floor} />
       );
     }
   });

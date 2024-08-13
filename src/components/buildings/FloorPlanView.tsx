@@ -1,17 +1,18 @@
 import { Position } from 'geojson';
 import { Annotation, Coordinate, Polygon } from 'mapkit-react';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { useGetFloorQuery } from '@/lib/features/apiSlice';
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { FloorPlan, getRoomTypeDetails, Room } from '@/types';
+import { Floor, FloorPlan, getRoomTypeDetails, Room } from '@/types';
 
 import RoomPin, { hasIcon } from '../shared/RoomPin';
 import { positionOnMap } from './mapUtils';
 
 interface Props {
-  floorPlan: FloorPlan;
+  floor: Floor;
 }
 
 export const getFloorCenter = (rooms: Room[]): Position => {
@@ -32,12 +33,23 @@ export const getFloorCenter = (rooms: Room[]): Position => {
   return [(minX + maxX) / 2, (minY + maxY) / 2];
 };
 
-const FloorPlanView = ({ floorPlan }: Props) => {
+const FloorPlanView = ({ floor }: Props) => {
   const dispatch = useAppDispatch();
 
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const showRoomNames = useAppSelector((state) => state.ui.showRoomNames);
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 
+  const floorPlan = useAppSelector(
+    (state) => state.data.floorPlanMap[floor.buildingCode]?.[floor.level],
+  );
+  // const { data } = useGetFloorQuery({
+  //   buildingCode: floor.buildingCode,
+  //   floorLevel: floor.level,
+  // });
+  if (!floorPlan) {
+    return null;
+  }
   const { placement, rooms } = floorPlan;
 
   // Compute the center position of the bounding box of the current floor
@@ -72,7 +84,7 @@ const FloorPlanView = ({ floorPlan }: Props) => {
     };
 
     return (
-      <div key={room.id}>
+      <React.Fragment key={room.id}>
         <Polygon
           points={[...pointsSrc]}
           selected={selectedRoom?.id === roomId}
@@ -89,26 +101,30 @@ const FloorPlanView = ({ floorPlan }: Props) => {
           fillRule="nonzero"
         />
 
-        <Annotation
-          latitude={labelPos.latitude}
-          longitude={labelPos.longitude}
-          onSelect={() => dispatch(claimRoom(room))}
-          onDeselect={() => dispatch(releaseRoom(room))}
-          visible={showRoomNames || showIcon}
-        >
-          <div className={`relative width-[${iconSize}] height-[${iconSize}] `}>
-            <RoomPin room={{ ...room, id: roomId }} />
-            {(showRoomNames || room.alias) && (
-              <div
-                className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
-              >
-                {showRoomNames && <div>{room.name}</div>}
-                {room.alias && <div>{room.alias}</div>}
-              </div>
-            )}
-          </div>
-        </Annotation>
-      </div>
+        {focusedFloor.buildingCode == floor.buildingCode && (
+          <Annotation
+            latitude={labelPos.latitude}
+            longitude={labelPos.longitude}
+            onSelect={() => dispatch(claimRoom(room))}
+            onDeselect={() => dispatch(releaseRoom(room))}
+            visible={showRoomNames || showIcon}
+          >
+            <div
+              className={`relative width-[${iconSize}] height-[${iconSize}] `}
+            >
+              <RoomPin room={{ ...room, id: roomId }} />
+              {(showRoomNames || room.alias) && (
+                <div
+                  className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
+                >
+                  {showRoomNames && <div>{room.name}</div>}
+                  {room.alias && <div>{room.alias}</div>}
+                </div>
+              )}
+            </div>
+          </Annotation>
+        )}
+      </React.Fragment>
     );
   });
 };

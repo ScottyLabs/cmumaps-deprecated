@@ -19,6 +19,7 @@ import {
   setBuildings,
   setEateryData,
   setAvailableRoomImages,
+  addFloorToFloorPlanMap,
 } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
@@ -168,13 +169,6 @@ const Page = ({ params, searchParams }: Props) => {
         .map((building) =>
           building.floors.map(async (floorLevel) => {
             // only loads GHC, WEH, and NSH for now
-            if (!['GHC', 'WEH', 'NSH', 'CUC'].includes(building.code)) {
-              return { buildingCode: '', floorLevel: '', searchRooms: [] };
-            }
-
-            if (building.code == 'CUC' && floorLevel !== '2') {
-              return { buildingCode: '', floorLevel: '', searchRooms: [] };
-            }
             const outlineResponse = await fetch(
               `/json/floor_plan/${building.code}/${building.code}-${floorLevel}-outline.json`,
             );
@@ -192,10 +186,18 @@ const Page = ({ params, searchParams }: Props) => {
                   buildingCode: building.code,
                   level: floorLevel,
                 };
+                const polygon = rooms[roomId].polygon;
                 delete rooms[roomId].polygon;
                 searchRooms.push(rooms[roomId]);
+                rooms[roomId].polygon = polygon;
               }
-
+              dispatch(
+                addFloorToFloorPlanMap([
+                  building.code,
+                  floorLevel,
+                  { rooms, placement: outlineJson['placement'] },
+                ]),
+              );
               return { buildingCode: building.code, floorLevel, searchRooms };
             } catch {
               console.error(
@@ -299,8 +301,8 @@ const Page = ({ params, searchParams }: Props) => {
         <ToolBar
           map={mapRef.current}
           userPosition={{
-            x: points[points.length - 1][0],
-            y: points[points.length - 1][1],
+            x: 0,
+            y: 0,
           }}
         />
 

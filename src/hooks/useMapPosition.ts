@@ -10,7 +10,7 @@ export interface UseMapPositionHandlers {
 }
 
 const UPDATE_PERIOD_MS = 150;
-const MAX_UPDATE_TIME_MS = 5000;
+const MAX_UPDATE_TIME_MS = 300;
 
 /**
  * Hook that can be used to know when the map's panning position/zoom changes

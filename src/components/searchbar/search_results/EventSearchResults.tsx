@@ -28,17 +28,15 @@ const EventSearchResults = ({ query }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (query.length > 0) {
-        setIsLoading(true);
-        searchEvents(query).then((result) => {
-          setIsLoading(false);
-          setSearchResults(result);
-        });
-      } else {
-        setSearchResults([]);
-      }
-    }, 500);
+    if (query.length > 0) {
+      setIsLoading(true);
+      searchEvents(query).then((result) => {
+        setIsLoading(false);
+        setSearchResults(result);
+      });
+    } else {
+      setSearchResults([]);
+    }
   }, [query]);
 
   if (isLoading) {

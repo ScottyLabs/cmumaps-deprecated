@@ -60,15 +60,13 @@ const CourseSearchResults = ({ query }: Props) => {
 
   // load course data
   useEffect(() => {
-    setTimeout(() => {
-      if (!courseData) {
-        fetch('/json/courses.json').then((response) =>
-          response.json().then((data) => {
-            dispatch(setCourseData(data));
-          }),
-        );
-      }
-    }, 500);
+    if (!courseData) {
+      fetch('/json/courses.json').then((response) =>
+        response.json().then((data) => {
+          dispatch(setCourseData(data));
+        }),
+      );
+    }
   }, [courseData, dispatch]);
 
   // search courses

@@ -1,5 +1,7 @@
 'use client';
 
+import { setupListeners } from '@reduxjs/toolkit/query/react';
+
 import { useRef } from 'react';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -15,6 +17,7 @@ export default function StoreProvider({
   if (!storeRef.current) {
     // Create the store instance the first time this renders
     storeRef.current = makeStore();
+    setupListeners(storeRef.current.dispatch);
   }
 
   return <Provider store={storeRef.current}>{children}</Provider>;
