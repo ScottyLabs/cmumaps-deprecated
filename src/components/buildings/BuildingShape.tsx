@@ -60,7 +60,7 @@ export default function BuildingShape({ building }: BuildingShapeProps) {
         key={building.code}
         points={building.shapes}
         fillColor={getFillColor()}
-        fillOpacity={buildingCodeToShapeFillColor[building.code] ? 0.6 : 1}
+        fillOpacity={buildingCodeToShapeFillColor[building.code] ? 0.8 : 1}
         strokeColor={getStrokeColor()}
         enabled={false}
       />
