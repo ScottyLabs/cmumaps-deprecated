@@ -1,6 +1,8 @@
 import math
 import os
 import json
+from shapely import simplify, to_geojson  # type: ignore
+from shapely.geometry import shape  # type: ignore
 
 # The number of meters in a degree.
 # Values computed for the Pittsburgh region using https://stackoverflow.com/a/51765950/4652564
@@ -62,6 +64,10 @@ def position_on_map(
 floor_plan_map = dict()
 
 
+def simplify_polygon(polygon):
+    return simplify(shape(polygon), tolerance=5)
+
+
 for root, dirs, files in os.walk("public/json/floor_plan"):
     building_code = root.split("/")[-1]
 
@@ -87,6 +93,15 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
                         room["labelPosition"] = position_on_map(
                             room["labelPosition"], placement, floor_center
                         )
+
+                        room["floor"] = dict()
+                        room["floor"]["buildingCode"] = building_code
+                        room["floor"]["level"] = floor_level
+
+                        # room["polygon"] = json.loads(
+                        #     to_geojson(simplify_polygon(rooms[room_id]["polygon"]))
+                        # )
+
                         new_coordinates = []
                         for ring in room["polygon"]["coordinates"]:
                             new_ring = []
