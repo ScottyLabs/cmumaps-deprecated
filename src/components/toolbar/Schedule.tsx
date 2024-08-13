@@ -132,6 +132,18 @@ const Schedule = () => {
             onChange={handleFileChange}
           />
         </p>
+
+        <p className="italic">
+          Dear ScottyLabs Legal Team, what legal disclaimer do I need to put
+          here to allow CMU Maps to legally store the schedule of the CMU
+          students in our database?
+        </p>
+
+        <p>
+          “By uploading your schedule, you are legally allowing CMU Maps and
+          ScottyLabs to store your schedule data and we won’t take any legal
+          responsibility if our database got hacked”
+        </p>
       </>
     );
   };
