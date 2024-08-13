@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppSelector } from '@/lib/hooks';
 import { Building, Floor, FloorPlan } from '@/types';
 
 import FloorPlanView from './FloorPlanView';
@@ -25,79 +25,44 @@ const getFloorAtOrdinal = (
 
 interface Props {
   visibleBuildings: Building[];
+  floorPlanMap: Record<string, Record<string, FloorPlan>>;
 }
 
 /**
  * The contents of a floor displayed on the map.
  */
-const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
-  console.log(visibleBuildings);
-
-  const dispatch = useAppDispatch();
+const FloorPlanOverlay = ({ visibleBuildings, floorPlanMap }: Props) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
-  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
-
   const [overlayData, setOverlayData] = useState<
     (({ floorPlan: FloorPlan } & Floor) | null)[] | null
   >(null);
 
-  // fetch the floor plan from floor
-  useEffect(() => {
-    if (!buildings || !focusedFloor?.buildingCode || !focusedFloor?.level) {
-      return;
-    }
-
-    // some math to get the correct ordinal
-    const focusedBuilding = buildings[focusedFloor?.buildingCode];
-    const defaultIndex = focusedBuilding.floors.indexOf(
-      focusedBuilding.defaultFloor,
-    );
-
-    const focusedIndex = focusedBuilding.floors.indexOf(focusedFloor.level);
-    const ordinal =
-      (focusedBuilding?.defaultOrdinal || 0) + focusedIndex - defaultIndex;
-
-    // get all the floor plans
-    const newFloorPlans = visibleBuildings.map((building) => {
-      const floor = getFloorAtOrdinal(building, ordinal);
-
-      if (floor) {
-        if (
-          floorPlanMap[floor.buildingCode] &&
-          floorPlanMap[floor.buildingCode][floor.level]
-        ) {
-          return {
-            floorPlan: floorPlanMap[floor.buildingCode][floor.level],
-            buildingCode: floor.buildingCode,
-            level: floor.level,
-          };
-        }
-      } else {
-        return null;
-      }
-    });
-
-    setOverlayData(newFloorPlans);
-  }, [
-    buildings,
-    dispatch,
-    floorPlanMap,
-    focusedFloor?.buildingCode,
-    focusedFloor.level,
-    visibleBuildings,
-  ]);
-
-  if (!overlayData) {
+  if (!buildings || !focusedFloor?.buildingCode || !focusedFloor?.level) {
     return;
   }
-  return overlayData.map((floorPlan) => {
-    if (floorPlan) {
+
+  // some math to get the correct ordinal
+  const focusedBuilding = buildings[focusedFloor?.buildingCode];
+  const defaultIndex = focusedBuilding.floors.indexOf(
+    focusedBuilding.defaultFloor,
+  );
+
+  const focusedIndex = focusedBuilding.floors.indexOf(focusedFloor.level);
+  const ordinal =
+    (focusedBuilding?.defaultOrdinal || 0) + focusedIndex - defaultIndex;
+
+  const visibleFloors = visibleBuildings.map((building) => {
+    return getFloorAtOrdinal(building, ordinal);
+  });
+  return visibleFloors.map((floor) => {
+    if (floor) {
       return (
         // key is the key to prevent re-rendering mmmm
         <FloorPlanView
-          key={floorPlan.buildingCode + floorPlan.level}
-          floorPlan={floorPlan.floorPlan}
+          key={floor.buildingCode + floor.level}
+          floor={floor}
+          floorPlanMap={floorPlanMap}
         />
       );
     }
