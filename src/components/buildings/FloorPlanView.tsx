@@ -1,36 +1,16 @@
-import { Position } from 'geojson';
-import { Annotation, Coordinate, Polygon } from 'mapkit-react';
+import { Annotation, Polygon } from 'mapkit-react';
 
 import React from 'react';
 
 import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { FloorPlan, getRoomTypeDetails, Room } from '@/types';
+import { FloorPlan, getRoomTypeDetails } from '@/types';
 
 import RoomPin, { hasIcon } from '../shared/RoomPin';
-import { positionOnMap } from './mapUtils';
 
 interface Props {
   floorPlan: FloorPlan;
 }
-
-export const getFloorCenter = (rooms: Room[]): Position => {
-  let points: Position[] = Object.values(rooms).flatMap((room: Room) =>
-    room.polygon.coordinates.flat(),
-  );
-
-  points = points.filter((e) => e !== undefined);
-
-  const allX = points.map((p) => p[0]);
-  const allY = points.map((p) => p[1]);
-
-  const minX = Math.min(...allX);
-  const maxX = Math.max(...allX);
-  const minY = Math.min(...allY);
-  const maxY = Math.max(...allY);
-
-  return [(minX + maxX) / 2, (minY + maxY) / 2];
-};
 
 const FloorPlanView = ({ floorPlan }: Props) => {
   const dispatch = useAppDispatch();
@@ -38,25 +18,8 @@ const FloorPlanView = ({ floorPlan }: Props) => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const showRoomNames = useAppSelector((state) => state.ui.showRoomNames);
 
-  const { placement, rooms } = floorPlan;
-
-  // Compute the center position of the bounding box of the current floor
-  // (Will be used as the rotation center)
-  const center = getFloorCenter(Object.values(rooms));
-
-  const convertToMap = (absolute: Position): Coordinate =>
-    positionOnMap(absolute, placement, center);
-
-  return Object.entries(rooms).map(([roomId, room]) => {
-    const pointsSrc = room.polygon.coordinates.map((shape) =>
-      shape.map(convertToMap),
-    );
-
+  return Object.entries(floorPlan).map(([roomId, room]) => {
     const roomColors = getRoomTypeDetails(room.type);
-
-    const roomCenter = [room.labelPosition.x, room.labelPosition.y];
-
-    const labelPos = convertToMap(roomCenter);
 
     // const opacity = isBackground ? 0.7 : 1;
     const opacity = 1;
@@ -74,7 +37,7 @@ const FloorPlanView = ({ floorPlan }: Props) => {
     return (
       <div key={room.id}>
         <Polygon
-          points={[...pointsSrc]}
+          points={room.coordinates}
           selected={selectedRoom?.id === roomId}
           enabled={true}
           fillColor={roomColors.background}
@@ -90,8 +53,8 @@ const FloorPlanView = ({ floorPlan }: Props) => {
         />
 
         <Annotation
-          latitude={labelPos.latitude}
-          longitude={labelPos.longitude}
+          latitude={room.labelPosition.latitude}
+          longitude={room.labelPosition.longitude}
           onSelect={() => dispatch(claimRoom(room))}
           onDeselect={() => dispatch(releaseRoom(room))}
           visible={showRoomNames || showIcon}

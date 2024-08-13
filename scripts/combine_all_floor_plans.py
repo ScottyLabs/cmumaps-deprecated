@@ -86,7 +86,6 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
                         room["labelPosition"] = position_on_map(
                             room["labelPosition"], placement, floor_center
                         )
-
                         new_coordinates = []
                         for ring in room["polygon"]["coordinates"]:
                             new_ring = []

@@ -1,7 +1,6 @@
 /**
  * Contains TypeScript type definitions used in the project.
  */
-import { Polygon } from 'geojson';
 import { Coordinate } from 'mapkit-react';
 
 export type ID = string;
@@ -157,7 +156,12 @@ export interface Room {
   /**
    * even-odd included-not-included 2darray of coordinates to polygon
    */
-  polygon: Polygon;
+  // polygon: Polygon;
+
+  /**
+   * coordinates to be displayed in floorPlanView polygon
+   */
+  coordinates: Coordinate[][];
 
   /**
    * The short name of the room, without the building name but including the
@@ -172,7 +176,7 @@ export interface Room {
 
   type: RoomType;
 
-  labelPosition: AbsoluteCoordinate;
+  labelPosition: Coordinate;
 }
 
 /**
@@ -206,10 +210,7 @@ export interface Floor {
 /**
  * Details about a specific building floor.
  */
-export interface FloorPlan {
-  placement: Placement;
-  rooms: Record<ID, Room>;
-}
+export type FloorPlan = Record<ID, Room>;
 
 /**
  * The details of a building.

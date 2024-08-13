@@ -1,7 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { getFloorPlan } from '@/lib/apiRoutes';
-import { addFloorToFloorPlanMap } from '@/lib/features/dataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Floor, FloorPlan } from '@/types';
 
@@ -38,24 +36,11 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
   const dispatch = useAppDispatch();
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
-  const [floorPlans, setFloorPlans] = useState<
-    ((FloorPlan & Floor) | null)[] | null
+  const [overlayData, setOverlayData] = useState<
+    (({ floorPlan: FloorPlan } & Floor) | null)[] | null
   >(null);
-
-  const floorPlanMapRef = useRef({});
-
-  const addToFloorPlanMaps = useCallback(
-    (buildingCode: string, floorLevel: string, floorPlan: FloorPlan) => {
-      if (!floorPlanMapRef.current[buildingCode]) {
-        floorPlanMapRef.current[buildingCode] = {};
-      }
-      floorPlanMapRef.current[buildingCode][floorLevel] = floorPlan;
-
-      dispatch(addFloorToFloorPlanMap([buildingCode, floorLevel, floorPlan]));
-    },
-    [dispatch],
-  );
 
   // fetch the floor plan from floor
   useEffect(() => {
@@ -74,59 +59,45 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
       (focusedBuilding?.defaultOrdinal || 0) + focusedIndex - defaultIndex;
 
     // get all the floor plans
-    const promises = visibleBuildings.map(async (building) => {
+    const newFloorPlans = visibleBuildings.map((building) => {
       const floor = getFloorAtOrdinal(building, ordinal);
 
       if (floor) {
         if (
-          floorPlanMapRef.current[floor.buildingCode] &&
-          floorPlanMapRef.current[floor.buildingCode][floor.level]
+          floorPlanMap[floor.buildingCode] &&
+          floorPlanMap[floor.buildingCode][floor.level]
         ) {
           return {
-            ...floorPlanMapRef.current[floor.buildingCode][floor.level],
+            floorPlan: floorPlanMap[floor.buildingCode][floor.level],
             buildingCode: floor.buildingCode,
             level: floor.level,
           };
         }
-
-        return getFloorPlan(floor).then((floorPlan) => {
-          // be careful of floor plans that doesn't have placements
-          if (floorPlan?.placement) {
-            addToFloorPlanMaps(floor.buildingCode, floor.level, floorPlan);
-            return {
-              ...floorPlan,
-              buildingCode: floor.buildingCode,
-              level: floor.level,
-            };
-          } else {
-            return null;
-          }
-        });
       } else {
         return null;
       }
     });
 
-    Promise.all(promises).then((newFloorPlans) => setFloorPlans(newFloorPlans));
+    setOverlayData(newFloorPlans);
   }, [
-    addToFloorPlanMaps,
     buildings,
     dispatch,
+    floorPlanMap,
     focusedFloor?.buildingCode,
     focusedFloor.level,
     visibleBuildings,
   ]);
 
-  if (!floorPlans) {
+  if (!overlayData) {
     return;
   }
-  return floorPlans.map((floorPlan) => {
+  return overlayData.map((floorPlan) => {
     if (floorPlan) {
       return (
         // key is the key to prevent re-rendering
         <FloorPlanView
           key={floorPlan.buildingCode + floorPlan.level}
-          floorPlan={floorPlan}
+          floorPlan={floorPlan.floorPlan}
         />
       );
     }

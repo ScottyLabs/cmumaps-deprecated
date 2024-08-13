@@ -19,6 +19,7 @@ import {
   setEateryData,
   setAvailableRoomImages,
   setSearchMap,
+  setFloorPlanMap,
 } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
@@ -150,7 +151,7 @@ const Page = ({ params, searchParams }: Props) => {
     getEateryData().then((eateryData) => dispatch(setEateryData(eateryData)));
   }, [dispatch]);
 
-  // load the buidling and floor data
+  // load the buildings and searchMap and floorPlanMap data
   useEffect(() => {
     if (!dispatch) {
       return;
@@ -162,7 +163,14 @@ const Page = ({ params, searchParams }: Props) => {
 
     // set searchMap
     fetch('/json/searchMap.json').then((response) =>
-      response.json().then((buildings) => dispatch(setSearchMap(buildings))),
+      response.json().then((searchMap) => dispatch(setSearchMap(searchMap))),
+    );
+
+    // set floorPlanMap
+    fetch('/json/floorPlanMap.json').then((response) =>
+      response
+        .json()
+        .then((floorPlanMap) => dispatch(setFloorPlanMap(floorPlanMap))),
     );
   }, [dispatch]);
 

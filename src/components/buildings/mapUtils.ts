@@ -20,8 +20,6 @@ import {
 import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
-import { getFloorCenter } from './FloorPlanView';
-
 export const zoomOnSearchRoom = (
   map: mapkit.Map | null,
   searchRoom: SearchRoom,
@@ -62,12 +60,8 @@ export const zoomOnRoom = (
   floorPlan: FloorPlan,
   dispatch: Dispatch<UnknownAction>,
 ) => {
-  const { placement, rooms } = floorPlan;
-  const center = getFloorCenter(Object.values(rooms));
-  const points = rooms[room.id].polygon.coordinates
-    .flat()
-    .map((point) => positionOnMap(point, placement, center));
-  zoomOnObject(map, points);
+  const points = floorPlan[room.id].coordinates;
+  zoomOnObject(map, points[0]);
 
   dispatch(claimRoom(room));
   dispatch(setFocusedFloor(floor));
