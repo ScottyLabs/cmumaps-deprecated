@@ -29,7 +29,13 @@ export default function NavCard(): ReactElement {
       },
       body: JSON.stringify({ rooms: [startRoom, endRoom] }),
     })
-      .then((r) => r.json())
+      .then((r) => {
+        try {
+          return r.json();
+        } catch {
+          return [];
+        }
+      })
       .then((j) => {
         dispatch(setRecommendedPath(j));
       });
