@@ -16,7 +16,7 @@ const buildingCodeToShapeFillColor = {
   MOE: '#fde047',
   STE: '#307454',
   MUD: '#6900a9',
-  MOR: '#fde047',
+  MOR: '#FED97B',
   DON: '#0025a9',
   SCO: '#a90000',
   WEL: '#a90000',
@@ -35,23 +35,45 @@ export default function BuildingShape({ building }: BuildingShapeProps) {
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
   const renderBuildingPolygon = () => {
+    const isSelected = selectedBuilding?.code == building.code;
+
     const getStrokeColor = () => {
-      if (selectedBuilding?.code == building.code) {
-        return '#fde047';
-      } else if (building.floors.length > 0) {
-        return '#6b7280';
+      const selectedStrokeColor = '#FFBD59';
+      const notSelectedColor = '#6b7280';
+
+      if (isSelected) {
+        return selectedStrokeColor;
       } else {
-        return '#374151';
+        return notSelectedColor;
       }
     };
 
     const getFillColor = () => {
+      const noFloorPlanFillColor = '#6b7280';
+      const academicBuildingFillColor = '#9ca3af';
+
       if (buildingCodeToShapeFillColor[building.code]) {
         return buildingCodeToShapeFillColor[building.code];
       } else if (building.floors.length == 0) {
-        return '#6b7280';
+        return noFloorPlanFillColor;
       } else {
-        return '#9ca3af';
+        return academicBuildingFillColor;
+      }
+    };
+
+    const getFillOpacity = () => {
+      if (buildingCodeToShapeFillColor[building.code]) {
+        if (isSelected) {
+          return 1;
+        } else {
+          return 0.8;
+        }
+      } else {
+        if (isSelected) {
+          return 1;
+        } else {
+          return 0.6;
+        }
       }
     };
 
@@ -60,8 +82,9 @@ export default function BuildingShape({ building }: BuildingShapeProps) {
         key={building.code}
         points={building.shapes}
         fillColor={getFillColor()}
-        fillOpacity={buildingCodeToShapeFillColor[building.code] ? 0.8 : 1}
+        fillOpacity={getFillOpacity()}
         strokeColor={getStrokeColor()}
+        lineWidth={isSelected ? 3 : 1}
         enabled={false}
       />
     );
