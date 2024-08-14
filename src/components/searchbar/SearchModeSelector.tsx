@@ -3,12 +3,13 @@ import Image from 'next/image';
 import React from 'react';
 
 import { setSearchMode } from '@/lib/features/uiSlice';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
 import { SearchMode, SearchModeList, searchModeToIcon } from './searchMode';
 
-const searchModeToDisplayText: Partial<Record<SearchMode, string>> = {
+const searchModeToDisplayText: Record<SearchMode, string> = {
+  rooms: 'Rooms',
   food: 'Food',
   courses: 'Courses',
   events: 'Events',
@@ -16,7 +17,8 @@ const searchModeToDisplayText: Partial<Record<SearchMode, string>> = {
   study: 'Study',
 };
 
-const searchModeToBgColor: Partial<Record<SearchMode, string>> = {
+const searchModeToBgColor: Record<SearchMode, string> = {
+  rooms: 'bg-black',
   food: 'bg-[#FFBD59]',
   courses: 'bg-[#C41230]',
   events: 'bg-[#87BCFB]',
@@ -26,6 +28,7 @@ const searchModeToBgColor: Partial<Record<SearchMode, string>> = {
 
 const SearchModeSelector = () => {
   const dispatch = useAppDispatch();
+  const selectedSearchMode = useAppSelector((state) => state.ui.searchMode);
 
   const renderSearchModeHelper = (searchMode: SearchMode) => {
     const displayText = searchModeToDisplayText[searchMode];
@@ -55,8 +58,12 @@ const SearchModeSelector = () => {
   return (
     <CollapsibleWrapper title="Search Modes">
       <div className="no-scrollbar mx-2.5 mb-3 flex gap-2 overflow-x-auto rounded-xl border p-2">
-        {SearchModeList.slice(1).map((searchMode) =>
-          renderSearchModeHelper(searchMode),
+        {SearchModeList.map((searchmode) =>
+          searchmode == selectedSearchMode ? (
+            <div key={searchmode}></div>
+          ) : (
+            renderSearchModeHelper(searchmode)
+          ),
         )}
       </div>
     </CollapsibleWrapper>

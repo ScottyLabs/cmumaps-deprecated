@@ -26,7 +26,7 @@ const ToolBar = ({ map, userPosition }: Props) => {
   );
 
   return (
-    <div className="fixed top-4 mx-2 w-full space-y-2 sm:w-96">
+    <div className="fixed mx-2 w-full space-y-2 sm:w-96">
       <SearchBar map={map} userPosition={userPosition} />
 
       {!isSearchOpen && !isCardOpen && (

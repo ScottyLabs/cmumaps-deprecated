@@ -191,7 +191,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
       );
     } else {
       return (
-        <div className="fixed bottom-2 left-1/2 z-10 w-fit -translate-x-1/2 px-2">
+        <div className="fixed bottom-2 left-1/2 -z-10 w-fit -translate-x-1/2 px-2">
           <div className="flex items-stretch justify-center rounded bg-white">
             {children}
           </div>
