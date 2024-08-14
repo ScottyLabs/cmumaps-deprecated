@@ -18,7 +18,7 @@ const searchModeToDisplayText: Record<SearchMode, string> = {
 };
 
 const searchModeToBgColor: Record<SearchMode, string> = {
-  rooms: 'bg-black',
+  rooms: 'bg-[#636672]',
   food: 'bg-[#FFBD59]',
   courses: 'bg-[#C41230]',
   events: 'bg-[#87BCFB]',

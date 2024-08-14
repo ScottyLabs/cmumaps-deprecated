@@ -26,18 +26,21 @@ const ToolBar = ({ map, userPosition }: Props) => {
   );
 
   return (
-    <div className="fixed mx-2 w-full space-y-2 sm:w-96">
-      <SearchBar map={map} userPosition={userPosition} />
+    <div className="fixed mx-2 w-full sm:w-96">
+      <div className="flex h-screen flex-col space-y-2 py-2">
+        <SearchBar map={map} userPosition={userPosition} />
 
-      {!isSearchOpen && !isCardOpen && (
-        <>
-          <Schedule />
-          <Events />
-        </>
-      )}
+        {!isSearchOpen && !isCardOpen && (
+          <>
+            <Schedule />
+            <Events />
+          </>
+        )}
 
-      {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
-      {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard />}
+        {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
+        {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard />}
+      </div>
+
       {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
     </div>
   );

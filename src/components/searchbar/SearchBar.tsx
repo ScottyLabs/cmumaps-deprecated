@@ -199,7 +199,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
     return;
   }
   return (
-    <div id="SearchBar" className="flex h-screen flex-col py-2">
+    <>
       {renderSearchQueryInput()}
       {showSearchModeSelector && (
         <div className="mt-2">
@@ -207,7 +207,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
         </div>
       )}
       {isSearchOpen && renderSearchResults()}
-    </div>
+    </>
   );
 };
 
