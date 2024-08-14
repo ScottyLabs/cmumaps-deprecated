@@ -32,11 +32,7 @@ export default function RootLayout({
             <script>const global = globalThis;</script>
           </head>
 
-          <body>
-            <div style={{ height: '100vu' }} id="root">
-              {children}
-            </div>
-          </body>
+          <body>{children}</body>
         </html>
       </ClerkProvider>
     </StoreProvider>

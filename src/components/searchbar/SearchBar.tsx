@@ -45,11 +45,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
   const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const showSearchModeSelector =
-    searchQuery == '' &&
-    isSearchOpen &&
-    searchMode == 'rooms' &&
-    !choosingRoomMode;
+  const showSearchModeSelector = isSearchOpen && !choosingRoomMode;
 
   const autoFillSearchQuery = useCallback(() => {
     // return the building name if a building is selected
@@ -185,10 +181,8 @@ const SearchBar = ({ map, userPosition }: Props) => {
   const renderSearchResults = () => {
     return (
       <div
-        className={`overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          showSearchModeSelector
-            ? 'h-0 opacity-0'
-            : 'mt-1 h-fit max-h-[40em] opacity-100'
+        className={`z-10 flex-1 overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
+          searchQuery == '' ? 'h-0 opacity-0' : 'mt-1 h-fit opacity-100'
         }`}
       >
         <SearchResults
@@ -205,7 +199,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
     return;
   }
   return (
-    <div id="SearchBar" className="box-shadow rounded">
+    <div id="SearchBar" className="flex h-screen flex-col py-2">
       {renderSearchQueryInput()}
       {showSearchModeSelector && (
         <div className="mt-2">
