@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { useAppSelector } from '@/lib/hooks';
 import { Building, Floor, FloorPlan } from '@/types';
@@ -34,9 +34,6 @@ interface Props {
 const FloorPlanOverlay = ({ visibleBuildings, floorPlanMap }: Props) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
-  const [overlayData, setOverlayData] = useState<
-    (({ floorPlan: FloorPlan } & Floor) | null)[] | null
-  >(null);
 
   if (!buildings || !focusedFloor?.buildingCode || !focusedFloor?.level) {
     return;
