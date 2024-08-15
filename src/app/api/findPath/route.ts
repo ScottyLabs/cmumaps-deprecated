@@ -145,6 +145,7 @@ export async function POST(req: NextRequest) {
     'NSH',
     'outside',
     'PH',
+    'PCA',
     'POS',
     'RES',
     'SC',
@@ -192,9 +193,6 @@ export async function POST(req: NextRequest) {
       }
       const rooms = outline.rooms;
       const center = getFloorCenter(rooms);
-      if (!outline.placement) {
-        console.log(buildingCode, level);
-      }
 
       Object.keys(f).forEach((id: string) => {
         const node = f[id];

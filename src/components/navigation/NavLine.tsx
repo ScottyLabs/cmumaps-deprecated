@@ -56,7 +56,7 @@ const NavLine = () => {
           selected={true}
           points={(recommendedPath || []).map((n: Node) => n.coordinate)}
           enabled={true}
-          strokeColor={'red'}
+          strokeColor={'blue'}
           strokeOpacity={1}
           lineWidth={5}
         ></Polyline>
