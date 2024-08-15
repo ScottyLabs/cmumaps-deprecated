@@ -208,7 +208,7 @@ const MapDisplay = ({ mapRef, floorPlanMap }: MapDisplayProps) => {
       initialRegion={initialRegion}
       includedPOICategories={[PointOfInterestCategory.Restaurant]}
       cameraBoundary={cameraBoundary}
-      minCameraDistance={50}
+      minCameraDistance={5}
       maxCameraDistance={1500}
       showsUserLocationControl
       mapType={MapType.MutedStandard}
