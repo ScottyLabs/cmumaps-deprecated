@@ -145,56 +145,58 @@ const findRooms = (
   // No query: only show building names
   const lDistCache = new Map();
   // Query for another building
-  const roomsList = building.floors.flatMap((floorLevel) => {
-    if (!floorMap?.[floorLevel]) {
-      return [];
-    }
-    const roomsObj = Object.values(floorMap[floorLevel]);
-    const queryTokens = query
-      .toLowerCase()
-      .split(' ')
-      .filter((token) => token.length > 0);
-    return (
-      Object.values(roomsObj)
-        .filter((room: SearchRoom) => {
-          if (mode != 'rooms' && room.type != modeToType[mode]) {
-            return false;
-          }
-          const roomTokens = getRoomTokens(room, building);
-          let score = 0;
-          for (const queryToken of queryTokens) {
-            let bestScore = 999;
-            for (const roomToken of roomTokens) {
-              bestScore = Math.min(
-                bestScore,
-                levenDist(
-                  queryToken,
-                  roomToken.substring(0, queryToken.length),
-                ),
-              );
+  const roomsList = building.floors
+    .flatMap((floorLevel) => {
+      if (!floorMap?.[floorLevel]) {
+        return [];
+      }
+      const roomsObj = Object.values(floorMap[floorLevel]);
+      const queryTokens = query
+        .toLowerCase()
+        .split(' ')
+        .filter((token) => token.length > 0);
+      return (
+        Object.values(roomsObj)
+          .filter((room: SearchRoom) => {
+            if (mode != 'rooms' && room.type != modeToType[mode]) {
+              return false;
             }
-            if (bestScore > queryToken.length / 2) {
-              // If there is a query token that dosen't have a reasonable match
-              score = 999;
-              break;
+            const roomTokens = getRoomTokens(room, building);
+            let score = 0;
+            for (const queryToken of queryTokens) {
+              let bestScore = 999;
+              for (const roomToken of roomTokens) {
+                bestScore = Math.min(
+                  bestScore,
+                  levenDist(
+                    queryToken,
+                    roomToken.substring(0, queryToken.length),
+                  ),
+                );
+              }
+              if (bestScore > queryToken.length / 2) {
+                // If there is a query token that dosen't have a reasonable match
+                score = 999;
+                break;
+              }
+              score += bestScore;
             }
-            score += bestScore;
-          }
-          if (score < queryTokens.length * 0.5) {
             lDistCache.set(room.id, score);
-          }
-          return score < queryTokens.length;
-        })
-        // .map(([roomId, room]) => ({ // new
-        .map((room) => ({
-          ...room,
-          floor: {
-            buildingCode: building.code,
-            level: floorLevel,
-          },
-        })) ?? []
+            return score < queryTokens.length;
+          })
+          // .map(([roomId, room]) => ({ // new
+          .map((room) => ({
+            ...room,
+            floor: {
+              buildingCode: building.code,
+              level: floorLevel,
+            },
+          })) ?? []
+      );
+    })
+    .sort(
+      (a, b) => (lDistCache.get(b.id) || 1000) - (lDistCache.get(a.id) || 1000),
     );
-  });
 
   // if (userPosition) {
   //   roomsList.sort(

@@ -18,7 +18,6 @@ import {
   setEateryData,
   setAvailableRoomImages,
   setSearchMap,
-  setReduxFloorPlanMap,
 } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
@@ -169,7 +168,6 @@ const Page = ({ params, searchParams }: Props) => {
     // set floorPlanMap
     fetch('/json/floorPlanMap.json').then((response) =>
       response.json().then((floorPlanMap) => {
-        dispatch(setReduxFloorPlanMap(floorPlanMap));
         setFloorPlanMap(floorPlanMap);
       }),
     );
