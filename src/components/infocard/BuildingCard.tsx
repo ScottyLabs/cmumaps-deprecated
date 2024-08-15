@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 import { sortEateries } from '@/util/eateryUtils';
 
-import { zoomOnSearchRoom } from '../buildings/mapUtils';
+import { zoomOnRoom } from '../buildings/mapUtils';
 import ButtonsRow from './ButtonsRow';
 import EateryInfoDisplay from './EateryInfoDisplay';
 import InfoCardImage from './InfoCardImage';
@@ -112,7 +112,14 @@ const BuildingCard = ({ map, building }: Props) => {
     } else {
       const handleClick = (eatery: SearchRoom) => () => {
         dispatch(claimRoom(eatery));
-        zoomOnSearchRoom(map, eatery, buildings, floorPlanMap, dispatch);
+        zoomOnRoom(
+          map,
+          eatery.id,
+          eatery.floor,
+          buildings,
+          floorPlanMap,
+          dispatch,
+        );
       };
 
       const eateries = building.floors

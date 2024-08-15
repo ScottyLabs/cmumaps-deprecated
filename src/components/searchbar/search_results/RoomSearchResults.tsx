@@ -10,7 +10,7 @@ import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 
-import { zoomOnObject, zoomOnSearchRoom } from '../../buildings/mapUtils';
+import { zoomOnObject, zoomOnRoom } from '../../buildings/mapUtils';
 import RoomPin from '../../shared/RoomPin';
 import Roundel from '../../shared/Roundel';
 import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
@@ -94,7 +94,14 @@ const RoomSearchResults = ({ map, query, searchResult }: Props) => {
         dispatch(setIsSearchOpen(false));
         dispatch(setChoosingRoomMode(null));
       } else {
-        zoomOnSearchRoom(map, searchRoom, buildings, floorPlanMap, dispatch);
+        zoomOnRoom(
+          map,
+          searchRoom.id,
+          searchRoom.floor,
+          buildings,
+          floorPlanMap,
+          dispatch,
+        );
       }
     };
 
