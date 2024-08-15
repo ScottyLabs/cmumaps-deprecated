@@ -25,3 +25,9 @@ model Event {
   Room      Room   @relation(fields: [roomName], references: [name])
   roomName  String 
 }
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  email    String   @unique
+  schedule String[] 
+}
