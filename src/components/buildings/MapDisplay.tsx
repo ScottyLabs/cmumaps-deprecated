@@ -58,6 +58,7 @@ const MapDisplay = ({ mapRef, floorPlanMap }: MapDisplayProps) => {
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
+  const [usedRegionChange, setUsedRegionChange] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
 
   const throttledCalculateVisibleBuildings = throttle(
@@ -218,13 +219,19 @@ const MapDisplay = ({ mapRef, floorPlanMap }: MapDisplayProps) => {
       }
       allowWheelToZoom
       onRegionChangeStart={onRegionChangeStart}
-      onRegionChangeEnd={onRegionChangeEnd}
+      onRegionChangeEnd={() => {
+        setUsedRegionChange(true);
+        onRegionChangeEnd();
+      }}
       onClick={() => {
-        dispatch(setIsSearchOpen(false));
-        dispatch(deselectBuilding());
-        dispatch(releaseRoom(null));
-        dispatch(setIsNavOpen(false));
-        dispatch(setChoosingRoomMode(null));
+        if (!usedRegionChange) {
+          dispatch(setIsSearchOpen(false));
+          dispatch(deselectBuilding());
+          dispatch(releaseRoom(null));
+          dispatch(setIsNavOpen(false));
+          dispatch(setChoosingRoomMode(null));
+        }
+        setUsedRegionChange(false);
       }}
       onLoad={handleLoad}
     >
