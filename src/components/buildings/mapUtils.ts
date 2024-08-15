@@ -19,7 +19,7 @@ export const zoomOnRoom = (
   floorPlanMap: FloorPlanMap,
   dispatch: Dispatch<UnknownAction>,
 ) => {
-  if (!buildings || !map) {
+  if (!buildings || !map || !floorPlanMap) {
     return;
   }
 

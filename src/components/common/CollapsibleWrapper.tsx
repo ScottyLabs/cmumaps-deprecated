@@ -30,7 +30,7 @@ const CollapsibleWrapper = ({
   return (
     // someone can look more into why we need to provide onTriggerOpening, onOpening, onTriggerClosing, and onClosing to not throw an error...
     <Collapsible
-      open
+      open={open}
       trigger={renderTrigger()}
       className="rounded bg-white"
       openedClassName="rounded bg-white"
