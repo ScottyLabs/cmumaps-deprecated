@@ -1,5 +1,7 @@
+import lockIcon from '@icons/half-lock.svg';
+import Image from 'next/image';
+
 import React, { ReactElement, useState } from 'react';
-// import { AiOutlineExclamationCircle } from 'react-icons/ai';
 import { IoIosArrowUp } from 'react-icons/io';
 import { IoIosArrowDown } from 'react-icons/io';
 
@@ -49,9 +51,11 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
     if (building.floors.length === 0 || !focusedFloor) {
       return (
         <div className="flex items-center">
-          <p className="mx-2">{building.name}</p>
-          {/* <AiOutlineExclamationCircle size={30} className="mr-2" />
-          <p className="p-1">Floor plan not available</p> */}
+          <p className="ml-2 mr-4">{building.name}</p>
+          <div className="flex items-center gap-1 rounded-r bg-gray-200 py-2 pr-1">
+            <Image alt={'Lock Icon'} src={lockIcon} />
+            <p className="gray p-1 text-[#646464]">Inaccessible</p>
+          </div>
         </div>
       );
     }
