@@ -1,8 +1,14 @@
+import { Room } from '@prisma/client';
 import { Annotation, Polygon } from 'mapkit-react';
 
 import React from 'react';
 
-import { claimRoom, releaseRoom } from '@/lib/features/uiSlice';
+import {
+  setChoosingRoomMode,
+  setEndRoom,
+  setStartRoom,
+} from '@/lib/features/navSlice';
+import { claimRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Floor, FloorPlan, getRoomTypeDetails } from '@/types';
 
@@ -20,9 +26,14 @@ const FloorPlanView = ({ floor, floorPlanMap }: Props) => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const showRoomNames = useAppSelector((state) => state.ui.showRoomNames);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const choosingRoomMode = useAppSelector(
+    (state) => state.nav.choosingRoomMode,
+  );
+
   if (!floorPlan) {
     return <></>;
   }
+
   return Object.entries(floorPlan).map(([roomId, room]) => {
     const roomColors = getRoomTypeDetails(room.type);
 
@@ -39,6 +50,20 @@ const FloorPlanView = ({ floor, floorPlanMap }: Props) => {
       top: (iconSize - labelHeight) / 2,
     };
 
+    const handleSelectRoom = (room: Room) => () => {
+      if (choosingRoomMode == 'start') {
+        dispatch(setStartRoom(room));
+        dispatch(setIsSearchOpen(false));
+        dispatch(setChoosingRoomMode(null));
+      } else if (choosingRoomMode == 'end') {
+        dispatch(setEndRoom(room));
+        dispatch(setIsSearchOpen(false));
+        dispatch(setChoosingRoomMode(null));
+      } else {
+        dispatch(claimRoom(room));
+      }
+    };
+
     return (
       <div key={room.id}>
         <Polygon
@@ -52,8 +77,7 @@ const FloorPlanView = ({ floor, floorPlanMap }: Props) => {
           }
           strokeOpacity={opacity}
           lineWidth={selectedRoom?.id === roomId ? 5 : 1}
-          onSelect={() => dispatch(claimRoom(room))}
-          onDeselect={() => dispatch(releaseRoom(room))}
+          onSelect={handleSelectRoom(room)}
           fillRule="nonzero"
         />
 
@@ -62,8 +86,7 @@ const FloorPlanView = ({ floor, floorPlanMap }: Props) => {
             <Annotation
               latitude={room.labelPosition.latitude}
               longitude={room.labelPosition.longitude}
-              onSelect={() => dispatch(claimRoom(room))}
-              onDeselect={() => dispatch(releaseRoom(room))}
+              onSelect={handleSelectRoom(room)}
               visible={showRoomNames || showIcon}
             >
               <div
