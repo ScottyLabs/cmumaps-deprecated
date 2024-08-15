@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 import { sortEateries } from '@/util/eateryUtils';
 
-import { zoomOnObject, zoomOnSearchRoom } from '../../buildings/mapUtils';
+import { zoomOnObject, zoomOnRoom } from '../../buildings/mapUtils';
 import EateryInfoDisplay from '../../infocard/EateryInfoDisplay';
 import Roundel from '../../shared/Roundel';
 import NoResultDisplay from '../display_helpers/NoResultDisplay';
@@ -66,7 +66,14 @@ const FoodSearchResults = ({ map, searchResult }: Props) => {
         <SearchResultWrapper
           key={eatery.id}
           handleClick={() => {
-            zoomOnSearchRoom(map, eatery, buildings, floorPlanMap, dispatch);
+            zoomOnRoom(
+              map,
+              eatery.id,
+              eatery.floor,
+              buildings,
+              floorPlanMap,
+              dispatch,
+            );
           }}
         >
           <div className="w-full cursor-pointer rounded border p-1">

@@ -13,12 +13,12 @@ import { Slide, ToastContainer } from 'react-toastify';
 import MapDisplay from '@/components/buildings/MapDisplay';
 import { zoomOnObject, zoomOnRoom } from '@/components/buildings/mapUtils';
 import ToolBar from '@/components/toolbar/ToolBar';
-import { getFloorPlan } from '@/lib/apiRoutes';
 import {
   setBuildings,
   setEateryData,
   setAvailableRoomImages,
   setSearchMap,
+  setReduxFloorPlanMap,
 } from '@/lib/features/dataSlice';
 import {
   setFocusedFloor,
@@ -58,6 +58,7 @@ const Page = ({ params, searchParams }: Props) => {
     string,
     Record<string, FloorPlan>
   > | null>(null);
+
   // extracting data in the initial loading of the page
   useEffect(() => {
     // makes all required things are loaded
@@ -95,22 +96,18 @@ const Page = ({ params, searchParams }: Props) => {
           zoomOnObject(mapRef.current, building.shapes.flat());
           dispatch(setFocusedFloor(floor));
         } else {
-          // up to room level
-          getFloorPlan(floor).then((floorPlan) => {
-            // be careful of floor plans that doesn't have placements !!!
-            if (floorPlan?.placement) {
-              const room = floorPlan.rooms[roomId];
-              if (room) {
-                if (mapRef.current) {
-                  zoomOnRoom(mapRef.current, room, floor, floorPlan, dispatch);
-                }
-              }
-            }
-          });
+          zoomOnRoom(
+            mapRef.current,
+            roomId,
+            floor,
+            buildings,
+            floorPlanMap,
+            dispatch,
+          );
         }
       }
     }
-  }, [buildings, dispatch, params.slug, router, mapRef]);
+  }, [buildings, dispatch, params.slug, router, mapRef, floorPlanMap]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -171,7 +168,10 @@ const Page = ({ params, searchParams }: Props) => {
 
     // set floorPlanMap
     fetch('/json/floorPlanMap.json').then((response) =>
-      response.json().then((floorPlanMap) => setFloorPlanMap(floorPlanMap)),
+      response.json().then((floorPlanMap) => {
+        dispatch(setReduxFloorPlanMap(floorPlanMap));
+        setFloorPlanMap(floorPlanMap);
+      }),
     );
   }, [dispatch]);
 

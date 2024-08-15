@@ -2,27 +2,19 @@ import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { Position } from 'geojson';
 import { Coordinate } from 'mapkit-react';
 
-import { getFloorPlan } from '@/lib/apiRoutes';
 import {
   claimRoom,
   setFocusedFloor,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
-import {
-  Building,
-  Floor,
-  FloorPlan,
-  FloorPlanMap,
-  Placement,
-  Room,
-  SearchRoom,
-} from '@/types';
+import { Building, Floor, FloorPlanMap, ID, Placement } from '@/types';
 import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
-export const zoomOnSearchRoom = (
+export const zoomOnRoom = (
   map: mapkit.Map | null,
-  searchRoom: SearchRoom,
+  roomId: ID,
+  floor: Floor,
   buildings: Record<string, Building> | null,
   floorPlanMap: FloorPlanMap,
   dispatch: Dispatch<UnknownAction>,
@@ -31,41 +23,21 @@ export const zoomOnSearchRoom = (
     return;
   }
 
-  const floor = searchRoom.floor;
-
   if (floor?.buildingCode && floor.level) {
     if (
       floorPlanMap[floor.buildingCode] &&
       floorPlanMap[floor.buildingCode][floor.level]
     ) {
       const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
-      const room = floorPlan.rooms[searchRoom.id];
-      zoomOnRoom(map, room, floor, floorPlan, dispatch);
-    } else {
-      getFloorPlan(floor).then((floorPlan) => {
-        // be careful of floor plans that doesn't have placements !!!
-        if (floorPlan?.placement) {
-          const room = floorPlan.rooms[searchRoom.id];
-          zoomOnRoom(map, room, floor, floorPlan, dispatch);
-        }
-      });
+      const room = floorPlan[roomId];
+      const points = floorPlan[room.id].coordinates;
+      zoomOnObject(map, points[0]);
+
+      dispatch(claimRoom(room));
+      dispatch(setFocusedFloor(floor));
+      dispatch(setShowRoomNames(true));
     }
   }
-};
-
-export const zoomOnRoom = (
-  map: mapkit.Map,
-  room: Room,
-  floor: Floor,
-  floorPlan: FloorPlan,
-  dispatch: Dispatch<UnknownAction>,
-) => {
-  const points = floorPlan[room.id].coordinates;
-  zoomOnObject(map, points[0]);
-
-  dispatch(claimRoom(room));
-  dispatch(setFocusedFloor(floor));
-  dispatch(setShowRoomNames(true));
 };
 
 export const zoomOnObject = (map: mapkit.Map, points: Coordinate[]) => {
