@@ -36,7 +36,7 @@ const RoomSearchResults = ({ map, query, searchResult }: Props) => {
     (state) => state.nav.choosingRoomMode,
   );
 
-  if (query.length < 3) {
+  if (query.length < 2) {
     return <KeepTypingDisplay />;
   }
 
