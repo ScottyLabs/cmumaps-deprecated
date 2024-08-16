@@ -31,7 +31,7 @@ const modeToType: Partial<Record<SearchMode, RoomType>> = {
 // }
 
 function getRoomTokens(room: SearchRoom, building: Building): string[] {
-  let tokens = [room.name, building.code, building.name];
+  let tokens = [room.name, building.code, ...building.name.split(' ')];
   if (room.aliases) {
     tokens = tokens.concat(room.aliases.flatMap((alias) => alias.split(' ')));
   }
@@ -139,7 +139,7 @@ const findRooms = (
   floorMap: Record<string, SearchRoom[]>,
   mode: 'rooms' | 'food' | 'restrooms' | 'study',
 ): [SearchRoom[], number] => {
-  if (!floorMap || query.length < 3) {
+  if (!floorMap || query.length < 2) {
     return [[], -1];
   }
   // No query: only show building names
@@ -175,7 +175,7 @@ const findRooms = (
                 );
               }
               if (bestScore > queryToken.length / 2) {
-                // If there is a query token that dosen't have a reasonable match
+                // If there is a query token that doesn't have a reasonable match
                 score = 999;
                 break;
               }
