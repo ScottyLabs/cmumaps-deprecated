@@ -31,7 +31,7 @@ const modeToType: Partial<Record<SearchMode, RoomType>> = {
 // }
 
 function getRoomTokens(room: SearchRoom, building: Building): string[] {
-  let tokens = [room.name, building.code, building.name];
+  let tokens = [room.name, building.code, ...building.name.split(' ')];
   if (room.aliases) {
     tokens = tokens.concat(room.aliases.flatMap((alias) => alias.split(' ')));
   }
@@ -40,75 +40,13 @@ function getRoomTokens(room: SearchRoom, building: Building): string[] {
     .map((token) => token.toLowerCase());
 }
 
-const findFood = (
-  _query: string,
-  building: Building,
-  floorMap: Record<string, SearchRoom[]>,
-  mode: 'food',
-): [SearchRoom[], number] => {
-  const lDistCache = new Map();
-  // Query for another building
-  const roomsList = building.floors.flatMap((floorLevel) => {
-    if (!floorMap?.[floorLevel]) {
-      return [];
-    }
-    const roomsObj = Object.values(floorMap[floorLevel]);
-
-    return (
-      Object.values(roomsObj)
-        .filter((room: SearchRoom) => {
-          return room.type == modeToType[mode];
-        })
-        // .map(([roomId, room]) => ({ // new
-        .map((room) => ({
-          ...room,
-          floor: {
-            buildingCode: building.code,
-            level: floorLevel,
-          },
-        })) ?? []
-    );
-  });
-
-  // if (userPosition) {
-  //   roomsList.sort(
-  //     (a, b) =>
-  //       distance(a.labelPosition, userPosition) -
-  //       distance(b.labelPosition, userPosition),
-  //   );
-  // }
-
-  if (!roomsList || roomsList.length == 0) {
-    return [[], -1];
-  }
-  return [roomsList, lDistCache.get(roomsList[0].id)];
-};
-
-export const searchFood = (
-  buildings: Record<string, Building>,
-  query: string,
-  searchMap: SearchMap,
-  mode: 'food',
-): RoomSearchResult[] => {
-  return Object.values(buildings)
-    .map((building: Building) => ({
-      Building: building,
-      Rooms: findFood(query, building, searchMap[building.code], mode),
-    }))
-    .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
-    .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
-    .map(({ Building: building, Rooms: rooms }) => {
-      return { building, searchRoom: rooms[0] };
-    });
-};
-
 export const searchRoom = (
   buildings: Record<string, Building>,
   query: string,
   searchMap: SearchMap,
   mode: 'rooms' | 'food' | 'restrooms' | 'study',
 ): RoomSearchResult[] => {
-  if (query.length == 0) {
+  if (query.length == 0 && mode == 'rooms') {
     return [];
   }
 
@@ -139,62 +77,66 @@ const findRooms = (
   floorMap: Record<string, SearchRoom[]>,
   mode: 'rooms' | 'food' | 'restrooms' | 'study',
 ): [SearchRoom[], number] => {
-  if (!floorMap || query.length < 3) {
+  if (!floorMap || (query.length < 2 && mode == 'rooms')) {
     return [[], -1];
   }
-  // No query: only show building names
   const lDistCache = new Map();
   // Query for another building
-  const roomsList = building.floors.flatMap((floorLevel) => {
-    if (!floorMap?.[floorLevel]) {
-      return [];
-    }
-    const roomsObj = Object.values(floorMap[floorLevel]);
-    const queryTokens = query
-      .toLowerCase()
-      .split(' ')
-      .filter((token) => token.length > 0);
-    return (
-      Object.values(roomsObj)
-        .filter((room: SearchRoom) => {
-          if (mode != 'rooms' && room.type != modeToType[mode]) {
-            return false;
-          }
-          const roomTokens = getRoomTokens(room, building);
-          let score = 0;
-          for (const queryToken of queryTokens) {
-            let bestScore = 999;
-            for (const roomToken of roomTokens) {
-              bestScore = Math.min(
-                bestScore,
-                levenDist(
-                  queryToken,
-                  roomToken.substring(0, queryToken.length),
-                ),
-              );
+  const roomsList = building.floors
+    .flatMap((floorLevel) => {
+      if (!floorMap?.[floorLevel]) {
+        return [];
+      }
+      const roomsObj = Object.values(floorMap[floorLevel]);
+      const queryTokens = query
+        .toLowerCase()
+        .split(' ')
+        .filter((token) => token.length > 0);
+      return (
+        Object.values(roomsObj)
+          .filter((room: SearchRoom) => {
+            if (mode != 'rooms' && room.type != modeToType[mode]) {
+              return false;
             }
-            if (bestScore > queryToken.length / 2) {
-              // If there is a query token that dosen't have a reasonable match
-              score = 999;
-              break;
+            if (queryTokens.length == 0) {
+              return true;
             }
-            score += bestScore;
-          }
-          if (score < queryTokens.length * 0.5) {
+            const roomTokens = getRoomTokens(room, building);
+            let score = 0;
+            for (const queryToken of queryTokens) {
+              let bestScore = 999;
+              for (const roomToken of roomTokens) {
+                bestScore = Math.min(
+                  bestScore,
+                  levenDist(
+                    queryToken,
+                    roomToken.substring(0, queryToken.length),
+                  ),
+                );
+              }
+              if (bestScore > queryToken.length / 2) {
+                // If there is a query token that doesn't have a reasonable match
+                score = 999;
+                break;
+              }
+              score += bestScore;
+            }
             lDistCache.set(room.id, score);
-          }
-          return score < queryTokens.length;
-        })
-        // .map(([roomId, room]) => ({ // new
-        .map((room) => ({
-          ...room,
-          floor: {
-            buildingCode: building.code,
-            level: floorLevel,
-          },
-        })) ?? []
+            return score < queryTokens.length;
+          })
+          // .map(([roomId, room]) => ({ // new
+          .map((room) => ({
+            ...room,
+            floor: {
+              buildingCode: building.code,
+              level: floorLevel,
+            },
+          })) ?? []
+      );
+    })
+    .sort(
+      (a, b) => (lDistCache.get(b.id) || 1000) - (lDistCache.get(a.id) || 1000),
     );
-  });
 
   // if (userPosition) {
   //   roomsList.sort(

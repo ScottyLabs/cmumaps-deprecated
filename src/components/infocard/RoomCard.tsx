@@ -1,5 +1,7 @@
+import reserveIcon from '@icons/infocard/reserve.svg';
+import Image from 'next/image';
+
 import { useEffect, useState } from 'react';
-import { ImSpoonKnife } from 'react-icons/im';
 
 import { getDbRoomExists } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
@@ -74,7 +76,7 @@ const RoomCard = ({ room }: Props) => {
   const renderButtonsRow = () => {
     const renderMiddleButton = () => {
       if (hasSchedule) {
-        const icon = <ImSpoonKnife className="size-3.5" />;
+        const icon = <Image src={reserveIcon} alt="Reserve Icon" />;
 
         return renderMiddleButtonHelper(
           'Reserve Room',

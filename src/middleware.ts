@@ -1,34 +1,25 @@
-import { authMiddleware } from '@clerk/nextjs';
-import { NextRequest, NextResponse } from 'next/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
-// See https://clerk.com/docs/references/nextjs/auth-middleware
-// for more information about configuring your Middleware
+const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)']);
 
-export default authMiddleware({
-  // Allow signed out users to access the specified routes:
-  //   publicRoutes: ['/'],
-  // Prevent the specified routes from accessing
-  // authentication information:
-  //   ignoredRoutes: ['/GHC-5'],
-});
-
-export const config = {
-  matcher: [
-    // Exclude files with a "." followed by an extension, which are typically static files.
-    // Exclude files in the _next directory, which are Next.js internals.
-
-    '/((?!.+\\.[\\w]+$|_next).*)',
-    // Re-include any files in the api or trpc folders that might have an extension
-    '/(api|trpc)(.*)',
-  ],
-};
-
-// for detecting the type of device
-export const middleware = (request: NextRequest) => {
+export default clerkMiddleware((auth, request) => {
+  if (!isPublicRoute(request)) {
+    auth().protect();
+  }
   const userAgent = request.headers.get('user-agent') || '';
   const url = new URL(request.url);
 
   url.searchParams.set('userAgent', userAgent);
 
   return NextResponse.rewrite(url);
+});
+
+export const config = {
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
+  ],
 };
