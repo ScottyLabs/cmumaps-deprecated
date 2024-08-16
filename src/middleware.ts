@@ -7,6 +7,12 @@ export default clerkMiddleware((auth, request) => {
   if (!isPublicRoute(request)) {
     auth().protect();
   }
+  const userAgent = request.headers.get('user-agent') || '';
+  const url = new URL(request.url);
+
+  url.searchParams.set('userAgent', userAgent);
+
+  return NextResponse.rewrite(url);
 });
 
 export const config = {
@@ -16,13 +22,4 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-};
-// for detecting the type of device
-export const middleware = (request: NextRequest) => {
-  const userAgent = request.headers.get('user-agent') || '';
-  const url = new URL(request.url);
-
-  url.searchParams.set('userAgent', userAgent);
-
-  return NextResponse.rewrite(url);
 };
