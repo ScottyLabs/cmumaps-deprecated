@@ -40,75 +40,13 @@ function getRoomTokens(room: SearchRoom, building: Building): string[] {
     .map((token) => token.toLowerCase());
 }
 
-const findFood = (
-  _query: string,
-  building: Building,
-  floorMap: Record<string, SearchRoom[]>,
-  mode: 'food',
-): [SearchRoom[], number] => {
-  const lDistCache = new Map();
-  // Query for another building
-  const roomsList = building.floors.flatMap((floorLevel) => {
-    if (!floorMap?.[floorLevel]) {
-      return [];
-    }
-    const roomsObj = Object.values(floorMap[floorLevel]);
-
-    return (
-      Object.values(roomsObj)
-        .filter((room: SearchRoom) => {
-          return room.type == modeToType[mode];
-        })
-        // .map(([roomId, room]) => ({ // new
-        .map((room) => ({
-          ...room,
-          floor: {
-            buildingCode: building.code,
-            level: floorLevel,
-          },
-        })) ?? []
-    );
-  });
-
-  // if (userPosition) {
-  //   roomsList.sort(
-  //     (a, b) =>
-  //       distance(a.labelPosition, userPosition) -
-  //       distance(b.labelPosition, userPosition),
-  //   );
-  // }
-
-  if (!roomsList || roomsList.length == 0) {
-    return [[], -1];
-  }
-  return [roomsList, lDistCache.get(roomsList[0].id)];
-};
-
-export const searchFood = (
-  buildings: Record<string, Building>,
-  query: string,
-  searchMap: SearchMap,
-  mode: 'food',
-): RoomSearchResult[] => {
-  return Object.values(buildings)
-    .map((building: Building) => ({
-      Building: building,
-      Rooms: findFood(query, building, searchMap[building.code], mode),
-    }))
-    .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
-    .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
-    .map(({ Building: building, Rooms: rooms }) => {
-      return { building, searchRoom: rooms[0] };
-    });
-};
-
 export const searchRoom = (
   buildings: Record<string, Building>,
   query: string,
   searchMap: SearchMap,
   mode: 'rooms' | 'food' | 'restrooms' | 'study',
 ): RoomSearchResult[] => {
-  if (query.length == 0) {
+  if (query.length == 0 && mode == 'rooms') {
     return [];
   }
 
@@ -139,10 +77,9 @@ const findRooms = (
   floorMap: Record<string, SearchRoom[]>,
   mode: 'rooms' | 'food' | 'restrooms' | 'study',
 ): [SearchRoom[], number] => {
-  if (!floorMap || query.length < 2) {
+  if (!floorMap || (query.length < 2 && mode == 'rooms')) {
     return [[], -1];
   }
-  // No query: only show building names
   const lDistCache = new Map();
   // Query for another building
   const roomsList = building.floors
@@ -160,6 +97,9 @@ const findRooms = (
           .filter((room: SearchRoom) => {
             if (mode != 'rooms' && room.type != modeToType[mode]) {
               return false;
+            }
+            if (queryTokens.length == 0) {
+              return true;
             }
             const roomTokens = getRoomTokens(room, building);
             let score = 0;

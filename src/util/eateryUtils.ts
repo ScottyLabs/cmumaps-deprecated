@@ -186,7 +186,7 @@ export const sortEateries = (
     const eateryInfo1 = eateryData[eatery1.alias.toUpperCase()];
     const eateryInfo2 = eateryData[eatery2.alias.toUpperCase()];
 
-    if (eateryInfo1.locationState == eateryInfo2.locationState) {
+    if (eateryInfo1?.locationState == eateryInfo2?.locationState) {
       // less hours is better
       return (
         eateryInfo1.hoursUntilStateChange - eateryInfo2.hoursUntilStateChange
