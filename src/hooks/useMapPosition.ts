@@ -68,7 +68,9 @@ export default function useMapPosition(
     const { region } = mapRef.current!;
     if (
       Math.abs(region.center.latitude - initialRegion.centerLatitude) < 1e-8 &&
-      Math.abs(region.center.longitude - initialRegion.centerLongitude) < 1e-8
+      Math.abs(region.center.longitude - initialRegion.centerLongitude) <
+        1e-8 &&
+      Math.abs(region.span.latitudeDelta - initialRegion.latitudeDelta) < 1e-8
     ) {
       return;
     }

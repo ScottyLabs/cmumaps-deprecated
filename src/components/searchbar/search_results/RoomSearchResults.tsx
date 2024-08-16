@@ -22,12 +22,13 @@ interface Props {
   map: mapkit.Map | null;
   query: string;
   searchResult: RoomSearchResult[];
+  searchMode: 'rooms' | 'restrooms' | 'study';
 }
 
 /**
  * Displays the search results.
  */
-const RoomSearchResults = ({ map, query, searchResult }: Props) => {
+const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
@@ -36,7 +37,7 @@ const RoomSearchResults = ({ map, query, searchResult }: Props) => {
     (state) => state.nav.choosingRoomMode,
   );
 
-  if (query.length < 3) {
+  if (query.length < 2 && searchMode != 'restrooms') {
     return <KeepTypingDisplay />;
   }
 

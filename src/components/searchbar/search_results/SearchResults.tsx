@@ -31,7 +31,7 @@ const SearchResults = ({ map, query, userPosition }: SearchResultsProps) => {
   useEffect(() => {
     if (buildings) {
       setTimeout(() => {
-        if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
+        if (['rooms', 'restrooms', 'study', 'food'].includes(searchMode)) {
           setRoomSearchResults(
             searchRoom(
               buildings,
@@ -40,21 +40,17 @@ const SearchResults = ({ map, query, userPosition }: SearchResultsProps) => {
               searchMode as 'rooms' | 'food' | 'restrooms' | 'study',
             ),
           );
-        } else if (searchMode === 'food') {
-          setRoomSearchResults(
-            searchFood(buildings, query, searchMap, searchMode),
-          );
         }
       }, 500);
     }
   }, [buildings, query, searchMap, searchMode]);
-
   if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
     return (
       <RoomSearchResults
         map={map}
         query={query}
         searchResult={roomSearchResults}
+        searchMode={searchMode as 'rooms' | 'restrooms' | 'study'}
       />
     );
   } else if (searchMode == 'food') {
