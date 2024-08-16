@@ -182,7 +182,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
     return (
       <div
         className={`z-10 flex-1 overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          searchQuery == '' && searchMode != 'food'
+          searchQuery == '' && !['food', 'restrooms'].includes(searchMode)
             ? 'h-0 opacity-0'
             : 'mt-1 h-fit opacity-100' // displays all food if search query is empty
         }`}
