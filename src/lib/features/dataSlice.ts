@@ -50,7 +50,7 @@ const dataSlice = createSlice({
       state.searchMap = action.payload;
     },
 
-    setReduxFloorPlanMap(state, action) {
+    setFloorPlanMap(state, action) {
       state.floorPlanMap = action.payload;
     },
 
@@ -72,7 +72,7 @@ export const {
   setEateryData,
   setCourseData,
   setSearchMap,
-  setReduxFloorPlanMap,
+  setFloorPlanMap,
   addFloorToFloorPlanMap,
   setAvailableRoomImages,
 } = dataSlice.actions;
