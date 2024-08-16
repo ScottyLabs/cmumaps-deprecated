@@ -4,7 +4,6 @@ import {
   FeatureVisibility,
   Map,
   MapType,
-  PointOfInterestCategory,
   CoordinateRegion,
 } from 'mapkit-react';
 
@@ -206,7 +205,7 @@ const MapDisplay = ({ mapRef, floorPlanMap }: MapDisplayProps) => {
       ref={mapRef}
       token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN || ''}
       initialRegion={initialRegion}
-      includedPOICategories={[PointOfInterestCategory.Restaurant]}
+      includedPOICategories={[]}
       cameraBoundary={cameraBoundary}
       minCameraDistance={50}
       maxCameraDistance={1500}
