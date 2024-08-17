@@ -1,7 +1,7 @@
 import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
 import fs from 'fs';
 import { Position } from 'geojson';
-import { floor, min } from 'lodash';
+import { find } from 'lodash';
 import { Coordinate } from 'mapkit-react';
 import { NextRequest } from 'next/server';
 import path from 'path';
@@ -65,8 +65,33 @@ function findPath(
   rooms: Room[],
   nodes: { [nodeId: string]: Node },
 ): Node[] | { error: string } {
-  const start = Object.values(nodes).find((e) => e.roomId == rooms[0].id);
-  const end = Object.values(nodes).find((e) => e.roomId == rooms[1].id);
+  let start;
+  let end;
+  if (rooms[0].id) {
+    start = Object.values(nodes).find((e) => e.roomId == rooms[0].id);
+  } else {
+    // Find a node with the building code
+    start = Object.values(nodes).find((e) =>
+      Object.values(e.neighbors).some(
+        (f) =>
+          f?.toFloorInfo &&
+          f?.toFloorInfo.toFloor.split('-')[0] === rooms[0].code,
+      ),
+    );
+  }
+  if (rooms[1].id) {
+    end = Object.values(nodes).find((e) => e.roomId == rooms[1].id);
+  } else {
+    // Find a node with the building code
+    end = Object.values(nodes).find((e) =>
+      Object.values(e.neighbors).some(
+        (f) =>
+          f?.toFloorInfo &&
+          f?.toFloorInfo.toFloor.split('-')[0] === rooms[1].code,
+      ),
+    );
+  }
+  console.log('SEARCHME', start, end);
   if (!start) {
     return { error: 'Start room not found' };
   } else if (!end) {
@@ -109,32 +134,21 @@ function findPath(
   }
   return { error: 'Path not found' };
 }
-const getFloorCenter = (rooms: Room[]): Position => {
-  let points: Position[] = Object.values(rooms).flatMap((room: Room) =>
-    room.polygon.coordinates.flat(),
-  );
 
-  points = points.filter((e) => e !== undefined);
-
-  const allX = points.map((p) => p[0]);
-  const allY = points.map((p) => p[1]);
-
-  const minX = Math.min(...allX);
-  const maxX = Math.max(...allX);
-  const minY = Math.min(...allY);
-  const maxY = Math.max(...allY);
-
-  return [(minX + maxX) / 2, (minY + maxY) / 2];
-};
 export async function POST(req: NextRequest) {
   const { rooms } = await req.json();
   if (!rooms || rooms.length !== 2) {
     return Response.json({ error: 'Invalid rooms' }, { status: 400 });
   }
   console.log(rooms[0].floor, rooms[1].floor);
-  const startFloorName =
-    rooms[0].floor.buildingCode + '-' + rooms[0].floor.level;
-  const endFloorName = rooms[1].floor.buildingCode + '-' + rooms[1].floor.level;
+  const isActuallyBuilding = !(rooms[0].floor && rooms[1].floor);
+  const startFloorName = rooms[0].floor
+    ? rooms[0].floor.buildingCode + '-' + rooms[0].floor.level
+    : rooms[0].code + '-' + rooms[0].defaultFloor;
+  const endFloorName = rooms[1].floor
+    ? rooms[1].floor.buildingCode + '-' + rooms[1].floor.level
+    : rooms[1].code + '-' + rooms[1].defaultFloor;
+  console.log(startFloorName, endFloorName);
   const high_level_path = JSON.parse(
     fs.readFileSync(
       path.resolve(process.cwd(), `./public/json/high_level_floor_plan.json`),
@@ -168,9 +182,36 @@ export async function POST(req: NextRequest) {
 
   // console.log(options.values().next().value)
   const iter = options.values();
-  iter.next();
-  let nodes = {};
-  for (const floorName of iter.next().value) {
+  let nodes1 = {};
+  for (const floorName of iter
+    .next()
+    .value.concat(isActuallyBuilding ? ['outside-1'] : [])) {
+    const graphPath = path.resolve(
+      process.cwd(),
+      `./public/json/floor_plan/${floorName.split('-')[0]}/`,
+      `${floorName}-graph.json`,
+    );
+    if (!fs.existsSync(graphPath)) {
+      continue;
+    }
+    const f: { [id: string]: Node } = JSON.parse(
+      fs.readFileSync(graphPath, 'utf-8'),
+    );
+
+    Object.keys(f).forEach((id: string) => {
+      const node = f[id];
+      f[id] = {
+        ...node,
+        floor: floorName,
+      };
+    });
+    nodes1 = { ...nodes1, ...f };
+  }
+
+  let nodes2 = {};
+  for (const floorName of iter
+    .next()
+    .value.concat(isActuallyBuilding ? ['outside-1'] : [])) {
     console.log(floorName);
     const graphPath = path.resolve(
       process.cwd(),
@@ -191,11 +232,12 @@ export async function POST(req: NextRequest) {
         floor: floorName,
       };
     });
-    nodes = { ...nodes, ...f };
+    nodes2 = { ...nodes2, ...f };
   }
 
   // Find the path
-  const recommendedPath = findPath(rooms, nodes);
-  console.log(recommendedPath);
-  return Response.json(recommendedPath);
+  return Response.json({
+    fastest: findPath(rooms, nodes1),
+    other: findPath(rooms, nodes2),
+  });
 }
