@@ -239,7 +239,11 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     >
       {buildings &&
         Object.values(buildings).map((building) => (
-          <BuildingShape key={building.code} building={building} />
+          <BuildingShape
+            key={building.code}
+            map={mapRef.current}
+            building={building}
+          />
         ))}
 
       {focusedFloor && <FloorPlanOverlay visibleBuildings={visibleBuildings} />}
