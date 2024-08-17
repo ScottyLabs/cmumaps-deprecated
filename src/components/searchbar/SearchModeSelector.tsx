@@ -5,7 +5,6 @@ import React from 'react';
 import { setSearchMode } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
-import CollapsibleWrapper from '../common/CollapsibleWrapper';
 import { SearchMode, SearchModeList, searchModeToIcon } from './searchMode';
 
 const searchModeToDisplayText: Record<SearchMode, string> = {
@@ -43,30 +42,22 @@ const SearchModeSelector = () => {
       <div
         key={searchMode}
         onClick={() => dispatch(setSearchMode(searchMode))}
-        className="flex flex-col items-center gap-1 p-2"
+        className={`flex flex-col items-center gap-1 p-2 ${searchMode == selectedSearchMode ? 'bg-gray-200' : ''}`}
       >
         <div
-          className={`flex h-14 w-14 cursor-pointer items-center justify-center rounded-full ${bgColorClass}`}
+          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full ${bgColorClass}`}
         >
-          <Image alt={displayText + ' icon'} src={icon} className="h-8 w-8" />
+          <Image alt={displayText + ' icon'} src={icon} className="h-5 w-5" />
         </div>
-        <p className="text-sm text-[#8e8e8e]">{displayText}</p>
+        <p className="text-xs text-[#8e8e8e]">{displayText}</p>
       </div>
     );
   };
 
   return (
-    <CollapsibleWrapper title="Search Modes">
-      <div className="no-scrollbar mx-2.5 mb-3 flex gap-2 overflow-x-auto rounded-xl border p-2">
-        {SearchModeList.map((searchmode) =>
-          searchmode == selectedSearchMode ? (
-            <div key={searchmode}></div>
-          ) : (
-            renderSearchModeHelper(searchmode)
-          ),
-        )}
-      </div>
-    </CollapsibleWrapper>
+    <div className="no-scrollbar flex gap-2 overflow-x-auto rounded bg-white px-2">
+      {SearchModeList.map((searchmode) => renderSearchModeHelper(searchmode))}
+    </div>
   );
 };
 

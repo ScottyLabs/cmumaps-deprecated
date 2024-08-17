@@ -7,7 +7,7 @@ interface Props {
 
 const SearchResultWrapper = ({ children, handleClick }: Props) => {
   let classNames =
-    'my-3 flex w-full items-center justify-between gap-2 bg-gray-50 px-4 text-left';
+    'my-3 flex w-full items-center justify-between gap-2 px-4 text-left';
   classNames += 'transition duration-150 ease-out';
 
   if (handleClick) {

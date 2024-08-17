@@ -14,16 +14,16 @@ const textColors: Record<LocationState, string> = {
   OPEN: 'text-[#31B777]',
   CLOSED: 'text-[#dd3c18]',
   CLOSED_LONG_TERM: 'text-[#dd3c18]',
-  OPENS_SOON: 'text-[#f6cc5d]',
-  CLOSES_SOON: 'text-[#f3f65d]',
+  OPENS_SOON: 'text-[#3BB9CA]',
+  CLOSES_SOON: 'text-[#FFBD59]',
 };
 
 const bgColors: Record<LocationState, string> = {
   OPEN: 'bg-[#19b875]',
   CLOSED: 'bg-[#dd3c18]',
   CLOSED_LONG_TERM: 'bg-[#dd3c18]',
-  OPENS_SOON: 'bg-[#f6cc5d]',
-  CLOSES_SOON: 'bg-[#f3f65d]',
+  OPENS_SOON: 'bg-[#3BB9CA]',
+  CLOSES_SOON: 'bg-[#FFBD59]',
 };
 
 const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {

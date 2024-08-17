@@ -28,6 +28,7 @@ const FoodSearchResults = ({ map, query }: Props) => {
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const eateryData = useAppSelector((state) => state.data.eateryData);
   const searchMap = useAppSelector((state) => state.data.searchMap);
+  const userPostion = useAppSelector((state) => state.nav.userPosition);
 
   const [searchResults, setSearchResults] = useState<RoomSearchResult[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -36,11 +37,13 @@ const FoodSearchResults = ({ map, query }: Props) => {
     if (buildings) {
       setIsLoading(true);
       setTimeout(() => {
-        setSearchResults(searchRoom(buildings, query, searchMap, 'food'));
+        setSearchResults(
+          searchRoom(buildings, query, userPostion, searchMap, 'food'),
+        );
         setIsLoading(false);
       }, 500);
     }
-  }, [buildings, query, searchMap]);
+  }, [buildings, query, searchMap, userPostion]);
 
   if (isLoading) {
     return <LoadingDisplay />;
