@@ -24,7 +24,7 @@ const ToolBar = ({ map }: Props) => {
   );
 
   return (
-    <div className="fixed mx-2 w-full sm:w-96">
+    <div className="fixed w-full px-2 sm:w-96">
       <div className="flex max-h-screen flex-col space-y-2 py-2">
         <SearchBar map={map} />
 
