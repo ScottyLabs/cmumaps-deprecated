@@ -180,7 +180,9 @@ const Page = ({ params, searchParams }: Props) => {
 
     // set searchMap
     fetch('/json/searchMap.json').then((response) =>
-      response.json().then((searchMap) => dispatch(setSearchMap(searchMap))),
+      response.json().then((searchMap) => {
+        dispatch(setSearchMap(searchMap));
+      }),
     );
 
     // set floorPlanMap
