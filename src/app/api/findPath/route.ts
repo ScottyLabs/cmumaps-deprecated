@@ -1,7 +1,6 @@
 import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
 import fs from 'fs';
 import { Position } from 'geojson';
-import { find } from 'lodash';
 import { Coordinate } from 'mapkit-react';
 import { NextRequest } from 'next/server';
 import path from 'path';

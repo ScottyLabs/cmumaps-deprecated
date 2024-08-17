@@ -124,31 +124,41 @@ const RoomSchedule = () => {
       const formatDbDate = (time: Date) => {
         const date = new Date(time);
 
-        console.log(date);
-
         const hoursUTC = date.getUTCHours().toString().padStart(2, '0');
         const minutesUTC = date.getUTCMinutes().toString().padStart(2, '0');
         return `${hoursUTC}:${minutesUTC}`;
       };
 
-      return weekEvents[dayOfWeek].map((event) => {
-        const startTime = formatDbDate(event.startTime);
-        const endTime = formatDbDate(event.endTime);
-
+      if (weekEvents[dayOfWeek].length == 0) {
         return (
-          <div key={event.id} className="flex justify-between">
-            <p>{event.name}</p>
-            <p>
-              {startTime}-{endTime}
-            </p>
-          </div>
+          <p className="mt-2 flex justify-center bg-gray-100 py-3 italic text-[--color-gray]">
+            No Schedule This Day
+          </p>
         );
-      });
+      }
+
+      return (
+        <div className="mt-2 space-y-3 bg-gray-100 py-3 text-[--color-gray]">
+          {weekEvents[dayOfWeek].map((event) => {
+            const startTime = formatDbDate(event.startTime);
+            const endTime = formatDbDate(event.endTime);
+
+            return (
+              <div key={event.id} className="flex justify-between px-2">
+                <p>{event.name}</p>
+                <p>
+                  {startTime}-{endTime}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      );
     }
   };
 
   return (
-    <div className="space-x-4 rounded-lg bg-white p-4 shadow">
+    <div className="border-t-4 pt-3">
       {renderDatePicker()}
       {renderContent()}
     </div>

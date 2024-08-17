@@ -8,14 +8,13 @@ import { toast } from 'react-toastify';
 
 import { setCourseData } from '@/lib/features/dataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate, Course, CourseData, SearchMap } from '@/types';
+import { Course, CourseData, SearchMap } from '@/types';
 
 import SearchResultWrapper from './SearchResultWrapper';
 
 interface Props {
   map: mapkit.Map | null;
   query: string;
-  userPosition: AbsoluteCoordinate;
 }
 
 export const handleCourseClick =

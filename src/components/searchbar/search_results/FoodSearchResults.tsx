@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -8,26 +8,48 @@ import { sortEateries } from '@/util/eateryUtils';
 import { zoomOnObject, zoomOnRoom } from '../../buildings/mapUtils';
 import EateryInfoDisplay from '../../infocard/EateryInfoDisplay';
 import Roundel from '../../shared/Roundel';
+import LoadingDisplay from '../display_helpers/LoadingDisplay';
 import NoResultDisplay from '../display_helpers/NoResultDisplay';
-import { RoomSearchResult } from '../searchUtils';
+import { RoomSearchResult, searchRoom } from '../searchUtils';
 import SearchResultWrapper from './SearchResultWrapper';
 
 interface Props {
   map: mapkit.Map | null;
-  searchResult: RoomSearchResult[];
+  query: string;
 }
 
 /**
  * Displays the food search results.
  */
-const FoodSearchResults = ({ map, searchResult }: Props) => {
+const FoodSearchResults = ({ map, query }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const eateryData = useAppSelector((state) => state.data.eateryData);
+  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const userPostion = useAppSelector((state) => state.nav.userPosition);
 
-  if (searchResult.length == 0) {
+  const [searchResults, setSearchResults] = useState<RoomSearchResult[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (buildings) {
+      setIsLoading(true);
+      setTimeout(() => {
+        setSearchResults(
+          searchRoom(buildings, query, userPostion, searchMap, 'food'),
+        );
+        setIsLoading(false);
+      }, 500);
+    }
+  }, [buildings, query, searchMap, userPostion]);
+
+  if (isLoading) {
+    return <LoadingDisplay />;
+  }
+
+  if (searchResults.length == 0) {
     return <NoResultDisplay />;
   }
 
@@ -88,7 +110,7 @@ const FoodSearchResults = ({ map, searchResult }: Props) => {
     });
   };
 
-  return searchResult.map((buildingResult) => {
+  return searchResults.map((buildingResult) => {
     const building = buildingResult.building;
     return (
       <div key={building.code}>

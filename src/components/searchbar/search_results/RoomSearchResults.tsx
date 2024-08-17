@@ -1,10 +1,9 @@
 import React from 'react';
-import { toast } from 'react-toastify';
 
 import {
   setChoosingRoomMode,
-  setEndRoom,
-  setStartRoom,
+  setEndLocation,
+  setStartLocation,
 } from '@/lib/features/navSlice';
 import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -36,6 +35,8 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+  const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
   if (query.length < 2 && searchMode != 'restrooms') {
     return <KeepTypingDisplay />;
@@ -48,7 +49,13 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
   const renderBuildingResults = (building: Building) => {
     const handleClick = () => {
       if (choosingRoomMode) {
-        toast.error("Can't choose a building for navigation for now!");
+        if (choosingRoomMode == 'start') {
+          dispatch(setStartLocation(building));
+        } else if (choosingRoomMode == 'end') {
+          dispatch(setEndLocation(building));
+        }
+        dispatch(setIsSearchOpen(false));
+        dispatch(setChoosingRoomMode(null));
       } else {
         if (map) {
           zoomOnObject(map, building.shapes.flat());
@@ -59,7 +66,10 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
     };
 
     return (
-      <SearchResultWrapper handleClick={handleClick}>
+      <SearchResultWrapper
+        handleClick={handleClick}
+        isSelected={building.code == selectedBuilding?.code}
+      >
         <div className="flex items-center gap-3">
           <div className="mx-[-10px] scale-[0.6]">
             <Roundel code={building.code} />
@@ -88,9 +98,9 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
     const handleClick = (searchRoom: SearchRoom) => () => {
       if (choosingRoomMode) {
         if (choosingRoomMode == 'start') {
-          dispatch(setStartRoom(searchRoom));
+          dispatch(setStartLocation(searchRoom));
         } else if (choosingRoomMode == 'end') {
-          dispatch(setEndRoom(searchRoom));
+          dispatch(setEndLocation(searchRoom));
         }
         dispatch(setIsSearchOpen(false));
         dispatch(setChoosingRoomMode(null));
@@ -110,6 +120,7 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
       <SearchResultWrapper
         key={searchRoom.id}
         handleClick={handleClick(searchRoom)}
+        isSelected={searchRoom.id == selectedRoom?.id}
       >
         <div className="flex h-12 items-center space-x-3">
           <RoomPin room={searchRoom} />

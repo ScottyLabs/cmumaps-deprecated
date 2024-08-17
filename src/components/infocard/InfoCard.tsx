@@ -18,7 +18,7 @@ const InfoCard = ({ map }: Props) => {
   if (room) {
     if (room.type == 'food') {
       return (
-        <CardWrapper snapPoint={0.4}>
+        <CardWrapper snapPoint={0.42}>
           <EateryCard room={room} />
         </CardWrapper>
       );
@@ -31,7 +31,7 @@ const InfoCard = ({ map }: Props) => {
     }
   } else if (building) {
     return (
-      <CardWrapper snapPoint={0.5}>
+      <CardWrapper snapPoint={0.52}>
         <BuildingCard map={map} building={building} />
       </CardWrapper>
     );

@@ -5,8 +5,8 @@ import React from 'react';
 
 import {
   setChoosingRoomMode,
-  setEndRoom,
-  setStartRoom,
+  setEndLocation,
+  setStartLocation,
 } from '@/lib/features/navSlice';
 import { claimRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -33,49 +33,38 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
     return <></>;
   }
 
+  const handleSelectRoom = (room: Room) => () => {
+    if (choosingRoomMode == 'start') {
+      dispatch(setStartLocation(room));
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+    } else if (choosingRoomMode == 'end') {
+      dispatch(setEndLocation(room));
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+    } else {
+      dispatch(claimRoom(room));
+    }
+  };
+
   return Object.entries(floorPlan).map(([roomId, room]) => {
     const roomColors = getRoomTypeDetails(room.type);
 
-    // const opacity = isBackground ? 0.7 : 1;
-    const opacity = 1;
+    const isSelected = selectedRoom?.id === roomId;
 
-    const showIcon = hasIcon(room) || selectedRoom?.id === roomId;
-
-    const gutter = selectedRoom?.id === roomId ? 20 : 4;
-    const iconSize = selectedRoom?.id === roomId ? 30 : showIcon ? 20 : 10;
-    const labelHeight = 24;
-    const labelOffset = {
-      left: iconSize + gutter,
-      top: (iconSize - labelHeight) / 2,
-    };
-
-    const handleSelectRoom = (room: Room) => () => {
-      if (choosingRoomMode == 'start') {
-        dispatch(setStartRoom(room));
-        dispatch(setIsSearchOpen(false));
-        dispatch(setChoosingRoomMode(null));
-      } else if (choosingRoomMode == 'end') {
-        dispatch(setEndRoom(room));
-        dispatch(setIsSearchOpen(false));
-        dispatch(setChoosingRoomMode(null));
-      } else {
-        dispatch(claimRoom(room));
-      }
-    };
+    const showIcon = hasIcon(room) || isSelected;
 
     return (
       <div key={room.id}>
         <Polygon
           points={room.coordinates}
-          selected={selectedRoom?.id === roomId}
+          selected={isSelected}
           enabled={true}
           fillColor={roomColors.background}
-          fillOpacity={opacity}
-          strokeColor={
-            selectedRoom?.id === roomId ? '#f7efc3' : roomColors.border
-          }
-          strokeOpacity={opacity}
-          lineWidth={selectedRoom?.id === roomId ? 5 : 1}
+          fillOpacity={1}
+          strokeColor={isSelected ? '#FFBD59' : roomColors.border}
+          strokeOpacity={1}
+          lineWidth={isSelected ? 5 : 1}
           onSelect={handleSelectRoom(room)}
           fillRule="nonzero"
         />
@@ -88,16 +77,16 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
               onSelect={handleSelectRoom(room)}
               visible={showRoomNames || showIcon}
             >
-              <div
-                className={`relative width-[${iconSize}] height-[${iconSize}] `}
-              >
+              <div className="flex flex-col items-center">
                 <RoomPin room={{ ...room, id: roomId }} />
                 {(showRoomNames || room.alias) && (
                   <div
-                    className={`flex-1 flex-col justify-center height-[${labelHeight}] absolute left-[${labelOffset.left}] top-[${labelOffset.top}] text-sm leading-[1.1] tracking-wide`}
+                    className={`text-center text-sm leading-[1.1] tracking-wide ${isSelected ? 'font-bold' : ''}`}
                   >
-                    {showRoomNames && <div>{room.name}</div>}
-                    {room.alias && <div>{room.alias}</div>}
+                    {showRoomNames && <p>{room.name}</p>}
+                    {room.alias && (
+                      <p className="w-10 text-wrap italic">{room.alias}</p>
+                    )}
                   </div>
                 )}
               </div>

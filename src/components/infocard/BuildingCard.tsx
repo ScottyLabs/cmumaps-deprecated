@@ -1,5 +1,5 @@
 import React from 'react';
-// import Carousel from 'react-multi-carousel';
+import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 import { claimRoom } from '@/lib/features/uiSlice';
@@ -46,69 +46,88 @@ const BuildingCard = ({ map, building }: Props) => {
       return <h3> {eatery.alias}</h3>;
     };
 
+    const eateries = building.floors
+      .map((floorLevel) => {
+        // remove this later!!!
+        if (
+          !searchMap[`${building.code}`] ||
+          !searchMap[`${building.code}`][floorLevel]
+        ) {
+          return [];
+        }
+        const rooms = searchMap[`${building.code}`][`${floorLevel}`];
+        return rooms.filter((room) => room.type == 'food');
+      })
+      .flat();
+
+    sortEateries(eateries, eateryData);
+
     if (isMobile) {
-      return;
-      // const responsive = {
-      //   superLargeDesktop: {
-      //     breakpoint: { max: 4000, min: 3000 },
-      //     items: 5,
-      //   },
-      //   desktop: {
-      //     breakpoint: { max: 3000, min: 1024 },
-      //     items: 3,
-      //   },
-      //   tablet: {
-      //     breakpoint: { max: 1024, min: 464 },
-      //     items: 2,
-      //   },
-      //   mobile: {
-      //     breakpoint: { max: 464, min: 0 },
-      //     items: 1,
-      //     partialVisibilityGutter: 30,
-      //   },
-      // };
+      const responsive = {
+        superLargeDesktop: {
+          breakpoint: { max: 4000, min: 3000 },
+          items: 5,
+        },
+        desktop: {
+          breakpoint: { max: 3000, min: 1024 },
+          items: 3,
+        },
+        tablet: {
+          breakpoint: { max: 1024, min: 464 },
+          items: 2,
+        },
+        mobile: {
+          breakpoint: { max: 464, min: 0 },
+          items: 1,
+          partialVisibilityGutter: 30,
+        },
+      };
 
-      // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      // const CustomDot = ({ onClick, active }: any) => {
-      //   return (
-      //     <button
-      //       className={
-      //         'h-2 w-2 rounded-full ' +
-      //         `${active ? 'bg-[#8e8e8e]' : 'bg-[#f1f1f1]'}`
-      //       }
-      //       onClick={() => onClick()}
-      //     ></button>
-      //   );
-      // };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const CustomDot = ({ onClick, active }: any) => {
+        return (
+          <button
+            className={
+              'h-2 w-2 rounded-full ' +
+              `${active ? 'bg-[#8e8e8e]' : 'bg-[#f1f1f1]'}`
+            }
+            onClick={() => onClick()}
+          />
+        );
+      };
 
-      // return (
-      //   <div className="mb-1 ml-2">
-      //     <p className="my-0 font-medium">Eateries nearby</p>
-      //     <Carousel
-      //       responsive={responsive}
-      //       showDots
-      //       arrows={false}
-      //       dotListClass="gap-2"
-      //       customDot={<CustomDot />}
-      //     >
-      //       {eatingData.map(([eatery, eateryInfo]) => (
-      //         <div
-      //           key={eatery.id}
-      //           className="cursor-pointer rounded border p-1"
-      //           onClick={() => dispatch(claimRoom(eatery))}
-      //         >
-      //           <div className="carousel-item active">
-      //             <EateryInfoDisplay
-      //               room={eatery}
-      //               title={renderTitle(eatery)}
-      //               eateryInfo={eateryInfo}
-      //             />
-      //           </div>
-      //         </div>
-      //       ))}
-      //     </Carousel>
-      //   </div>
-      // );
+      return (
+        <div className="mb-1">
+          <p className="-mb-3 ml-3 text-base text-gray-500">Eateries nearby</p>
+          <Carousel
+            showDots
+            responsive={responsive}
+            arrows={false}
+            containerClass="react-multi-carousel-list"
+            dotListClass="gap-2"
+            customDot={<CustomDot />}
+          >
+            {eateries.map((eatery) => {
+              const eateryInfo = eateryData[eatery.alias.toUpperCase()];
+              return (
+                <div
+                  key={eatery.id}
+                  className="mx-3 cursor-pointer border"
+                  onClick={() => dispatch(claimRoom(eatery))}
+                >
+                  <div className="carousel-item active">
+                    <EateryInfoDisplay
+                      room={eatery}
+                      title={renderTitle(eatery)}
+                      eateryInfo={eateryInfo}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </Carousel>
+        </div>
+      );
     } else {
       const handleClick = (eatery: SearchRoom) => () => {
         dispatch(claimRoom(eatery));
@@ -122,42 +141,29 @@ const BuildingCard = ({ map, building }: Props) => {
         );
       };
 
-      const eateries = building.floors
-        .map((floorLevel) => {
-          // remove this later!!!
-          if (
-            !searchMap[`${building.code}`] ||
-            !searchMap[`${building.code}`][floorLevel]
-          ) {
-            return [];
-          }
-          const rooms = searchMap[`${building.code}`][`${floorLevel}`];
-          return rooms.filter((room) => room.type == 'food');
-        })
-        .flat();
-
-      sortEateries(eateries, eateryData);
-
       return (
-        <div className="max-h-96 space-y-3 overflow-y-auto px-2 pb-3">
-          {eateries.map((eatery) => {
-            const eateryInfo = eateryData[eatery.alias.toUpperCase()];
+        <>
+          <p className="mb-2 ml-3 text-base text-gray-500">Eateries nearby</p>
+          <div className="max-h-96 space-y-3 overflow-y-auto px-2 pb-3">
+            {eateries.map((eatery) => {
+              const eateryInfo = eateryData[eatery.alias.toUpperCase()];
 
-            return (
-              <div
-                key={eatery.id}
-                className="cursor-pointer rounded border p-1"
-                onClick={handleClick(eatery)}
-              >
-                <EateryInfoDisplay
-                  room={eatery}
-                  title={renderTitle(eatery)}
-                  eateryInfo={eateryInfo}
-                />
-              </div>
-            );
-          })}
-        </div>
+              return (
+                <div
+                  key={eatery.id}
+                  className="cursor-pointer rounded border p-1"
+                  onClick={handleClick(eatery)}
+                >
+                  <EateryInfoDisplay
+                    room={eatery}
+                    title={renderTitle(eatery)}
+                    eateryInfo={eateryInfo}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </>
       );
     }
   };

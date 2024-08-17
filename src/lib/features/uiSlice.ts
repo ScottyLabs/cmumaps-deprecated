@@ -44,13 +44,13 @@ const uiSlice = createSlice({
     releaseRoom(state, action) {
       if (!action.payload || action.payload.id === state.selectedRoom?.id) {
         state.selectedRoom = null;
-        state.selectedBuilding = null;
       }
     },
     setFocusedFloor(state, action: PayloadAction<Floor | null>) {
       state.focusedFloor = action.payload;
     },
     selectBuilding(state, action) {
+      state.selectedRoom = null;
       state.selectedBuilding = action.payload;
     },
     deselectBuilding(state) {

@@ -137,7 +137,7 @@ export interface SearchRoom {
 
   type: RoomType;
 
-  labelPosition: AbsoluteCoordinate;
+  labelPosition: Coordinate;
 
   floor: Floor;
 }

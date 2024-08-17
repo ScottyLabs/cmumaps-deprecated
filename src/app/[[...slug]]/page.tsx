@@ -1,8 +1,8 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
+// import { useUser } from '@clerk/nextjs';
 import questionMarkIcon from '@icons/question-mark.png';
-import scheduleIcon from '@icons/schedule.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -20,15 +20,17 @@ import {
   setSearchMap,
   setFloorPlanMap,
 } from '@/lib/features/dataSlice';
+import { setUserPosition } from '@/lib/features/navSlice';
 import {
   setFocusedFloor,
   setIsMobile,
   selectBuilding,
+  getIsCardOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { getEateryData } from '@/util/eateryUtils';
 
-const points = [[40.44249719447571, -79.94314319195851]];
+// const mockUserPosition = [40.44249719447571, -79.94314319195851];
 
 interface Props {
   params: {
@@ -54,6 +56,13 @@ const Page = ({ params, searchParams }: Props) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
+  const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
+
+  // const { user } = useUser();
+  // if (user) {
+  // console.log(user.id);
+  // }
 
   // extracting data in the initial loading of the page
   useEffect(() => {
@@ -114,6 +123,20 @@ const Page = ({ params, searchParams }: Props) => {
     }
   }, [userAgent, dispatch]);
 
+  // get user position
+  useEffect(() => {
+    setTimeout(() => {
+      navigator?.geolocation?.getCurrentPosition((pos) => {
+        const coord = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        };
+
+        dispatch(setUserPosition(coord));
+      });
+    }, 500);
+  }, [dispatch]);
+
   // load the list of images of the rooms
   useEffect(() => {
     const getRoomImageList = async () => {
@@ -159,7 +182,9 @@ const Page = ({ params, searchParams }: Props) => {
 
     // set searchMap
     fetch('/json/searchMap.json').then((response) =>
-      response.json().then((searchMap) => dispatch(setSearchMap(searchMap))),
+      response.json().then((searchMap) => {
+        dispatch(setSearchMap(searchMap));
+      }),
     );
 
     // set floorPlanMap
@@ -208,7 +233,7 @@ const Page = ({ params, searchParams }: Props) => {
     const renderClerkIcon = () => {
       if (isMobile) {
         return (
-          <div className="fixed bottom-10 right-2">
+          <div className="fixed bottom-[7.5rem] right-3 flex items-center justify-center rounded-full bg-[#4b5563] p-2">
             <UserButton />
           </div>
         );
@@ -220,6 +245,11 @@ const Page = ({ params, searchParams }: Props) => {
         );
       }
     };
+
+    // don't show icons if in mobile and either the search is open or the card is open
+    if (isMobile && (isSearchOpen || isCardOpen)) {
+      return <></>;
+    }
 
     return (
       <>
@@ -233,11 +263,11 @@ const Page = ({ params, searchParams }: Props) => {
             <Image alt="Question Mark" src={questionMarkIcon} height={45} />
           </a>
         </div>
-        {isMobile && (
+        {/* {isMobile && (
           <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
             <Image alt="Schedule" src={scheduleIcon} />
           </div>
-        )}
+        )} */}
       </>
     );
   };
@@ -245,13 +275,7 @@ const Page = ({ params, searchParams }: Props) => {
   return (
     <main className="relative h-screen">
       <div className="absolute z-10">
-        <ToolBar
-          map={mapRef.current}
-          userPosition={{
-            x: points[points.length - 1][0],
-            y: points[points.length - 1][1],
-          }}
-        />
+        <ToolBar map={mapRef.current} />
 
         {renderIcons()}
 
@@ -270,7 +294,7 @@ const Page = ({ params, searchParams }: Props) => {
         />
       </div>
 
-      <MapDisplay mapRef={mapRef} points={points} />
+      <MapDisplay mapRef={mapRef} />
     </main>
   );
 };

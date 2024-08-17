@@ -1,4 +1,5 @@
 import { distance as levenDist } from 'fastest-levenshtein';
+import { Coordinate } from 'mapkit-react';
 
 import { Building, RoomType, SearchMap, SearchRoom } from '@/types';
 
@@ -43,9 +44,12 @@ function getRoomTokens(room: SearchRoom, building: Building): string[] {
 export const searchRoom = (
   buildings: Record<string, Building>,
   query: string,
+  userPosition: Coordinate | null,
   searchMap: SearchMap,
   mode: 'rooms' | 'food' | 'restrooms' | 'study',
 ): RoomSearchResult[] => {
+  userPosition;
+
   if (query.length == 0 && mode == 'rooms') {
     return [];
   }

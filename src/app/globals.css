@@ -55,3 +55,7 @@ h4 {
 p {
   font-size: 0.875rem;
 }
+
+.react-multi-carousel-list {
+  height: 9rem;
+}

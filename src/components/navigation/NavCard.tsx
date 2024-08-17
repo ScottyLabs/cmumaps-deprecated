@@ -17,30 +17,33 @@ import CardWrapper from '../infocard/CardWrapper';
 export default function NavCard(): ReactElement {
   const dispatch = useAppDispatch();
 
-  const startRoom = useAppSelector((state) => state.nav.startRoom);
-  const endRoom = useAppSelector((state) => state.nav.endRoom);
+  const startLocation = useAppSelector((state) => state.nav.startLocation);
+  const endLocation = useAppSelector((state) => state.nav.endLocation);
+  const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   // calculate path from start to end
   useEffect(() => {
-    fetch('/api/findPath', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ rooms: [startRoom, endRoom] }),
-    })
-      .then((r) => {
-        try {
-          return r.json();
-        } catch {
-          return [];
-        }
+    if (startLocation && endLocation) {
+      fetch('/api/findPath', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rooms: [startLocation, endLocation] }),
       })
-      .then((j) => {
-        console.log(j);
-        dispatch(setRecommendedPath(j));
-      });
-  }, [startRoom, endRoom, dispatch]);
+        .then((r) => {
+          try {
+            return r.json();
+          } catch {
+            return [];
+          }
+        })
+        .then((j) => {
+          dispatch(setRecommendedPath(j));
+        });
+    }
+  }, [startLocation, endLocation, dispatch]);
 
   const renderTop = () => {
     return (
@@ -56,7 +59,7 @@ export default function NavCard(): ReactElement {
   };
 
   const renderRoomInput = (
-    navRoom: Room | Building | null,
+    navLocation: Room | Building | null,
     placeHolder: string,
     circleColor: string,
     handleClick: () => void,
@@ -66,14 +69,14 @@ export default function NavCard(): ReactElement {
     };
 
     const renderText = () => {
-      if (navRoom) {
-        return (
-          <p>
-            {navRoom?.floor
-              ? navRoom?.floor?.buildingCode + ' ' + navRoom.name
-              : navRoom.code}
-          </p>
-        );
+      if (navLocation) {
+        if ('floor' in navLocation) {
+          return (
+            <p>{navLocation.floor?.buildingCode + ' ' + navLocation.name}</p>
+          );
+        } else {
+          return <p>{navLocation.code}</p>;
+        }
       } else {
         return <p className="text-[gray]">{placeHolder}</p>;
       }
@@ -97,7 +100,12 @@ export default function NavCard(): ReactElement {
       dispatch(setChoosingRoomMode('start'));
     };
 
-    return renderRoomInput(startRoom, placeHolder, circleColor, handleClick);
+    return renderRoomInput(
+      startLocation,
+      placeHolder,
+      circleColor,
+      handleClick,
+    );
   };
 
   const renderEndRoomInput = () => {
@@ -108,7 +116,27 @@ export default function NavCard(): ReactElement {
       dispatch(setChoosingRoomMode('end'));
     };
 
-    return renderRoomInput(endRoom, placeHolder, circleColor, handleClick);
+    return renderRoomInput(endLocation, placeHolder, circleColor, handleClick);
+  };
+
+  const renderDirections = () => {
+    if (recommendedPath && recommendedPath.fastest) {
+      const passedByRooms: Room[] = [];
+      for (const node of recommendedPath.fastest) {
+        if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
+          console.log(node.floor);
+          console.log(node.floor.buildingCode);
+          console.log(floorPlanMap[node.floor.buildingCode]);
+          // passedByRooms.push(
+          //   floorPlanMap[node.floor.buildingCode][node.floor.level][
+          //     node.roomId
+          //   ],
+          // );
+        }
+      }
+
+      return passedByRooms.map((room) => <p key={room.id}>{room.name}</p>);
+    }
   };
 
   return (
@@ -119,6 +147,7 @@ export default function NavCard(): ReactElement {
           {renderStartRoomInput()}
           {renderEndRoomInput()}
         </div>
+        {renderDirections()}
       </div>
     </CardWrapper>
   );

@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import uiSlice from './features/uiSlice';
-import navSlice from './features/navSlice';
+
 import dataSlice from './features/dataSlice';
+import navSlice from './features/navSlice';
+import uiSlice from './features/uiSlice';
 
 export const makeStore = () => {
   return configureStore({

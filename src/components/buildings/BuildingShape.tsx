@@ -2,13 +2,20 @@ import { Annotation, Polygon } from 'mapkit-react';
 
 import React from 'react';
 
-import { selectBuilding } from '@/lib/features/uiSlice';
+import {
+  setChoosingRoomMode,
+  setEndLocation,
+  setStartLocation,
+} from '@/lib/features/navSlice';
+import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
 
 import Roundel from '../shared/Roundel';
+import { zoomOnObject } from './mapUtils';
 
 interface BuildingShapeProps {
+  map: mapkit.Map;
   building: Building;
 }
 
@@ -18,21 +25,47 @@ const buildingCodeToShapeFillColor = {
   MUD: '#6900a9',
   MOR: '#FED97B',
   DON: '#0025a9',
+
+  FBA: '#F28B5F',
+
   SCO: '#a90000',
   WEL: '#a90000',
   BOS: '#a90000',
   MCG: '#a90000',
   HEN: '#a90000',
+
+  HAM: '#6C1515',
+  ROS1: '#6C1515',
+  ROS2: '#6C1515',
+  ROS3: '#6C1515',
+  SPT: '#6C1515',
+  WOO: '#6C1515',
+  MMA: '#6C1515',
+
   ROF: '#ae12bc',
+  FCL: '#ae12bc',
+
+  FAF: '#89177D',
+  NVL: '#89177D',
+  FIF: '#89177D',
+  MC: '#89177D',
+  HIL: '#89177D',
+  CLY: '#89177D',
+
+  WWG: '#2A2D4B',
+  RES: '#2A2D4B',
 };
 
 /**
  * The shape of a building on the map.
  */
-export default function BuildingShape({ building }: BuildingShapeProps) {
+export default function BuildingShape({ map, building }: BuildingShapeProps) {
   const dispatch = useAppDispatch();
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+  const choosingRoomMode = useAppSelector(
+    (state) => state.nav.choosingRoomMode,
+  );
 
   const renderBuildingPolygon = () => {
     const isSelected = selectedBuilding?.code == building.code;
@@ -107,8 +140,23 @@ export default function BuildingShape({ building }: BuildingShapeProps) {
             <div
               className="translate-y-1/2 cursor-pointer"
               onClick={(e) => {
-                dispatch(selectBuilding(building));
-                e.stopPropagation();
+                // zoom on building if click on building already selected
+                if (selectedBuilding?.code == building.code) {
+                  zoomOnObject(map, building.shapes.flat());
+                }
+
+                if (choosingRoomMode == 'start') {
+                  dispatch(setStartLocation(building));
+                  dispatch(setIsSearchOpen(false));
+                  dispatch(setChoosingRoomMode(null));
+                } else if (choosingRoomMode == 'end') {
+                  dispatch(setEndLocation(building));
+                  dispatch(setIsSearchOpen(false));
+                  dispatch(setChoosingRoomMode(null));
+                } else {
+                  dispatch(selectBuilding(building));
+                  e.stopPropagation();
+                }
               }}
             >
               <Roundel code={building.code} />

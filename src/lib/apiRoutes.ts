@@ -56,7 +56,12 @@ export async function searchEvents(query: string) {
 
   try {
     const body = await response.json();
-    return body;
+    return body.map((event) => ({
+      ...event,
+      id: event._id.$oid,
+      startTime: event.startTime.$date,
+      endTime: event.endTime.$date,
+    }));
   } catch (e) {
     console.error('Failed to fetch events', response);
     return;

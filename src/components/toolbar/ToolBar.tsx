@@ -2,7 +2,6 @@ import React from 'react';
 
 import { getIsCardOpen } from '@/lib/features/uiSlice';
 import { useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate } from '@/types';
 
 import FloorSwitcher from '../buildings/FloorSwitcher';
 import InfoCard from '../infocard/InfoCard';
@@ -13,10 +12,9 @@ import Schedule from './Schedule';
 
 interface Props {
   map: mapkit.Map | null;
-  userPosition: AbsoluteCoordinate;
 }
 
-const ToolBar = ({ map, userPosition }: Props) => {
+const ToolBar = ({ map }: Props) => {
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
@@ -24,11 +22,33 @@ const ToolBar = ({ map, userPosition }: Props) => {
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
+
+  const isCardWrapperCollapsed = useAppSelector(
+    (state) => state.ui.isCardWrapperCollapsed,
+  );
+
+  // first only show floor switcher if there is focused floor
+  let showFloorSwitcher = !!focusedFloor;
+
+  // mobile cases
+  if (isMobile) {
+    if (isCardOpen && !isCardWrapperCollapsed) {
+      showFloorSwitcher = false;
+    }
+
+    if (isSearchOpen) {
+      showFloorSwitcher = false;
+    }
+  }
 
   return (
-    <div className="fixed mx-2 w-full sm:w-96">
-      <div className="flex h-screen flex-col space-y-2 py-2">
-        <SearchBar map={map} userPosition={userPosition} />
+    <div
+      // need box content in the desktop version so the width of the search bar match the card
+      className="fixed w-full px-2 sm:box-content sm:w-96"
+    >
+      <div className="flex max-h-screen flex-col space-y-2 py-2">
+        <SearchBar map={map} />
 
         {!isSearchOpen && !isCardOpen && (
           <>
@@ -41,7 +61,7 @@ const ToolBar = ({ map, userPosition }: Props) => {
         {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard />}
       </div>
 
-      {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
+      {showFloorSwitcher && <FloorSwitcher focusedFloor={focusedFloor} />}
     </div>
   );
 };

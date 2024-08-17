@@ -2,13 +2,13 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Coordinate } from 'mapkit-react';
 
 import { Node } from '@/app/api/findPath/route';
-import { Room } from '@/types';
+import { Building, Room } from '@/types';
 
 type ChoosingRoomMode = 'start' | 'end' | null;
 
 interface NavState {
-  endRoom: Room | null; // This can be expanded in the future to Building, ... node/ position?
-  startRoom: Room | null;
+  startLocation: Room | Building | null;
+  endLocation: Room | Building | null; // This can be expanded in the future to node/ position?
   recommendedPath: { fastest: Node[]; other: Node[] } | null;
   isNavOpen: boolean;
   userPosition: Coordinate | null;
@@ -16,8 +16,8 @@ interface NavState {
 }
 
 const initialState: NavState = {
-  endRoom: null,
-  startRoom: null,
+  endLocation: null,
+  startLocation: null,
   recommendedPath: null,
   isNavOpen: false,
   userPosition: null,
@@ -31,11 +31,11 @@ const navSlice = createSlice({
     setUserPosition(state, action) {
       state.userPosition = action.payload;
     },
-    setEndRoom(state, action) {
-      state.endRoom = action.payload;
+    setEndLocation(state, action) {
+      state.endLocation = action.payload;
     },
-    setStartRoom(state, action) {
-      state.startRoom = action.payload;
+    setStartLocation(state, action) {
+      state.startLocation = action.payload;
     },
     setRecommendedPath(state, action) {
       state.recommendedPath = action.payload;
@@ -51,8 +51,8 @@ const navSlice = createSlice({
 
 export const {
   setChoosingRoomMode,
-  setEndRoom,
-  setStartRoom,
+  setEndLocation,
+  setStartLocation,
   setRecommendedPath,
   setIsNavOpen,
   setUserPosition,

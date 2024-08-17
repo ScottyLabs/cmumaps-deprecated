@@ -16,7 +16,6 @@ import {
   setSearchMode,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate } from '@/types';
 
 import SearchModeSelector from './SearchModeSelector';
 import { searchModeToIcon } from './searchMode';
@@ -24,10 +23,9 @@ import SearchResults from './search_results/SearchResults';
 
 interface Props {
   map: mapkit.Map | null;
-  userPosition: AbsoluteCoordinate;
 }
 
-const SearchBar = ({ map, userPosition }: Props) => {
+const SearchBar = ({ map }: Props) => {
   const dispatch = useAppDispatch();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -42,7 +40,6 @@ const SearchBar = ({ map, userPosition }: Props) => {
     (state) => state.nav.choosingRoomMode,
   );
 
-  const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const showSearchModeSelector = isSearchOpen && !choosingRoomMode;
@@ -131,8 +128,8 @@ const SearchBar = ({ map, userPosition }: Props) => {
       <IoIosClose
         title="Close"
         size={25}
-        className="absolute right-1"
-        onPointerDown={handleCloseSearch}
+        className="absolute right-3"
+        onClick={handleCloseSearch}
       />
     );
 
@@ -166,32 +163,26 @@ const SearchBar = ({ map, userPosition }: Props) => {
           title="Search query"
           onFocus={() => {
             dispatch(setIsSearchOpen(true));
-            setIsFocused(true);
-          }}
-          onBlur={() => {
-            setIsFocused(false);
           }}
         />
 
-        {isFocused && renderCloseButton()}
+        {isSearchOpen && renderCloseButton()}
       </div>
     );
   };
 
   const renderSearchResults = () => {
+    // displays all food and restroom even if search query is empty
+    const showResult =
+      searchQuery !== '' || ['food', 'restrooms'].includes(searchMode);
+
     return (
       <div
-        className={`z-10 flex-1 overflow-y-scroll rounded bg-gray-50 transition-opacity duration-150 ease-in-out ${
-          searchQuery == '' && !['food', 'restrooms'].includes(searchMode)
-            ? 'h-0 opacity-0'
-            : 'mt-1 h-fit opacity-100' // displays all food if search query is empty
+        className={`z-10 flex-1 overflow-y-scroll rounded bg-white transition-opacity duration-150 ease-in-out ${
+          showResult ? 'mt-1 h-fit opacity-100' : 'h-0 opacity-0'
         }`}
       >
-        <SearchResults
-          map={map}
-          query={searchQuery}
-          userPosition={userPosition}
-        />
+        {showResult && <SearchResults map={map} query={searchQuery} />}
       </div>
     );
   };
