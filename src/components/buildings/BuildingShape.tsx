@@ -2,7 +2,12 @@ import { Annotation, Polygon } from 'mapkit-react';
 
 import React from 'react';
 
-import { selectBuilding } from '@/lib/features/uiSlice';
+import {
+  setChoosingRoomMode,
+  setEndLocation,
+  setStartLocation,
+} from '@/lib/features/navSlice';
+import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
 
@@ -33,6 +38,9 @@ export default function BuildingShape({ building }: BuildingShapeProps) {
   const dispatch = useAppDispatch();
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+  const choosingRoomMode = useAppSelector(
+    (state) => state.nav.choosingRoomMode,
+  );
 
   const renderBuildingPolygon = () => {
     const isSelected = selectedBuilding?.code == building.code;
@@ -107,8 +115,18 @@ export default function BuildingShape({ building }: BuildingShapeProps) {
             <div
               className="translate-y-1/2 cursor-pointer"
               onClick={(e) => {
-                dispatch(selectBuilding(building));
-                e.stopPropagation();
+                if (choosingRoomMode == 'start') {
+                  dispatch(setStartLocation(building));
+                  dispatch(setIsSearchOpen(false));
+                  dispatch(setChoosingRoomMode(null));
+                } else if (choosingRoomMode == 'end') {
+                  dispatch(setEndLocation(building));
+                  dispatch(setIsSearchOpen(false));
+                  dispatch(setChoosingRoomMode(null));
+                } else {
+                  dispatch(selectBuilding(building));
+                  e.stopPropagation();
+                }
               }}
             >
               <Roundel code={building.code} />
