@@ -54,20 +54,6 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
 
     const showIcon = hasIcon(room) || isSelected;
 
-    // const gutter = isSelected ? 20 : 4;
-    // const iconSize = isSelected ? 30 : showIcon ? 20 : 10;
-    // const labelHeight = 24;
-
-    // const labelOffset = {
-    //   left: iconSize + gutter,
-    //   top: (iconSize - labelHeight) / 2,
-    // };
-
-    const labelOffset = {
-      left: 0,
-      top: 0,
-    };
-
     return (
       <div key={room.id}>
         <Polygon
@@ -91,22 +77,18 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
               onSelect={handleSelectRoom(room)}
               visible={showRoomNames || showIcon}
             >
-              <div
-                className={`left-[${labelOffset.left}] top-[${labelOffset.top}] absolute`}
-              >
-                <div className="flex flex-col items-center">
-                  <RoomPin room={{ ...room, id: roomId }} />
-                  {(showRoomNames || room.alias) && (
-                    <div
-                      className={`text-center text-sm leading-[1.1] tracking-wide ${isSelected ? 'font-bold' : ''}`}
-                    >
-                      {showRoomNames && <p>{room.name}</p>}
-                      {room.alias && (
-                        <p className="w-10 text-wrap italic">{room.alias}</p>
-                      )}
-                    </div>
-                  )}
-                </div>
+              <div className="flex flex-col items-center">
+                <RoomPin room={{ ...room, id: roomId }} />
+                {(showRoomNames || room.alias) && (
+                  <div
+                    className={`text-center text-sm leading-[1.1] tracking-wide ${isSelected ? 'font-bold' : ''}`}
+                  >
+                    {showRoomNames && <p>{room.name}</p>}
+                    {room.alias && (
+                      <p className="w-10 text-wrap italic">{room.alias}</p>
+                    )}
+                  </div>
+                )}
               </div>
             </Annotation>
           )}
