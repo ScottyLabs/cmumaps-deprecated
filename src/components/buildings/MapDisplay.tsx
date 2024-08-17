@@ -4,7 +4,6 @@ import {
   FeatureVisibility,
   Map,
   MapType,
-  PointOfInterestCategory,
   CoordinateRegion,
 } from 'mapkit-react';
 
@@ -19,7 +18,7 @@ import {
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, FloorPlan } from '@/types';
+import { Building } from '@/types';
 import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
@@ -49,11 +48,11 @@ const initialRegion = {
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
   points: number[][];
-  floorPlanMap: Record<string, Record<string, FloorPlan>>;
 }
 
-const MapDisplay = ({ mapRef, floorPlanMap }: MapDisplayProps) => {
+const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const dispatch = useAppDispatch();
+
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
@@ -206,7 +205,7 @@ const MapDisplay = ({ mapRef, floorPlanMap }: MapDisplayProps) => {
       ref={mapRef}
       token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN || ''}
       initialRegion={initialRegion}
-      includedPOICategories={[PointOfInterestCategory.Restaurant]}
+      includedPOICategories={[]}
       cameraBoundary={cameraBoundary}
       minCameraDistance={5}
       maxCameraDistance={1500}
@@ -243,12 +242,7 @@ const MapDisplay = ({ mapRef, floorPlanMap }: MapDisplayProps) => {
           <BuildingShape key={building.code} building={building} />
         ))}
 
-      {focusedFloor && (
-        <FloorPlanOverlay
-          floorPlanMap={floorPlanMap}
-          visibleBuildings={visibleBuildings}
-        />
-      )}
+      {focusedFloor && <FloorPlanOverlay visibleBuildings={visibleBuildings} />}
 
       <NavLine />
     </Map>

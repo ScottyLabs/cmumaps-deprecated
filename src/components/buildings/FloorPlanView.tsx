@@ -16,11 +16,10 @@ import RoomPin, { hasIcon } from '../shared/RoomPin';
 
 interface Props {
   floor: Floor;
-  floorPlanMap: Record<string, Record<string, FloorPlan>>;
+  floorPlan: FloorPlan;
 }
 
-const FloorPlanView = ({ floor, floorPlanMap }: Props) => {
-  const floorPlan = floorPlanMap?.[floor.buildingCode]?.[floor.level];
+const FloorPlanView = ({ floor, floorPlan }: Props) => {
   const dispatch = useAppDispatch();
 
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
