@@ -154,8 +154,8 @@ const MapDisplay = ({ mapRef, floorPlanMap }: MapDisplayProps) => {
         const centerBuilding =
           Object.values(buildings).find(
             (building: Building) =>
-              building.hitbox &&
-              isInPolygonCoordinates(building.hitbox, center),
+              building.shapes &&
+              isInPolygonCoordinates(building.shapes.flat(2), center),
           ) ?? null;
 
         if (centerBuilding) {
