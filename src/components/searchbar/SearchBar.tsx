@@ -40,7 +40,6 @@ const SearchBar = ({ map }: Props) => {
     (state) => state.nav.choosingRoomMode,
   );
 
-  const [isFocused, setIsFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const showSearchModeSelector = isSearchOpen && !choosingRoomMode;
@@ -129,8 +128,8 @@ const SearchBar = ({ map }: Props) => {
       <IoIosClose
         title="Close"
         size={25}
-        className="absolute right-1"
-        onPointerDown={handleCloseSearch}
+        className="absolute right-3"
+        onClick={handleCloseSearch}
       />
     );
 
@@ -164,14 +163,10 @@ const SearchBar = ({ map }: Props) => {
           title="Search query"
           onFocus={() => {
             dispatch(setIsSearchOpen(true));
-            setIsFocused(true);
-          }}
-          onBlur={() => {
-            setIsFocused(false);
           }}
         />
 
-        {isFocused && renderCloseButton()}
+        {isSearchOpen && renderCloseButton()}
       </div>
     );
   };
