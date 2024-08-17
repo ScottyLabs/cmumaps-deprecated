@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAppSelector } from '@/lib/hooks';
-import { Building, Floor, FloorPlan } from '@/types';
+import { Building, Floor } from '@/types';
 
 import FloorPlanView from './FloorPlanView';
 
@@ -25,13 +25,13 @@ const getFloorAtOrdinal = (
 
 interface Props {
   visibleBuildings: Building[];
-  floorPlanMap: Record<string, Record<string, FloorPlan>>;
 }
 
 /**
  * The contents of a floor displayed on the map.
  */
-const FloorPlanOverlay = ({ visibleBuildings, floorPlanMap }: Props) => {
+const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 
@@ -55,11 +55,11 @@ const FloorPlanOverlay = ({ visibleBuildings, floorPlanMap }: Props) => {
   return visibleFloors.map((floor) => {
     if (floor) {
       return (
-        // key is the key to prevent re-rendering mmmm
+        // key is the key to prevent re-rendering
         <FloorPlanView
           key={floor.buildingCode + floor.level}
           floor={floor}
-          floorPlanMap={floorPlanMap}
+          floorPlan={floorPlanMap?.[floor.buildingCode]?.[floor.level]}
         />
       );
     }
