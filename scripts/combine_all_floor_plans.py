@@ -3,6 +3,8 @@ import os
 import json
 from shapely import simplify, to_geojson  # type: ignore
 from shapely.geometry import shape  # type: ignore
+import copy
+
 
 # The number of meters in a degree.
 # Values computed for the Pittsburgh region using https://stackoverflow.com/a/51765950/4652564
@@ -110,6 +112,11 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
                     room["floor"]["buildingCode"] = building_code
                     room["floor"]["level"] = floor_level
 
+                    if len(room["aliases"]) > 0:
+                        room["alias"] = room["aliases"][0]
+                    else:
+                        room["alias"] = ""
+
                     # room["polygon"] = json.loads(
                     #     to_geojson(simplify_polygon(rooms[room_id]["polygon"]))
                     # )
@@ -128,10 +135,9 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
                         new_coordinates.append(new_ring)
                     room["coordinates"] = new_coordinates
 
-                floor_plan_map[building_code][floor_level] = content["rooms"]
+                    del room["polygon"]
 
-with open("public/json/floorPlanMap.json", "w") as file:
-    file.write(json.dumps(floor_plan_map))
+                floor_plan_map[building_code][floor_level] = content["rooms"]
 
 
 # create searchMap
@@ -146,21 +152,20 @@ for building_code in floor_plan_map:
         rooms = floor_plan_map[building_code][floor]
 
         for room_id in rooms:
-            room = rooms[room_id]
-            room["id"] = room_id
-
-            if len(room["aliases"]) > 0:
-                room["alias"] = room["aliases"][0]
-            else:
-                room["alias"] = ""
-
-            room["floor"] = dict()
-            room["floor"]["buildingCode"] = building_code
-            room["floor"]["level"] = floor_level
-            del room["polygon"]
+            # delete unneeded in searchMap
+            room = copy.deepcopy(rooms[room_id])
+            del room["coordinates"]
             search_rooms.append(room)
 
-    search_map[building_code][floor_level] = search_rooms
+            # delete unneeded in floorPlanMap
+            room = rooms[room_id]
+            del room["aliases"]
+
+        search_map[building_code][floor] = search_rooms
+
+
+with open("public/json/floorPlanMap.json", "w") as file:
+    file.write(json.dumps(floor_plan_map))
 
 with open("public/json/searchMap.json", "w") as file:
     file.write(json.dumps(search_map))
