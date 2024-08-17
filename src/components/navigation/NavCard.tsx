@@ -19,6 +19,8 @@ export default function NavCard(): ReactElement {
 
   const startLocation = useAppSelector((state) => state.nav.startLocation);
   const endLocation = useAppSelector((state) => state.nav.endLocation);
+  const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   // calculate path from start to end
   useEffect(() => {
@@ -117,11 +119,25 @@ export default function NavCard(): ReactElement {
     return renderRoomInput(endLocation, placeHolder, circleColor, handleClick);
   };
 
-  const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
+  const renderDirections = () => {
+    if (recommendedPath && recommendedPath.fastest) {
+      const passedByRooms: Room[] = [];
+      for (const node of recommendedPath.fastest) {
+        if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
+          console.log(node.floor);
+          console.log(node.floor.buildingCode);
+          console.log(floorPlanMap[node.floor.buildingCode]);
+          // passedByRooms.push(
+          //   floorPlanMap[node.floor.buildingCode][node.floor.level][
+          //     node.roomId
+          //   ],
+          // );
+        }
+      }
 
-  if (recommendedPath) {
-    console.log(recommendedPath.fastest?.map((node) => node));
-  }
+      return passedByRooms.map((room) => <p key={room.id}>{room.name}</p>);
+    }
+  };
 
   return (
     <CardWrapper snapPoint={0.5}>
@@ -131,6 +147,7 @@ export default function NavCard(): ReactElement {
           {renderStartRoomInput()}
           {renderEndRoomInput()}
         </div>
+        {renderDirections()}
       </div>
     </CardWrapper>
   );
