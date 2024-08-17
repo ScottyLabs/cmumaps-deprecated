@@ -25,6 +25,7 @@ import {
   setFocusedFloor,
   setIsMobile,
   selectBuilding,
+  getIsCardOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { getEateryData } from '@/util/eateryUtils';
@@ -56,6 +57,7 @@ const Page = ({ params, searchParams }: Props) => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
+  const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
 
   // const { user } = useUser();
   // if (user) {
@@ -244,7 +246,8 @@ const Page = ({ params, searchParams }: Props) => {
       }
     };
 
-    if (isMobile && isSearchOpen) {
+    // don't show icons if in mobile and either the search is open or the card is open
+    if (isMobile && (isSearchOpen || isCardOpen)) {
       return <></>;
     }
 
