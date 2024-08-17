@@ -53,9 +53,9 @@ const EventSearchResults = ({ query }: Props) => {
     return <NoResultDisplay />;
   }
 
-  const formatDbDateEvent = (start: { $date: Date }, end: { $date: Date }) => {
-    const startDate = new Date(start?.$date);
-    const endDate = new Date(end?.$date);
+  const formatDbDateEvent = (start: Date, end: Date) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
 
     const date = startDate.toDateString();
 
@@ -115,8 +115,7 @@ const EventSearchResults = ({ query }: Props) => {
 
     return (
       <SearchResultWrapper
-        // key={event.id}
-        key={event._id.$oid}
+        key={event.id}
         handleClick={handleClick(event.roomName)}
       >
         <div className="flex items-center gap-2 py-1 text-left">
