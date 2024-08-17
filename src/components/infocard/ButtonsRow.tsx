@@ -5,9 +5,9 @@ import { FaArrowRight } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 import {
-  setEndRoom,
+  setEndLocation,
   setIsNavOpen,
-  setStartRoom,
+  setStartLocation,
 } from '@/lib/features/navSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
@@ -47,12 +47,12 @@ const ButtonsRow = ({ middleButton }: Props) => {
         onClick={() => {
           if (room) {
             dispatch(setIsNavOpen(true));
-            dispatch(setStartRoom(null));
-            dispatch(setEndRoom(room));
-          } else {
+            dispatch(setStartLocation(null));
+            dispatch(setEndLocation(room));
+          } else if (building) {
             dispatch(setIsNavOpen(true));
-            dispatch(setStartRoom(null));
-            dispatch(setEndRoom(building));
+            dispatch(setStartLocation(null));
+            dispatch(setEndLocation(building));
           }
         }}
       >

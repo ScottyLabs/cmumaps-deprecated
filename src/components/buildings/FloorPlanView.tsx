@@ -5,8 +5,8 @@ import React from 'react';
 
 import {
   setChoosingRoomMode,
-  setEndRoom,
-  setStartRoom,
+  setEndLocation,
+  setStartLocation,
 } from '@/lib/features/navSlice';
 import { claimRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -51,11 +51,11 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
 
     const handleSelectRoom = (room: Room) => () => {
       if (choosingRoomMode == 'start') {
-        dispatch(setStartRoom(room));
+        dispatch(setStartLocation(room));
         dispatch(setIsSearchOpen(false));
         dispatch(setChoosingRoomMode(null));
       } else if (choosingRoomMode == 'end') {
-        dispatch(setEndRoom(room));
+        dispatch(setEndLocation(room));
         dispatch(setIsSearchOpen(false));
         dispatch(setChoosingRoomMode(null));
       } else {

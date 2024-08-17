@@ -1,10 +1,9 @@
 import React from 'react';
-import { toast } from 'react-toastify';
 
 import {
   setChoosingRoomMode,
-  setEndRoom,
-  setStartRoom,
+  setEndLocation,
+  setStartLocation,
 } from '@/lib/features/navSlice';
 import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -48,7 +47,13 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
   const renderBuildingResults = (building: Building) => {
     const handleClick = () => {
       if (choosingRoomMode) {
-        toast.error("Can't choose a building for navigation for now!");
+        if (choosingRoomMode == 'start') {
+          dispatch(setStartLocation(building));
+        } else if (choosingRoomMode == 'end') {
+          dispatch(setEndLocation(building));
+        }
+        dispatch(setIsSearchOpen(false));
+        dispatch(setChoosingRoomMode(null));
       } else {
         if (map) {
           zoomOnObject(map, building.shapes.flat());
@@ -88,9 +93,9 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
     const handleClick = (searchRoom: SearchRoom) => () => {
       if (choosingRoomMode) {
         if (choosingRoomMode == 'start') {
-          dispatch(setStartRoom(searchRoom));
+          dispatch(setStartLocation(searchRoom));
         } else if (choosingRoomMode == 'end') {
-          dispatch(setEndRoom(searchRoom));
+          dispatch(setEndLocation(searchRoom));
         }
         dispatch(setIsSearchOpen(false));
         dispatch(setChoosingRoomMode(null));
