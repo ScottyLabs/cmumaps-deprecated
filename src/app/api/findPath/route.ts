@@ -182,9 +182,10 @@ export async function POST(req: NextRequest) {
   // console.log(options.values().next().value)
   const iter = options.values();
   let nodes1 = {};
-  for (const floorName of iter
-    .next()
-    .value.concat(isActuallyBuilding ? ['outside-1'] : [])) {
+  const floorPath1 = iter.next().value || [startFloorName, endFloorName];
+  for (const floorName of floorPath1.concat(
+    isActuallyBuilding ? ['outside-1'] : [],
+  )) {
     const graphPath = path.resolve(
       process.cwd(),
       `./public/json/floor_plan/${floorName.split('-')[0]}/`,
@@ -208,9 +209,10 @@ export async function POST(req: NextRequest) {
   }
 
   let nodes2 = {};
-  for (const floorName of iter
-    .next()
-    .value.concat(isActuallyBuilding ? ['outside-1'] : [])) {
+  const floorPath2 = iter.next().value || [startFloorName, endFloorName];
+  for (const floorName of floorPath2.concat(
+    isActuallyBuilding ? ['outside-1'] : [],
+  )) {
     console.log(floorName);
     const graphPath = path.resolve(
       process.cwd(),

@@ -10,6 +10,8 @@ export type RoomSearchResult = {
   searchRoom: SearchRoom[];
 };
 
+const nonAsciiRe = /[^a-zA-Z0-9 ]/g;
+
 const modeToType: Partial<Record<SearchMode, RoomType>> = {
   food: 'food',
   restrooms: 'restroom',
@@ -32,9 +34,11 @@ const modeToType: Partial<Record<SearchMode, RoomType>> = {
 // }
 
 function getRoomTokens(room: SearchRoom, building: Building): string[] {
-  let tokens = [room.name, building.code, ...building.name.split(' ')];
+  let tokens = [room.name, building.code, ...building.name.split(nonAsciiRe)];
   if (room.aliases) {
-    tokens = tokens.concat(room.aliases.flatMap((alias) => alias.split(' ')));
+    tokens = tokens.concat(
+      room.aliases.flatMap((alias) => alias.split(nonAsciiRe)),
+    );
   }
   return tokens
     .filter((token) => token.length > 0)
@@ -94,7 +98,7 @@ const findRooms = (
       const roomsObj = Object.values(floorMap[floorLevel]);
       const queryTokens = query
         .toLowerCase()
-        .split(' ')
+        .split(nonAsciiRe)
         .filter((token) => token.length > 0);
       return (
         Object.values(roomsObj)
