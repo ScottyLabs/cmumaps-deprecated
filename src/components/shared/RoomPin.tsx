@@ -46,21 +46,18 @@ export default function RoomPin({ room }: RoomPinProps) {
   const hasGraphic = icon !== null;
   const roomColors = getRoomTypeDetails(room.type);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-  const selected = room.id === selectedRoom?.id;
+  const isSelected = room.id === selectedRoom?.id;
+
   return (
     <div
-      className={
-        'flex ' +
-        (selected ? 'h-10 w-10' : 'h-5 w-5') +
-        ' items-center justify-center rounded'
-      }
-      style={{ background: selected ? 'red' : roomColors.primary }}
+      className={`flex items-center justify-center rounded ${isSelected ? 'size-10' : 'size-5'} `}
+      style={{ background: roomColors.primary }}
       title={room.type}
     >
       <Image
-        alt={'Room Pin Alt Placeholder'}
-        className={selected ? 'size-10' : 'size-3'}
+        alt={'Room Pin'}
         src={hasGraphic ? icon : pinIcon}
+        height={isSelected ? 20 : 10}
       />
     </div>
   );
