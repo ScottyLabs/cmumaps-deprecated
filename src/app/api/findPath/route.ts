@@ -1,6 +1,7 @@
 import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
 import fs from 'fs';
 import { Position } from 'geojson';
+import { find } from 'lodash';
 import { Coordinate } from 'mapkit-react';
 import { NextRequest } from 'next/server';
 import path from 'path';
@@ -64,8 +65,33 @@ function findPath(
   rooms: Room[],
   nodes: { [nodeId: string]: Node },
 ): Node[] | { error: string } {
-  const start = Object.values(nodes).find((e) => e.roomId == rooms[0].id);
-  const end = Object.values(nodes).find((e) => e.roomId == rooms[1].id);
+  let start;
+  let end;
+  if (rooms[0].id) {
+    start = Object.values(nodes).find((e) => e.roomId == rooms[0].id);
+  } else {
+    // Find a node with the building code
+    start = Object.values(nodes).find((e) =>
+      Object.values(e.neighbors).some(
+        (f) =>
+          f?.toFloorInfo &&
+          f?.toFloorInfo.toFloor.split('-')[0] === rooms[0].code,
+      ),
+    );
+  }
+  if (rooms[1].id) {
+    end = Object.values(nodes).find((e) => e.roomId == rooms[1].id);
+  } else {
+    // Find a node with the building code
+    end = Object.values(nodes).find((e) =>
+      Object.values(e.neighbors).some(
+        (f) =>
+          f?.toFloorInfo &&
+          f?.toFloorInfo.toFloor.split('-')[0] === rooms[1].code,
+      ),
+    );
+  }
+  console.log('SEARCHME', start, end);
   if (!start) {
     return { error: 'Start room not found' };
   } else if (!end) {
@@ -115,9 +141,14 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: 'Invalid rooms' }, { status: 400 });
   }
   console.log(rooms[0].floor, rooms[1].floor);
-  const startFloorName =
-    rooms[0].floor.buildingCode + '-' + rooms[0].floor.level;
-  const endFloorName = rooms[1].floor.buildingCode + '-' + rooms[1].floor.level;
+  const isActuallyBuilding = !(rooms[0].floor && rooms[1].floor);
+  const startFloorName = rooms[0].floor
+    ? rooms[0].floor.buildingCode + '-' + rooms[0].floor.level
+    : rooms[0].code + '-' + rooms[0].defaultFloor;
+  const endFloorName = rooms[1].floor
+    ? rooms[1].floor.buildingCode + '-' + rooms[1].floor.level
+    : rooms[1].code + '-' + rooms[1].defaultFloor;
+  console.log(startFloorName, endFloorName);
   const high_level_path = JSON.parse(
     fs.readFileSync(
       path.resolve(process.cwd(), `./public/json/high_level_floor_plan.json`),
@@ -152,8 +183,9 @@ export async function POST(req: NextRequest) {
   // console.log(options.values().next().value)
   const iter = options.values();
   let nodes1 = {};
-  for (const floorName of iter.next().value) {
-    console.log(floorName);
+  for (const floorName of iter
+    .next()
+    .value.concat(isActuallyBuilding ? ['outside-1'] : [])) {
     const graphPath = path.resolve(
       process.cwd(),
       `./public/json/floor_plan/${floorName.split('-')[0]}/`,
@@ -177,7 +209,9 @@ export async function POST(req: NextRequest) {
   }
 
   let nodes2 = {};
-  for (const floorName of iter.next().value) {
+  for (const floorName of iter
+    .next()
+    .value.concat(isActuallyBuilding ? ['outside-1'] : [])) {
     console.log(floorName);
     const graphPath = path.resolve(
       process.cwd(),
