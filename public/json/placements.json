@@ -523,14 +523,12 @@
             "angle": 254
         },
         "9": {
-            "placement": {
-                "center": {
-                    "latitude": 40.443400726144084,
-                    "longitude": -79.94457978770181
-                },
-                "scale": 5.85,
-                "angle": 254
-            }
+            "center": {
+                "latitude": 40.443400726144084,
+                "longitude": -79.94457978770181
+            },
+            "scale": 5.85,
+            "angle": 254
         },
         "6": {
             "center": {

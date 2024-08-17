@@ -132,3 +132,35 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
 
 with open("public/json/floorPlanMap.json", "w") as file:
     file.write(json.dumps(floor_plan_map))
+
+
+# create searchMap
+search_map = dict()
+
+for building_code in floor_plan_map:
+    search_map[building_code] = dict()
+
+    for floor in floor_plan_map[building_code]:
+        search_rooms = []
+
+        rooms = floor_plan_map[building_code][floor]
+
+        for room_id in rooms:
+            room = rooms[room_id]
+            room["id"] = room_id
+
+            if len(room["aliases"]) > 0:
+                room["alias"] = room["aliases"][0]
+            else:
+                room["alias"] = ""
+
+            room["floor"] = dict()
+            room["floor"]["buildingCode"] = building_code
+            room["floor"]["level"] = floor_level
+            del room["polygon"]
+            search_rooms.append(room)
+
+    search_map[building_code][floor_level] = search_rooms
+
+with open("public/json/searchMap.json", "w") as file:
+    file.write(json.dumps(search_map))
