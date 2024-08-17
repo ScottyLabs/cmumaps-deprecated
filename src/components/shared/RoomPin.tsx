@@ -9,6 +9,7 @@ import Image from 'next/image';
 
 import React from 'react';
 
+import { useAppSelector } from '@/lib/hooks';
 import { Room, SearchRoom, getRoomTypeDetails } from '@/types';
 
 const icons: { [type: string]: SVGElement } = {
@@ -44,16 +45,21 @@ export default function RoomPin({ room }: RoomPinProps) {
   const icon = icons[room.type] ?? null;
   const hasGraphic = icon !== null;
   const roomColors = getRoomTypeDetails(room.type);
-
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
+  const selected = room.id === selectedRoom?.id;
   return (
     <div
-      className="flex h-5 w-5 items-center justify-center rounded"
-      style={{ background: roomColors.primary }}
+      className={
+        'flex ' +
+        (selected ? 'h-10 w-10' : 'h-5 w-5') +
+        ' items-center justify-center rounded'
+      }
+      style={{ background: selected ? 'red' : roomColors.primary }}
       title={room.type}
     >
       <Image
         alt={'Room Pin Alt Placeholder'}
-        className="size-3"
+        className={selected ? 'size-10' : 'size-3'}
         src={hasGraphic ? icon : pinIcon}
       />
     </div>

@@ -42,7 +42,7 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
     const showIcon = hasIcon(room) || selectedRoom?.id === roomId;
 
     const gutter = selectedRoom?.id === roomId ? 20 : 4;
-    const iconSize = selectedRoom?.id === roomId ? 20 : showIcon ? 20 : 10;
+    const iconSize = selectedRoom?.id === roomId ? 30 : showIcon ? 20 : 10;
     const labelHeight = 24;
     const labelOffset = {
       left: iconSize + gutter,
