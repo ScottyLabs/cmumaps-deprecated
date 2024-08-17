@@ -31,19 +31,20 @@ const SearchResults = ({ map, query, userPosition }: SearchResultsProps) => {
   useEffect(() => {
     if (buildings) {
       setTimeout(() => {
-        if (['rooms', 'restrooms', 'study', 'food'].includes(searchMode)) {
+        if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
           setRoomSearchResults(
             searchRoom(
               buildings,
               query,
               searchMap,
-              searchMode as 'rooms' | 'food' | 'restrooms' | 'study',
+              searchMode as 'rooms' | 'restrooms' | 'study',
             ),
           );
         }
       }, 500);
     }
   }, [buildings, query, searchMap, searchMode]);
+
   if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
     return (
       <RoomSearchResults
@@ -54,7 +55,7 @@ const SearchResults = ({ map, query, userPosition }: SearchResultsProps) => {
       />
     );
   } else if (searchMode == 'food') {
-    return <FoodSearchResults map={map} searchResult={roomSearchResults} />;
+    return <FoodSearchResults map={map} query={query} />;
   } else if (searchMode == 'events') {
     return <EventSearchResults map={map} query={query} />;
   } else if (searchMode == 'courses') {
