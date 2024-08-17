@@ -2,7 +2,6 @@ import React from 'react';
 
 import { getIsCardOpen } from '@/lib/features/uiSlice';
 import { useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate } from '@/types';
 
 import FloorSwitcher from '../buildings/FloorSwitcher';
 import InfoCard from '../infocard/InfoCard';
@@ -13,10 +12,9 @@ import Schedule from './Schedule';
 
 interface Props {
   map: mapkit.Map | null;
-  userPosition: AbsoluteCoordinate;
 }
 
-const ToolBar = ({ map, userPosition }: Props) => {
+const ToolBar = ({ map }: Props) => {
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
@@ -28,7 +26,7 @@ const ToolBar = ({ map, userPosition }: Props) => {
   return (
     <div className="fixed mx-2 w-full sm:w-96">
       <div className="flex h-screen flex-col space-y-2 py-2">
-        <SearchBar map={map} userPosition={userPosition} />
+        <SearchBar map={map} />
 
         {!isSearchOpen && !isCardOpen && (
           <>

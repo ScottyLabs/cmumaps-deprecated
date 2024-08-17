@@ -21,6 +21,7 @@ import {
   setSearchMap,
   setFloorPlanMap,
 } from '@/lib/features/dataSlice';
+import { setUserPosition } from '@/lib/features/navSlice';
 import {
   setFocusedFloor,
   setIsMobile,
@@ -29,7 +30,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { getEateryData } from '@/util/eateryUtils';
 
-const points = [[40.44249719447571, -79.94314319195851]];
+// const mockUserPosition = [40.44249719447571, -79.94314319195851];
 
 interface Props {
   params: {
@@ -119,6 +120,20 @@ const Page = ({ params, searchParams }: Props) => {
       dispatch(setIsMobile(isMobile));
     }
   }, [userAgent, dispatch]);
+
+  // get user position
+  useEffect(() => {
+    setTimeout(() => {
+      navigator?.geolocation?.getCurrentPosition((pos) => {
+        const coord = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        };
+
+        dispatch(setUserPosition(coord));
+      });
+    }, 500);
+  }, [dispatch]);
 
   // load the list of images of the rooms
   useEffect(() => {
@@ -251,13 +266,7 @@ const Page = ({ params, searchParams }: Props) => {
   return (
     <main className="relative h-screen">
       <div className="absolute z-10">
-        <ToolBar
-          map={mapRef.current}
-          userPosition={{
-            x: points[points.length - 1][0],
-            y: points[points.length - 1][1],
-          }}
-        />
+        <ToolBar map={mapRef.current} />
 
         {renderIcons()}
 
@@ -276,7 +285,7 @@ const Page = ({ params, searchParams }: Props) => {
         />
       </div>
 
-      <MapDisplay mapRef={mapRef} points={points} />
+      <MapDisplay mapRef={mapRef} />
     </main>
   );
 };

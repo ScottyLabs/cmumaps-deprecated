@@ -47,7 +47,6 @@ const initialRegion = {
 
 interface MapDisplayProps {
   mapRef: React.RefObject<mapkit.Map | null>;
-  points: number[][];
 }
 
 const MapDisplay = ({ mapRef }: MapDisplayProps) => {

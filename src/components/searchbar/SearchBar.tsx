@@ -16,7 +16,6 @@ import {
   setSearchMode,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { AbsoluteCoordinate } from '@/types';
 
 import SearchModeSelector from './SearchModeSelector';
 import { searchModeToIcon } from './searchMode';
@@ -24,10 +23,9 @@ import SearchResults from './search_results/SearchResults';
 
 interface Props {
   map: mapkit.Map | null;
-  userPosition: AbsoluteCoordinate;
 }
 
-const SearchBar = ({ map, userPosition }: Props) => {
+const SearchBar = ({ map }: Props) => {
   const dispatch = useAppDispatch();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -187,11 +185,7 @@ const SearchBar = ({ map, userPosition }: Props) => {
             : 'mt-1 h-fit opacity-100' // displays all food if search query is empty
         }`}
       >
-        <SearchResults
-          map={map}
-          query={searchQuery}
-          userPosition={userPosition}
-        />
+        <SearchResults map={map} query={searchQuery} />
       </div>
     );
   };
