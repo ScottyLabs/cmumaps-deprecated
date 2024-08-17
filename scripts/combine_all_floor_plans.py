@@ -82,9 +82,6 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
         file_path = os.path.join(root, file)
         building_code = root.split("/")[-1]
 
-        if "floor_plan" in building_code:
-            continue
-
         if "outline" in file_path:
             with open(file_path, "r") as file:
                 floor_level = file_path.split("-")[1]

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/lib/hooks';
 import { AbsoluteCoordinate } from '@/types';
 
-import { RoomSearchResult, searchFood, searchRoom } from '../searchUtils';
+import { RoomSearchResult, searchRoom } from '../searchUtils';
 import CourseSearchResults from './CourseSearchResults';
 import EventSearchResults from './EventSearchResults';
 import FoodSearchResults from './FoodSearchResults';
