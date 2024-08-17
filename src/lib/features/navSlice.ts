@@ -9,7 +9,7 @@ type ChoosingRoomMode = 'start' | 'end' | null;
 interface NavState {
   endRoom: Room | null; // This can be expanded in the future to Building, ... node/ position?
   startRoom: Room | null;
-  recommendedPath: Node[] | null;
+  recommendedPath: { fastest: Node[]; other: Node[] } | null;
   isNavOpen: boolean;
   userPosition: Coordinate | null;
   choosingRoomMode: ChoosingRoomMode;
