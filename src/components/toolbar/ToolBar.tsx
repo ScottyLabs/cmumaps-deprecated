@@ -22,6 +22,25 @@ const ToolBar = ({ map }: Props) => {
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
+
+  const isCardWrapperCollapsed = useAppSelector(
+    (state) => state.ui.isCardWrapperCollapsed,
+  );
+
+  // first only show floor switcher if there is focused floor
+  let showFloorSwitcher = !!focusedFloor;
+
+  // mobile cases
+  if (isMobile) {
+    if (isCardOpen && !isCardWrapperCollapsed) {
+      showFloorSwitcher = false;
+    }
+
+    if (isSearchOpen) {
+      showFloorSwitcher = false;
+    }
+  }
 
   return (
     <div className="fixed w-full px-2 sm:w-96">
@@ -39,7 +58,7 @@ const ToolBar = ({ map }: Props) => {
         {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard />}
       </div>
 
-      {focusedFloor && <FloorSwitcher focusedFloor={focusedFloor} />}
+      {showFloorSwitcher && <FloorSwitcher focusedFloor={focusedFloor} />}
     </div>
   );
 };

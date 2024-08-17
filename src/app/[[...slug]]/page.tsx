@@ -3,7 +3,6 @@
 import { UserButton } from '@clerk/nextjs';
 // import { useUser } from '@clerk/nextjs';
 import questionMarkIcon from '@icons/question-mark.png';
-import scheduleIcon from '@icons/schedule.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -56,6 +55,7 @@ const Page = ({ params, searchParams }: Props) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+  const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
 
   // const { user } = useUser();
   // if (user) {
@@ -231,7 +231,7 @@ const Page = ({ params, searchParams }: Props) => {
     const renderClerkIcon = () => {
       if (isMobile) {
         return (
-          <div className="fixed bottom-10 right-2">
+          <div className="fixed bottom-[7.5rem] right-3 flex items-center justify-center rounded-full bg-[#4b5563] p-2">
             <UserButton />
           </div>
         );
@@ -243,6 +243,10 @@ const Page = ({ params, searchParams }: Props) => {
         );
       }
     };
+
+    if (isMobile && isSearchOpen) {
+      return <></>;
+    }
 
     return (
       <>
@@ -256,11 +260,11 @@ const Page = ({ params, searchParams }: Props) => {
             <Image alt="Question Mark" src={questionMarkIcon} height={45} />
           </a>
         </div>
-        {isMobile && (
+        {/* {isMobile && (
           <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
             <Image alt="Schedule" src={scheduleIcon} />
           </div>
-        )}
+        )} */}
       </>
     );
   };

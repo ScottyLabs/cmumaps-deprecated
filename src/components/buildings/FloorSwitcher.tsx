@@ -32,20 +32,12 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
   const buildings = useAppSelector((state) => state.data.buildings);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
-  const isCardWrapperCollapsed = useAppSelector(
-    (state) => state.ui.isCardWrapperCollapsed,
-  );
 
   if (!buildings) {
     return;
   }
 
   const building = buildings[focusedFloor.buildingCode];
-
-  // don't render the floor switcher if on mobile and the card covers the floor switcher
-  if (isMobile && isCardOpen && !isCardWrapperCollapsed) {
-    return <></>;
-  }
 
   const renderDefaultView = () => {
     if (building.floors.length === 0 || !focusedFloor) {
