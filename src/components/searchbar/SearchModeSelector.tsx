@@ -55,7 +55,7 @@ const SearchModeSelector = () => {
   };
 
   return (
-    <div className="no-scrollbar flex gap-2 overflow-x-auto rounded bg-white px-2">
+    <div className="no-scrollbar flex justify-between gap-2 overflow-x-auto rounded bg-white">
       {SearchModeList.map((searchmode) => renderSearchModeHelper(searchmode))}
     </div>
   );
