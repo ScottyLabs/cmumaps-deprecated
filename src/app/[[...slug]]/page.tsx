@@ -1,6 +1,7 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
+// import { useUser } from '@clerk/nextjs';
 import questionMarkIcon from '@icons/question-mark.png';
 import scheduleIcon from '@icons/schedule.svg';
 import Image from 'next/image';
@@ -54,6 +55,11 @@ const Page = ({ params, searchParams }: Props) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+
+  // const { user } = useUser();
+  // if (user) {
+  // console.log(user.id);
+  // }
 
   // extracting data in the initial loading of the page
   useEffect(() => {
