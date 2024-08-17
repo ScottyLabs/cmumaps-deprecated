@@ -1,7 +1,7 @@
 import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
-import { Console } from 'console';
 import fs from 'fs';
 import { Position } from 'geojson';
+import { floor, min } from 'lodash';
 import { Coordinate } from 'mapkit-react';
 import { NextRequest } from 'next/server';
 import path from 'path';
@@ -127,96 +127,75 @@ const getFloorCenter = (rooms: Room[]): Position => {
   return [(minX + maxX) / 2, (minY + maxY) / 2];
 };
 export async function POST(req: NextRequest) {
-  console.log('findPath');
-  let nodes = {};
-  for (const buildingCode of [
-    'AN',
-    'BH',
-    'CFA',
-    'CUC',
-    'DH',
-    'GHC',
-    'HBH',
-    'HH',
-    'HL',
-    'HOA',
-    'MI',
-    'MM',
-    'NSH',
-    'outside',
-    'PH',
-    'PCA',
-    'POS',
-    'RES',
-    'SC',
-    'TCS',
-    'TEP',
-    'WEH',
-  ]) {
-    for (const level of [
-      'LL',
-      'PH',
-      'EV',
-      'A',
-      'B',
-      'C',
-      'D',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-    ]) {
-      const graphPath = path.resolve(
-        process.cwd(),
-        `./public/json/floor_plan/${buildingCode}/`,
-        `${buildingCode}-${level}-graph.json`,
-      );
-      const outlinePath = path.resolve(
-        process.cwd(),
-        `./public/json/floor_plan/${buildingCode}/`,
-        `${buildingCode}-${level}-outline.json`,
-      );
-      if (!fs.existsSync(graphPath) || !fs.existsSync(outlinePath)) {
-        continue;
-      }
-      const f: { [id: string]: Node } = JSON.parse(
-        fs.readFileSync(graphPath, 'utf-8'),
-      );
-      const outline = JSON.parse(fs.readFileSync(outlinePath, 'utf-8'));
-      if (!outline.placement) {
-        continue;
-      }
-      const rooms = outline.rooms;
-      const center = getFloorCenter(rooms);
-
-      Object.keys(f).forEach((id: string) => {
-        const node = f[id];
-        f[id] = {
-          ...node,
-          coordinate: positionOnMap(
-            [node.pos.x, node.pos.y],
-            outline.placement,
-            center,
-          ),
-          floor: { buildingCode, level },
-        };
-      });
-      nodes = { ...nodes, ...f };
-    }
-  }
   const { rooms } = await req.json();
   if (!rooms || rooms.length !== 2) {
     return Response.json({ error: 'Invalid rooms' }, { status: 400 });
   }
-  console.log(rooms);
+  console.log(rooms[0].floor, rooms[1].floor);
+  const startFloorName =
+    rooms[0].floor.buildingCode + '-' + rooms[0].floor.level;
+  const endFloorName = rooms[1].floor.buildingCode + '-' + rooms[1].floor.level;
+  const high_level_path = JSON.parse(
+    fs.readFileSync(
+      path.resolve(process.cwd(), `./public/json/high_level_floor_plan.json`),
+      'utf8',
+    ),
+  );
+
+  console.log(startFloorName, endFloorName);
+  const explored = new Set();
+  const queue = [[startFloorName]];
+  let current = [];
+  const options = new Set();
+  while (queue.length) {
+    current = queue.shift();
+    if (current[0] === endFloorName) {
+      // console.log("Found path", current)
+      options.add(current);
+      if (options.size > 1) {
+        break;
+      }
+      continue;
+    }
+    if (explored.has(current[0])) {
+      continue;
+    }
+    explored.add(current[0]);
+    Object.values(high_level_path[current[0]]).forEach((neighbor) => {
+      queue.push([neighbor[0], ...current]);
+    });
+  }
+
+  // console.log(options.values().next().value)
+  const iter = options.values();
+  iter.next();
+  let nodes = {};
+  for (const floorName of iter.next().value) {
+    console.log(floorName);
+    const graphPath = path.resolve(
+      process.cwd(),
+      `./public/json/floor_plan/${floorName.split('-')[0]}/`,
+      `${floorName}-graph.json`,
+    );
+    if (!fs.existsSync(graphPath)) {
+      continue;
+    }
+    const f: { [id: string]: Node } = JSON.parse(
+      fs.readFileSync(graphPath, 'utf-8'),
+    );
+
+    Object.keys(f).forEach((id: string) => {
+      const node = f[id];
+      f[id] = {
+        ...node,
+        floor: floorName,
+      };
+    });
+    nodes = { ...nodes, ...f };
+  }
+
   // Find the path
   const recommendedPath = findPath(rooms, nodes);
   console.log(recommendedPath);
-
   return Response.json(recommendedPath);
 }
