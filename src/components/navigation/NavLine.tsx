@@ -51,15 +51,29 @@ const NavLine = () => {
           <div>YOU ARE HERE</div>
         </Annotation>
       )}
-      {recommendedPath && !!recommendedPath.length && (
-        <Polyline
-          selected={true}
-          points={(recommendedPath || []).map((n: Node) => n.coordinate)}
-          enabled={true}
-          strokeColor={'blue'}
-          strokeOpacity={1}
-          lineWidth={5}
-        ></Polyline>
+      {recommendedPath?.fastest && !!recommendedPath.fastest.length && (
+        <>
+          <Polyline
+            selected={true}
+            points={(recommendedPath?.fastest || []).map(
+              (n: Node) => n.coordinate,
+            )}
+            enabled={true}
+            strokeColor={'red'}
+            strokeOpacity={0.5}
+            lineWidth={5}
+          ></Polyline>
+          <Polyline
+            selected={true}
+            points={(recommendedPath?.other || []).map(
+              (n: Node) => n.coordinate,
+            )}
+            enabled={true}
+            strokeColor={'blue'}
+            strokeOpacity={0.5}
+            lineWidth={5}
+          ></Polyline>
+        </>
       )}
     </>
   );

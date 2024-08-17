@@ -37,6 +37,7 @@ export default function NavCard(): ReactElement {
         }
       })
       .then((j) => {
+        console.log(j);
         dispatch(setRecommendedPath(j));
       });
   }, [startRoom, endRoom, dispatch]);

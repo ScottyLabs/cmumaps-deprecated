@@ -210,7 +210,7 @@ const MapDisplay = ({ mapRef, floorPlanMap }: MapDisplayProps) => {
       cameraBoundary={cameraBoundary}
       minCameraDistance={5}
       maxCameraDistance={1500}
-      showsUserLocationControl
+      showsUserLocation={true}
       mapType={MapType.MutedStandard}
       paddingBottom={isMobile ? 72 : 0}
       paddingLeft={4}
