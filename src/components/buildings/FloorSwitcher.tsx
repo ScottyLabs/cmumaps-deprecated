@@ -180,24 +180,20 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
         <div
           className={`fixed left-1/2 z-10 w-fit -translate-x-1/2 px-2 ${bottomClass}`}
         >
-          <div className="flex items-stretch justify-center rounded bg-white">
-            {children}
-          </div>
+          {children}
         </div>
       );
     } else {
       return (
         <div className="fixed bottom-2 left-1/2 -z-10 w-fit -translate-x-1/2 px-2">
-          <div className="flex items-stretch justify-center rounded bg-white">
-            {children}
-          </div>
+          {children}
         </div>
       );
     }
   };
   return (
     <Wrapper>
-      <>
+      <div className="flex items-stretch justify-center rounded bg-white shadow-md shadow-gray-400">
         <button
           className="p-1"
           onClick={() => {
@@ -208,7 +204,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           <Roundel code={building.code} />
         </button>
         {showFloorPicker ? renderFloorPicker() : renderDefaultView()}
-      </>
+      </div>
     </Wrapper>
   );
 }
