@@ -12,8 +12,10 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
 
 import Roundel from '../shared/Roundel';
+import { zoomOnObject } from './mapUtils';
 
 interface BuildingShapeProps {
+  map: mapkit.Map;
   building: Building;
 }
 
@@ -34,7 +36,7 @@ const buildingCodeToShapeFillColor = {
 /**
  * The shape of a building on the map.
  */
-export default function BuildingShape({ building }: BuildingShapeProps) {
+export default function BuildingShape({ map, building }: BuildingShapeProps) {
   const dispatch = useAppDispatch();
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
@@ -115,6 +117,11 @@ export default function BuildingShape({ building }: BuildingShapeProps) {
             <div
               className="translate-y-1/2 cursor-pointer"
               onClick={(e) => {
+                // zoom on building if click on building already selected
+                if (selectedBuilding?.code == building.code) {
+                  zoomOnObject(map, building.shapes.flat());
+                }
+
                 if (choosingRoomMode == 'start') {
                   dispatch(setStartLocation(building));
                   dispatch(setIsSearchOpen(false));
