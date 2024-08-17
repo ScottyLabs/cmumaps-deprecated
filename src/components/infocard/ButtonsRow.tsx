@@ -38,7 +38,7 @@ export const renderMiddleButtonHelper = (
 const ButtonsRow = ({ middleButton }: Props) => {
   const dispatch = useAppDispatch();
   const room = useAppSelector((state) => state.ui.selectedRoom);
-
+  const building = useAppSelector((state) => state.ui.selectedBuilding);
   const renderDirectionButton = () => {
     return (
       <button
@@ -50,7 +50,9 @@ const ButtonsRow = ({ middleButton }: Props) => {
             dispatch(setStartRoom(null));
             dispatch(setEndRoom(room));
           } else {
-            toast.error("You can't navigate to buildings... yet!");
+            dispatch(setIsNavOpen(true));
+            dispatch(setStartRoom(null));
+            dispatch(setEndRoom(building));
           }
         }}
       >

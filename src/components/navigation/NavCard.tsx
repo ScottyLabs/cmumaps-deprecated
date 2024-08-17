@@ -7,7 +7,7 @@ import {
   setRecommendedPath,
 } from '@/lib/features/navSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Room } from '@/types';
+import { Building, Room } from '@/types';
 
 import CardWrapper from '../infocard/CardWrapper';
 
@@ -37,6 +37,7 @@ export default function NavCard(): ReactElement {
         }
       })
       .then((j) => {
+        console.log(j);
         dispatch(setRecommendedPath(j));
       });
   }, [startRoom, endRoom, dispatch]);
@@ -55,7 +56,7 @@ export default function NavCard(): ReactElement {
   };
 
   const renderRoomInput = (
-    navRoom: Room | null,
+    navRoom: Room | Building | null,
     placeHolder: string,
     circleColor: string,
     handleClick: () => void,
@@ -68,7 +69,9 @@ export default function NavCard(): ReactElement {
       if (navRoom) {
         return (
           <p>
-            {navRoom.floor.buildingCode} {navRoom.name}
+            {navRoom?.floor
+              ? navRoom?.floor?.buildingCode + ' ' + navRoom.name
+              : navRoom.code}
           </p>
         );
       } else {
