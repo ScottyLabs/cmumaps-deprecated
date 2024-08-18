@@ -77,7 +77,7 @@ export default function NavCard(): ReactElement {
 
   const renderTop = () => {
     return (
-      <div className="flex items-center gap-1 py-2">
+      <div className="ml-4 flex items-center gap-1 py-2 sm:ml-0">
         <IoIosArrowBack
           size={20}
           className="cursor-pointer text-gray-500"
@@ -121,8 +121,10 @@ export default function NavCard(): ReactElement {
         <button
           className="w-72 text-left"
           onClick={() => {
-            handleClick();
-            dispatch(setIsSearchOpen(true));
+            if (!startedNavigation) {
+              handleClick();
+              dispatch(setIsSearchOpen(true));
+            }
           }}
         >
           {renderText()}
@@ -249,10 +251,10 @@ export default function NavCard(): ReactElement {
   };
 
   return (
-    <CardWrapper snapPoint={0.5}>
+    <CardWrapper snapPoint={0.4}>
       <div>
         {renderTop()}
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <div className="space-y-2 pb-2 pl-4">
             {renderStartRoomInput()}
             {renderEndRoomInput()}

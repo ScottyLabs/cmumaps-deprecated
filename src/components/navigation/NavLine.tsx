@@ -53,7 +53,7 @@ const NavLine = () => {
             points={displayRestPath}
             enabled={true}
             strokeColor="blue"
-            strokeOpacity={0.9}
+            strokeOpacity={0.7}
             lineWidth={5}
             lineDash={[10, 10]}
           />

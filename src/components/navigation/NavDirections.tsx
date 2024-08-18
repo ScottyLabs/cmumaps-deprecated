@@ -58,7 +58,8 @@ const NavDirections = ({ path }: Props) => {
     const curRooms = passedByRooms.filter(
       (room) =>
         room.floor.buildingCode + '-' + room.floor.level == curFloor &&
-        !!room.name,
+        !!room.name &&
+        room.floor.buildingCode !== 'outside',
     );
 
     if (curRooms.length == 0) {
@@ -81,24 +82,26 @@ const NavDirections = ({ path }: Props) => {
   };
 
   return (
-    <div className="m-2">
-      {passedByFloors.map((curFloor, index) => (
-        <button
-          key={index}
-          className={'w-full border p-1 text-left ' + getBgClass(index)}
-          onClick={() => {
-            // zoomOnFloor(map, buildings, curFloor, dispatch)
-            dispatch(setCurFloorIndex(index));
-          }}
-        >
-          <p
-            className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}
+    <div className="my-2 flex w-full justify-center">
+      <div className="w-[22.5rem] rounded border">
+        {passedByFloors.map((curFloor, index) => (
+          <button
+            key={index}
+            className={'w-full p-1 text-left ' + getBgClass(index)}
+            onClick={() => {
+              // zoomOnFloor(map, buildings, curFloor, dispatch)
+              dispatch(setCurFloorIndex(index));
+            }}
           >
-            {curFloor == 'outside-1' ? 'Outside' : curFloor}
-          </p>
-          {curFloorIndex == index && renderRoomsOnFloor(curFloor)}
-        </button>
-      ))}
+            <p
+              className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}
+            >
+              {curFloor == 'outside-1' ? 'Outside' : curFloor}
+            </p>
+            {curFloorIndex == index && renderRoomsOnFloor(curFloor)}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
