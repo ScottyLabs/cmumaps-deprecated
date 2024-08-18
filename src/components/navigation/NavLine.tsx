@@ -7,31 +7,25 @@ import { useAppSelector } from '@/lib/hooks';
 
 const NavLine = () => {
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
+  const selectedPathName = useAppSelector(
+    (state) => state.nav.selectedPathName,
+  );
 
   return (
-    recommendedPath?.fastest &&
-    !!recommendedPath.fastest.length && (
-      <>
-        <Polyline
-          selected={true}
-          points={(recommendedPath?.fastest || []).map(
-            (n: Node) => n.coordinate,
-          )}
-          enabled={true}
-          strokeColor={'red'}
-          strokeOpacity={0.5}
-          lineWidth={5}
-        />
-        <Polyline
-          selected={true}
-          points={(recommendedPath?.other || []).map((n: Node) => n.coordinate)}
-          enabled={true}
-          strokeColor={'blue'}
-          strokeOpacity={0.5}
-          lineWidth={5}
-        />
-      </>
-    )
+    recommendedPath &&
+    Object.keys(recommendedPath).map((pathName) => (
+      <Polyline
+        key={pathName}
+        selected={true}
+        points={(recommendedPath[pathName] || []).map(
+          (n: Node) => n.coordinate,
+        )}
+        enabled={true}
+        strokeColor={selectedPathName == pathName ? 'blue' : 'gray'}
+        strokeOpacity={selectedPathName == pathName ? 0.9 : 0.5}
+        lineWidth={5}
+      />
+    ))
   );
 };
 

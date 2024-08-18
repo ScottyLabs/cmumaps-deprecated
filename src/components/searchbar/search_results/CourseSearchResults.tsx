@@ -121,7 +121,7 @@ const CourseSearchResults = ({ query }: Props) => {
             </p>
             <p className="truncate font-bold">{course.name}</p>
             <p className="text-[--color-gray]">
-              {section.dow} {section.startTime} {section.endTime}
+              {section.dow} {section.startTime}-{section.endTime}
             </p>
             <p className="text-[--color-gray]">{section.room}</p>
           </div>

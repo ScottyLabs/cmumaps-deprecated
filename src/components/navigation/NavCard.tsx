@@ -9,6 +9,7 @@ import { IoIosArrowBack } from 'react-icons/io';
 import { Node } from '@/app/api/findPath/route';
 import {
   setChoosingRoomMode,
+  setSelectedPathName,
   setEndLocation,
   setIsNavOpen,
   setRecommendedPath,
@@ -31,6 +32,7 @@ export default function NavCard(): ReactElement {
   const endLocation = useAppSelector((state) => state.nav.endLocation);
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
+  const displayPathName = useAppSelector((state) => state.nav.selectedPathName);
 
   // calculate path from start to end
   useEffect(() => {
@@ -155,12 +157,29 @@ export default function NavCard(): ReactElement {
 
   const renderPathInfo = (pathName: string) => {
     return (
-      <div className="flex w-full justify-center">
-        <button className="w-[22.5rem] rounded-lg border py-2">
-          <div className="flex items-center gap-2">
-            <Image src={pathNameToIcon[pathName]} alt="Nav Path Icon" />
-            <div>
-              <p className="text-gray-600">{pathName}</p>
+      <div key={pathName} className="flex w-full justify-center">
+        <button
+          className={`w-[22.5rem] rounded-lg border py-2 ${pathName == displayPathName ? 'bg-[#1e86ff] text-white' : 'text-gray-600'}`}
+          onClick={() => dispatch(setSelectedPathName(pathName))}
+        >
+          <div className="mx-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Image
+                src={pathNameToIcon[pathName]}
+                alt="Nav Path Icon"
+                height={40}
+              />
+              <div>
+                <p
+                  className={`text-lg ${pathName == displayPathName ? 'text-gray-800"' : 'text-gray-600'}`}
+                >
+                  {pathName}
+                </p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p>Time Placeholder</p>
+              <p>Distance Placeholder</p>
             </div>
           </div>
         </button>
@@ -171,9 +190,9 @@ export default function NavCard(): ReactElement {
   const renderPathWrapper = () => {
     return (
       <div className="my-2 space-y-2">
-        {Object.keys(recommendedPath).map((pathName) => (
-          <div key={pathName}>{renderPathInfo(pathName)}</div>
-        ))}
+        {Object.keys(recommendedPath).map((pathName) =>
+          renderPathInfo(pathName),
+        )}
       </div>
     );
   };
@@ -210,7 +229,10 @@ export default function NavCard(): ReactElement {
             <Image src={swapIcon} alt="Swap Icon" />
           </button>
         </div>
-        {!!recommendedPath && renderNavInfo()}
+        {!!startLocation &&
+          !!endLocation &&
+          !!recommendedPath &&
+          renderNavInfo()}
       </div>
     </CardWrapper>
   );
