@@ -1,6 +1,9 @@
 import alternativeIcon from '@icons/nav/alternative.svg';
 import fastestIcon from '@icons/nav/fastest.svg';
 import swapIcon from '@icons/nav/swap.svg';
+import endIcon from '@icons/path/end.svg';
+import startIcon from '@icons/path/start.svg';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
 import React, { ReactElement, useEffect } from 'react';
@@ -91,13 +94,9 @@ export default function NavCard(): ReactElement {
   const renderRoomInput = (
     navLocation: Room | Building | null,
     placeHolder: string,
-    circleColor: string,
+    icon: StaticImport,
     handleClick: () => void,
   ) => {
-    const renderCircle = () => {
-      return <div className={`h-5 w-5 rounded-full ${circleColor}`} />;
-    };
-
     const renderText = () => {
       if (navLocation) {
         if ('floor' in navLocation) {
@@ -117,8 +116,8 @@ export default function NavCard(): ReactElement {
     };
 
     return (
-      <div className="flex w-fit gap-2 border p-1">
-        {renderCircle()}
+      <div className="flex w-fit items-center gap-2 border p-1">
+        <Image src={icon} alt="icon" height={20} />
         <button
           className="w-72 text-left"
           onClick={() => {
@@ -134,29 +133,22 @@ export default function NavCard(): ReactElement {
 
   const renderStartRoomInput = () => {
     const placeHolder = 'Choose your starting location...';
-    const circleColor = 'bg-green-700';
 
     const handleClick = () => {
       dispatch(setChoosingRoomMode('start'));
     };
 
-    return renderRoomInput(
-      startLocation,
-      placeHolder,
-      circleColor,
-      handleClick,
-    );
+    return renderRoomInput(startLocation, placeHolder, startIcon, handleClick);
   };
 
   const renderEndRoomInput = () => {
     const placeHolder = 'Choose your destination...';
-    const circleColor = 'bg-red-700';
 
     const handleClick = () => {
       dispatch(setChoosingRoomMode('end'));
     };
 
-    return renderRoomInput(endLocation, placeHolder, circleColor, handleClick);
+    return renderRoomInput(endLocation, placeHolder, endIcon, handleClick);
   };
 
   const renderPathInfo = (pathName: string) => {

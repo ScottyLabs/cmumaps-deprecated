@@ -1,4 +1,7 @@
-import { Polyline } from 'mapkit-react';
+import endIcon from '@icons/path/end.svg';
+import startIcon from '@icons/path/start.svg';
+import { Annotation, Polyline } from 'mapkit-react';
+import Image from 'next/image';
 
 import React from 'react';
 
@@ -73,13 +76,31 @@ const NavLine = () => {
   };
 
   const renderIcon = () => {
-    console.log(recommendedPath[selectedPathName]);
+    if (recommendedPath && selectedPathName) {
+      const path: Node[] = recommendedPath[selectedPathName];
+      return (
+        <>
+          <Annotation
+            latitude={path[0].coordinate.latitude}
+            longitude={path[0].coordinate.longitude}
+          >
+            <Image src={startIcon} alt="Start Icon" height={40} />
+          </Annotation>
+          <Annotation
+            latitude={path.at(-1).coordinate.latitude}
+            longitude={path.at(-1).coordinate.longitude}
+          >
+            <Image src={endIcon} alt="End Icon" height={40} />
+          </Annotation>
+        </>
+      );
+    }
   };
 
   return (
     <>
       {renderPath()}
-      {renderIcon}
+      {renderIcon()}
     </>
   );
 };
