@@ -9,7 +9,8 @@ import {
 } from '@/lib/features/uiSlice';
 import { Building, Floor, FloorPlanMap, ID, Placement } from '@/types';
 import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
-import prefersReducedMotion from '@/util/prefersReducedMotion';
+
+// import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 export const zoomOnRoom = (
   map: mapkit.Map | null,
@@ -23,19 +24,31 @@ export const zoomOnRoom = (
     return;
   }
 
-  if (floor?.buildingCode && floor.level) {
+  if (floor) {
     if (
       floorPlanMap[floor.buildingCode] &&
       floorPlanMap[floor.buildingCode][floor.level]
     ) {
       const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
       const room = floorPlan[roomId];
-      const points = floorPlan[room.id].coordinates;
-      zoomOnObject(map, points[0]);
 
       dispatch(claimRoom(room));
-      dispatch(setFocusedFloor(floor));
       dispatch(setShowRoomNames(true));
+
+      const asyncSetFocusedFloor = (floor: Floor) => {
+        return async (dispatch: Dispatch) => {
+          return new Promise<void>((resolve) => {
+            dispatch(setFocusedFloor(floor));
+            resolve();
+          });
+        };
+      };
+
+      // zoom after finish setting the floor
+      asyncSetFocusedFloor(floor)(dispatch).then(() => {
+        const points = floorPlan[room.id].coordinates;
+        zoomOnObject(map, points[0]);
+      });
     }
   }
 };
@@ -50,7 +63,8 @@ export const zoomOnObject = (map: mapkit.Map, points: Coordinate[]) => {
       Math.min(...allLat),
       Math.min(...allLon),
     ).toCoordinateRegion(),
-    !prefersReducedMotion(),
+    false,
+    // !prefersReducedMotion(),
   );
 };
 

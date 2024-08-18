@@ -5,13 +5,7 @@ import React from 'react';
 import { Node } from '@/app/api/findPath/route';
 import { useAppSelector } from '@/lib/hooks';
 
-interface Props {
-  startedNavigation: boolean;
-}
-
-const NavLine = ({ startedNavigation }: Props) => {
-  startedNavigation;
-
+const NavLine = () => {
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
   const selectedPathName = useAppSelector(
     (state) => state.nav.selectedPathName,
