@@ -9,13 +9,13 @@ interface Props {
 }
 
 const NavDirections = ({ path }: Props) => {
-  const [directions, setDirections] = useState<string[]>([]);
+  const [passedByFloors, setPassedByFloors] = useState<string[]>([]);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [curFloorIndex, setCurFloorIndex] = useState<number>(0);
 
   const [passedByRooms, setPassedByRooms] = useState<Room[]>();
-  const [displayPath, setDisplayPath] = useState<Node[]>([]);
+  // const [displayPath, setDisplayPath] = useState<Node[]>([]);
 
   useEffect(() => {
     // console.log(passedByRooms);
@@ -41,7 +41,8 @@ const NavDirections = ({ path }: Props) => {
         }
       }
 
-      setDirections(newDirections);
+      setPassedByRooms(passedByRooms);
+      setPassedByFloors(newDirections);
     }
   }, [floorPlanMap, path]);
 
@@ -82,15 +83,18 @@ const NavDirections = ({ path }: Props) => {
 
   return (
     <div className="m-2">
-      {directions.map((direction, index) => (
+      {passedByFloors.map((curFloor, index) => (
         <button
           key={index}
           className={'w-full border p-1 text-left ' + getBgClass(index)}
           onClick={() => setCurFloorIndex(index)}
         >
-          <p className={`${curFloorIndex == index ? 'text-white' : ''}`}>
-            {direction}
+          <p
+            className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}
+          >
+            {curFloor == 'outside-1' ? 'Outside' : curFloor}
           </p>
+          {curFloorIndex == index && renderRoomsOnFloor(curFloor)}
         </button>
       ))}
     </div>
