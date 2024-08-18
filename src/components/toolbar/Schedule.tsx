@@ -93,9 +93,9 @@ const Schedule = () => {
     return (
       <div className="no-scrollbar h-96 space-y-3 overflow-auto">
         {scheduleData.map((course) => (
-          <div
+          <button
             key={course.code + course.dow}
-            className="rounded border bg-gray-50 p-1"
+            className="w-full rounded border bg-gray-50 p-1 text-left hover:bg-gray-300"
             onClick={handleCourseClick(
               course.room.split('-'),
               searchMap,
@@ -118,7 +118,7 @@ const Schedule = () => {
                 <p>{course.room}</p>
               </div>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     );
