@@ -3,10 +3,9 @@ import fastestIcon from '@icons/nav/fastest.svg';
 import swapIcon from '@icons/nav/swap.svg';
 import Image from 'next/image';
 
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 
-import { Node } from '@/app/api/findPath/route';
 import {
   setChoosingRoomMode,
   setSelectedPathName,
@@ -19,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Room } from '@/types';
 
 import CardWrapper from '../infocard/CardWrapper';
+import NavDirections from './NavDirections';
 
 const pathNameToIcon = {
   fastest: fastestIcon,
@@ -33,6 +33,8 @@ export default function NavCard(): ReactElement {
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const displayPathName = useAppSelector((state) => state.nav.selectedPathName);
+
+  const [startedNavigation, setStartedNavigation] = useState<boolean>(false);
 
   // calculate path from start to end
   useEffect(() => {
@@ -53,6 +55,7 @@ export default function NavCard(): ReactElement {
         })
         .then((j) => {
           dispatch(setRecommendedPath(j));
+          dispatch(setSelectedPathName(Object.keys(j)[0]));
         });
     }
   }, [startLocation, endLocation, dispatch]);
@@ -135,26 +138,6 @@ export default function NavCard(): ReactElement {
     return renderRoomInput(endLocation, placeHolder, circleColor, handleClick);
   };
 
-  const renderDirections = (path: Node[]) => {
-    if (path) {
-      const passedByRooms: Room[] = [];
-      for (const node of path) {
-        if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
-          const floorArr = node.floor.split('-');
-          const buildingCode = floorArr[0];
-          const level = floorArr[1];
-          passedByRooms.push(floorPlanMap[buildingCode][level][node.roomId]);
-        }
-      }
-
-      return passedByRooms.map((room) => {
-        if (room.name) {
-          return <p key={room.id}>{room.name}</p>;
-        }
-      });
-    }
-  };
-
   const renderPathInfo = (pathName: string) => {
     return (
       <div key={pathName} className="flex w-full justify-center">
@@ -198,15 +181,36 @@ export default function NavCard(): ReactElement {
   };
 
   const renderNavInfo = () => {
-    return (
-      <>
+    const renderGoButton = () => {
+      return (
         <div className="flex w-full justify-center">
-          <button className="btn-shadow w-[22.5rem] rounded-lg bg-[#31B777] py-2">
+          <button
+            className="btn-shadow w-[22.5rem] rounded-lg bg-[#31B777] py-2"
+            onClick={() => setStartedNavigation(true)}
+          >
             <p className="text-white">GO</p>
           </button>
         </div>
+      );
+    };
 
-        {renderPathWrapper()}
+    const renderCancelButton = () => {
+      return (
+        <div className="flex w-full justify-center">
+          <button
+            className="btn-shadow w-[22.5rem] rounded-lg bg-[#c41230] py-2"
+            onClick={() => setStartedNavigation(false)}
+          >
+            <p className="text-white">Cancel</p>
+          </button>
+        </div>
+      );
+    };
+
+    return (
+      <>
+        {!startedNavigation ? renderGoButton() : renderCancelButton()}
+        {!startedNavigation ? renderPathWrapper() : <NavDirections />}
       </>
     );
   };

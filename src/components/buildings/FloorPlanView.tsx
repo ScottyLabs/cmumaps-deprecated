@@ -28,12 +28,17 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );
+  const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
 
   if (!floorPlan) {
     return <></>;
   }
 
   const handleSelectRoom = (room: Room) => () => {
+    if (isNavOpen && !choosingRoomMode) {
+      return;
+    }
+
     if (choosingRoomMode == 'start') {
       dispatch(setStartLocation(room));
       dispatch(setIsSearchOpen(false));

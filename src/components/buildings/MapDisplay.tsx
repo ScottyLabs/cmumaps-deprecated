@@ -58,6 +58,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );
+  const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
 
   const [usedRegionChange, setUsedRegionChange] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
@@ -226,7 +227,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         onRegionChangeEnd();
       }}
       onClick={() => {
-        if (!usedRegionChange && !choosingRoomMode) {
+        if (!usedRegionChange && !choosingRoomMode && !isNavOpen) {
           dispatch(setIsSearchOpen(false));
           dispatch(deselectBuilding());
           dispatch(releaseRoom(null));
