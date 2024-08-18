@@ -1,9 +1,12 @@
+import alternativeIcon from '@icons/nav/alternative.svg';
+import fastestIcon from '@icons/nav/fastest.svg';
 import swapIcon from '@icons/nav/swap.svg';
 import Image from 'next/image';
 
 import React, { ReactElement, useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 
+import { Node } from '@/app/api/findPath/route';
 import {
   setChoosingRoomMode,
   setEndLocation,
@@ -16,9 +19,11 @@ import { Building, Room } from '@/types';
 
 import CardWrapper from '../infocard/CardWrapper';
 
-/**
- * Displays the search results.
- */
+const pathNameToIcon = {
+  fastest: fastestIcon,
+  other: alternativeIcon,
+};
+
 export default function NavCard(): ReactElement {
   const dispatch = useAppDispatch();
 
@@ -128,42 +133,56 @@ export default function NavCard(): ReactElement {
     return renderRoomInput(endLocation, placeHolder, circleColor, handleClick);
   };
 
-  const renderDirections = () => {
-    // if (recommendedPath && recommendedPath.fastest) {
-    //   const passedByRooms: Room[] = [];
-    //   for (const node of recommendedPath.fastest) {
-    //     if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
-    //       console.log(node.floor);
-    //       console.log(node.floor.buildingCode);
-    //       console.log(floorPlanMap[node.floor.buildingCode]);
-    //       // passedByRooms.push(
-    //       //   floorPlanMap[node.floor.buildingCode][node.floor.level][
-    //       //     node.roomId
-    //       //   ],
-    //       // );
-    //     }
-    //   }
-    //   return passedByRooms.map((room) => <p key={room.id}>{room.name}</p>);
-    // }
+  const renderDirections = (path: Node[]) => {
+    if (path) {
+      const passedByRooms: Room[] = [];
+      for (const node of path) {
+        if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
+          const floorArr = node.floor.split('-');
+          const buildingCode = floorArr[0];
+          const level = floorArr[1];
+          passedByRooms.push(floorPlanMap[buildingCode][level][node.roomId]);
+        }
+      }
+
+      return passedByRooms.map((room) => {
+        if (room.name) {
+          return <p key={room.id}>{room.name}</p>;
+        }
+      });
+    }
   };
 
-  const renderPathInfo = (pathName: string, path: Node[]) => {
-    return <p>{pathName}</p>;
+  const renderPathInfo = (pathName: string) => {
+    return (
+      <div className="flex w-full justify-center">
+        <button className="w-[22.5rem] rounded-lg border py-2">
+          <div className="flex items-center gap-2">
+            <Image src={pathNameToIcon[pathName]} alt="Nav Path Icon" />
+            <div>
+              <p className="text-gray-600">{pathName}</p>
+            </div>
+          </div>
+        </button>
+      </div>
+    );
   };
 
   const renderPathWrapper = () => {
-    return Object.keys(recommendedPath).map((pathName) => (
-      <button key={pathName} className="block">
-        {renderPathInfo(pathName, recommendedPath[pathName])}
-      </button>
-    ));
+    return (
+      <div className="my-2 space-y-2">
+        {Object.keys(recommendedPath).map((pathName) => (
+          <div key={pathName}>{renderPathInfo(pathName)}</div>
+        ))}
+      </div>
+    );
   };
 
   const renderNavInfo = () => {
     return (
       <>
         <div className="flex w-full justify-center">
-          <button className="btn-shadow rounded-lg bg-[#31B777] px-[10.5rem] py-2">
+          <button className="btn-shadow w-[22.5rem] rounded-lg bg-[#31B777] py-2">
             <p className="text-white">GO</p>
           </button>
         </div>

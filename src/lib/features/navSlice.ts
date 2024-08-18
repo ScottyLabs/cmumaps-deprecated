@@ -10,6 +10,9 @@ interface NavState {
   startLocation: Room | Building | null;
   endLocation: Room | Building | null; // This can be expanded in the future to node/ position?
   recommendedPath: { fastest: Node[]; other: Node[] } | null;
+
+  displayPathIndex: number;
+
   isNavOpen: boolean;
   userPosition: Coordinate | null;
   choosingRoomMode: ChoosingRoomMode;
@@ -19,6 +22,7 @@ const initialState: NavState = {
   endLocation: null,
   startLocation: null,
   recommendedPath: null,
+  displayPathIndex: -1,
   isNavOpen: false,
   userPosition: null,
   choosingRoomMode: null,
@@ -45,6 +49,10 @@ const navSlice = createSlice({
     },
     setChoosingRoomMode(state, action: PayloadAction<ChoosingRoomMode>) {
       state.choosingRoomMode = action.payload;
+    },
+
+    setDisplayPathIndex(state, action) {
+      state.displayPathIndex = action.payload;
     },
   },
 });
