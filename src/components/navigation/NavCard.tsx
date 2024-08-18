@@ -47,7 +47,7 @@ export default function NavCard(): ReactElement {
 
   const renderTop = () => {
     return (
-      <div className="flex gap-1 py-2">
+      <div className="flex items-center gap-1 py-2">
         <IoIosArrowBack
           size={20}
           className="cursor-pointer text-gray-500"
