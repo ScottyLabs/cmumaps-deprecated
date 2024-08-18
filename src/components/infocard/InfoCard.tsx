@@ -14,6 +14,7 @@ interface Props {
 const InfoCard = ({ map }: Props) => {
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
+  const searchMap = useAppSelector((state) => state.data.searchMap);
 
   if (room) {
     if (room.type == 'food') {
@@ -30,9 +31,22 @@ const InfoCard = ({ map }: Props) => {
       );
     }
   } else if (building) {
+    const eateries = building.floors
+      .map((floorLevel) => {
+        if (
+          !searchMap[`${building.code}`] ||
+          !searchMap[`${building.code}`][floorLevel]
+        ) {
+          return [];
+        }
+        const rooms = searchMap[`${building.code}`][`${floorLevel}`];
+        return rooms.filter((room) => room.type == 'food');
+      })
+      .flat();
+
     return (
-      <CardWrapper snapPoint={0.52}>
-        <BuildingCard map={map} building={building} />
+      <CardWrapper snapPoint={eateries.length > 0 ? 0.52 : 0.33}>
+        <BuildingCard map={map} building={building} eateries={eateries} />
       </CardWrapper>
     );
   } else {

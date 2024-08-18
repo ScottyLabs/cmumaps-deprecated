@@ -15,14 +15,14 @@ import InfoCardImage from './InfoCardImage';
 interface Props {
   map: mapkit.Map | null;
   building: Building;
+  eateries: SearchRoom[];
 }
 
-const BuildingCard = ({ map, building }: Props) => {
+const BuildingCard = ({ map, building, eateries }: Props) => {
   const dispatch = useAppDispatch();
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
-  const searchMap = useAppSelector((state) => state.data.searchMap);
   const buildings = useAppSelector((state) => state.data.buildings);
   const eateryData = useAppSelector((state) => state.data.eateryData);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
@@ -45,20 +45,6 @@ const BuildingCard = ({ map, building }: Props) => {
     const renderTitle = (eatery: SearchRoom) => {
       return <h3> {eatery.alias}</h3>;
     };
-
-    const eateries = building.floors
-      .map((floorLevel) => {
-        // remove this later!!!
-        if (
-          !searchMap[`${building.code}`] ||
-          !searchMap[`${building.code}`][floorLevel]
-        ) {
-          return [];
-        }
-        const rooms = searchMap[`${building.code}`][`${floorLevel}`];
-        return rooms.filter((room) => room.type == 'food');
-      })
-      .flat();
 
     if (eateries.length === 0) {
       return <></>;
