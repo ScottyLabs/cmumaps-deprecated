@@ -1,6 +1,8 @@
+import elevatorIcon from '@icons/path/elevator.svg';
 import endIcon from '@icons/path/end.svg';
 import startIcon from '@icons/path/start.svg';
-import { Annotation, Polyline } from 'mapkit-react';
+import { Annotation, Coordinate, Polyline } from 'mapkit-react';
+import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
 import React from 'react';
@@ -78,20 +80,31 @@ const NavLine = () => {
   const renderIcon = () => {
     if (recommendedPath && selectedPathName) {
       const path: Node[] = recommendedPath[selectedPathName];
+
+      const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
+
+      iconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
+      iconInfos.push({ coordinate: path.at(-1).coordinate, icon: endIcon });
+
+      // for (const node of path) {
+      //   for (const neighbor of Object.values(node.neighbors)) {
+      //     if (neighbor.toFloorInfo) {
+      //       iconInfos.push({ coordinate: node.coordinate, icon: elevatorIcon });
+      //     }
+      //   }
+      // }
+
       return (
         <>
-          <Annotation
-            latitude={path[0].coordinate.latitude}
-            longitude={path[0].coordinate.longitude}
-          >
-            <Image src={startIcon} alt="Start Icon" height={40} />
-          </Annotation>
-          <Annotation
-            latitude={path.at(-1).coordinate.latitude}
-            longitude={path.at(-1).coordinate.longitude}
-          >
-            <Image src={endIcon} alt="End Icon" height={40} />
-          </Annotation>
+          {iconInfos.map((iconInfo, index) => (
+            <Annotation
+              key={index}
+              latitude={iconInfo.coordinate.latitude}
+              longitude={iconInfo.coordinate.longitude}
+            >
+              <Image src={iconInfo.icon} alt="Icon" height={40} />
+            </Annotation>
+          ))}
         </>
       );
     }
