@@ -15,6 +15,7 @@ import {
   setRecommendedPath,
   setStartLocation,
   setStartedNavigation,
+  setCurFloorIndex,
 } from '@/lib/features/navSlice';
 import { setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -219,7 +220,10 @@ export default function NavCard(): ReactElement {
         <div className="flex w-full justify-center">
           <button
             className="btn-shadow w-[22.5rem] rounded-lg bg-[#c41230] py-2"
-            onClick={() => dispatch(setStartedNavigation(false))}
+            onClick={() => {
+              dispatch(setCurFloorIndex(0));
+              dispatch(setStartedNavigation(false));
+            }}
           >
             <p className="text-white">Cancel</p>
           </button>
