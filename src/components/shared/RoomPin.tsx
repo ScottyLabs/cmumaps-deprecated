@@ -16,6 +16,7 @@ const icons: { [type: string]: SVGElement } = {
   elevator: elevatorIcon,
   corridor: corridorIcon,
   dining: foodIcon,
+  food: foodIcon,
   stairs: stairsIcon,
   library: studyIcon,
   restroom: restroomIcon,

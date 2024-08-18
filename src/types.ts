@@ -102,6 +102,8 @@ export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
       return { primary: '#3b92f0', background: '#c4dadf', border: '#9bacb0' };
     case 'dining':
       return { primary: '#ff961c', background: '#ffdcb2', border: '#f8992a' };
+    case 'food':
+      return { primary: '#ff961c', background: '#ffdcb2', border: '#f8992a' };
     case 'store':
       return { primary: '#ffc855', background: '#fff0d0', border: '#ffc855' };
     case 'library':
