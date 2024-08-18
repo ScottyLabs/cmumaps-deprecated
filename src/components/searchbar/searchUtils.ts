@@ -10,7 +10,7 @@ export type RoomSearchResult = {
   searchRoom: SearchRoom[];
 };
 
-const nonAsciiRe = /[^a-zA-Z0-9 ]/g;
+const nonAsciiRe = /[^a-zA-Z0-9]/;
 
 const modeToType: Partial<Record<SearchMode, RoomType>> = {
   food: 'food',
@@ -100,6 +100,7 @@ const findRooms = (
         .toLowerCase()
         .split(nonAsciiRe)
         .filter((token) => token.length > 0);
+
       return (
         Object.values(roomsObj)
           .filter((room: SearchRoom) => {
