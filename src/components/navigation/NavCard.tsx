@@ -1,14 +1,12 @@
 import alternativeIcon from '@icons/nav/alternative.svg';
 import fastestIcon from '@icons/nav/fastest.svg';
 import swapIcon from '@icons/nav/swap.svg';
-import { Polyline } from 'mapkit-react';
 import Image from 'next/image';
 
 import React, { ReactElement, useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
-import { Node } from '@/app/api/findPath/route';
 import {
   setChoosingRoomMode,
   setSelectedPathName,
@@ -23,6 +21,7 @@ import { Building, Room } from '@/types';
 
 import CardWrapper from '../infocard/CardWrapper';
 import NavDirections from './NavDirections';
+import NavLine from './NavLine';
 
 const pathNameToIcon = {
   fastest: fastestIcon,
@@ -252,24 +251,9 @@ export default function NavCard(): ReactElement {
     );
   };
 
-  const renderAllPaths = () => {
-    recommendedPath &&
-      Object.keys(recommendedPath).map((pathName) => (
-        <Polyline
-          key={pathName}
-          selected={true}
-          points={recommendedPath[pathName].map((n: Node) => n.coordinate)}
-          enabled={true}
-          strokeColor={selectedPathName == pathName ? 'blue' : 'gray'}
-          strokeOpacity={selectedPathName == pathName ? 0.9 : 0.5}
-          lineWidth={5}
-        />
-      ));
-  };
-
   return (
     <>
-      {renderAllPaths()}
+      <NavLine startedNavigation={startedNavigation} />
       <CardWrapper snapPoint={0.5}>
         <div>
           {renderTop()}

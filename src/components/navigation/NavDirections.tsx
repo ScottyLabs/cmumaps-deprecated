@@ -1,5 +1,3 @@
-import { Polyline } from 'mapkit-react';
-
 import React, { useEffect, useState } from 'react';
 
 import { Node } from '@/app/api/findPath/route';
@@ -11,7 +9,7 @@ interface Props {
 }
 
 const NavDirections = ({ path }: Props) => {
-  const [passedByFloors, setPassedByFloors] = useState<string[]>([]);
+  const [directions, setDirections] = useState<string[]>([]);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [curFloorIndex, setCurFloorIndex] = useState<number>(0);
@@ -43,8 +41,7 @@ const NavDirections = ({ path }: Props) => {
         }
       }
 
-      setPassedByRooms(passedByRooms);
-      setPassedByFloors(newDirections);
+      setDirections(newDirections);
     }
   }, [floorPlanMap, path]);
 
@@ -55,19 +52,6 @@ const NavDirections = ({ path }: Props) => {
       return 'bg-gray-200';
     }
     return '';
-  };
-
-  const renderPath = () => {
-    return (
-      <Polyline
-        selected={true}
-        points={displayPath.map((n: Node) => n.coordinate)}
-        enabled={true}
-        strokeColor={'blue'}
-        strokeOpacity={0.9}
-        lineWidth={5}
-      />
-    );
   };
 
   const renderRoomsOnFloor = (curFloor: string) => {
@@ -97,25 +81,19 @@ const NavDirections = ({ path }: Props) => {
   };
 
   return (
-    <>
-      {renderPath()}
-      <div className="m-2">
-        {passedByFloors.map((curFloor, index) => (
-          <button
-            key={index}
-            className={'w-full border p-1 text-left ' + getBgClass(index)}
-            onClick={() => setCurFloorIndex(index)}
-          >
-            <p
-              className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}
-            >
-              {curFloor == 'outside-1' ? 'Outside' : curFloor}
-            </p>
-            {curFloorIndex == index && renderRoomsOnFloor(curFloor)}
-          </button>
-        ))}
-      </div>
-    </>
+    <div className="m-2">
+      {directions.map((direction, index) => (
+        <button
+          key={index}
+          className={'w-full border p-1 text-left ' + getBgClass(index)}
+          onClick={() => setCurFloorIndex(index)}
+        >
+          <p className={`${curFloorIndex == index ? 'text-white' : ''}`}>
+            {direction}
+          </p>
+        </button>
+      ))}
+    </div>
   );
 };
 
