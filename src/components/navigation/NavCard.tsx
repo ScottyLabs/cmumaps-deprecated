@@ -15,6 +15,7 @@ import {
   setRecommendedPath,
   setStartLocation,
 } from '@/lib/features/navSlice';
+import { setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Room } from '@/types';
 
@@ -114,7 +115,13 @@ export default function NavCard(): ReactElement {
     return (
       <div className="flex w-fit gap-2 border p-1">
         {renderCircle()}
-        <button className="w-72 text-left" onClick={handleClick}>
+        <button
+          className="w-72 text-left"
+          onClick={() => {
+            handleClick();
+            dispatch(setIsSearchOpen(true));
+          }}
+        >
           {renderText()}
         </button>
       </div>

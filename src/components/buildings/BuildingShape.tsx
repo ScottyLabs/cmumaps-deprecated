@@ -66,6 +66,7 @@ export default function BuildingShape({ map, building }: BuildingShapeProps) {
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );
+  const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
 
   const renderBuildingPolygon = () => {
     const isSelected = selectedBuilding?.code == building.code;
@@ -140,6 +141,10 @@ export default function BuildingShape({ map, building }: BuildingShapeProps) {
             <div
               className="translate-y-1/2 cursor-pointer"
               onClick={(e) => {
+                if (isNavOpen && !choosingRoomMode) {
+                  return;
+                }
+
                 // zoom on building if click on building already selected
                 if (selectedBuilding?.code == building.code) {
                   zoomOnObject(map, building.shapes.flat());

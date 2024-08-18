@@ -12,6 +12,8 @@ const NavDirections = ({ path }: Props) => {
   const [directions, setDirections] = useState<string[]>([]);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
+  const [curFloorIndex, setCurFloorIndex] = useState<number>(0);
+
   useEffect(() => {
     if (path) {
       const passedByRooms: Room[] = [];
@@ -33,7 +35,30 @@ const NavDirections = ({ path }: Props) => {
     }
   }, [floorPlanMap, path]);
 
-  return directions.map((direction, index) => <p key={index}>{direction}</p>);
+  const getBgClass = (index: number) => {
+    if (curFloorIndex == index) {
+      return 'bg-[#31B777]';
+    } else if (index < curFloorIndex) {
+      return 'bg-gray-200';
+    }
+    return '';
+  };
+
+  return (
+    <div className="m-2">
+      {directions.map((direction, index) => (
+        <button
+          key={index}
+          className={'w-full border p-1 text-left ' + getBgClass(index)}
+          onClick={() => setCurFloorIndex(index)}
+        >
+          <p className={`${curFloorIndex == index ? 'text-white' : ''}`}>
+            {direction}
+          </p>
+        </button>
+      ))}
+    </div>
+  );
 };
 
 export default NavDirections;
