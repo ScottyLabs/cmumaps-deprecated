@@ -20,7 +20,7 @@ const NavDirections = ({ path }: Props) => {
   const [displayPath, setDisplayPath] = useState<Node[]>([]);
 
   useEffect(() => {
-    console.log(passedByRooms);
+    // console.log(passedByRooms);
   }, [passedByRooms]);
 
   useEffect(() => {
@@ -36,7 +36,10 @@ const NavDirections = ({ path }: Props) => {
           const floorArr = node.floor.split('-');
           const buildingCode = floorArr[0];
           const level = floorArr[1];
-          passedByRooms.push(floorPlanMap[buildingCode][level][node.roomId]);
+
+          if (floorPlanMap[buildingCode][level][node.roomId]) {
+            passedByRooms.push(floorPlanMap[buildingCode][level][node.roomId]);
+          }
         }
       }
 
@@ -69,8 +72,14 @@ const NavDirections = ({ path }: Props) => {
 
   const renderRoomsOnFloor = (curFloor: string) => {
     const curRooms = passedByRooms.filter(
-      (room) => room.floor.buildingCode + '-' + room.floor.level == curFloor,
+      (room) =>
+        room.floor.buildingCode + '-' + room.floor.level == curFloor &&
+        !!room.name,
     );
+
+    if (curRooms.length == 0) {
+      return <></>;
+    }
 
     return (
       <div className="space- mx-1 mb-1 mt-2 space-y-1 bg-gray-50">
@@ -100,7 +109,7 @@ const NavDirections = ({ path }: Props) => {
             <p
               className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}
             >
-              {curFloor}
+              {curFloor == 'outside-1' ? 'Outside' : curFloor}
             </p>
             {curFloorIndex == index && renderRoomsOnFloor(curFloor)}
           </button>
