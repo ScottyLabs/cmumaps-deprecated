@@ -8,7 +8,7 @@ interface Props {
 
 const SearchResultWrapper = ({ children, handleClick, isSelected }: Props) => {
   let classNames =
-    'py-3 flex w-full items-center justify-between gap-2 px-4 text-left';
+    'flex w-full items-center justify-between gap-2 px-4 text-left';
   classNames += 'transition duration-150 ease-out';
 
   if (isSelected) {
@@ -18,14 +18,14 @@ const SearchResultWrapper = ({ children, handleClick, isSelected }: Props) => {
   if (handleClick) {
     return (
       <button
-        className={classNames + ' cursor-pointer hover:bg-[#efefef]'}
+        className={classNames + ' cursor-pointer py-3 hover:bg-[#efefef]'}
         onClick={handleClick}
       >
         {children}
       </button>
     );
   } else {
-    return <div className={classNames}> {children}</div>;
+    return <div className={classNames + ' -mb-1 pt-2'}> {children}</div>;
   }
 };
 

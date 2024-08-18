@@ -21,19 +21,22 @@ export const handleCourseClick =
   (roomInfoArr: string[], searchMap: SearchMap, router: AppRouterInstance) =>
   () => {
     const buildingCode = roomInfoArr[0];
-    const roomName = roomInfoArr[1];
-    const floorLevel = roomName.charAt(0);
 
     const buildingMap = searchMap[buildingCode];
 
     if (!buildingMap) {
       if (buildingCode == 'DNM') {
         toast.error('This class do not meet!');
+      } else if (buildingCode == 'TBA') {
+        toast.error('To be determined!');
       } else {
         toast.error('Building not available!');
       }
       return;
     }
+
+    const roomName = roomInfoArr[1];
+    const floorLevel = roomName.charAt(0);
 
     if (!buildingMap[floorLevel]) {
       toast.error('Floor not available!');
@@ -116,10 +119,10 @@ const CourseSearchResults = ({ query }: Props) => {
             <Image alt={'Event Icon'} src={courseIcon} />
           </div>
           <div>
-            <p className="truncate font-bold">
+            <p className="truncate font-bold text-gray-800">
               {courseCode} {sectionCode}
             </p>
-            <p className="truncate font-bold">{course.name}</p>
+            <p className="truncate font-bold text-gray-800">{course.name}</p>
             <p className="text-[--color-gray]">
               {section.dow} {section.startTime}-{section.endTime}
             </p>
@@ -133,7 +136,7 @@ const CourseSearchResults = ({ query }: Props) => {
   return Object.entries(searchResult).map(([department, courses]) => (
     <div key={department}>
       <SearchResultWrapper>
-        <h3>{department}</h3>
+        <h2>{department}</h2>
       </SearchResultWrapper>
       {Object.entries(courses)
         .slice(0, 10)
