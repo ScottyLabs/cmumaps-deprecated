@@ -5,6 +5,7 @@ import Image from 'next/image';
 
 import React, { ReactElement, useEffect, useState } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
+import { toast } from 'react-toastify';
 
 import {
   setChoosingRoomMode,
@@ -19,6 +20,7 @@ import { Building, Room } from '@/types';
 
 import CardWrapper from '../infocard/CardWrapper';
 import NavDirections from './NavDirections';
+import NavLine from './NavLine';
 
 const pathNameToIcon = {
   fastest: fastestIcon,
@@ -31,8 +33,9 @@ export default function NavCard(): ReactElement {
   const startLocation = useAppSelector((state) => state.nav.startLocation);
   const endLocation = useAppSelector((state) => state.nav.endLocation);
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
-  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
-  const displayPathName = useAppSelector((state) => state.nav.selectedPathName);
+  const selectedPathName = useAppSelector(
+    (state) => state.nav.selectedPathName,
+  );
 
   const [startedNavigation, setStartedNavigation] = useState<boolean>(false);
 
@@ -54,8 +57,12 @@ export default function NavCard(): ReactElement {
           }
         })
         .then((j) => {
-          dispatch(setRecommendedPath(j));
-          dispatch(setSelectedPathName(Object.keys(j)[0]));
+          if (j.fastest.error) {
+            toast.error('Sorry, we are not able to find a path :(');
+          } else {
+            dispatch(setRecommendedPath(j));
+            dispatch(setSelectedPathName(Object.keys(j)[0]));
+          }
         });
     }
   }, [startLocation, endLocation, dispatch]);
@@ -66,7 +73,10 @@ export default function NavCard(): ReactElement {
         <IoIosArrowBack
           size={20}
           className="cursor-pointer text-gray-500"
-          onClick={() => dispatch(setIsNavOpen(false))}
+          onClick={() => {
+            dispatch(setRecommendedPath(null));
+            dispatch(setIsNavOpen(false));
+          }}
         />
         <h1 className="font-bold">Navigation</h1>
       </div>
@@ -142,7 +152,7 @@ export default function NavCard(): ReactElement {
     return (
       <div key={pathName} className="flex w-full justify-center">
         <button
-          className={`w-[22.5rem] rounded-lg border py-2 ${pathName == displayPathName ? 'bg-[#1e86ff] text-white' : 'text-gray-600'}`}
+          className={`w-[22.5rem] rounded-lg border py-2 ${pathName == selectedPathName ? 'bg-[#1e86ff] text-white' : 'text-gray-600'}`}
           onClick={() => dispatch(setSelectedPathName(pathName))}
         >
           <div className="mx-2 flex items-center justify-between">
@@ -154,7 +164,7 @@ export default function NavCard(): ReactElement {
               />
               <div>
                 <p
-                  className={`text-lg ${pathName == displayPathName ? 'text-gray-800"' : 'text-gray-600'}`}
+                  className={`text-lg ${pathName == selectedPathName ? 'text-gray-800"' : 'text-gray-600'}`}
                 >
                   {pathName}
                 </p>
@@ -210,34 +220,47 @@ export default function NavCard(): ReactElement {
     return (
       <>
         {!startedNavigation ? renderGoButton() : renderCancelButton()}
-        {!startedNavigation ? renderPathWrapper() : <NavDirections />}
+        {!startedNavigation ? (
+          renderPathWrapper()
+        ) : (
+          <NavDirections path={recommendedPath[selectedPathName]} />
+        )}
       </>
     );
   };
 
+  const renderSwapButton = () => {
+    return (
+      <button
+        onClick={() => {
+          dispatch(setStartLocation(endLocation));
+          dispatch(setEndLocation(startLocation));
+        }}
+      >
+        <Image src={swapIcon} alt="Swap Icon" />
+      </button>
+    );
+  };
+
   return (
-    <CardWrapper snapPoint={0.5}>
-      <div>
-        {renderTop()}
-        <div className="flex gap-2">
-          <div className="space-y-2 pb-2 pl-4">
-            {renderStartRoomInput()}
-            {renderEndRoomInput()}
+    <>
+      <NavLine startedNavigation={startedNavigation} />
+      <CardWrapper snapPoint={0.5}>
+        <div>
+          {renderTop()}
+          <div className="flex gap-2">
+            <div className="space-y-2 pb-2 pl-4">
+              {renderStartRoomInput()}
+              {renderEndRoomInput()}
+            </div>
+            {renderSwapButton()}
           </div>
-          <button
-            onClick={() => {
-              dispatch(setStartLocation(endLocation));
-              dispatch(setEndLocation(startLocation));
-            }}
-          >
-            <Image src={swapIcon} alt="Swap Icon" />
-          </button>
+          {!!startLocation &&
+            !!endLocation &&
+            !!recommendedPath &&
+            renderNavInfo()}
         </div>
-        {!!startLocation &&
-          !!endLocation &&
-          !!recommendedPath &&
-          renderNavInfo()}
-      </div>
-    </CardWrapper>
+      </CardWrapper>
+    </>
   );
 }

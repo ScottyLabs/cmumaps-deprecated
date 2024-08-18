@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Node } from '@/app/api/findPath/route';
+import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 
 const NavDirections = ({ path }: Props) => {
   const [directions, setDirections] = useState<string[]>([]);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   useEffect(() => {
     if (path) {
@@ -27,11 +29,9 @@ const NavDirections = ({ path }: Props) => {
         }
       }
 
-      console.log(newDirections);
-
       setDirections(newDirections);
     }
-  }, [path]);
+  }, [floorPlanMap, path]);
 
   return directions.map((direction, index) => <p key={index}>{direction}</p>);
 };
