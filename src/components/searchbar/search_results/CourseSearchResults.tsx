@@ -115,15 +115,15 @@ const CourseSearchResults = ({ query }: Props) => {
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-700">
             <Image alt={'Event Icon'} src={courseIcon} />
           </div>
-          <div className="truncate">
-            <p>
+          <div>
+            <p className="truncate font-bold">
               {courseCode} {sectionCode}
             </p>
-            <p className="truncate">{course.name}</p>
-            <p>
+            <p className="truncate font-bold">{course.name}</p>
+            <p className="text-[--color-gray]">
               {section.dow} {section.startTime} {section.endTime}
             </p>
-            <p>{section.room}</p>
+            <p className="text-[--color-gray]">{section.room}</p>
           </div>
         </div>
       </SearchResultWrapper>
