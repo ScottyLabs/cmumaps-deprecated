@@ -1,4 +1,4 @@
-import elevatorIcon from '@icons/path/elevator.svg';
+// import elevatorIcon from '@icons/path/elevator.svg';
 import endIcon from '@icons/path/end.svg';
 import startIcon from '@icons/path/start.svg';
 import { Annotation, Coordinate, Polyline } from 'mapkit-react';

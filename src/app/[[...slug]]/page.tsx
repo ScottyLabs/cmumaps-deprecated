@@ -222,6 +222,11 @@ const Page = ({ params, searchParams }: Props) => {
   }, [selectedRoom, focusedFloor, selectedBuilding]);
 
   const renderIcons = () => {
+    // don't show icons if in mobile and either the search is open or the card is open
+    if (isMobile && (isSearchOpen || isCardOpen)) {
+      return <></>;
+    }
+
     const renderClerkIcon = () => {
       if (isMobile) {
         return (
@@ -238,23 +243,38 @@ const Page = ({ params, searchParams }: Props) => {
       }
     };
 
-    // don't show icons if in mobile and either the search is open or the card is open
-    if (isMobile && (isSearchOpen || isCardOpen)) {
-      return <></>;
-    }
+    const renderQuestionMarkIcon = () => {
+      if (isMobile) {
+        return (
+          <div className="btn-shadow fixed bottom-[4.5rem] right-3 rounded-full">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://docs.google.com/document/d/1mirPykjHd0catOj0PShZEil6EsoF1HgQW02tOO2ZnWs/edit#heading=h.j3w4ch974od3"
+            >
+              <Image alt="Question Mark" src={questionMarkIcon} height={43} />
+            </a>
+          </div>
+        );
+      } else {
+        return (
+          <div className="btn-shadow fixed bottom-16 right-3.5 rounded-full">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://docs.google.com/document/d/1mirPykjHd0catOj0PShZEil6EsoF1HgQW02tOO2ZnWs/edit#heading=h.j3w4ch974od3"
+            >
+              <Image alt="Question Mark" src={questionMarkIcon} height={50} />
+            </a>
+          </div>
+        );
+      }
+    };
 
     return (
       <>
         {renderClerkIcon()}
-        <div className="btn-shadow fixed bottom-16 right-3.5 rounded-full">
-          <a
-            target="_blank"
-            rel="noreferrer"
-            href="https://docs.google.com/document/d/1mirPykjHd0catOj0PShZEil6EsoF1HgQW02tOO2ZnWs/edit#heading=h.j3w4ch974od3"
-          >
-            <Image alt="Question Mark" src={questionMarkIcon} height={50} />
-          </a>
-        </div>
+        {renderQuestionMarkIcon()}
         {/* {isMobile && (
           <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
             <Image alt="Schedule" src={scheduleIcon} />
