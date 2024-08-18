@@ -162,7 +162,7 @@ const Events = () => {
       const dayEvents = eventData[dayOfWeek];
       if (dayEvents) {
         return (
-          <div className="mt-2 space-y-3 bg-gray-100 py-3 text-[--color-gray]">
+          <div className="mt-2 h-80 space-y-3 overflow-scroll bg-gray-100 py-3 text-[--color-gray] sm:h-fit">
             {dayEvents.map((eventInfo) => renderEvent(eventInfo))}
           </div>
         );
