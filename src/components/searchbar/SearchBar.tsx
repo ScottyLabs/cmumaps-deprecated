@@ -76,14 +76,7 @@ const SearchBar = ({ map }: Props) => {
     autoFillSearchQuery();
   }, [autoFillSearchQuery]);
 
-  // focus on the input if the search mode changed
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [searchMode]);
-
-  // focus on the input and clear text if the search mode changed to not null
+  // focus on the input and clear text if the choose room mode changed to not null
   useEffect(() => {
     if (inputRef.current) {
       if (choosingRoomMode) {

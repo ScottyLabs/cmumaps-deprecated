@@ -1,10 +1,15 @@
+import swapIcon from '@icons/nav/swap.svg';
+import Image from 'next/image';
+
 import React, { ReactElement, useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 
 import {
   setChoosingRoomMode,
+  setEndLocation,
   setIsNavOpen,
   setRecommendedPath,
+  setStartLocation,
 } from '@/lib/features/navSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Room } from '@/types';
@@ -71,11 +76,15 @@ export default function NavCard(): ReactElement {
     const renderText = () => {
       if (navLocation) {
         if ('floor' in navLocation) {
+          if (navLocation.alias) {
+            return <p>{navLocation.alias}</p>;
+          }
+
           return (
             <p>{navLocation.floor?.buildingCode + ' ' + navLocation.name}</p>
           );
         } else {
-          return <p>{navLocation.code}</p>;
+          return <p>{navLocation.name}</p>;
         }
       } else {
         return <p className="text-[gray]">{placeHolder}</p>;
@@ -85,7 +94,7 @@ export default function NavCard(): ReactElement {
     return (
       <div className="flex w-fit gap-2 border p-1">
         {renderCircle()}
-        <button className="w-64 text-left" onClick={handleClick}>
+        <button className="w-72 text-left" onClick={handleClick}>
           {renderText()}
         </button>
       </div>
@@ -143,9 +152,19 @@ export default function NavCard(): ReactElement {
     <CardWrapper snapPoint={0.5}>
       <div>
         {renderTop()}
-        <div className="space-y-2 pb-2 pl-4">
-          {renderStartRoomInput()}
-          {renderEndRoomInput()}
+        <div className="flex gap-2">
+          <div className="space-y-2 pb-2 pl-4">
+            {renderStartRoomInput()}
+            {renderEndRoomInput()}
+          </div>
+          <button
+            onClick={() => {
+              dispatch(setStartLocation(endLocation));
+              dispatch(setEndLocation(startLocation));
+            }}
+          >
+            <Image src={swapIcon} alt="Swap Icon" />
+          </button>
         </div>
         {renderDirections()}
       </div>
