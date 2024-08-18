@@ -119,11 +119,11 @@ const EventSearchResults = ({ query }: Props) => {
         handleClick={handleClick(event.roomName)}
       >
         <div className="flex items-center gap-2 py-1 text-left">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-300">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#87BCFB]">
             <Image alt={'Event Icon'} src={eventIcon} />
           </div>
-          <div className="truncate">
-            <p>{event.name}</p>
+          <div className="truncate text-[--color-gray]">
+            <p className="text-gray-800">{event.name}</p>
             {formatDbDateEvent(event.startTime, event.endTime)}
             <p>{event.roomName}</p>
           </div>
