@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { Node } from '@/app/api/findPath/route';
-import { useAppSelector } from '@/lib/hooks';
+import { setCurFloorIndex } from '@/lib/features/navSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
 interface Props {
@@ -9,13 +10,13 @@ interface Props {
 }
 
 const NavDirections = ({ path }: Props) => {
-  const [passedByFloors, setPassedByFloors] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
+
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
+  const curFloorIndex = useAppSelector((state) => state.nav.curFloorIndex);
 
-  const [curFloorIndex, setCurFloorIndex] = useState<number>(0);
-
+  const [passedByFloors, setPassedByFloors] = useState<string[]>([]);
   const [passedByRooms, setPassedByRooms] = useState<Room[]>();
-  // const [displayPath, setDisplayPath] = useState<Node[]>([]);
 
   useEffect(() => {
     // console.log(passedByRooms);
@@ -74,7 +75,7 @@ const NavDirections = ({ path }: Props) => {
             className="flex justify-between px-2 text-[--color-gray]"
           >
             <p>{room.name}</p>
-            <p>{room.type}</p>
+            <p>{room.alias ? room.alias : room.type}</p>
           </div>
         ))}
       </div>
@@ -87,7 +88,7 @@ const NavDirections = ({ path }: Props) => {
         <button
           key={index}
           className={'w-full border p-1 text-left ' + getBgClass(index)}
-          onClick={() => setCurFloorIndex(index)}
+          onClick={() => dispatch(setCurFloorIndex(index))}
         >
           <p
             className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}

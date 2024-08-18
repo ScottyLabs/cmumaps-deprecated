@@ -3,7 +3,7 @@ import fastestIcon from '@icons/nav/fastest.svg';
 import swapIcon from '@icons/nav/swap.svg';
 import Image from 'next/image';
 
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
@@ -14,6 +14,7 @@ import {
   setIsNavOpen,
   setRecommendedPath,
   setStartLocation,
+  setStartedNavigation,
 } from '@/lib/features/navSlice';
 import { setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -21,7 +22,6 @@ import { Building, Room } from '@/types';
 
 import CardWrapper from '../infocard/CardWrapper';
 import NavDirections from './NavDirections';
-import NavLine from './NavLine';
 
 const pathNameToIcon = {
   fastest: fastestIcon,
@@ -37,8 +37,9 @@ export default function NavCard(): ReactElement {
   const selectedPathName = useAppSelector(
     (state) => state.nav.selectedPathName,
   );
-
-  const [startedNavigation, setStartedNavigation] = useState<boolean>(false);
+  const startedNavigation = useAppSelector(
+    (state) => state.nav.startedNavigation,
+  );
 
   // calculate path from start to end
   useEffect(() => {
@@ -205,7 +206,7 @@ export default function NavCard(): ReactElement {
         <div className="flex w-full justify-center">
           <button
             className="btn-shadow w-[22.5rem] rounded-lg bg-[#31B777] py-2"
-            onClick={() => setStartedNavigation(true)}
+            onClick={() => dispatch(setStartedNavigation(true))}
           >
             <p className="text-white">GO</p>
           </button>
@@ -218,7 +219,7 @@ export default function NavCard(): ReactElement {
         <div className="flex w-full justify-center">
           <button
             className="btn-shadow w-[22.5rem] rounded-lg bg-[#c41230] py-2"
-            onClick={() => setStartedNavigation(false)}
+            onClick={() => dispatch(setStartedNavigation(false))}
           >
             <p className="text-white">Cancel</p>
           </button>
@@ -252,24 +253,21 @@ export default function NavCard(): ReactElement {
   };
 
   return (
-    <>
-      <NavLine startedNavigation={startedNavigation} />
-      <CardWrapper snapPoint={0.5}>
-        <div>
-          {renderTop()}
-          <div className="flex gap-2">
-            <div className="space-y-2 pb-2 pl-4">
-              {renderStartRoomInput()}
-              {renderEndRoomInput()}
-            </div>
-            {renderSwapButton()}
+    <CardWrapper snapPoint={0.5}>
+      <div>
+        {renderTop()}
+        <div className="flex gap-2">
+          <div className="space-y-2 pb-2 pl-4">
+            {renderStartRoomInput()}
+            {renderEndRoomInput()}
           </div>
-          {!!startLocation &&
-            !!endLocation &&
-            !!recommendedPath &&
-            renderNavInfo()}
+          {renderSwapButton()}
         </div>
-      </CardWrapper>
-    </>
+        {!!startLocation &&
+          !!endLocation &&
+          !!recommendedPath &&
+          renderNavInfo()}
+      </div>
+    </CardWrapper>
   );
 }

@@ -10,7 +10,9 @@ interface NavState {
   startLocation: Room | Building | null;
   endLocation: Room | Building | null; // This can be expanded in the future to node/ position?
   recommendedPath: { fastest: Node[]; other: Node[] } | null;
+  startedNavigation: boolean;
 
+  curFloorIndex: number;
   selectedPathName: string;
 
   isNavOpen: boolean;
@@ -26,6 +28,8 @@ const initialState: NavState = {
   isNavOpen: false,
   userPosition: null,
   choosingRoomMode: null,
+  startedNavigation: false,
+  curFloorIndex: 0,
 };
 
 const navSlice = createSlice({
@@ -54,6 +58,14 @@ const navSlice = createSlice({
     setSelectedPathName(state, action) {
       state.selectedPathName = action.payload;
     },
+
+    setStartedNavigation(state, action) {
+      state.startedNavigation = action.payload;
+    },
+
+    setCurFloorIndex(state, action) {
+      state.curFloorIndex = action.payload;
+    },
   },
 });
 
@@ -65,5 +77,7 @@ export const {
   setIsNavOpen,
   setUserPosition,
   setSelectedPathName,
+  setStartedNavigation,
+  setCurFloorIndex,
 } = navSlice.actions;
 export default navSlice.reducer;
