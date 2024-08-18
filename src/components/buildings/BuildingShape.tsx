@@ -127,13 +127,7 @@ export default function BuildingShape({ map, building }: BuildingShapeProps) {
   const renderRoundel = () => {
     return (
       (!focusedFloor || building.floors.length === 0) && (
-        <div
-          className="translate-y-1/2 cursor-pointer"
-          onClick={(e) => {
-            dispatch(selectBuilding(building));
-            e.stopPropagation();
-          }}
-        >
+        <div className="translate-y-1/2 cursor-pointer">
           <Annotation
             latitude={building.labelPosition.latitude}
             longitude={building.labelPosition.longitude}

@@ -60,6 +60,10 @@ const BuildingCard = ({ map, building }: Props) => {
       })
       .flat();
 
+    if (eateries.length === 0) {
+      return <></>;
+    }
+
     sortEateries(eateries, eateryData);
 
     if (isMobile) {
