@@ -231,7 +231,7 @@ const Page = ({ params, searchParams }: Props) => {
         );
       } else {
         return (
-          <div className="fixed right-2 top-2">
+          <div className="fixed right-6 top-14">
             <UserButton />
           </div>
         );
@@ -246,13 +246,13 @@ const Page = ({ params, searchParams }: Props) => {
     return (
       <>
         {renderClerkIcon()}
-        <div className="fixed bottom-16 right-3">
+        <div className="btn-shadow fixed bottom-16 right-3.5 rounded-full">
           <a
             target="_blank"
             rel="noreferrer"
             href="https://docs.google.com/document/d/1mirPykjHd0catOj0PShZEil6EsoF1HgQW02tOO2ZnWs/edit#heading=h.j3w4ch974od3"
           >
-            <Image alt="Question Mark" src={questionMarkIcon} height={45} />
+            <Image alt="Question Mark" src={questionMarkIcon} height={50} />
           </a>
         </div>
         {/* {isMobile && (
