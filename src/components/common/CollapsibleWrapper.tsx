@@ -33,7 +33,7 @@ const CollapsibleWrapper = ({
       open={open}
       trigger={renderTrigger()}
       className="rounded bg-white"
-      openedClassName="rounded bg-white"
+      openedClassName="rounded bg-white btn-shadow"
       onTriggerOpening={() => setOpen(true)}
       onOpening={() => setOpen(true)}
       onTriggerClosing={() => setOpen(false)}

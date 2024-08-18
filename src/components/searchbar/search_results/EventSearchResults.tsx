@@ -60,8 +60,8 @@ const EventSearchResults = ({ query }: Props) => {
     const date = startDate.toDateString();
 
     const getTime = (date: Date): string => {
-      const startHour = date.getHours().toString().padStart(2, '0');
-      const startMinute = date.getMinutes().toString().padStart(2, '0');
+      const startHour = date.getUTCHours().toString().padStart(2, '0');
+      const startMinute = date.getUTCMinutes().toString().padStart(2, '0');
       return `${startHour}:${startMinute}`;
     };
 
