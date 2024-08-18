@@ -126,9 +126,9 @@ const Schedule = () => {
 
   const renderNoSchedule = () => {
     return (
-      <>
+      <div className="text-gray-700">
         <p>
-          First step: download{' '}
+          1: Download{' '}
           <a
             target="_blank"
             rel="noreferrer"
@@ -138,16 +138,15 @@ const Schedule = () => {
           </a>{' '}
           from SIO
         </p>
-        <p>
-          Second step: Import the .ics file here:
-          <input
-            type="file"
-            id="fileInput"
-            accept=".ics"
-            onChange={handleFileChange}
-          />
-        </p>
-      </>
+        <p>2: Import the .ics file here:</p>
+        <input
+          type="file"
+          id="fileInput"
+          accept=".ics"
+          onChange={handleFileChange}
+          className="mt-1 text-sm"
+        />
+      </div>
     );
   };
 

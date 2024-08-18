@@ -19,7 +19,7 @@ const CollapsibleWrapper = ({
   const [open, setOpen] = useState(defaultOpenState);
 
   const renderTrigger = () => (
-    <div className="flex items-center justify-between rounded px-4 py-2">
+    <div className="flex items-center justify-between rounded px-4 pb-1 pt-2">
       <h3>{title}</h3>
       <div>
         {open ? <IoIosArrowUp size={15} /> : <IoIosArrowDown size={15} />}
