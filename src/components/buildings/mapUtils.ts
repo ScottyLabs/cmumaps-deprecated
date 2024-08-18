@@ -10,6 +10,15 @@ import {
 import { Building, Floor, FloorPlanMap, ID } from '@/types';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
+const setIsZoomingOnRoomAsync = (isZooming: boolean) => {
+  return (dispatch) => {
+    return new Promise<void>((resolve) => {
+      dispatch(setIsZoomingOnRoom(isZooming));
+      resolve();
+    });
+  };
+};
+
 export const zoomOnRoom = (
   map: mapkit.Map | null,
   roomId: ID,
@@ -34,15 +43,6 @@ export const zoomOnRoom = (
       dispatch(setShowRoomNames(true));
       dispatch(setFocusedFloor(floor));
 
-      const setIsZoomingOnRoomAsync = (isZooming: boolean) => {
-        return (dispatch) => {
-          return new Promise<void>((resolve) => {
-            dispatch(setIsZoomingOnRoom(isZooming));
-            resolve();
-          });
-        };
-      };
-
       // zoom after finish setting the floor
       setIsZoomingOnRoomAsync(true)(dispatch).then(() => {
         const points = floorPlan[room.id].coordinates;
@@ -50,6 +50,21 @@ export const zoomOnRoom = (
       });
     }
   }
+};
+
+export const zoomOnFloor = (
+  map: mapkit.Map,
+  buildings: Record<string, Building> | null,
+  floor: Floor,
+  dispatch: Dispatch<UnknownAction>,
+) => {
+  dispatch(setFocusedFloor(floor));
+
+  // zoom after finish setting the floor
+  setIsZoomingOnRoomAsync(true)(dispatch).then(() => {
+    const points = buildings[floor.buildingCode].shapes.flat();
+    zoomOnObject(map, points);
+  });
 };
 
 export const zoomOnObject = (map: mapkit.Map, points: Coordinate[]) => {

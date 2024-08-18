@@ -5,6 +5,8 @@ import { setCurFloorIndex } from '@/lib/features/navSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
+import { zoomOnFloor } from '../buildings/mapUtils';
+
 interface Props {
   path: Node[];
 }
@@ -17,10 +19,6 @@ const NavDirections = ({ path }: Props) => {
 
   const [passedByFloors, setPassedByFloors] = useState<string[]>([]);
   const [passedByRooms, setPassedByRooms] = useState<Room[]>();
-
-  useEffect(() => {
-    // console.log(passedByRooms);
-  }, [passedByRooms]);
 
   useEffect(() => {
     if (path) {
@@ -88,7 +86,10 @@ const NavDirections = ({ path }: Props) => {
         <button
           key={index}
           className={'w-full border p-1 text-left ' + getBgClass(index)}
-          onClick={() => dispatch(setCurFloorIndex(index))}
+          onClick={() => {
+            // zoomOnFloor(map, buildings, curFloor, dispatch)
+            dispatch(setCurFloorIndex(index));
+          }}
         >
           <p
             className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}
