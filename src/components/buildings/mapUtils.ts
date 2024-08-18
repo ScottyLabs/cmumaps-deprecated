@@ -1,16 +1,14 @@
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
-import { Position } from 'geojson';
 import { Coordinate } from 'mapkit-react';
 
 import {
   claimRoom,
   setFocusedFloor,
+  setIsZoomingOnRoom,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
-import { Building, Floor, FloorPlanMap, ID, Placement } from '@/types';
-import { latitudeRatio, longitudeRatio, rotate } from '@/util/geometry';
-
-// import prefersReducedMotion from '@/util/prefersReducedMotion';
+import { Building, Floor, FloorPlanMap, ID } from '@/types';
+import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 export const zoomOnRoom = (
   map: mapkit.Map | null,
@@ -34,18 +32,19 @@ export const zoomOnRoom = (
 
       dispatch(claimRoom(room));
       dispatch(setShowRoomNames(true));
+      dispatch(setFocusedFloor(floor));
 
-      const asyncSetFocusedFloor = (floor: Floor) => {
-        return async (dispatch: Dispatch) => {
+      const setIsZoomingOnRoomAsync = (isZooming: boolean) => {
+        return (dispatch) => {
           return new Promise<void>((resolve) => {
-            dispatch(setFocusedFloor(floor));
+            dispatch(setIsZoomingOnRoom(isZooming));
             resolve();
           });
         };
       };
 
       // zoom after finish setting the floor
-      asyncSetFocusedFloor(floor)(dispatch).then(() => {
+      setIsZoomingOnRoomAsync(true)(dispatch).then(() => {
         const points = floorPlan[room.id].coordinates;
         zoomOnObject(map, points[0]);
       });
@@ -63,25 +62,6 @@ export const zoomOnObject = (map: mapkit.Map, points: Coordinate[]) => {
       Math.min(...allLat),
       Math.min(...allLon),
     ).toCoordinateRegion(),
-    false,
-    // !prefersReducedMotion(),
+    !prefersReducedMotion(),
   );
-};
-
-export const positionOnMap = (
-  absolute: Position,
-  placement: Placement,
-  center: Position,
-) => {
-  const [absoluteY, absoluteX] = rotate(
-    absolute[0] - center[0],
-    absolute[1] - center[1],
-    placement.angle,
-  );
-  return {
-    latitude:
-      absoluteY / latitudeRatio / placement.scale + placement.center.latitude,
-    longitude:
-      absoluteX / longitudeRatio / placement.scale + placement.center.longitude,
-  };
 };

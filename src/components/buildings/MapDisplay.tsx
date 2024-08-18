@@ -15,6 +15,7 @@ import {
   releaseRoom,
   setFocusedFloor,
   setIsSearchOpen,
+  setIsZoomingOnRoom,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -59,6 +60,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     (state) => state.nav.choosingRoomMode,
   );
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
+  const isZoomingOnRoom = useAppSelector((state) => state.ui.isZoomingOnRoom);
 
   const [usedRegionChange, setUsedRegionChange] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
@@ -138,6 +140,11 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
       const showFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
       dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
+
+      // don't set floor when zooming on room
+      if (isZoomingOnRoom) {
+        return;
+      }
 
       // there is no focused floor if we are not showing floors
       if (!showFloor) {
@@ -223,6 +230,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       allowWheelToZoom
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={() => {
+        dispatch(setIsZoomingOnRoom(false));
         setUsedRegionChange(true);
         onRegionChangeEnd();
       }}
