@@ -1,3 +1,5 @@
+import { Polyline } from 'mapkit-react';
+
 import React, { useEffect, useState } from 'react';
 
 import { Node } from '@/app/api/findPath/route';
@@ -9,10 +11,17 @@ interface Props {
 }
 
 const NavDirections = ({ path }: Props) => {
-  const [directions, setDirections] = useState<string[]>([]);
+  const [passedByFloors, setPassedByFloors] = useState<string[]>([]);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [curFloorIndex, setCurFloorIndex] = useState<number>(0);
+
+  const [passedByRooms, setPassedByRooms] = useState<Room[]>();
+  const [displayPath, setDisplayPath] = useState<Node[]>([]);
+
+  useEffect(() => {
+    console.log(passedByRooms);
+  }, [passedByRooms]);
 
   useEffect(() => {
     if (path) {
@@ -31,7 +40,8 @@ const NavDirections = ({ path }: Props) => {
         }
       }
 
-      setDirections(newDirections);
+      setPassedByRooms(passedByRooms);
+      setPassedByFloors(newDirections);
     }
   }, [floorPlanMap, path]);
 
@@ -44,20 +54,59 @@ const NavDirections = ({ path }: Props) => {
     return '';
   };
 
+  const renderPath = () => {
+    return (
+      <Polyline
+        selected={true}
+        points={displayPath.map((n: Node) => n.coordinate)}
+        enabled={true}
+        strokeColor={'blue'}
+        strokeOpacity={0.9}
+        lineWidth={5}
+      />
+    );
+  };
+
+  const renderRoomsOnFloor = (curFloor: string) => {
+    const curRooms = passedByRooms.filter(
+      (room) => room.floor.buildingCode + '-' + room.floor.level == curFloor,
+    );
+
+    return (
+      <div className="space- mx-1 mb-1 mt-2 space-y-1 bg-gray-50">
+        {curRooms.map((room) => (
+          <div
+            key={room.id}
+            className="flex justify-between px-2 text-[--color-gray]"
+          >
+            <p>{room.name}</p>
+            <p>{room.type}</p>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
-    <div className="m-2">
-      {directions.map((direction, index) => (
-        <button
-          key={index}
-          className={'w-full border p-1 text-left ' + getBgClass(index)}
-          onClick={() => setCurFloorIndex(index)}
-        >
-          <p className={`${curFloorIndex == index ? 'text-white' : ''}`}>
-            {direction}
-          </p>
-        </button>
-      ))}
-    </div>
+    <>
+      {renderPath()}
+      <div className="m-2">
+        {passedByFloors.map((curFloor, index) => (
+          <button
+            key={index}
+            className={'w-full border p-1 text-left ' + getBgClass(index)}
+            onClick={() => setCurFloorIndex(index)}
+          >
+            <p
+              className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}
+            >
+              {curFloor}
+            </p>
+            {curFloorIndex == index && renderRoomsOnFloor(curFloor)}
+          </button>
+        ))}
+      </div>
+    </>
   );
 };
 

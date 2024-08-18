@@ -22,7 +22,6 @@ import { Building } from '@/types';
 import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
-import NavLine from '../navigation/NavLine';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay from './FloorPlanOverlay';
 
@@ -248,8 +247,6 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         ))}
 
       {focusedFloor && <FloorPlanOverlay visibleBuildings={visibleBuildings} />}
-
-      <NavLine />
     </Map>
   );
 };
