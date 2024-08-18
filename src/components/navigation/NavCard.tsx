@@ -82,8 +82,13 @@ export default function NavCard(): ReactElement {
           size={20}
           className="cursor-pointer text-gray-500"
           onClick={() => {
-            dispatch(setRecommendedPath(null));
-            dispatch(setIsNavOpen(false));
+            if (startedNavigation) {
+              dispatch(setCurFloorIndex(0));
+              dispatch(setStartedNavigation(false));
+            } else {
+              dispatch(setRecommendedPath(null));
+              dispatch(setIsNavOpen(false));
+            }
           }}
         />
         <h1 className="font-bold">Navigation</h1>
