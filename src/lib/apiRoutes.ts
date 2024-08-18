@@ -93,11 +93,11 @@ export const getFloorPlan = async (floor: Floor): Promise<FloorPlan | null> => {
   }
 };
 
-export const getUserSchedule = async (userEmail: string): Promise<string[]> => {
+export const getUserSchedule = async (userId: string): Promise<string> => {
   const response = await fetch('/api/getUserSchedule', {
     method: 'GET',
     headers: {
-      userEmail,
+      userId,
     },
   });
 
@@ -106,19 +106,19 @@ export const getUserSchedule = async (userEmail: string): Promise<string[]> => {
 
     if (!response.ok) {
       console.error(body.error);
-      return [];
+      return '';
     }
 
     return body;
   } catch (e) {
     console.error('Failed to get parse schedule', response);
-    return [];
+    return '';
   }
 };
 
 export const postUserSchedule = async (
-  userEmail: string,
-  schedule: string[],
+  userId: string,
+  schedule: string,
 ): Promise<boolean> => {
   const response = await fetch('/api/postUserSchedule', {
     method: 'POST',
@@ -126,7 +126,7 @@ export const postUserSchedule = async (
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      userEmail,
+      userId,
       schedule,
     }),
   });

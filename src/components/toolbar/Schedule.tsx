@@ -1,8 +1,10 @@
+import { useUser } from '@clerk/nextjs';
 import ical from 'ical';
 import { useRouter } from 'next/navigation';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { getUserSchedule, postUserSchedule } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
 
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
@@ -32,9 +34,21 @@ const dayMap = {
 const Schedule = () => {
   const router = useRouter();
 
+  const { user } = useUser();
+
   const searchMap = useAppSelector((state) => state.data.searchMap);
 
   const [scheduleData, setScheduleData] = useState<CourseData[]>([]);
+
+  useEffect(() => {
+    if (user) {
+      getUserSchedule(user.id).then((dbScheduleData) => {
+        if (dbScheduleData) {
+          setScheduleData(JSON.parse(dbScheduleData));
+        }
+      });
+    }
+  }, [user]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -66,13 +80,14 @@ const Schedule = () => {
         }
 
         setScheduleData(newScheduleData);
+        postUserSchedule(user.id, JSON.stringify(newScheduleData));
       };
     }
   };
 
   const renderSchedule = () => {
     const formatDate = (date: Date) => {
-      return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+      return `${new Date(date).getHours().toString().padStart(2, '0')}:${new Date(date).getMinutes().toString().padStart(2, '0')}`;
     };
 
     return (

@@ -1,7 +1,6 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
-// import { useUser } from '@clerk/nextjs';
 import questionMarkIcon from '@icons/question-mark.png';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -58,11 +57,6 @@ const Page = ({ params, searchParams }: Props) => {
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
-
-  // const { user } = useUser();
-  // if (user) {
-  // console.log(user.id);
-  // }
 
   // extracting data in the initial loading of the page
   useEffect(() => {
