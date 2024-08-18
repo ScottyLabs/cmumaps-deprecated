@@ -129,23 +129,48 @@ export default function NavCard(): ReactElement {
   };
 
   const renderDirections = () => {
-    if (recommendedPath && recommendedPath.fastest) {
-      const passedByRooms: Room[] = [];
-      for (const node of recommendedPath.fastest) {
-        if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
-          console.log(node.floor);
-          console.log(node.floor.buildingCode);
-          console.log(floorPlanMap[node.floor.buildingCode]);
-          // passedByRooms.push(
-          //   floorPlanMap[node.floor.buildingCode][node.floor.level][
-          //     node.roomId
-          //   ],
-          // );
-        }
-      }
+    // if (recommendedPath && recommendedPath.fastest) {
+    //   const passedByRooms: Room[] = [];
+    //   for (const node of recommendedPath.fastest) {
+    //     if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
+    //       console.log(node.floor);
+    //       console.log(node.floor.buildingCode);
+    //       console.log(floorPlanMap[node.floor.buildingCode]);
+    //       // passedByRooms.push(
+    //       //   floorPlanMap[node.floor.buildingCode][node.floor.level][
+    //       //     node.roomId
+    //       //   ],
+    //       // );
+    //     }
+    //   }
+    //   return passedByRooms.map((room) => <p key={room.id}>{room.name}</p>);
+    // }
+  };
 
-      return passedByRooms.map((room) => <p key={room.id}>{room.name}</p>);
-    }
+  const renderPathInfo = (pathName: string, path: Node[]) => {
+    return <p>{pathName}</p>;
+  };
+
+  const renderPathWrapper = () => {
+    return Object.keys(recommendedPath).map((pathName) => (
+      <button key={pathName} className="block">
+        {renderPathInfo(pathName, recommendedPath[pathName])}
+      </button>
+    ));
+  };
+
+  const renderNavInfo = () => {
+    return (
+      <>
+        <div className="flex w-full justify-center">
+          <button className="btn-shadow rounded-lg bg-[#31B777] px-[10.5rem] py-2">
+            <p className="text-white">GO</p>
+          </button>
+        </div>
+
+        {renderPathWrapper()}
+      </>
+    );
   };
 
   return (
@@ -166,7 +191,7 @@ export default function NavCard(): ReactElement {
             <Image src={swapIcon} alt="Swap Icon" />
           </button>
         </div>
-        {renderDirections()}
+        {!!recommendedPath && renderNavInfo()}
       </div>
     </CardWrapper>
   );

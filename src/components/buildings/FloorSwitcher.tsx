@@ -193,7 +193,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
   };
   return (
     <Wrapper>
-      <div className="flex items-stretch justify-center rounded bg-white shadow-md shadow-gray-400">
+      <div className="btn-shadow flex items-stretch justify-center rounded bg-white">
         <button
           className="p-1"
           onClick={() => {
