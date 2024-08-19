@@ -86,7 +86,7 @@ const Events = ({ map }: Props) => {
 
   // load data
   useEffect(() => {
-    fetch('/json/O-week.json').then((response) =>
+    fetch('/json/O-Week.json').then((response) =>
       response.json().then((data) => {
         setEventData(data);
       }),
