@@ -48,6 +48,7 @@ export default function NavCard(): ReactElement {
   // calculate path from start to end
   useEffect(() => {
     if (startLocation && endLocation) {
+      dispatch(setRecommendedPath(null));
       fetch('/api/findPath', {
         method: 'POST',
         headers: {

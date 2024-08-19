@@ -5,7 +5,7 @@ import { setCurFloorIndex } from '@/lib/features/navSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
-import { zoomOnFloor } from '../buildings/mapUtils';
+// import { zoomOnFloor } from '../buildings/mapUtils';
 
 interface Props {
   path: Node[];

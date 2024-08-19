@@ -5,7 +5,7 @@ import { Coordinate } from 'mapkit-react';
 import { NextRequest } from 'next/server';
 import path from 'path';
 
-import { Floor, Placement, Room } from '@/types';
+import { Placement, Room } from '@/types';
 import { latitudeRatio, longitudeRatio } from '@/util/geometry';
 
 export type Node = {
@@ -13,11 +13,11 @@ export type Node = {
   neighbors: {
     [neighborId: string]: {
       dist: number;
-      toFloorInfo: { toFloor: Floor; type: string };
+      toFloorInfo: { toFloor: string; type: string };
     };
   };
   roomId: string;
-  floor: Floor;
+  floor: string;
   coordinate: Coordinate;
   id: string;
 };
@@ -220,6 +220,7 @@ export async function POST(req: NextRequest) {
       f[id] = {
         ...node,
         floor: floorName,
+        id,
       };
     });
     nodes1 = { ...nodes1, ...f };
