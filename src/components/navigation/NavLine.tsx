@@ -22,8 +22,8 @@ const NavLine = () => {
   );
   const curFloorIndex = useAppSelector((state) => state.nav.curFloorIndex);
 
-  const [curFloorPath, setCurFloorPath] = useState<Node[]>([]);
-  const [restPath, setRestPath] = useState<Node[]>([]);
+  const [curFloorPath, setCurFloorPath] = useState<Node[] | null>(null);
+  const [restPath, setRestPath] = useState<Node[] | null>(null);
 
   useEffect(() => {
     if (startedNavigation) {
@@ -56,23 +56,27 @@ const NavLine = () => {
     if (startedNavigation) {
       return (
         <>
-          <Polyline
-            selected={true}
-            points={curFloorPath.map((n: Node) => n.coordinate)}
-            enabled={true}
-            strokeColor="blue"
-            strokeOpacity={0.9}
-            lineWidth={5}
-          />
-          <Polyline
-            selected={true}
-            points={restPath.map((n: Node) => n.coordinate)}
-            enabled={true}
-            strokeColor="blue"
-            strokeOpacity={0.5}
-            lineWidth={5}
-            lineDash={[10, 10]}
-          />
+          {curFloorPath && (
+            <Polyline
+              selected={true}
+              points={curFloorPath.map((n: Node) => n.coordinate)}
+              enabled={true}
+              strokeColor="blue"
+              strokeOpacity={0.9}
+              lineWidth={5}
+            />
+          )}
+          {restPath && (
+            <Polyline
+              selected={true}
+              points={restPath.map((n: Node) => n.coordinate)}
+              enabled={true}
+              strokeColor="blue"
+              strokeOpacity={0.5}
+              lineWidth={5}
+              lineDash={[10, 10]}
+            />
+          )}
         </>
       );
     } else {
@@ -97,63 +101,77 @@ const NavLine = () => {
 
   const renderIcon = () => {
     if (recommendedPath && selectedPathName) {
-      const path: Node[] = recommendedPath[selectedPathName].path;
+      const calculateIcon = (path: Node[]) => {
+        const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
 
-      const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
+        for (let i = 0; i < path.length; i++) {
+          // always pick the node inside for higher precision
+          let nextToFloorInfo;
+          if (i < path.length - 1) {
+            nextToFloorInfo = path[i].neighbors[path[i + 1].id].toFloorInfo;
+          }
 
-      iconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
-      iconInfos.push({ coordinate: path.at(-1).coordinate, icon: endIcon });
+          // going inside
+          if (nextToFloorInfo) {
+            if (nextToFloorInfo.toFloor.includes('outside')) {
+              iconInfos.push({
+                coordinate: path[i].coordinate,
+                icon: exitIcon,
+              });
+            }
+          }
 
-      for (let i = 0; i < path.length; i++) {
-        // always pick the node inside for higher precision
-        let nextToFloorInfo;
-        if (i < path.length - 1) {
-          nextToFloorInfo = path[i].neighbors[path[i + 1].id].toFloorInfo;
-        }
+          let lastToFloorInfo;
+          if (i > 0) {
+            lastToFloorInfo = path[i].neighbors[path[i - 1].id].toFloorInfo;
+          }
 
-        // going inside
-        if (nextToFloorInfo) {
-          if (nextToFloorInfo.toFloor.includes('outside')) {
+          // going outside
+          if (lastToFloorInfo) {
+            if (lastToFloorInfo.toFloor.includes('outside')) {
+              iconInfos.push({
+                coordinate: path[i].coordinate,
+                icon: enterIcon,
+              });
+            }
+          }
+
+          // elevator
+          const nextElevator =
+            nextToFloorInfo && nextToFloorInfo.type == 'elevator';
+          const lastNotElevator =
+            !lastToFloorInfo || lastToFloorInfo.type != 'elevator';
+
+          // the next one is an elevtor and the last one is not an elevator
+          if (nextElevator && lastNotElevator) {
             iconInfos.push({
               coordinate: path[i].coordinate,
-              icon: exitIcon,
+              icon: elevatorIcon,
             });
           }
         }
+        return iconInfos;
+      };
 
-        let lastToFloorInfo;
-        if (i > 0) {
-          lastToFloorInfo = path[i].neighbors[path[i - 1].id].toFloorInfo;
-        }
+      const renderStartEndIcons = () => {
+        const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
+        const path = recommendedPath[selectedPathName].path;
+        iconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
+        iconInfos.push({ coordinate: path.at(-1).coordinate, icon: endIcon });
+        return iconInfos.map((iconInfo, index) => (
+          <Annotation
+            key={index}
+            latitude={iconInfo.coordinate.latitude}
+            longitude={iconInfo.coordinate.longitude}
+          >
+            <Image src={iconInfo.icon} alt="Icon" height={40} />
+          </Annotation>
+        ));
+      };
 
-        // going outside
-        if (lastToFloorInfo) {
-          if (lastToFloorInfo.toFloor.includes('outside')) {
-            iconInfos.push({
-              coordinate: path[i].coordinate,
-              icon: enterIcon,
-            });
-          }
-        }
-
-        // elevator
-        const nextElevator =
-          nextToFloorInfo && nextToFloorInfo.type == 'elevator';
-        const lastNotElevator =
-          !lastToFloorInfo || lastToFloorInfo.type != 'elevator';
-
-        // the next one is an elevtor and the last one is not an elevator
-        if (nextElevator && lastNotElevator) {
-          iconInfos.push({
-            coordinate: path[i].coordinate,
-            icon: elevatorIcon,
-          });
-        }
-      }
-
-      return (
-        <>
-          {iconInfos.map((iconInfo, index) => (
+      const renderAllIcons = () => {
+        return calculateIcon(recommendedPath[selectedPathName].path).map(
+          (iconInfo, index) => (
             <Annotation
               key={index}
               latitude={iconInfo.coordinate.latitude}
@@ -161,7 +179,46 @@ const NavLine = () => {
             >
               <Image src={iconInfo.icon} alt="Icon" height={40} />
             </Annotation>
-          ))}
+          ),
+        );
+      };
+
+      const renderPartialIcons = () => {
+        return (
+          <>
+            {curFloorPath &&
+              calculateIcon(curFloorPath).map((iconInfo, index) => (
+                <Annotation
+                  key={index}
+                  latitude={iconInfo.coordinate.latitude}
+                  longitude={iconInfo.coordinate.longitude}
+                >
+                  <Image src={iconInfo.icon} alt="Icon" height={40} />
+                </Annotation>
+              ))}
+            {restPath &&
+              calculateIcon(restPath).map((iconInfo, index) => (
+                <Annotation
+                  key={index}
+                  latitude={iconInfo.coordinate.latitude}
+                  longitude={iconInfo.coordinate.longitude}
+                >
+                  <Image
+                    src={iconInfo.icon}
+                    alt="Icon"
+                    height={40}
+                    className="opacity-50"
+                  />
+                </Annotation>
+              ))}
+          </>
+        );
+      };
+
+      return (
+        <>
+          {renderStartEndIcons()}
+          {startedNavigation ? renderPartialIcons() : renderAllIcons()}
         </>
       );
     }
