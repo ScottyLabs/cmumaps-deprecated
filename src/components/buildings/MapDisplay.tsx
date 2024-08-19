@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 import { setChoosingRoomMode, setIsNavOpen } from '@/lib/features/navSlice';
 import {
   deselectBuilding,
-  releaseRoom,
+  selectRoom,
   setFocusedFloor,
   setIsSearchOpen,
   setIsZooming,
@@ -236,7 +236,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         if (!usedRegionChange && !choosingRoomMode && !isNavOpen) {
           dispatch(setIsSearchOpen(false));
           dispatch(deselectBuilding());
-          dispatch(releaseRoom(null));
+          dispatch(selectRoom(null));
           dispatch(setIsNavOpen(false));
           dispatch(setChoosingRoomMode(null));
         }

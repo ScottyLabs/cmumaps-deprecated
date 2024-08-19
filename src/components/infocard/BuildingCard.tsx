@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-import { claimRoom } from '@/lib/features/uiSlice';
+import { selectRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 import { sortEateries } from '@/util/eateryUtils';
@@ -123,7 +123,7 @@ const BuildingCard = ({ map, building }: Props) => {
                 <div
                   key={eatery.id}
                   className="mx-3 cursor-pointer border"
-                  onClick={() => dispatch(claimRoom(eatery))}
+                  onClick={() => dispatch(selectRoom(eatery))}
                 >
                   <div className="carousel-item active">
                     <EateryInfoDisplay
@@ -140,7 +140,7 @@ const BuildingCard = ({ map, building }: Props) => {
       );
     } else {
       const handleClick = (eatery: SearchRoom) => () => {
-        dispatch(claimRoom(eatery));
+        dispatch(selectRoom(eatery));
         zoomOnRoom(
           map,
           eatery.id,

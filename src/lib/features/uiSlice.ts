@@ -38,17 +38,10 @@ const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    claimRoom(state, action) {
-      if (state.selectedRoom?.id !== action.payload?.id) {
-        state.selectedRoom = action.payload;
-      }
+    selectRoom(state, action) {
+      state.selectedRoom = action.payload;
       state.selectedBuilding = null;
       state.isSearchOpen = false;
-    },
-    releaseRoom(state, action) {
-      if (!action.payload || action.payload.id === state.selectedRoom?.id) {
-        state.selectedRoom = null;
-      }
     },
     setFocusedFloor(state, action: PayloadAction<Floor | null>) {
       state.focusedFloor = action.payload;
@@ -89,8 +82,7 @@ export const getIsCardOpen = (state: UIState) => {
 };
 
 export const {
-  claimRoom,
-  releaseRoom,
+  selectRoom,
   selectBuilding,
   deselectBuilding,
   setFocusedFloor,

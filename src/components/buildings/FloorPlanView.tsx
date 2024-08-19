@@ -8,7 +8,7 @@ import {
   setEndLocation,
   setStartLocation,
 } from '@/lib/features/navSlice';
-import { claimRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
+import { selectRoom, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Floor, FloorPlan, getRoomTypeDetails } from '@/types';
 
@@ -48,7 +48,7 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
       dispatch(setIsSearchOpen(false));
       dispatch(setChoosingRoomMode(null));
     } else {
-      dispatch(claimRoom(room));
+      dispatch(selectRoom(room));
     }
   };
 

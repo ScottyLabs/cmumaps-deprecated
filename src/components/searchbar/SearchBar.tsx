@@ -11,8 +11,8 @@ import {
   setRecommendedPath,
 } from '@/lib/features/navSlice';
 import {
-  releaseRoom,
   selectBuilding,
+  selectRoom,
   setIsSearchOpen,
   setSearchMode,
 } from '@/lib/features/uiSlice';
@@ -103,7 +103,7 @@ const SearchBar = ({ map }: Props) => {
       dispatch(setIsNavOpen(false));
       dispatch(setRecommendedPath(null));
       dispatch(selectBuilding(null));
-      dispatch(releaseRoom(null));
+      dispatch(selectRoom(null));
       dispatch(setSearchMode('rooms'));
       setSearchQuery('');
     } else {

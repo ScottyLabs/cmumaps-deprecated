@@ -2,7 +2,7 @@ import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { Coordinate } from 'mapkit-react';
 
 import {
-  claimRoom,
+  selectRoom,
   setFocusedFloor,
   setIsZooming,
   setShowRoomNames,
@@ -39,7 +39,7 @@ export const zoomOnRoom = (
       const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
       const room = floorPlan[roomId];
 
-      dispatch(claimRoom(room));
+      dispatch(selectRoom(room));
       dispatch(setShowRoomNames(true));
       dispatch(setFocusedFloor(floor));
 
