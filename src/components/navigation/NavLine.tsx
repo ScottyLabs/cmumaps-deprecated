@@ -105,20 +105,10 @@ const NavLine = () => {
         const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
 
         for (let i = 0; i < path.length; i++) {
-          // always pick the node inside for higher precision
+          // always use outside node to prevent overlapping the start and end icon
           let nextToFloorInfo;
           if (i < path.length - 1) {
             nextToFloorInfo = path[i].neighbors[path[i + 1].id].toFloorInfo;
-          }
-
-          // going inside
-          if (nextToFloorInfo) {
-            if (nextToFloorInfo.toFloor.includes('outside')) {
-              iconInfos.push({
-                coordinate: path[i].coordinate,
-                icon: exitIcon,
-              });
-            }
           }
 
           let lastToFloorInfo;
@@ -127,10 +117,20 @@ const NavLine = () => {
           }
 
           // going outside
+          if (nextToFloorInfo) {
+            if (nextToFloorInfo.toFloor.includes('outside')) {
+              iconInfos.push({
+                coordinate: path[i + 1].coordinate,
+                icon: exitIcon,
+              });
+            }
+          }
+
+          // going inside
           if (lastToFloorInfo) {
             if (lastToFloorInfo.toFloor.includes('outside')) {
               iconInfos.push({
-                coordinate: path[i].coordinate,
+                coordinate: path[i - 1].coordinate,
                 icon: enterIcon,
               });
             }
