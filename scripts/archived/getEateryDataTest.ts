@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EateryInfo } from '../src/types';
+import { EateryInfo } from '../../src/types';
 
 const daysOfWeek = [
   'Sunday', // 0
