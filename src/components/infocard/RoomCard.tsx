@@ -8,6 +8,7 @@ import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
 import ButtonsRow, { renderMiddleButtonHelper } from './ButtonsRow';
+import CardWrapper from './CardWrapper';
 import InfoCardImage from './InfoCardImage';
 import RoomSchedule from './RoomSchedule';
 
@@ -92,12 +93,14 @@ const RoomCard = ({ room }: Props) => {
   };
 
   return (
-    <div>
-      {renderRoomImage()}
-      {renderRoomTitle()}
-      {renderButtonsRow()}
-      {hasSchedule && <RoomSchedule />}
-    </div>
+    <CardWrapper snapPoint={hasSchedule ? 403 : 300}>
+      <>
+        {renderRoomImage()}
+        {renderRoomTitle()}
+        {renderButtonsRow()}
+        {hasSchedule && <RoomSchedule />}
+      </>
+    </CardWrapper>
   );
 };
 

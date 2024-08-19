@@ -5,6 +5,7 @@ import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
 import ButtonsRow, { renderMiddleButtonHelper } from './ButtonsRow';
+import CardWrapper from './CardWrapper';
 import EateryInfoDisplay from './EateryInfoDisplay';
 import InfoCardImage from './InfoCardImage';
 
@@ -59,11 +60,13 @@ const Eaterycard = ({ room }: Props) => {
   };
 
   return (
-    <div>
-      {renderEateryImage()}
-      {renderInfo()}
-      {renderButtonsRow()}
-    </div>
+    <CardWrapper snapPoint={340}>
+      <>
+        {renderEateryImage()}
+        {renderInfo()}
+        {renderButtonsRow()}
+      </>
+    </CardWrapper>
   );
 };
 

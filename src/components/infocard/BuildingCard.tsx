@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -9,16 +9,16 @@ import { sortEateries } from '@/util/eateryUtils';
 
 import { zoomOnRoom } from '../buildings/mapUtils';
 import ButtonsRow from './ButtonsRow';
+import CardWrapper from './CardWrapper';
 import EateryInfoDisplay from './EateryInfoDisplay';
 import InfoCardImage from './InfoCardImage';
 
 interface Props {
   map: mapkit.Map | null;
   building: Building;
-  eateries: SearchRoom[];
 }
 
-const BuildingCard = ({ map, building, eateries }: Props) => {
+const BuildingCard = ({ map, building }: Props) => {
   const dispatch = useAppDispatch();
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
@@ -26,6 +26,26 @@ const BuildingCard = ({ map, building, eateries }: Props) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const eateryData = useAppSelector((state) => state.data.eateryData);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
+  const searchMap = useAppSelector((state) => state.data.searchMap);
+
+  const [eateries, setEateries] = useState<SearchRoom[]>([]);
+
+  useEffect(() => {
+    const newEateries = building.floors
+      .map((floorLevel) => {
+        if (
+          !searchMap[`${building.code}`] ||
+          !searchMap[`${building.code}`][floorLevel]
+        ) {
+          return [];
+        }
+        const rooms = searchMap[`${building.code}`][`${floorLevel}`];
+        return rooms.filter((room) => room.type == 'food');
+      })
+      .flat();
+
+    setEateries(newEateries);
+  }, [building.code, building.floors, searchMap]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
@@ -159,14 +179,16 @@ const BuildingCard = ({ map, building, eateries }: Props) => {
   };
 
   return (
-    <>
-      {renderBuildingImage()}
-      <h2 className="ml-3 mt-2">
-        {building.name} ({building.code})
-      </h2>
-      {renderButtonsRow()}
-      {renderEateryCarousel()}
-    </>
+    <CardWrapper snapPoint={eateries.length > 0 ? 440 : 275}>
+      <>
+        {renderBuildingImage()}
+        <h2 className="ml-3 mt-2">
+          {building.name} ({building.code})
+        </h2>
+        {renderButtonsRow()}
+        {renderEateryCarousel()}
+      </>
+    </CardWrapper>
   );
 };
 
