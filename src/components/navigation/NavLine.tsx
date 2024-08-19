@@ -22,7 +22,7 @@ const NavLine = () => {
 
   const renderPath = () => {
     if (startedNavigation) {
-      const path: Node[] = recommendedPath[selectedPathName];
+      const path: Node[] = recommendedPath[selectedPathName].path;
       const displayPath = [];
       const displayRestPath = [];
       let count = 0;
@@ -70,7 +70,9 @@ const NavLine = () => {
           <Polyline
             key={pathName}
             selected={true}
-            points={recommendedPath[pathName].map((n: Node) => n.coordinate)}
+            points={recommendedPath[pathName].path.map(
+              (n: Node) => n.coordinate,
+            )}
             enabled={true}
             strokeColor={selectedPathName == pathName ? 'blue' : 'gray'}
             strokeOpacity={selectedPathName == pathName ? 0.9 : 0.5}
@@ -83,7 +85,7 @@ const NavLine = () => {
 
   const renderIcon = () => {
     if (recommendedPath && selectedPathName) {
-      const path: Node[] = recommendedPath[selectedPathName];
+      const path: Node[] = recommendedPath[selectedPathName].path;
 
       const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
 

@@ -9,7 +9,7 @@ type ChoosingRoomMode = 'start' | 'end' | null;
 interface NavState {
   startLocation: Room | Building | null;
   endLocation: Room | Building | null; // This can be expanded in the future to node/ position?
-  recommendedPath: { fastest: Node[]; other: Node[] } | null;
+  recommendedPath: Record<string, { path: Node[]; distance: number }> | null;
   startedNavigation: boolean;
 
   curFloorIndex: number;

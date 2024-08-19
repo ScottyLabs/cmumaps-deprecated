@@ -236,7 +236,7 @@ export default function NavCard(): ReactElement {
         {!startedNavigation ? (
           renderPathWrapper()
         ) : (
-          <NavDirections path={recommendedPath[selectedPathName]} />
+          <NavDirections path={recommendedPath[selectedPathName].path} />
         )}
       </>
     );
