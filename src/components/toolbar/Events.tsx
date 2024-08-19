@@ -18,57 +18,26 @@ const convertDateToDayName = (date: Date) => {
   return format(date, 'EEEEEEE');
 };
 
-const SuperEvent = ({ eventInfo }: { eventInfo: EventInfo }) => {
-  const [open, setOpen] = useState<boolean>(false);
-
-  const renderTrigger = () => (
-    <div className="rounded">
-      <div className="flex items-center justify-between text-gray-800">
-        <h3>{eventInfo.name}</h3>
-        <div>
-          {open ? <IoIosArrowUp size={15} /> : <IoIosArrowDown size={15} />}
-        </div>
-      </div>
-      <p>{eventInfo.time}</p>
-      <p
-        className={`transition-all duration-700 ease-in-out ${open ? 'text-wrap' : 'truncate'}`}
-      >
-        {eventInfo.location}
-      </p>
-    </div>
-  );
-
+const TransferStudentToggle = ({
+  showTransferStudentEvents,
+  setShowTransferStudentEvents,
+}) => {
   return (
-    <Collapsible
-      open={open}
-      trigger={renderTrigger()}
-      className="mx-2 rounded border border-gray-300 bg-white p-2"
-      openedClassName="mx-2 rounded border border-gray-300 bg-white p-2"
-      onTriggerOpening={() => setOpen(true)}
-      onOpening={() => setOpen(true)}
-      onTriggerClosing={() => setOpen(false)}
-      onClosing={() => {
-        setOpen(false);
-      }}
-      easing="ease-in-out"
-      transitionTime={200}
-    >
-      <div>
-        <div className="my-2 space-y-2">
-          {eventInfo.subEvents.map((subEvent) => {
-            return (
-              <button
-                key={subEvent.subGroup}
-                className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
-              >
-                <p className="text-gray-700">{subEvent.subGroup}</p>
-                <p className="text-gray-500">{subEvent.location}</p>
-              </button>
-            );
-          })}
-        </div>
+    <div className="ml-4 flex items-center gap-2">
+      <div
+        className={`flex h-6 w-10 cursor-pointer items-center rounded-full ${
+          showTransferStudentEvents ? 'bg-blue-500' : 'bg-gray-300'
+        }`}
+        onClick={() => setShowTransferStudentEvents(!showTransferStudentEvents)}
+      >
+        <div
+          className={`m-1 size-4 rounded-full bg-white shadow duration-200 ease-in ${
+            showTransferStudentEvents ? 'translate-x-4' : 'translate-x-0'
+          }`}
+        />
       </div>
-    </Collapsible>
+      <p>Transfer Student Events</p>
+    </div>
   );
 };
 
@@ -97,6 +66,9 @@ const Events = () => {
     string,
     EventInfo[]
   > | null>(null);
+
+  const [showTransferStudentEvents, setShowTransferStudentEvents] =
+    useState<boolean>(false);
 
   // load data
   useEffect(() => {
@@ -134,8 +106,72 @@ const Events = () => {
     );
   };
 
+  const SuperEvent = ({ eventInfo }: { eventInfo: EventInfo }) => {
+    const [open, setOpen] = useState<boolean>(false);
+
+    const renderTrigger = () => (
+      <div className="rounded">
+        <div className="flex items-center justify-between text-gray-800">
+          <h3>{eventInfo.name}</h3>
+          <div>
+            {open ? <IoIosArrowUp size={15} /> : <IoIosArrowDown size={15} />}
+          </div>
+        </div>
+        <p>{eventInfo.time}</p>
+        <p
+          className={`transition-all duration-700 ease-in-out ${open ? 'text-wrap' : 'truncate'}`}
+        >
+          {eventInfo.location}
+        </p>
+      </div>
+    );
+
+    return (
+      <Collapsible
+        open={open}
+        trigger={renderTrigger()}
+        className="mx-2 rounded border border-gray-300 bg-white p-2"
+        openedClassName="mx-2 rounded border border-gray-300 bg-white p-2"
+        onTriggerOpening={() => setOpen(true)}
+        onOpening={() => setOpen(true)}
+        onTriggerClosing={() => setOpen(false)}
+        onClosing={() => {
+          setOpen(false);
+        }}
+        easing="ease-in-out"
+        transitionTime={200}
+      >
+        <div>
+          <div className="my-2 space-y-2">
+            {eventInfo.subEvents.map((subEvent) => {
+              return (
+                <button
+                  key={subEvent.subGroup}
+                  className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
+                >
+                  <p className="text-gray-700">{subEvent.subGroup}</p>
+                  <p className="text-gray-500">{subEvent.location}</p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </Collapsible>
+    );
+  };
+
   const renderEvents = () => {
     const renderEvent = (eventInfo: EventInfo) => {
+      if (showTransferStudentEvents) {
+        if (!eventInfo.name.includes('Transfer Student')) {
+          return;
+        }
+      } else {
+        if (eventInfo.name.includes('Transfer Student')) {
+          return;
+        }
+      }
+
       if (eventInfo.subEvents) {
         return <SuperEvent key={eventInfo.name} eventInfo={eventInfo} />;
       } else {
@@ -174,32 +210,13 @@ const Events = () => {
     }
   };
 
-  const renderToggle = () => {
-    const isOn = false;
-
-    return (
-      <div className="ml-4 flex items-center gap-2">
-        <div
-          className={`flex h-6 w-10 cursor-pointer items-center rounded-full ${
-            isOn ? 'bg-blue-500' : 'bg-gray-300'
-          }`}
-          // onClick={handleToggle}
-        >
-          <div
-            className={`m-1 size-4 rounded-full bg-white shadow duration-200 ease-in ${
-              isOn ? 'translate-x-6' : 'translate-x-0'
-            }`}
-          />
-        </div>
-        <p>Transfer Students Events</p>
-      </div>
-    );
-  };
-
   return (
     <CollapsibleWrapper title="Orientation Events">
       <>
-        {renderToggle()}
+        <TransferStudentToggle
+          showTransferStudentEvents={showTransferStudentEvents}
+          setShowTransferStudentEvents={setShowTransferStudentEvents}
+        />
         {renderDatePicker()}
         {renderEvents()}
       </>
