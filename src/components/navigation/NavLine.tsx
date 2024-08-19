@@ -26,8 +26,8 @@ const NavLine = () => {
       const displayPath = [];
       const displayRestPath = [];
       let count = 0;
-      for (let i = 1; i < path.length; i++) {
-        if (path[i - 1].floor != path[i].floor) {
+      for (let i = 0; i < path.length; i++) {
+        if (i != 0 && path[i - 1].floor != path[i].floor) {
           count++;
           if (count == curFloorIndex) {
             displayPath.push(path[i - 1].coordinate);
