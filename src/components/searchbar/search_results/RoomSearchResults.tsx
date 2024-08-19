@@ -38,7 +38,7 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
-  if (query.length < 2 && searchMode != 'restrooms') {
+  if (query.length < 2 && searchMode == 'rooms') {
     return <KeepTypingDisplay />;
   }
 

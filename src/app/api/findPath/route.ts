@@ -255,9 +255,22 @@ export async function POST(req: NextRequest) {
     nodes2 = { ...nodes2, ...f };
   }
 
+  // const path1 = findPath(rooms, nodes1);
+  // const path2 = findPath(rooms, nodes2);
+
+  // if (path1['error']) {
+  //   return Response.json({
+  //     Fastest: path2,
+  //   });
+  // } else if (path2['error']) {
+  //   return Response.json({
+  //     Fastest: path1,
+  //   });
+  // }
+
   // Find the path
   return Response.json({
-    fastest: findPath(rooms, nodes1),
-    other: findPath(rooms, nodes2),
+    Fastest: findPath(rooms, nodes1),
+    Alternative: findPath(rooms, nodes2),
   });
 }

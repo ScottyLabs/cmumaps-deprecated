@@ -224,9 +224,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       paddingRight={4}
       paddingTop={10}
       showsZoomControl={!isMobile}
-      showsCompass={
-        isMobile ? FeatureVisibility.Hidden : FeatureVisibility.Adaptive
-      }
+      showsCompass={FeatureVisibility.Adaptive}
       allowWheelToZoom
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={() => {

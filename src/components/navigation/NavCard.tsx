@@ -28,8 +28,8 @@ import CardWrapper from '../infocard/CardWrapper';
 import NavDirections from './NavDirections';
 
 const pathNameToIcon = {
-  fastest: fastestIcon,
-  other: alternativeIcon,
+  Fastest: fastestIcon,
+  Alternative: alternativeIcon,
 };
 
 export default function NavCard(): ReactElement {
@@ -64,10 +64,10 @@ export default function NavCard(): ReactElement {
           }
         })
         .then((j) => {
-          if (j.fastest.error) {
+          if (j.Fastest.error) {
             toast.error('Sorry, we are not able to find a path :(');
-          } else if (j.other.error) {
-            dispatch(setRecommendedPath({ fastest: j.fastest }));
+          } else if (j.Alternative.error) {
+            dispatch(setRecommendedPath({ Fastest: j.Fastest }));
           } else {
             dispatch(setRecommendedPath(j));
             dispatch(setSelectedPathName(Object.keys(j)[0]));
