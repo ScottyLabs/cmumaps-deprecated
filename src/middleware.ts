@@ -14,7 +14,7 @@ export default clerkMiddleware((auth, request) => {
 
   return NextResponse.rewrite(url);
 });
-//Nothingburger
+//Nothingburger2.0
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params
