@@ -79,10 +79,15 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
             <Annotation
               latitude={room.labelPosition.latitude}
               longitude={room.labelPosition.longitude}
-              onSelect={handleSelectRoom(room)}
               visible={showRoomNames || showIcon}
             >
-              <div className="flex flex-col items-center">
+              <div
+                className="flex flex-col items-center"
+                onClick={(e) => {
+                  handleSelectRoom(room)();
+                  e.stopPropagation();
+                }}
+              >
                 <RoomPin room={{ ...room, id: roomId }} />
                 {(showRoomNames || room.alias) && (
                   <div
