@@ -244,31 +244,21 @@ const Page = ({ params, searchParams }: Props) => {
     };
 
     const renderQuestionMarkIcon = () => {
-      if (isMobile) {
-        return (
-          <div className="btn-shadow fixed bottom-[4.5rem] right-3 rounded-full">
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://docs.google.com/document/d/1mirPykjHd0catOj0PShZEil6EsoF1HgQW02tOO2ZnWs/edit#heading=h.j3w4ch974od3"
-            >
-              <Image alt="Question Mark" src={questionMarkIcon} height={43} />
-            </a>
-          </div>
-        );
-      } else {
-        return (
-          <div className="btn-shadow fixed bottom-16 right-3.5 rounded-full">
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://docs.google.com/document/d/1mirPykjHd0catOj0PShZEil6EsoF1HgQW02tOO2ZnWs/edit#heading=h.j3w4ch974od3"
-            >
-              <Image alt="Question Mark" src={questionMarkIcon} height={50} />
-            </a>
-          </div>
-        );
-      }
+      return (
+        <div className="btn-shadow fixed bottom-[4.5rem] right-3 rounded-full sm:bottom-16 sm:right-3.5">
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://docs.google.com/document/d/1jZeIij72ovf3K2J1J57rlD4pz3xnca3BfPedg9Ff1sc/edit"
+          >
+            <Image
+              alt="Question Mark"
+              src={questionMarkIcon}
+              height={isMobile ? 43 : 50}
+            />
+          </a>
+        </div>
+      );
     };
 
     return (
