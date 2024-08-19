@@ -6,7 +6,7 @@ import startIcon from '@icons/path/start.svg';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
-import React, { ReactElement, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
@@ -32,7 +32,11 @@ const pathNameToIcon = {
   Alternative: alternativeIcon,
 };
 
-export default function NavCard(): ReactElement {
+interface Props {
+  map: mapkit.Map | null;
+}
+
+const NavCard = ({ map }: Props) => {
   const dispatch = useAppDispatch();
 
   const startLocation = useAppSelector((state) => state.nav.startLocation);
@@ -208,7 +212,10 @@ export default function NavCard(): ReactElement {
         <div className="flex w-full justify-center">
           <button
             className="btn-shadow w-[22.5rem] rounded-lg bg-[#31B777] py-2"
-            onClick={() => dispatch(setStartedNavigation(true))}
+            onClick={() => {
+              dispatch(setCurFloorIndex(0));
+              dispatch(setStartedNavigation(true));
+            }}
           >
             <p className="text-white">GO</p>
           </button>
@@ -222,7 +229,7 @@ export default function NavCard(): ReactElement {
           <button
             className="btn-shadow w-[22.5rem] rounded-lg bg-[#c41230] py-2"
             onClick={() => {
-              dispatch(setCurFloorIndex(0));
+              dispatch(setCurFloorIndex(-1));
               dispatch(setStartedNavigation(false));
             }}
           >
@@ -238,7 +245,10 @@ export default function NavCard(): ReactElement {
         {!startedNavigation ? (
           renderPathWrapper()
         ) : (
-          <NavDirections path={recommendedPath[selectedPathName].path} />
+          <NavDirections
+            path={recommendedPath[selectedPathName].path}
+            map={map}
+          />
         )}
       </>
     );
@@ -275,4 +285,6 @@ export default function NavCard(): ReactElement {
       </div>
     </CardWrapper>
   );
-}
+};
+
+export default NavCard;

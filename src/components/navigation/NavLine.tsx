@@ -28,7 +28,12 @@ const NavLine = () => {
   const [restPath, setRestPath] = useState<Node[] | null>(null);
 
   useEffect(() => {
-    if (startedNavigation) {
+    if (
+      startedNavigation &&
+      selectedPathName &&
+      recommendedPath &&
+      recommendedPath[selectedPathName]
+    ) {
       const path: Node[] = recommendedPath[selectedPathName].path;
       const newCurFloorPath = [];
       const newRestPath = [];

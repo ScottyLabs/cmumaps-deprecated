@@ -66,7 +66,7 @@ const ToolBar = ({ map }: Props) => {
         )}
 
         {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
-        {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard />}
+        {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard map={map} />}
       </div>
 
       {showFloorSwitcher && <FloorSwitcher focusedFloor={focusedFloor} />}
