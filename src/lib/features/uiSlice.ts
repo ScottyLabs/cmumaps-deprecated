@@ -42,6 +42,7 @@ const uiSlice = createSlice({
       if (state.selectedRoom?.id !== action.payload?.id) {
         state.selectedRoom = action.payload;
       }
+      state.selectedBuilding = null;
       state.isSearchOpen = false;
     },
     releaseRoom(state, action) {
