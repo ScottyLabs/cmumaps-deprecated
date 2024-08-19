@@ -61,7 +61,7 @@ const ToolBar = ({ map }: Props) => {
         {!isSearchOpen && !isCardOpen && (
           <>
             <Schedule />
-            <Events />
+            <Events map={map} />
           </>
         )}
 

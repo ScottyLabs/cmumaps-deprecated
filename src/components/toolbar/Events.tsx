@@ -1,4 +1,5 @@
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
+import { Coordinate } from 'mapkit-react';
 import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useMemo, useState } from 'react';
@@ -8,6 +9,7 @@ import { toast } from 'react-toastify';
 
 import { useAppSelector } from '@/lib/hooks';
 
+import { zoomOnObject } from '../buildings/mapUtils';
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
 
 interface EventInfo {
@@ -46,7 +48,11 @@ const TransferStudentToggle = ({
   );
 };
 
-const Events = () => {
+interface Props {
+  map: mapkit.Map | null;
+}
+
+const Events = ({ map }: Props) => {
   const router = useRouter();
 
   const today = useMemo(() => {
@@ -100,7 +106,13 @@ const Events = () => {
     }
 
     if (room == 'The Cut') {
-      toast.info('You should know where The Cut is :(');
+      zoomOnObject(map, [
+        { latitude: 40.443228550178866, longitude: -79.94351913028393 },
+        { latitude: 40.44304699325484, longitude: -79.94263924643847 },
+        { latitude: 40.442118474765685, longitude: -79.9429629109336 },
+        { latitude: 40.44231994253659, longitude: -79.94387917897825 },
+        { latitude: 40.443228550178866, longitude: -79.94351913028393 },
+      ]);
       return;
     }
 
