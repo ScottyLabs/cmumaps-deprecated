@@ -1,4 +1,4 @@
-// import elevatorIcon from '@icons/path/elevator.svg';
+import elevatorIcon from '@icons/path/elevator.svg';
 import endIcon from '@icons/path/end.svg';
 import enterIcon from '@icons/path/enter-building.svg';
 import exitIcon from '@icons/path/exit-building.svg';
@@ -59,7 +59,7 @@ const NavLine = () => {
             points={displayRestPath}
             enabled={true}
             strokeColor="blue"
-            strokeOpacity={0.7}
+            strokeOpacity={0.5}
             lineWidth={5}
             lineDash={[10, 10]}
           />
@@ -96,29 +96,48 @@ const NavLine = () => {
 
       for (let i = 0; i < path.length; i++) {
         // always pick the node inside for higher precision
-        let toFloorInfo;
+        let nextToFloorInfo;
         if (i < path.length - 1) {
-          toFloorInfo = path[i].neighbors[path[i + 1].id].toFloorInfo;
-          if (toFloorInfo) {
-            if (toFloorInfo.toFloor.includes('outside')) {
-              iconInfos.push({
-                coordinate: path[i].coordinate,
-                icon: exitIcon,
-              });
-            }
+          nextToFloorInfo = path[i].neighbors[path[i + 1].id].toFloorInfo;
+        }
+
+        // going inside
+        if (nextToFloorInfo) {
+          if (nextToFloorInfo.toFloor.includes('outside')) {
+            iconInfos.push({
+              coordinate: path[i].coordinate,
+              icon: exitIcon,
+            });
           }
         }
 
+        let lastToFloorInfo;
         if (i > 0) {
-          toFloorInfo = path[i].neighbors[path[i - 1].id].toFloorInfo;
-          if (toFloorInfo) {
-            if (toFloorInfo.toFloor.includes('outside')) {
-              iconInfos.push({
-                coordinate: path[i].coordinate,
-                icon: enterIcon,
-              });
-            }
+          lastToFloorInfo = path[i].neighbors[path[i - 1].id].toFloorInfo;
+        }
+
+        // going outside
+        if (lastToFloorInfo) {
+          if (lastToFloorInfo.toFloor.includes('outside')) {
+            iconInfos.push({
+              coordinate: path[i].coordinate,
+              icon: enterIcon,
+            });
           }
+        }
+
+        // elevator
+        const nextElevator =
+          nextToFloorInfo && nextToFloorInfo.type == 'elevator';
+        const lastNotElevator =
+          !lastToFloorInfo || lastToFloorInfo.type != 'elevator';
+
+        // the next one is an elevtor and the last one is not an elevator
+        if (nextElevator && lastNotElevator) {
+          iconInfos.push({
+            coordinate: path[i].coordinate,
+            icon: elevatorIcon,
+          });
         }
       }
 
