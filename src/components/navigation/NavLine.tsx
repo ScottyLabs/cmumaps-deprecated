@@ -1,8 +1,10 @@
+import downstairsIcon from '@icons/path/downstairs.svg';
 import elevatorIcon from '@icons/path/elevator.svg';
 import endIcon from '@icons/path/end.svg';
 import enterIcon from '@icons/path/enter-building.svg';
 import exitIcon from '@icons/path/exit-building.svg';
 import startIcon from '@icons/path/start.svg';
+import upstairsIcon from '@icons/path/upstairs.svg';
 import { Annotation, Coordinate, Polyline } from 'mapkit-react';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
@@ -148,6 +150,30 @@ const NavLine = () => {
               coordinate: path[i].coordinate,
               icon: elevatorIcon,
             });
+          }
+
+          // stairs
+          const nextStairs =
+            nextToFloorInfo && nextToFloorInfo.type == 'stairs';
+          const lastNotStairs =
+            !lastToFloorInfo || lastToFloorInfo.type != 'stairs';
+
+          // the next one is a stairs and the last one is not an stairs
+          if (nextStairs && lastNotStairs) {
+            const up =
+              path[i].floor.split('-')[1] < path[i + 1].floor.split('-')[1];
+
+            if (up) {
+              iconInfos.push({
+                coordinate: path[i].coordinate,
+                icon: upstairsIcon,
+              });
+            } else {
+              iconInfos.push({
+                coordinate: path[i].coordinate,
+                icon: downstairsIcon,
+              });
+            }
           }
         }
         return iconInfos;
