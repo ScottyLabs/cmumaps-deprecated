@@ -68,6 +68,7 @@ export default function NavCard(): ReactElement {
             toast.error('Sorry, we are not able to find a path :(');
           } else if (j.Alternative.error) {
             dispatch(setRecommendedPath({ Fastest: j.Fastest }));
+            dispatch(setSelectedPathName('Fastest'));
           } else {
             dispatch(setRecommendedPath(j));
             dispatch(setSelectedPathName(Object.keys(j)[0]));

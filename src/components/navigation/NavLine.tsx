@@ -102,11 +102,7 @@ const NavLine = () => {
   };
 
   const renderIcon = () => {
-    if (
-      recommendedPath &&
-      selectedPathName &&
-      recommendedPath[selectedPathName]
-    ) {
+    if (recommendedPath) {
       const calculateIcon = (path: Node[]) => {
         const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
 

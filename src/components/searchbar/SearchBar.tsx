@@ -101,7 +101,7 @@ const SearchBar = ({ map }: Props) => {
     if (!choosingRoomMode) {
       dispatch(setIsSearchOpen(false));
       dispatch(setIsNavOpen(false));
-      dispatch(setRecommendedPath([]));
+      dispatch(setRecommendedPath(null));
       dispatch(selectBuilding(null));
       dispatch(releaseRoom(null));
       dispatch(setSearchMode('rooms'));
