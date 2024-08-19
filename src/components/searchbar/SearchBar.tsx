@@ -167,9 +167,9 @@ const SearchBar = ({ map }: Props) => {
   };
 
   const renderSearchResults = () => {
-    // displays all food and restroom even if search query is empty
+    // displays all food, restroom, and study even if search query is empty
     const showResult =
-      searchQuery !== '' || ['food', 'restrooms'].includes(searchMode);
+      searchQuery !== '' || ['food', 'restrooms', 'study'].includes(searchMode);
 
     return (
       <div
