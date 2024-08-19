@@ -7,7 +7,7 @@ import { Annotation, Coordinate, Polyline } from 'mapkit-react';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Node } from '@/app/api/findPath/route';
 import { useAppSelector } from '@/lib/hooks';
@@ -22,33 +22,43 @@ const NavLine = () => {
   );
   const curFloorIndex = useAppSelector((state) => state.nav.curFloorIndex);
 
-  const renderPath = () => {
+  const [curFloorPath, setCurFloorPath] = useState<Node[]>([]);
+  const [restPath, setRestPath] = useState<Node[]>([]);
+
+  useEffect(() => {
     if (startedNavigation) {
       const path: Node[] = recommendedPath[selectedPathName].path;
-      const displayPath = [];
-      const displayRestPath = [];
+      const newCurFloorPath = [];
+      const newRestPath = [];
       let count = 0;
       for (let i = 0; i < path.length; i++) {
         if (i != 0 && path[i - 1].floor != path[i].floor) {
           count++;
           if (count == curFloorIndex) {
-            displayPath.push(path[i - 1].coordinate);
+            newCurFloorPath.push(path[i - 1]);
           }
         }
 
         if (count == curFloorIndex) {
-          displayPath.push(path[i].coordinate);
+          newCurFloorPath.push(path[i]);
         } else if (count > curFloorIndex) {
-          displayRestPath.push(path[i - 1].coordinate);
+          newRestPath.push(path[i - 1]);
         }
       }
-      displayRestPath.push(path.at(-1).coordinate);
+      newRestPath.push(path.at(-1));
 
+      setCurFloorPath(newCurFloorPath);
+      setRestPath(newRestPath);
+    }
+  }, [curFloorIndex, recommendedPath, selectedPathName, startedNavigation]);
+
+  const renderPath = () => {
+    if (startedNavigation) {
       return (
         <>
           <Polyline
             selected={true}
-            points={displayPath}
+            points={curFloorPath.map((n: Node) => n.coordinate)}
             enabled={true}
             strokeColor="blue"
             strokeOpacity={0.9}
@@ -56,7 +66,7 @@ const NavLine = () => {
           />
           <Polyline
             selected={true}
-            points={displayRestPath}
+            points={restPath.map((n: Node) => n.coordinate)}
             enabled={true}
             strokeColor="blue"
             strokeOpacity={0.5}
