@@ -1,8 +1,12 @@
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import Collapsible from 'react-collapsible';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import { toast } from 'react-toastify';
+
+import { useAppSelector } from '@/lib/hooks';
 
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
 
@@ -12,6 +16,7 @@ interface EventInfo {
   time: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subEvents?: any[];
+  roomName?: string;
 }
 
 const convertDateToDayName = (date: Date) => {
@@ -42,6 +47,8 @@ const TransferStudentToggle = ({
 };
 
 const Events = () => {
+  const router = useRouter();
+
   const today = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -62,6 +69,8 @@ const Events = () => {
     });
   }, [today]);
 
+  const searchMap = useAppSelector((state) => state.data.searchMap);
+
   const [eventData, setEventData] = useState<Record<
     string,
     EventInfo[]
@@ -78,6 +87,20 @@ const Events = () => {
       }),
     );
   }, []);
+
+  const handleClick = (room: string) => {
+    const roomInfoArr = room.split(' ');
+
+    const buildingCode = roomInfoArr[0];
+    const roomName = roomInfoArr[1];
+    const floorLevel = roomName.charAt(0);
+
+    const selectedRoom = searchMap[buildingCode][floorLevel].find(
+      (room) => room.name == roomName,
+    );
+
+    router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
+  };
 
   const renderDatePicker = () => {
     const renderDay = (day: Date) => {
@@ -148,6 +171,9 @@ const Events = () => {
                 <button
                   key={subEvent.subGroup}
                   className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
+                  onClick={() => {
+                    handleClick(subEvent.roomName);
+                  }}
                 >
                   <p className="text-gray-700">{subEvent.subGroup}</p>
                   <p className="text-gray-500">{subEvent.location}</p>
@@ -180,10 +206,19 @@ const Events = () => {
             key={eventInfo.name}
             className="mx-2 flex justify-between rounded border border-gray-300 bg-white text-left transition-colors duration-100 hover:bg-gray-200"
           >
-            <button className="w-full p-2 text-left">
+            <button
+              className="w-full p-2 text-left"
+              onClick={() => {
+                if (eventInfo.roomName) {
+                  handleClick(eventInfo.roomName);
+                } else {
+                  toast.error("This event doesn't have a location!");
+                }
+              }}
+            >
               <h3 className="text-gray-800">{eventInfo.name}</h3>
               <p>{eventInfo.time}</p>
-              <p className="truncate">{eventInfo.location}</p>
+              <p className="text-wrap">{eventInfo.location}</p>
             </button>
           </div>
         );

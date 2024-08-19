@@ -91,7 +91,7 @@ const Schedule = () => {
     };
 
     return (
-      <div className="no-scrollbar h-96 space-y-3 overflow-auto">
+      <div className="h-96 space-y-3 overflow-auto pl-5 pr-2">
         {scheduleData.map((course) => (
           <button
             key={course.code + course.dow}
@@ -126,7 +126,7 @@ const Schedule = () => {
 
   const renderNoSchedule = () => {
     return (
-      <div className="text-gray-700">
+      <div className="ml-5 text-gray-700">
         <p>
           1: Download{' '}
           <a
@@ -152,7 +152,7 @@ const Schedule = () => {
 
   return (
     <CollapsibleWrapper title="Schedule" defaultOpenState={false}>
-      <div className="space-y-2 px-5 pb-2">
+      <div className="space-y-2 pb-2">
         {scheduleData.length > 0 ? renderSchedule() : renderNoSchedule()}
       </div>
     </CollapsibleWrapper>
