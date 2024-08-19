@@ -88,7 +88,22 @@ const Events = () => {
     );
   }, []);
 
-  const handleClick = (room: string) => {
+  const handleClick = (room: string) => () => {
+    if (!room) {
+      toast.error("This event doesn't have a location!");
+      return;
+    }
+
+    if (room == 'CFA') {
+      toast.error('CFA is currently unavailable!');
+      return;
+    }
+
+    if (room == 'The Cut') {
+      toast.info('You should know where The Cut is :(');
+      return;
+    }
+
     const roomInfoArr = room.split(' ');
 
     const buildingCode = roomInfoArr[0];
@@ -171,9 +186,7 @@ const Events = () => {
                 <button
                   key={subEvent.subGroup}
                   className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
-                  onClick={() => {
-                    handleClick(subEvent.roomName);
-                  }}
+                  onClick={handleClick(subEvent.roomName)}
                 >
                   <p className="text-gray-700">{subEvent.subGroup}</p>
                   <p className="text-gray-500">{subEvent.location}</p>
@@ -208,13 +221,7 @@ const Events = () => {
           >
             <button
               className="w-full p-2 text-left"
-              onClick={() => {
-                if (eventInfo.roomName) {
-                  handleClick(eventInfo.roomName);
-                } else {
-                  toast.error("This event doesn't have a location!");
-                }
-              }}
+              onClick={handleClick(eventInfo.roomName)}
             >
               <h3 className="text-gray-800">{eventInfo.name}</h3>
               <p>{eventInfo.time}</p>
