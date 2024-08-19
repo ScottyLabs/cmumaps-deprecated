@@ -59,7 +59,7 @@ const SuperEvent = ({ eventInfo }: { eventInfo: EventInfo }) => {
             return (
               <button
                 key={subEvent.subGroup}
-                className="w-full border p-1 text-left hover:bg-gray-200"
+                className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
               >
                 <p className="text-gray-700">{subEvent.subGroup}</p>
                 <p className="text-gray-500">{subEvent.location}</p>
@@ -108,45 +108,41 @@ const Events = () => {
   }, []);
 
   const renderDatePicker = () => {
-    const renderWeekRow = () => {
-      const renderDay = (day: Date) => {
-        let classNames = 'w-7 text-sm text-center ';
-        if (convertDateToDayName(day) == dayOfWeek) {
-          classNames += 'rounded-full bg-black text-white p-1';
-        } else if (day.getTime() === today.getTime()) {
-          classNames += 'text-blue-500 ';
-        }
+    const renderDay = (day: Date) => {
+      let classNames = 'w-7 text-sm text-center ';
+      if (convertDateToDayName(day) == dayOfWeek) {
+        classNames += 'rounded-full bg-black text-white p-1';
+      } else if (day.getTime() === today.getTime()) {
+        classNames += 'text-blue-500 ';
+      }
 
-        return <div className={classNames}>{format(day, 'EEEEEE')}</div>;
-      };
-
-      return (
-        <div className="mx-10 mt-2 flex items-center justify-between">
-          {daysOfWeek.map((day, index) => (
-            <div
-              key={index}
-              className="cursor-pointer"
-              onClick={() => setDayOfWeek(convertDateToDayName(day))}
-            >
-              {renderDay(day)}
-            </div>
-          ))}
-        </div>
-      );
+      return <div className={classNames}>{format(day, 'EEEEEE')}</div>;
     };
 
-    return renderWeekRow();
+    return (
+      <div className="sticky top-2 mx-10 mt-2 flex items-center justify-between">
+        {daysOfWeek.map((day, index) => (
+          <div
+            key={index}
+            className="cursor-pointer"
+            onClick={() => setDayOfWeek(convertDateToDayName(day))}
+          >
+            {renderDay(day)}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const renderEvents = () => {
     const renderEvent = (eventInfo: EventInfo) => {
       if (eventInfo.subEvents) {
-        return <SuperEvent eventInfo={eventInfo} />;
+        return <SuperEvent key={eventInfo.name} eventInfo={eventInfo} />;
       } else {
         return (
           <div
             key={eventInfo.name}
-            className="mx-2 flex justify-between rounded border border-gray-300 bg-white text-left hover:bg-gray-200"
+            className="mx-2 flex justify-between rounded border border-gray-300 bg-white text-left transition-colors duration-100 hover:bg-gray-200"
           >
             <button className="w-full p-2 text-left">
               <h3 className="text-gray-800">{eventInfo.name}</h3>
@@ -162,7 +158,7 @@ const Events = () => {
       const dayEvents = eventData[dayOfWeek];
       if (dayEvents) {
         return (
-          <div className="mt-2 h-80 space-y-3 overflow-scroll bg-gray-100 py-3 text-[--color-gray] sm:h-fit">
+          <div className="mt-2 h-80 space-y-3 overflow-y-scroll bg-gray-100 py-3 text-[--color-gray]">
             {dayEvents.map((eventInfo) => renderEvent(eventInfo))}
           </div>
         );
@@ -178,9 +174,32 @@ const Events = () => {
     }
   };
 
+  const renderToggle = () => {
+    const isOn = false;
+
+    return (
+      <div className="ml-4 flex items-center gap-2">
+        <div
+          className={`flex h-6 w-10 cursor-pointer items-center rounded-full ${
+            isOn ? 'bg-blue-500' : 'bg-gray-300'
+          }`}
+          // onClick={handleToggle}
+        >
+          <div
+            className={`m-1 size-4 rounded-full bg-white shadow duration-200 ease-in ${
+              isOn ? 'translate-x-6' : 'translate-x-0'
+            }`}
+          />
+        </div>
+        <p>Transfer Students Events</p>
+      </div>
+    );
+  };
+
   return (
     <CollapsibleWrapper title="Orientation Events">
       <>
+        {renderToggle()}
         {renderDatePicker()}
         {renderEvents()}
       </>
