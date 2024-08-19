@@ -1,5 +1,4 @@
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
-import { Coordinate } from 'mapkit-react';
 import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useMemo, useState } from 'react';
@@ -97,11 +96,6 @@ const Events = ({ map }: Props) => {
   const handleClick = (room: string) => () => {
     if (!room) {
       toast.error("This event doesn't have a location!");
-      return;
-    }
-
-    if (room == 'CFA') {
-      toast.error('CFA is currently unavailable!');
       return;
     }
 
