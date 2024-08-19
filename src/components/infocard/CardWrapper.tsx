@@ -40,7 +40,7 @@ const CardWrapper = ({ snapPoint, children }: CardWrapperProps) => {
       >
         <Sheet.Container className="!rounded-t-2xl">
           <Sheet.Header className="h-9" />
-          <Sheet.Content>
+          <Sheet.Content className="overflow-y-scroll">
             <Sheet.Scroller draggableAt="top">{children}</Sheet.Scroller>
           </Sheet.Content>
         </Sheet.Container>
