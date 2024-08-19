@@ -4,16 +4,16 @@ import { Coordinate } from 'mapkit-react';
 import {
   claimRoom,
   setFocusedFloor,
-  setIsZoomingOnRoom,
+  setIsZooming,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
 import { Building, Floor, FloorPlanMap, ID } from '@/types';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
-const setIsZoomingOnRoomAsync = (isZooming: boolean) => {
+const setIsZoomingAsync = (isZooming: boolean) => {
   return (dispatch) => {
     return new Promise<void>((resolve) => {
-      dispatch(setIsZoomingOnRoom(isZooming));
+      dispatch(setIsZooming(isZooming));
       resolve();
     });
   };
@@ -44,7 +44,7 @@ export const zoomOnRoom = (
       dispatch(setFocusedFloor(floor));
 
       // zoom after finish setting the floor
-      setIsZoomingOnRoomAsync(true)(dispatch).then(() => {
+      setIsZoomingAsync(true)(dispatch).then(() => {
         const points = floorPlan[room.id].coordinates;
         zoomOnObject(map, points[0]);
       });
@@ -58,10 +58,9 @@ export const zoomOnFloor = (
   floor: Floor,
   dispatch: Dispatch<UnknownAction>,
 ) => {
-  dispatch(setFocusedFloor(floor));
-
   // zoom after finish setting the floor
-  setIsZoomingOnRoomAsync(true)(dispatch).then(() => {
+  setIsZoomingAsync(true)(dispatch).then(() => {
+    dispatch(setFocusedFloor(floor));
     const points = buildings[floor.buildingCode].shapes.flat();
     zoomOnObject(map, points);
   });

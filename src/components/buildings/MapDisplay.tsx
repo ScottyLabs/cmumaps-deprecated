@@ -15,7 +15,7 @@ import {
   releaseRoom,
   setFocusedFloor,
   setIsSearchOpen,
-  setIsZoomingOnRoom,
+  setIsZooming,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -60,7 +60,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     (state) => state.nav.choosingRoomMode,
   );
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
-  const isZoomingOnRoom = useAppSelector((state) => state.ui.isZoomingOnRoom);
+  const isZooming = useAppSelector((state) => state.ui.isZooming);
 
   const [usedRegionChange, setUsedRegionChange] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
@@ -142,7 +142,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
 
       // don't set floor when zooming on room
-      if (isZoomingOnRoom) {
+      if (isZooming) {
         return;
       }
 
@@ -228,7 +228,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       allowWheelToZoom
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={() => {
-        dispatch(setIsZoomingOnRoom(false));
+        dispatch(setIsZooming(false));
         setUsedRegionChange(true);
         onRegionChangeEnd();
       }}
@@ -253,7 +253,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           />
         ))}
 
-      {focusedFloor && <FloorPlanOverlay visibleBuildings={visibleBuildings} />}
+      {focusedFloor && !isZooming && (
+        <FloorPlanOverlay visibleBuildings={visibleBuildings} />
+      )}
 
       <NavLine />
     </Map>

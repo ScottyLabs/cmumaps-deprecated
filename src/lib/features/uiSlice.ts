@@ -19,7 +19,7 @@ interface UIState {
 
   searchMode: SearchMode;
 
-  isZoomingOnRoom: boolean;
+  isZooming: boolean;
 }
 
 const initialState: UIState = {
@@ -31,7 +31,7 @@ const initialState: UIState = {
   isCardWrapperCollapsed: true,
   showRoomNames: false,
   searchMode: 'rooms',
-  isZoomingOnRoom: false,
+  isZooming: false,
 };
 
 const uiSlice = createSlice({
@@ -77,8 +77,8 @@ const uiSlice = createSlice({
       state.searchMode = action.payload;
     },
 
-    setIsZoomingOnRoom(state, action) {
-      state.isZoomingOnRoom = action.payload;
+    setIsZooming(state, action) {
+      state.isZooming = action.payload;
     },
   },
 });
@@ -98,6 +98,6 @@ export const {
   setIsMobile,
   setShowRoomNames,
   setSearchMode,
-  setIsZoomingOnRoom,
+  setIsZooming,
 } = uiSlice.actions;
 export default uiSlice.reducer;
