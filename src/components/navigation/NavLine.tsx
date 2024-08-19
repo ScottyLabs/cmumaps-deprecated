@@ -29,7 +29,11 @@ const NavLine = () => {
       for (let i = 1; i < path.length; i++) {
         if (path[i - 1].floor != path[i].floor) {
           count++;
+          if (count == curFloorIndex) {
+            displayPath.push(path[i - 1].coordinate);
+          }
         }
+
         if (count == curFloorIndex) {
           displayPath.push(path[i].coordinate);
         } else if (count > curFloorIndex) {

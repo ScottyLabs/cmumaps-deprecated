@@ -23,10 +23,13 @@ const NavDirections = ({ path }: Props) => {
   useEffect(() => {
     if (path) {
       const passedByRooms: Room[] = [];
-      const newDirections = [];
+      const newPassedByFloors = [];
       for (const node of path) {
-        if (!newDirections.at(-1) || newDirections.at(-1) != node.floor) {
-          newDirections.push(node.floor);
+        if (
+          !newPassedByFloors.at(-1) ||
+          newPassedByFloors.at(-1) != node.floor
+        ) {
+          newPassedByFloors.push(node.floor);
         }
 
         if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
@@ -41,7 +44,7 @@ const NavDirections = ({ path }: Props) => {
       }
 
       setPassedByRooms(passedByRooms);
-      setPassedByFloors(newDirections);
+      setPassedByFloors(newPassedByFloors);
     }
   }, [floorPlanMap, path]);
 
