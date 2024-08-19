@@ -19,7 +19,19 @@ export type Node = {
   roomId: string;
   floor: Floor;
   coordinate: Coordinate;
+  id: string;
 };
+
+const outsideRooms = JSON.parse(
+  fs.readFileSync(
+    path.resolve(
+      process.cwd(),
+      `./public/json/floor_plan/outside/outside-1-outline.json`,
+    ),
+    'utf8',
+  ),
+);
+
 export interface GraphResponse {
   nodes: { [nodeId: string]: Node };
 }
@@ -63,34 +75,39 @@ const comparePaths: ICompare<Path> = (a: Path, b: Path) => a.length - b.length;
 function findPath(
   rooms: Room[],
   nodes: { [nodeId: string]: Node },
-): Node[] | { error: string } {
+): { path: Node[]; distance: number } | { error: string } {
   let start;
   let end;
   if (rooms[0].id) {
     start = Object.values(nodes).find((e) => e.roomId == rooms[0].id);
   } else {
     // Find a node with the building code
-    start = Object.values(nodes).find((e) =>
-      Object.values(e.neighbors).some(
-        (f) =>
-          f?.toFloorInfo &&
-          f?.toFloorInfo.toFloor.split('-')[0] === rooms[0].code,
-      ),
+    start = Object.values(nodes).find(
+      (e) =>
+        outsideRooms['rooms'][e.roomId]?.name === rooms[0]?.code ||
+        Object.values(e.neighbors).some(
+          (f) =>
+            f?.toFloorInfo &&
+            f?.toFloorInfo.toFloor.split('-')[0] === rooms[0].code,
+        ),
     );
   }
   if (rooms[1].id) {
     end = Object.values(nodes).find((e) => e.roomId == rooms[1].id);
   } else {
     // Find a node with the building code
-    end = Object.values(nodes).find((e) =>
-      Object.values(e.neighbors).some(
-        (f) =>
-          f?.toFloorInfo &&
-          f?.toFloorInfo.toFloor.split('-')[0] === rooms[1].code,
-      ),
-    );
+    end = Object.values(nodes).find((e) => {
+      return (
+        outsideRooms['rooms'][e.roomId]?.name === rooms[1]?.code ||
+        Object.values(e.neighbors).some(
+          (f) =>
+            f?.toFloorInfo &&
+            f?.toFloorInfo.toFloor.split('-')[0] === rooms[1].code,
+        )
+      );
+    });
   }
-  console.log('SEARCHME', start, end);
+  console.log('SEARCHME', start, rooms[1]?.code);
   if (!start) {
     return { error: 'Start room not found' };
   } else if (!end) {
@@ -111,7 +128,7 @@ function findPath(
     const a = queue.dequeue();
     const { node, currPath, length } = a;
     if (end.pos == node.pos) {
-      return currPath;
+      return { path: currPath, distance: length };
     }
     if (!visited.has(node)) {
       visited.add(node);
@@ -231,6 +248,7 @@ export async function POST(req: NextRequest) {
       f[id] = {
         ...node,
         floor: floorName,
+        id,
       };
     });
     nodes2 = { ...nodes2, ...f };
