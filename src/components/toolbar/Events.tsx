@@ -277,7 +277,13 @@ const Events = ({ map }: Props) => {
       }
     };
 
-    if (eventData) {
+    if (!eventData) {
+      return (
+        <div className="flex justify-center">
+          <h4 className="my-2 italic text-[--color-gray]">Loading...</h4>
+        </div>
+      );
+    } else {
       const dayEvents = eventData[dayOfWeek];
       if (dayEvents) {
         return (
@@ -292,8 +298,6 @@ const Events = ({ map }: Props) => {
           </p>
         );
       }
-    } else {
-      return <p>Loading...</p>;
     }
   };
 
