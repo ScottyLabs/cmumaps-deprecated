@@ -8,7 +8,7 @@ with open("public/json/placements.json", "r") as file:
 
 big_graph = {}
 
-for root, dirs, files in os.walk("../public/json/floor_plan"):
+for root, dirs, files in os.walk("public/json/floor_plan"):
     building_code = root.split("/")[-1]
 
     if "floor_plan" in building_code:
@@ -50,8 +50,9 @@ for root, dirs, files in os.walk("../public/json/floor_plan"):
                                 big_graph[new_floor].add(
                                     (f"{building_code}-{floor}", stairs_info["type"])
                                 )
-                    # with open(file_path, "w") as graph_file:
-                    #     json.dump(graph, graph_file)
+                    if "GHC-5-graph" not in file_path:
+                        with open(file_path, "w") as graph_file:
+                            json.dump(graph, graph_file)
 
                     print(f"Processed {file_path}")
 
