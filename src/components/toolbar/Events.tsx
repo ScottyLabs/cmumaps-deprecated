@@ -1,4 +1,6 @@
+import featuredIcon from '@icons/featured.svg';
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useMemo, useState } from 'react';
@@ -18,6 +20,7 @@ interface EventInfo {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subEvents?: any[];
   roomName?: string;
+  featured?: boolean;
 }
 
 const convertDateToDayName = (date: Date) => {
@@ -249,15 +252,25 @@ const Events = ({ map }: Props) => {
         return (
           <div
             key={eventInfo.name}
-            className="mx-2 flex justify-between rounded border border-gray-300 bg-white text-left transition-colors duration-100 hover:bg-gray-200"
+            className="mx-2 flex justify-between rounded-xl border border-gray-300 bg-white text-left transition-colors duration-100 hover:bg-gray-200"
           >
             <button
-              className="w-full p-2 text-left"
+              className="w-full text-left"
               onClick={handleClick(eventInfo.roomName)}
             >
-              <h3 className="text-gray-800">{eventInfo.name}</h3>
-              <p>{eventInfo.time}</p>
-              <p className="text-wrap">{eventInfo.location}</p>
+              {eventInfo.featured && (
+                <div className="relative">
+                  <Image src={featuredIcon} alt="Feature Icon" />
+                  <p className="absolute bottom-1 left-2 text-white">
+                    Featured
+                  </p>
+                </div>
+              )}
+              <div className="p-2">
+                <h3 className="text-gray-800">{eventInfo.name}</h3>
+                <p>{eventInfo.time}</p>
+                <p className="text-wrap">{eventInfo.location}</p>
+              </div>
             </button>
           </div>
         );

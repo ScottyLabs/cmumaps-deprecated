@@ -50,8 +50,8 @@ for root, dirs, files in os.walk("../public/json/floor_plan"):
                                 big_graph[new_floor].add(
                                     (f"{building_code}-{floor}", stairs_info["type"])
                                 )
-                    # with open(file_path, "w") as graph_file:
-                    #     json.dump(graph, graph_file)
+                    with open(file_path, "w") as graph_file:
+                        json.dump(graph, graph_file)
 
                     print(f"Processed {file_path}")
 
