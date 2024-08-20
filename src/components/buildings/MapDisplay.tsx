@@ -64,6 +64,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
   const [usedRegionChange, setUsedRegionChange] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
+  const [showFloor, setShowFloor] = useState<boolean>(false);
 
   const throttledCalculateVisibleBuildings = throttle(
     (region: CoordinateRegion) => {
@@ -138,7 +139,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
       throttledCalculateVisibleBuildings(region);
 
-      const showFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
+      const newShowFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
+      setShowFloor(newShowFloor);
+
       dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
 
       // don't set floor when zooming on room
@@ -147,7 +150,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       }
 
       // there is no focused floor if we are not showing floors
-      if (!showFloor) {
+      if (!newShowFloor) {
         dispatch(setFocusedFloor(null));
       }
       // if we are showing floor, we will show the default floor of the centered building
@@ -256,7 +259,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
             ),
         )}
 
-      {focusedFloor && !isZooming && (
+      {focusedFloor && showFloor && (
         <FloorPlanOverlay visibleBuildings={visibleBuildings} />
       )}
 

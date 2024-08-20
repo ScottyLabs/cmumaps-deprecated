@@ -74,7 +74,7 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
           fillRule="nonzero"
         />
 
-        {focusedFloor.buildingCode == floor.buildingCode &&
+        {focusedFloor?.buildingCode == floor.buildingCode &&
           focusedFloor.level == floor.level && (
             <Annotation
               latitude={room.labelPosition.latitude}
