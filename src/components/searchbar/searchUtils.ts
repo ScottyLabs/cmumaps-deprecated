@@ -63,30 +63,11 @@ export const searchRoom = (
       Building: building,
       Rooms: findRooms(query, building, searchMap[building.code], mode),
     }))
-    .filter((buildingResult) =>
-      possiblyBuilding(query, buildingResult.Building),
-    )
+    .filter((buildingResult) => buildingResult['Rooms'][0].length > 0)
     .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
     .map(({ Building: building, Rooms: rooms }) => {
       return { building, searchRoom: rooms[0] };
     });
-};
-
-const possiblyBuilding = (query: string, building: Building): boolean => {
-  console.log(query, building);
-  const queryTokens = query
-    .toLowerCase()
-    .split(nonAsciiRe)
-    .filter((token) => token.length > 0);
-  const buildingTokens = [
-    building.code,
-    ...building.name.split(nonAsciiRe),
-  ].map((token) => token.toLowerCase());
-  return queryTokens.some((queryToken) =>
-    buildingTokens.some((buildingToken) =>
-      buildingToken.startsWith(queryToken),
-    ),
-  );
 };
 
 /*
