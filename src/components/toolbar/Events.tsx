@@ -81,6 +81,8 @@ const Events = ({ map }: Props) => {
     EventInfo[]
   > | null>(null);
 
+  const [hasTransferStudentEvents, setHasTransferStudentEvents] =
+    useState<boolean>(false);
   const [showTransferStudentEvents, setShowTransferStudentEvents] =
     useState<boolean>(false);
 
@@ -93,9 +95,25 @@ const Events = ({ map }: Props) => {
     );
   }, []);
 
+  // check if the toggle is needed
+  useEffect(() => {
+    if (eventData && eventData[dayOfWeek]) {
+      const newHasTransferStudentEvents =
+        eventData[dayOfWeek].filter((event) =>
+          event.name.includes('Transfer Student'),
+        ).length > 0;
+
+      if (!newHasTransferStudentEvents) {
+        setShowTransferStudentEvents(false);
+      }
+
+      setHasTransferStudentEvents(newHasTransferStudentEvents);
+    }
+  }, [dayOfWeek, eventData]);
+
   const handleClick = (room: string) => () => {
     if (!room) {
-      toast.error("This event doesn't have a location!");
+      toast.error("Sorry, we can't find the location for this event :(");
       return;
     }
 
@@ -207,6 +225,7 @@ const Events = ({ map }: Props) => {
 
   const renderEvents = () => {
     const renderEvent = (eventInfo: EventInfo) => {
+      // handle show transfer students
       if (showTransferStudentEvents) {
         if (!eventInfo.name.includes('Transfer Student')) {
           return;
@@ -261,10 +280,12 @@ const Events = ({ map }: Props) => {
   return (
     <CollapsibleWrapper title="Orientation Events">
       <>
-        <TransferStudentToggle
-          showTransferStudentEvents={showTransferStudentEvents}
-          setShowTransferStudentEvents={setShowTransferStudentEvents}
-        />
+        {hasTransferStudentEvents && (
+          <TransferStudentToggle
+            showTransferStudentEvents={showTransferStudentEvents}
+            setShowTransferStudentEvents={setShowTransferStudentEvents}
+          />
+        )}
         {renderDatePicker()}
         {renderEvents()}
       </>
