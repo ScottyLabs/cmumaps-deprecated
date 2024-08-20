@@ -58,6 +58,10 @@ export const zoomOnFloor = (
   floor: Floor,
   dispatch: Dispatch<UnknownAction>,
 ) => {
+  if (!buildings) {
+    return;
+  }
+
   // zoom after finish setting the floor
   setIsZoomingAsync(true)(dispatch).then(() => {
     dispatch(setFocusedFloor(floor));

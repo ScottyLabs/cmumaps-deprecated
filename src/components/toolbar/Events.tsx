@@ -81,6 +81,8 @@ const Events = ({ map }: Props) => {
     EventInfo[]
   > | null>(null);
 
+  const [hasTransferStudentEvents, setHasTransferStudentEvents] =
+    useState<boolean>(false);
   const [showTransferStudentEvents, setShowTransferStudentEvents] =
     useState<boolean>(false);
 
@@ -93,20 +95,38 @@ const Events = ({ map }: Props) => {
     );
   }, []);
 
-  const handleClick = (room: string) => () => {
+  // check if the toggle is needed
+  useEffect(() => {
+    if (eventData && eventData[dayOfWeek]) {
+      const newHasTransferStudentEvents =
+        eventData[dayOfWeek].filter((event) =>
+          event.name.includes('Transfer Student'),
+        ).length > 0;
+
+      if (!newHasTransferStudentEvents) {
+        setShowTransferStudentEvents(false);
+      }
+
+      setHasTransferStudentEvents(newHasTransferStudentEvents);
+    }
+  }, [dayOfWeek, eventData]);
+
+  const handleClick = (room: string | undefined) => () => {
     if (!room) {
-      toast.error("This event doesn't have a location!");
+      toast.error("Sorry, we can't find the location for this event :(");
       return;
     }
 
     if (room == 'The Cut') {
-      zoomOnObject(map, [
-        { latitude: 40.443228550178866, longitude: -79.94351913028393 },
-        { latitude: 40.44304699325484, longitude: -79.94263924643847 },
-        { latitude: 40.442118474765685, longitude: -79.9429629109336 },
-        { latitude: 40.44231994253659, longitude: -79.94387917897825 },
-        { latitude: 40.443228550178866, longitude: -79.94351913028393 },
-      ]);
+      if (map) {
+        zoomOnObject(map, [
+          { latitude: 40.443228550178866, longitude: -79.94351913028393 },
+          { latitude: 40.44304699325484, longitude: -79.94263924643847 },
+          { latitude: 40.442118474765685, longitude: -79.9429629109336 },
+          { latitude: 40.44231994253659, longitude: -79.94387917897825 },
+          { latitude: 40.443228550178866, longitude: -79.94351913028393 },
+        ]);
+      }
       return;
     }
 
@@ -120,7 +140,11 @@ const Events = ({ map }: Props) => {
       (room) => room.name == roomName,
     );
 
-    router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
+    if (selectedRoom) {
+      router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
+    } else {
+      toast.error('Unable to find this location :(');
+    }
   };
 
   const renderDatePicker = () => {
@@ -187,18 +211,19 @@ const Events = ({ map }: Props) => {
       >
         <div>
           <div className="my-2 space-y-2">
-            {eventInfo.subEvents.map((subEvent) => {
-              return (
-                <button
-                  key={subEvent.subGroup}
-                  className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
-                  onClick={handleClick(subEvent.roomName)}
-                >
-                  <p className="text-gray-700">{subEvent.subGroup}</p>
-                  <p className="text-gray-500">{subEvent.location}</p>
-                </button>
-              );
-            })}
+            {eventInfo.subEvents &&
+              eventInfo.subEvents.map((subEvent) => {
+                return (
+                  <button
+                    key={subEvent.subGroup}
+                    className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
+                    onClick={handleClick(subEvent.roomName)}
+                  >
+                    <p className="text-gray-700">{subEvent.subGroup}</p>
+                    <p className="text-gray-500">{subEvent.location}</p>
+                  </button>
+                );
+              })}
           </div>
         </div>
       </Collapsible>
@@ -207,6 +232,7 @@ const Events = ({ map }: Props) => {
 
   const renderEvents = () => {
     const renderEvent = (eventInfo: EventInfo) => {
+      // handle show transfer students
       if (showTransferStudentEvents) {
         if (!eventInfo.name.includes('Transfer Student')) {
           return;
@@ -261,10 +287,12 @@ const Events = ({ map }: Props) => {
   return (
     <CollapsibleWrapper title="Orientation Events">
       <>
-        <TransferStudentToggle
-          showTransferStudentEvents={showTransferStudentEvents}
-          setShowTransferStudentEvents={setShowTransferStudentEvents}
-        />
+        {hasTransferStudentEvents && (
+          <TransferStudentToggle
+            showTransferStudentEvents={showTransferStudentEvents}
+            setShowTransferStudentEvents={setShowTransferStudentEvents}
+          />
+        )}
         {renderDatePicker()}
         {renderEvents()}
       </>
