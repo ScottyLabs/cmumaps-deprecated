@@ -245,19 +245,22 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       onLoad={handleLoad}
     >
       {buildings &&
-        Object.values(buildings).map((building) => (
-          <BuildingShape
-            key={building.code}
-            map={mapRef.current}
-            building={building}
-          />
-        ))}
+        Object.values(buildings).map(
+          (building) =>
+            mapRef.current && (
+              <BuildingShape
+                key={building.code}
+                map={mapRef.current}
+                building={building}
+              />
+            ),
+        )}
 
       {focusedFloor && !isZooming && (
         <FloorPlanOverlay visibleBuildings={visibleBuildings} />
       )}
 
-      <NavLine />
+      {mapRef.current && <NavLine map={mapRef.current} />}
     </Map>
   );
 };

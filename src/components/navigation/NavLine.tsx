@@ -5,7 +5,7 @@ import enterIcon from '@icons/path/enter-building.svg';
 import exitIcon from '@icons/path/exit-building.svg';
 import startIcon from '@icons/path/start.svg';
 import upstairsIcon from '@icons/path/upstairs.svg';
-import { Annotation, Coordinate, Polyline } from 'mapkit-react';
+import { Annotation, Coordinate } from 'mapkit-react';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
@@ -14,7 +14,11 @@ import React, { useEffect, useState } from 'react';
 import { Node } from '@/app/api/findPath/route';
 import { useAppSelector } from '@/lib/hooks';
 
-const NavLine = () => {
+interface Props {
+  map: mapkit.Map;
+}
+
+const NavLine = ({ map }: Props) => {
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
   const selectedPathName = useAppSelector(
     (state) => state.nav.selectedPathName,
@@ -35,8 +39,8 @@ const NavLine = () => {
       recommendedPath[selectedPathName]
     ) {
       const path: Node[] = recommendedPath[selectedPathName].path;
-      const newCurFloorPath = [];
-      const newRestPath = [];
+      const newCurFloorPath: Node[] = [];
+      const newRestPath: Node[] = [];
       let count = 0;
       for (let i = 0; i < path.length; i++) {
         if (i != 0 && path[i - 1].floor != path[i].floor) {
@@ -52,59 +56,79 @@ const NavLine = () => {
           newRestPath.push(path[i - 1]);
         }
       }
-      newRestPath.push(path.at(-1));
+      newRestPath.push(path[path.length - 1]);
 
       setCurFloorPath(newCurFloorPath);
       setRestPath(newRestPath);
     }
   }, [curFloorIndex, recommendedPath, selectedPathName, startedNavigation]);
 
-  const renderPath = () => {
-    if (startedNavigation) {
-      return (
-        <>
-          {curFloorPath && (
-            <Polyline
-              selected={true}
-              points={curFloorPath.map((n: Node) => n.coordinate)}
-              enabled={true}
-              strokeColor="blue"
-              strokeOpacity={0.9}
-              lineWidth={5}
-            />
-          )}
-          {restPath && (
-            <Polyline
-              selected={true}
-              points={restPath.map((n: Node) => n.coordinate)}
-              enabled={true}
-              strokeColor="blue"
-              strokeOpacity={0.5}
-              lineWidth={5}
-              lineDash={[10, 10]}
-            />
-          )}
-        </>
-      );
-    } else {
-      return (
-        recommendedPath &&
-        Object.keys(recommendedPath).map((pathName) => (
-          <Polyline
-            key={pathName}
-            selected={true}
-            points={recommendedPath[pathName].path.map(
-              (n: Node) => n.coordinate,
-            )}
-            enabled={true}
-            strokeColor={selectedPathName == pathName ? 'blue' : 'gray'}
-            strokeOpacity={selectedPathName == pathName ? 0.9 : 0.5}
-            lineWidth={5}
-          />
-        ))
-      );
+  useEffect(() => {
+    const getPathOverlay = (): mapkit.PolylineOverlay[] | null => {
+      if (startedNavigation) {
+        return null;
+        // return (
+        //   <>
+        //     {curFloorPath && (
+        //       <Polyline
+        //         points={curFloorPath.map((n: Node) => n.coordinate)}
+        //         strokeColor="blue"
+        //         strokeOpacity={0.9}
+        //         lineWidth={5}
+        //       />
+        //     )}
+        //     {restPath && (
+        //       <Polyline
+        //         points={restPath.map((n: Node) => n.coordinate)}
+        //         strokeColor="blue"
+        //         strokeOpacity={0.5}
+        //         lineWidth={5}
+        //         lineDash={[10, 10]}
+        //       />
+        //     )}
+        //   </>
+        // );
+      } else {
+        return (
+          recommendedPath &&
+          Object.keys(recommendedPath).map((pathName) => {
+            const style = {
+              strokeColor: selectedPathName == pathName ? 'blue' : 'gray',
+              strokeOpacity: selectedPathName == pathName ? 0.9 : 0.5,
+              lineWidth: 5,
+            };
+
+            return new mapkit.PolylineOverlay(
+              recommendedPath[pathName].path.map(
+                (n: Node) =>
+                  new mapkit.Coordinate(
+                    n.coordinate.latitude,
+                    n.coordinate.longitude,
+                  ),
+              ),
+              { style: new mapkit.Style(style) },
+            );
+          })
+        );
+      }
+    };
+
+    const pathOverlay = getPathOverlay();
+
+    if (pathOverlay) {
+      for (const polyline of pathOverlay) {
+        map.addOverlay(polyline);
+      }
     }
-  };
+
+    return () => {
+      if (pathOverlay) {
+        for (const polyline of pathOverlay) {
+          map.removeOverlay(polyline);
+        }
+      }
+    };
+  });
 
   const renderIcon = () => {
     if (recommendedPath) {
@@ -188,7 +212,10 @@ const NavLine = () => {
         const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
         const path = recommendedPath[selectedPathName].path;
         iconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
-        iconInfos.push({ coordinate: path.at(-1).coordinate, icon: endIcon });
+        iconInfos.push({
+          coordinate: path[path.length - 1].coordinate,
+          icon: endIcon,
+        });
         return iconInfos.map((iconInfo, index) => (
           <Annotation
             key={index}
@@ -255,12 +282,7 @@ const NavLine = () => {
     }
   };
 
-  return (
-    <>
-      {renderPath()}
-      {renderIcon()}
-    </>
-  );
+  return <>{renderIcon()}</>;
 };
 
 export default NavLine;
