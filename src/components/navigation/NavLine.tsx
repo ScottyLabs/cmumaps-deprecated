@@ -66,28 +66,51 @@ const NavLine = ({ map }: Props) => {
   useEffect(() => {
     const getPathOverlay = (): mapkit.PolylineOverlay[] | null => {
       if (startedNavigation) {
-        return null;
-        // return (
-        //   <>
-        //     {curFloorPath && (
-        //       <Polyline
-        //         points={curFloorPath.map((n: Node) => n.coordinate)}
-        //         strokeColor="blue"
-        //         strokeOpacity={0.9}
-        //         lineWidth={5}
-        //       />
-        //     )}
-        //     {restPath && (
-        //       <Polyline
-        //         points={restPath.map((n: Node) => n.coordinate)}
-        //         strokeColor="blue"
-        //         strokeOpacity={0.5}
-        //         lineWidth={5}
-        //         lineDash={[10, 10]}
-        //       />
-        //     )}
-        //   </>
-        // );
+        const pathOverlays: mapkit.PolylineOverlay[] = [];
+        if (curFloorPath) {
+          const curFloorPathOverlay = new mapkit.PolylineOverlay(
+            curFloorPath.map(
+              (n: Node) =>
+                new mapkit.Coordinate(
+                  n.coordinate.latitude,
+                  n.coordinate.longitude,
+                ),
+            ),
+            {
+              style: new mapkit.Style({
+                strokeColor: 'blue',
+                strokeOpacity: 0.9,
+                lineWidth: 5,
+              }),
+            },
+          );
+
+          pathOverlays.push(curFloorPathOverlay);
+        }
+
+        if (restPath) {
+          const restPathOverlay = new mapkit.PolylineOverlay(
+            restPath.map(
+              (n: Node) =>
+                new mapkit.Coordinate(
+                  n.coordinate.latitude,
+                  n.coordinate.longitude,
+                ),
+            ),
+            {
+              style: new mapkit.Style({
+                strokeColor: 'blue',
+                strokeOpacity: 0.5,
+                lineWidth: 5,
+                lineDash: [10, 10],
+              }),
+            },
+          );
+
+          pathOverlays.push(restPathOverlay);
+        }
+
+        return pathOverlays;
       } else {
         return (
           recommendedPath &&
@@ -113,21 +136,24 @@ const NavLine = ({ map }: Props) => {
       }
     };
 
-    const pathOverlay = getPathOverlay();
+    // set time out so the floor plan can render first when changing floors
+    setTimeout(() => {
+      const pathOverlay = getPathOverlay();
 
-    if (pathOverlay) {
-      for (const polyline of pathOverlay) {
-        map.addOverlay(polyline);
-      }
-    }
-
-    return () => {
       if (pathOverlay) {
         for (const polyline of pathOverlay) {
-          map.removeOverlay(polyline);
+          map.addOverlay(polyline);
         }
       }
-    };
+
+      return () => {
+        if (pathOverlay) {
+          for (const polyline of pathOverlay) {
+            map.removeOverlay(polyline);
+          }
+        }
+      };
+    }, 200);
   });
 
   const renderIcon = () => {
