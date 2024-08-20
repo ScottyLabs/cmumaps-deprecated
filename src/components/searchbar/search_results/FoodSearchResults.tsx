@@ -65,16 +65,20 @@ const FoodSearchResults = ({ map, query }: Props) => {
     return (
       <SearchResultWrapper handleClick={handleClick}>
         <div className="flex items-center gap-3">
-          <div className="mx-[-10px] scale-[0.6]">
+          <div className="-mx-2.5 scale-[0.6]">
             <Roundel code={building.code} />
           </div>
-          <p className="pl-[-1] font-bold">{building.name}</p>
+          <p className="font-bold">{building.name}</p>
         </div>
       </SearchResultWrapper>
     );
   };
 
   const renderFoodResults = (eateries: SearchRoom[]) => {
+    if (!eateryData) {
+      return;
+    }
+
     const renderTitle = (eatery: SearchRoom) => {
       return <h3> {eatery.alias}</h3>;
     };

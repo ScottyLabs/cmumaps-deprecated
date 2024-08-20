@@ -71,10 +71,10 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
         isSelected={building.code == selectedBuilding?.code}
       >
         <div className="flex items-center gap-3">
-          <div className="mx-[-10px] scale-[0.6]">
+          <div className="-mx-2.5 scale-[0.6]">
             <Roundel code={building.code} />
           </div>
-          <p className="pl-[-1] font-bold">{building.name}</p>
+          <p className="font-bold">{building.name}</p>
         </div>
       </SearchResultWrapper>
     );

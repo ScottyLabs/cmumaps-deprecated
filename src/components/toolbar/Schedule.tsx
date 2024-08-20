@@ -57,30 +57,37 @@ const Schedule = () => {
       reader.readAsText(file);
 
       reader.onload = async (e) => {
-        const newScheduleData = [];
+        const newScheduleData: CourseData[] = [];
 
         for (const course of Object.values(
-          ical.parseICS(e.target.result as string),
+          ical.parseICS(e.target?.result as string),
         )) {
+          if (!course) {
+            continue;
+          }
+
           const curCourse: Partial<CourseData> = {};
-          curCourse.name = course.summary.split(' :: ')[0];
-          curCourse.code = course.summary.split(' :: ')[1].split(' ')[0];
-          curCourse.section = course.summary.slice(-1);
+          curCourse.name = course.summary?.split(' :: ')[0];
+          curCourse.code = course.summary?.split(' :: ')[1].split(' ')[0];
+          curCourse.section = course.summary?.slice(-1);
           curCourse.instructors = course.description
-            .split('\n')[2]
+            ?.split('\n')[2]
             .replace('Instructors:', '')
             .replace('Instructor:', '');
-          curCourse.room = course.location.replace(' ', '');
-          curCourse.dow = course.rrule.options.byweekday
+          curCourse.room = course.location?.replace(' ', '');
+          curCourse.dow = course.rrule?.options.byweekday
             .map((day) => dayMap[day])
             .join('');
           curCourse.start = course.start;
           curCourse.end = course.end;
-          newScheduleData.push(curCourse);
+          newScheduleData.push(curCourse as CourseData);
         }
 
         setScheduleData(newScheduleData);
-        postUserSchedule(user.id, JSON.stringify(newScheduleData));
+
+        if (user) {
+          postUserSchedule(user.id, JSON.stringify(newScheduleData));
+        }
       };
     }
   };
