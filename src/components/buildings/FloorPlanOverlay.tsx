@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { useAppSelector } from '@/lib/hooks';
+import { setIsFloorPlanRendered } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Floor } from '@/types';
 
 import FloorPlanView from './FloorPlanView';
@@ -31,9 +32,15 @@ interface Props {
  * The contents of a floor displayed on the map.
  */
 const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
+  const dispatch = useAppDispatch();
+
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+
+  useEffect(() => {
+    dispatch(setIsFloorPlanRendered(true));
+  });
 
   if (!buildings || !focusedFloor?.buildingCode || !focusedFloor?.level) {
     return;

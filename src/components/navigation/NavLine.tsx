@@ -12,13 +12,20 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 import { Node } from '@/app/api/findPath/route';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
+interface IconInfo {
+  coordinate: Coordinate;
+  icon: StaticImport;
+  className?: string;
+}
 interface Props {
   map: mapkit.Map;
 }
 
 const NavLine = ({ map }: Props) => {
+  const dispatch = useAppDispatch();
+
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
   const selectedPathName = useAppSelector(
     (state) => state.nav.selectedPathName,
@@ -27,10 +34,18 @@ const NavLine = ({ map }: Props) => {
     (state) => state.nav.startedNavigation,
   );
   const curFloorIndex = useAppSelector((state) => state.nav.curFloorIndex);
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const isFloorPlanRendered = useAppSelector(
+    (state) => state.ui.isFloorPlanRendered,
+  );
 
   const [curFloorPath, setCurFloorPath] = useState<Node[] | null>(null);
   const [restPath, setRestPath] = useState<Node[] | null>(null);
 
+  const [pathOverlay, setPathOverlay] = useState<mapkit.PolylineOverlay[]>([]);
+  const [iconInfos, setIconInfos] = useState<IconInfo[]>([]);
+
+  // calculate curFloorPath and restPath
   useEffect(() => {
     if (
       startedNavigation &&
@@ -63,57 +78,59 @@ const NavLine = ({ map }: Props) => {
     }
   }, [curFloorIndex, recommendedPath, selectedPathName, startedNavigation]);
 
+  // calculate the pathOverlay
   useEffect(() => {
-    const getPathOverlay = (): mapkit.PolylineOverlay[] | null => {
-      if (startedNavigation) {
-        const pathOverlays: mapkit.PolylineOverlay[] = [];
-        if (curFloorPath) {
-          const curFloorPathOverlay = new mapkit.PolylineOverlay(
-            curFloorPath.map(
-              (n: Node) =>
-                new mapkit.Coordinate(
-                  n.coordinate.latitude,
-                  n.coordinate.longitude,
-                ),
-            ),
-            {
-              style: new mapkit.Style({
-                strokeColor: 'blue',
-                strokeOpacity: 0.9,
-                lineWidth: 5,
-              }),
-            },
-          );
+    if (startedNavigation) {
+      const newPathOverlays: mapkit.PolylineOverlay[] = [];
+      if (curFloorPath) {
+        const curFloorPathOverlay = new mapkit.PolylineOverlay(
+          curFloorPath.map(
+            (n: Node) =>
+              new mapkit.Coordinate(
+                n.coordinate.latitude,
+                n.coordinate.longitude,
+              ),
+          ),
+          {
+            style: new mapkit.Style({
+              strokeColor: 'blue',
+              strokeOpacity: 0.9,
+              lineWidth: 5,
+            }),
+          },
+        );
 
-          pathOverlays.push(curFloorPathOverlay);
-        }
+        newPathOverlays.push(curFloorPathOverlay);
+      }
 
-        if (restPath) {
-          const restPathOverlay = new mapkit.PolylineOverlay(
-            restPath.map(
-              (n: Node) =>
-                new mapkit.Coordinate(
-                  n.coordinate.latitude,
-                  n.coordinate.longitude,
-                ),
-            ),
-            {
-              style: new mapkit.Style({
-                strokeColor: 'blue',
-                strokeOpacity: 0.5,
-                lineWidth: 5,
-                lineDash: [10, 10],
-              }),
-            },
-          );
+      if (restPath) {
+        const restPathOverlay = new mapkit.PolylineOverlay(
+          restPath.map(
+            (n: Node) =>
+              new mapkit.Coordinate(
+                n.coordinate.latitude,
+                n.coordinate.longitude,
+              ),
+          ),
+          {
+            style: new mapkit.Style({
+              strokeColor: 'blue',
+              strokeOpacity: 0.5,
+              lineWidth: 5,
+              lineDash: [10, 10],
+            }),
+          },
+        );
 
-          pathOverlays.push(restPathOverlay);
-        }
+        newPathOverlays.push(restPathOverlay);
+      }
 
-        return pathOverlays;
+      setPathOverlay(newPathOverlays);
+    } else {
+      if (!recommendedPath) {
+        setPathOverlay([]);
       } else {
-        return (
-          recommendedPath &&
+        setPathOverlay(
           Object.keys(recommendedPath).map((pathName) => {
             const style = {
               strokeColor: selectedPathName == pathName ? 'blue' : 'gray',
@@ -131,184 +148,177 @@ const NavLine = ({ map }: Props) => {
               ),
               { style: new mapkit.Style(style) },
             );
-          })
+          }),
         );
+      }
+    }
+  }, [
+    recommendedPath,
+    restPath,
+    curFloorPath,
+    selectedPathName,
+    startedNavigation,
+  ]);
+
+  // render the polylines so they stay on top
+  useEffect(() => {
+    if (pathOverlay) {
+      map.addOverlays(pathOverlay);
+    }
+
+    return () => {
+      if (pathOverlay) {
+        map.removeOverlays(pathOverlay);
       }
     };
+  }, [
+    map,
+    map.region,
+    pathOverlay,
+    focusedFloor,
+    isFloorPlanRendered,
+    dispatch,
+  ]);
 
-    // set time out so the floor plan can render first when changing floors
-    setTimeout(() => {
-      const pathOverlay = getPathOverlay();
+  // calculate the icons (annotations)
+  useEffect(() => {
+    if (!recommendedPath) {
+      setIconInfos([]);
+      return;
+    }
 
-      if (pathOverlay) {
-        for (const polyline of pathOverlay) {
-          map.addOverlay(polyline);
-        }
+    const calculateIcon = (path: Node[] | null) => {
+      if (!path) {
+        return [];
       }
 
-      return () => {
-        if (pathOverlay) {
-          for (const polyline of pathOverlay) {
-            map.removeOverlay(polyline);
-          }
+      const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
+
+      for (let i = 0; i < path.length; i++) {
+        // always use outside node to prevent overlapping the start and end icon
+        let nextToFloorInfo;
+        if (i < path.length - 1) {
+          nextToFloorInfo = path[i].neighbors[path[i + 1].id].toFloorInfo;
         }
-      };
-    }, 200);
-  });
 
-  const renderIcon = () => {
-    if (recommendedPath) {
-      const calculateIcon = (path: Node[]) => {
-        const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
+        let lastToFloorInfo;
+        if (i > 0) {
+          lastToFloorInfo = path[i].neighbors[path[i - 1].id].toFloorInfo;
+        }
 
-        for (let i = 0; i < path.length; i++) {
-          // always use outside node to prevent overlapping the start and end icon
-          let nextToFloorInfo;
-          if (i < path.length - 1) {
-            nextToFloorInfo = path[i].neighbors[path[i + 1].id].toFloorInfo;
-          }
-
-          let lastToFloorInfo;
-          if (i > 0) {
-            lastToFloorInfo = path[i].neighbors[path[i - 1].id].toFloorInfo;
-          }
-
-          // going outside
-          if (nextToFloorInfo) {
-            if (nextToFloorInfo.toFloor.includes('outside')) {
-              iconInfos.push({
-                coordinate: path[i + 1].coordinate,
-                icon: exitIcon,
-              });
-            }
-          }
-
-          // going inside
-          if (lastToFloorInfo) {
-            if (lastToFloorInfo.toFloor.includes('outside')) {
-              iconInfos.push({
-                coordinate: path[i - 1].coordinate,
-                icon: enterIcon,
-              });
-            }
-          }
-
-          // elevator
-          const nextElevator =
-            nextToFloorInfo && nextToFloorInfo.type == 'elevator';
-          const lastNotElevator =
-            !lastToFloorInfo || lastToFloorInfo.type != 'elevator';
-
-          // the next one is an elevtor and the last one is not an elevator
-          if (nextElevator && lastNotElevator) {
+        // going outside
+        if (nextToFloorInfo) {
+          if (nextToFloorInfo.toFloor.includes('outside')) {
             iconInfos.push({
-              coordinate: path[i].coordinate,
-              icon: elevatorIcon,
+              coordinate: path[i + 1].coordinate,
+              icon: exitIcon,
             });
           }
+        }
 
-          // stairs
-          const nextStairs =
-            nextToFloorInfo && nextToFloorInfo.type == 'stairs';
-          const lastNotStairs =
-            !lastToFloorInfo || lastToFloorInfo.type != 'stairs';
-
-          // the next one is a stairs and the last one is not an stairs
-          if (nextStairs && lastNotStairs) {
-            const up =
-              path[i].floor.split('-')[1] < path[i + 1].floor.split('-')[1];
-
-            if (up) {
-              iconInfos.push({
-                coordinate: path[i].coordinate,
-                icon: upstairsIcon,
-              });
-            } else {
-              iconInfos.push({
-                coordinate: path[i].coordinate,
-                icon: downstairsIcon,
-              });
-            }
+        // going inside
+        if (lastToFloorInfo) {
+          if (lastToFloorInfo.toFloor.includes('outside')) {
+            iconInfos.push({
+              coordinate: path[i - 1].coordinate,
+              icon: enterIcon,
+            });
           }
         }
-        return iconInfos;
-      };
 
-      const renderStartEndIcons = () => {
-        const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
-        const path = recommendedPath[selectedPathName].path;
-        iconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
-        iconInfos.push({
-          coordinate: path[path.length - 1].coordinate,
-          icon: endIcon,
-        });
-        return iconInfos.map((iconInfo, index) => (
-          <Annotation
-            key={index}
-            latitude={iconInfo.coordinate.latitude}
-            longitude={iconInfo.coordinate.longitude}
-          >
-            <Image src={iconInfo.icon} alt="Icon" height={40} />
-          </Annotation>
-        ));
-      };
+        // elevator
+        const nextElevator =
+          nextToFloorInfo && nextToFloorInfo.type == 'elevator';
+        const lastNotElevator =
+          !lastToFloorInfo || lastToFloorInfo.type != 'elevator';
 
-      const renderAllIcons = () => {
-        return calculateIcon(recommendedPath[selectedPathName].path).map(
-          (iconInfo, index) => (
-            <Annotation
-              key={index}
-              latitude={iconInfo.coordinate.latitude}
-              longitude={iconInfo.coordinate.longitude}
-            >
-              <Image src={iconInfo.icon} alt="Icon" height={40} />
-            </Annotation>
-          ),
-        );
-      };
+        // the next one is an elevtor and the last one is not an elevator
+        if (nextElevator && lastNotElevator) {
+          iconInfos.push({
+            coordinate: path[i].coordinate,
+            icon: elevatorIcon,
+          });
+        }
 
-      const renderPartialIcons = () => {
-        return (
-          <>
-            {curFloorPath &&
-              calculateIcon(curFloorPath).map((iconInfo, index) => (
-                <Annotation
-                  key={index}
-                  latitude={iconInfo.coordinate.latitude}
-                  longitude={iconInfo.coordinate.longitude}
-                >
-                  <Image src={iconInfo.icon} alt="Icon" height={40} />
-                </Annotation>
-              ))}
-            {restPath &&
-              calculateIcon(restPath).map((iconInfo, index) => (
-                <Annotation
-                  key={index}
-                  latitude={iconInfo.coordinate.latitude}
-                  longitude={iconInfo.coordinate.longitude}
-                >
-                  <Image
-                    src={iconInfo.icon}
-                    alt="Icon"
-                    height={40}
-                    className="opacity-50"
-                  />
-                </Annotation>
-              ))}
-          </>
-        );
-      };
+        // stairs
+        const nextStairs = nextToFloorInfo && nextToFloorInfo.type == 'stairs';
+        const lastNotStairs =
+          !lastToFloorInfo || lastToFloorInfo.type != 'stairs';
 
-      return (
-        <>
-          {renderStartEndIcons()}
-          {startedNavigation ? renderPartialIcons() : renderAllIcons()}
-        </>
-      );
+        // the next one is a stairs and the last one is not an stairs
+        if (nextStairs && lastNotStairs) {
+          const up =
+            path[i].floor.split('-')[1] < path[i + 1].floor.split('-')[1];
+
+          if (up) {
+            iconInfos.push({
+              coordinate: path[i].coordinate,
+              icon: upstairsIcon,
+            });
+          } else {
+            iconInfos.push({
+              coordinate: path[i].coordinate,
+              icon: downstairsIcon,
+            });
+          }
+        }
+      }
+      return iconInfos;
+    };
+
+    const addStartEndIcons = () => {
+      const path = recommendedPath[selectedPathName].path;
+      newIconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
+      newIconInfos.push({
+        coordinate: path[path.length - 1].coordinate,
+        icon: endIcon,
+      });
+    };
+
+    let newIconInfos: IconInfo[] = [];
+
+    addStartEndIcons();
+
+    if (startedNavigation) {
+      newIconInfos = [
+        ...newIconInfos,
+        ...calculateIcon(curFloorPath),
+        ...calculateIcon(restPath).map((iconInfo) => ({
+          ...iconInfo,
+          className: 'opacity-50',
+        })),
+      ];
+    } else {
+      newIconInfos = [
+        ...newIconInfos,
+        ...calculateIcon(recommendedPath[selectedPathName].path),
+      ];
     }
-  };
 
-  return <>{renderIcon()}</>;
+    setIconInfos(newIconInfos);
+  }, [
+    recommendedPath,
+    startedNavigation,
+    selectedPathName,
+    curFloorPath,
+    restPath,
+  ]);
+
+  return iconInfos.map((iconInfo, index) => (
+    <Annotation
+      key={index}
+      latitude={iconInfo.coordinate.latitude}
+      longitude={iconInfo.coordinate.longitude}
+      displayPriority={'required'}
+    >
+      <Image
+        src={iconInfo.icon}
+        alt="Icon"
+        height={40}
+        className={iconInfo.className}
+      />
+    </Annotation>
+  ));
 };
 
 export default NavLine;

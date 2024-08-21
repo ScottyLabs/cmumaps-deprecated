@@ -9,6 +9,7 @@ import {
   getIsCardOpen,
   selectBuilding,
   setFocusedFloor,
+  setIsFloorPlanRendered,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -63,14 +64,15 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           title="Decrement floor"
           className={canGoDown ? '' : 'text-gray-300'}
           disabled={!canGoDown}
-          onClick={() =>
+          onClick={() => {
+            dispatch(setIsFloorPlanRendered(false));
             dispatch(
               setFocusedFloor({
                 buildingCode: building.code,
                 level: building.floors[floorIndex - 1],
               }),
-            )
-          }
+            );
+          }}
         >
           <IoIosArrowDown />
         </button>
@@ -112,14 +114,15 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           title="Increment floor"
           className={canGoUp ? '' : 'text-gray-300'}
           disabled={!canGoUp}
-          onClick={() =>
+          onClick={() => {
+            dispatch(setIsFloorPlanRendered(false));
             dispatch(
               setFocusedFloor({
                 buildingCode: building.code,
                 level: building.floors[floorIndex + 1],
               }),
-            )
-          }
+            );
+          }}
         >
           <IoIosArrowUp />
         </button>
@@ -155,6 +158,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
               }
               onClick={() => {
                 setShowFloorPicker(false);
+                dispatch(setIsFloorPlanRendered(false));
                 dispatch(
                   setFocusedFloor({
                     buildingCode: building.code,
