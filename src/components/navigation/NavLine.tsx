@@ -136,24 +136,20 @@ const NavLine = ({ map }: Props) => {
       }
     };
 
+    const pathOverlay = getPathOverlay();
+
     // set time out so the floor plan can render first when changing floors
-    setTimeout(() => {
-      const pathOverlay = getPathOverlay();
+    // setTimeout(() => {
+    if (pathOverlay) {
+      map.addOverlays(pathOverlay);
+    }
+    // }, 200);
 
+    return () => {
       if (pathOverlay) {
-        for (const polyline of pathOverlay) {
-          map.addOverlay(polyline);
-        }
+        map.removeOverlays(pathOverlay);
       }
-
-      return () => {
-        if (pathOverlay) {
-          for (const polyline of pathOverlay) {
-            map.removeOverlay(polyline);
-          }
-        }
-      };
-    }, 200);
+    };
   });
 
   const renderIcon = () => {
