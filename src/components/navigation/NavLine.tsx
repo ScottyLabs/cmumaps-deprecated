@@ -139,16 +139,18 @@ const NavLine = ({ map }: Props) => {
     const pathOverlay = getPathOverlay();
 
     // set time out so the floor plan can render first when changing floors
-    // setTimeout(() => {
-    if (pathOverlay) {
-      map.addOverlays(pathOverlay);
-    }
-    // }, 200);
+    setTimeout(() => {
+      if (pathOverlay) {
+        map.addOverlays(pathOverlay);
+      }
+    }, 200);
 
     return () => {
-      if (pathOverlay) {
-        map.removeOverlays(pathOverlay);
-      }
+      setTimeout(() => {
+        if (pathOverlay) {
+          map.removeOverlays(pathOverlay);
+        }
+      }, 200);
     };
   });
 
