@@ -168,7 +168,11 @@ const NavLine = ({ map }: Props) => {
 
   const renderIcon = () => {
     if (recommendedPath) {
-      const calculateIcon = (path: Node[]) => {
+      const calculateIcon = (path: Node[] | null) => {
+        if (!path) {
+          return [];
+        }
+
         const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
 
         for (let i = 0; i < path.length; i++) {
@@ -244,81 +248,60 @@ const NavLine = ({ map }: Props) => {
         return iconInfos;
       };
 
-      const renderStartEndIcons = () => {
-        const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
+      const addStartEndIcons = () => {
         const path = recommendedPath[selectedPathName].path;
         iconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
         iconInfos.push({
           coordinate: path[path.length - 1].coordinate,
           icon: endIcon,
         });
-        return iconInfos.map((iconInfo, index) => (
-          <Annotation
-            key={index}
-            latitude={iconInfo.coordinate.latitude}
-            longitude={iconInfo.coordinate.longitude}
-          >
-            <Image src={iconInfo.icon} alt="Icon" height={40} />
-          </Annotation>
-        ));
       };
 
-      const renderAllIcons = () => {
-        return calculateIcon(recommendedPath[selectedPathName].path).map(
-          (iconInfo, index) => (
-            <Annotation
-              key={index}
-              latitude={iconInfo.coordinate.latitude}
-              longitude={iconInfo.coordinate.longitude}
-            >
-              <Image src={iconInfo.icon} alt="Icon" height={40} />
-            </Annotation>
-          ),
-        );
-      };
+      interface IconInfo {
+        coordinate: Coordinate;
+        icon: StaticImport;
+        className?: string;
+      }
 
-      const renderPartialIcons = () => {
-        return (
-          <>
-            {curFloorPath &&
-              calculateIcon(curFloorPath).map((iconInfo, index) => (
-                <Annotation
-                  key={index}
-                  latitude={iconInfo.coordinate.latitude}
-                  longitude={iconInfo.coordinate.longitude}
-                >
-                  <Image src={iconInfo.icon} alt="Icon" height={40} />
-                </Annotation>
-              ))}
-            {restPath &&
-              calculateIcon(restPath).map((iconInfo, index) => (
-                <Annotation
-                  key={index}
-                  latitude={iconInfo.coordinate.latitude}
-                  longitude={iconInfo.coordinate.longitude}
-                >
-                  <Image
-                    src={iconInfo.icon}
-                    alt="Icon"
-                    height={40}
-                    className="opacity-50"
-                  />
-                </Annotation>
-              ))}
-          </>
-        );
-      };
+      let iconInfos: IconInfo[] = [];
 
-      return (
-        <>
-          {renderStartEndIcons()}
-          {startedNavigation ? renderPartialIcons() : renderAllIcons()}
-        </>
-      );
+      addStartEndIcons();
+
+      if (startedNavigation) {
+        iconInfos = [
+          ...iconInfos,
+          ...calculateIcon(curFloorPath),
+          ...calculateIcon(restPath).map((iconInfo) => ({
+            ...iconInfo,
+            className: 'opacity-50',
+          })),
+        ];
+      } else {
+        iconInfos = [
+          ...iconInfos,
+          ...calculateIcon(recommendedPath[selectedPathName].path),
+        ];
+      }
+
+      return iconInfos.map((iconInfo, index) => (
+        <Annotation
+          key={index}
+          latitude={iconInfo.coordinate.latitude}
+          longitude={iconInfo.coordinate.longitude}
+          displayPriority={'required'}
+        >
+          <Image
+            src={iconInfo.icon}
+            alt="Icon"
+            height={40}
+            className={iconInfo.className}
+          />
+        </Annotation>
+      ));
     }
   };
 
-  return <>{renderIcon()}</>;
+  return renderIcon();
 };
 
 export default NavLine;

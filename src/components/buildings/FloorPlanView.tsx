@@ -80,6 +80,7 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
               latitude={room.labelPosition.latitude}
               longitude={room.labelPosition.longitude}
               visible={showRoomNames || showIcon}
+              displayPriority={'low'}
             >
               <div
                 className="flex flex-col items-center"
