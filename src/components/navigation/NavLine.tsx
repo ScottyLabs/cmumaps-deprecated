@@ -154,14 +154,15 @@ const NavLine = ({ map }: Props) => {
       }
     };
   }, [
-    curFloorPath,
     map,
     recommendedPath,
     restPath,
+    curFloorPath,
     selectedPathName,
     startedNavigation,
     focusedFloor,
     isFloorPlanRendered,
+    map.region,
     dispatch,
   ]);
 
