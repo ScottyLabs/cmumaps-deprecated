@@ -42,6 +42,7 @@ const NavLine = ({ map }: Props) => {
   const [curFloorPath, setCurFloorPath] = useState<Node[] | null>(null);
   const [restPath, setRestPath] = useState<Node[] | null>(null);
 
+  const [pathOverlay, setPathOverlay] = useState<mapkit.PolylineOverlay[]>([]);
   const [iconInfos, setIconInfos] = useState<IconInfo[]>([]);
 
   // calculate curFloorPath and restPath
@@ -77,58 +78,59 @@ const NavLine = ({ map }: Props) => {
     }
   }, [curFloorIndex, recommendedPath, selectedPathName, startedNavigation]);
 
-  // render the polylines so they stay on top
+  // calculate the pathOverlay
   useEffect(() => {
-    const getPathOverlay = (): mapkit.PolylineOverlay[] | null => {
-      if (startedNavigation) {
-        const pathOverlays: mapkit.PolylineOverlay[] = [];
-        if (curFloorPath) {
-          const curFloorPathOverlay = new mapkit.PolylineOverlay(
-            curFloorPath.map(
-              (n: Node) =>
-                new mapkit.Coordinate(
-                  n.coordinate.latitude,
-                  n.coordinate.longitude,
-                ),
-            ),
-            {
-              style: new mapkit.Style({
-                strokeColor: 'blue',
-                strokeOpacity: 0.9,
-                lineWidth: 5,
-              }),
-            },
-          );
+    if (startedNavigation) {
+      const newPathOverlays: mapkit.PolylineOverlay[] = [];
+      if (curFloorPath) {
+        const curFloorPathOverlay = new mapkit.PolylineOverlay(
+          curFloorPath.map(
+            (n: Node) =>
+              new mapkit.Coordinate(
+                n.coordinate.latitude,
+                n.coordinate.longitude,
+              ),
+          ),
+          {
+            style: new mapkit.Style({
+              strokeColor: 'blue',
+              strokeOpacity: 0.9,
+              lineWidth: 5,
+            }),
+          },
+        );
 
-          pathOverlays.push(curFloorPathOverlay);
-        }
+        newPathOverlays.push(curFloorPathOverlay);
+      }
 
-        if (restPath) {
-          const restPathOverlay = new mapkit.PolylineOverlay(
-            restPath.map(
-              (n: Node) =>
-                new mapkit.Coordinate(
-                  n.coordinate.latitude,
-                  n.coordinate.longitude,
-                ),
-            ),
-            {
-              style: new mapkit.Style({
-                strokeColor: 'blue',
-                strokeOpacity: 0.5,
-                lineWidth: 5,
-                lineDash: [10, 10],
-              }),
-            },
-          );
+      if (restPath) {
+        const restPathOverlay = new mapkit.PolylineOverlay(
+          restPath.map(
+            (n: Node) =>
+              new mapkit.Coordinate(
+                n.coordinate.latitude,
+                n.coordinate.longitude,
+              ),
+          ),
+          {
+            style: new mapkit.Style({
+              strokeColor: 'blue',
+              strokeOpacity: 0.5,
+              lineWidth: 5,
+              lineDash: [10, 10],
+            }),
+          },
+        );
 
-          pathOverlays.push(restPathOverlay);
-        }
+        newPathOverlays.push(restPathOverlay);
+      }
 
-        return pathOverlays;
+      setPathOverlay(newPathOverlays);
+    } else {
+      if (!recommendedPath) {
+        setPathOverlay([]);
       } else {
-        return (
-          recommendedPath &&
+        setPathOverlay(
           Object.keys(recommendedPath).map((pathName) => {
             const style = {
               strokeColor: selectedPathName == pathName ? 'blue' : 'gray',
@@ -146,13 +148,20 @@ const NavLine = ({ map }: Props) => {
               ),
               { style: new mapkit.Style(style) },
             );
-          })
+          }),
         );
       }
-    };
+    }
+  }, [
+    recommendedPath,
+    restPath,
+    curFloorPath,
+    selectedPathName,
+    startedNavigation,
+  ]);
 
-    const pathOverlay = getPathOverlay();
-
+  // render the polylines so they stay on top
+  useEffect(() => {
     if (pathOverlay) {
       map.addOverlays(pathOverlay);
     }
@@ -164,14 +173,10 @@ const NavLine = ({ map }: Props) => {
     };
   }, [
     map,
-    recommendedPath,
-    restPath,
-    curFloorPath,
-    selectedPathName,
-    startedNavigation,
+    map.region,
+    pathOverlay,
     focusedFloor,
     isFloorPlanRendered,
-    map.region,
     dispatch,
   ]);
 
