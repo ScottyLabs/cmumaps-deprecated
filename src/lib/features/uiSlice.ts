@@ -20,6 +20,8 @@ interface UIState {
   searchMode: SearchMode;
 
   isZooming: boolean;
+
+  isFloorPlanRendered: boolean;
 }
 
 const initialState: UIState = {
@@ -32,6 +34,7 @@ const initialState: UIState = {
   showRoomNames: false,
   searchMode: 'rooms',
   isZooming: false,
+  isFloorPlanRendered: false,
 };
 
 const uiSlice = createSlice({
@@ -74,6 +77,10 @@ const uiSlice = createSlice({
     setIsZooming(state, action) {
       state.isZooming = action.payload;
     },
+
+    setIsFloorPlanRendered(state, action) {
+      state.isFloorPlanRendered = action.payload;
+    },
   },
 });
 
@@ -92,5 +99,6 @@ export const {
   setShowRoomNames,
   setSearchMode,
   setIsZooming,
+  setIsFloorPlanRendered,
 } = uiSlice.actions;
 export default uiSlice.reducer;

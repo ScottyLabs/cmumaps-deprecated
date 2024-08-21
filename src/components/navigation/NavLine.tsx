@@ -12,13 +12,15 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 import { Node } from '@/app/api/findPath/route';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 interface Props {
   map: mapkit.Map;
 }
 
 const NavLine = ({ map }: Props) => {
+  const dispatch = useAppDispatch();
+
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
   const selectedPathName = useAppSelector(
     (state) => state.nav.selectedPathName,
@@ -27,6 +29,10 @@ const NavLine = ({ map }: Props) => {
     (state) => state.nav.startedNavigation,
   );
   const curFloorIndex = useAppSelector((state) => state.nav.curFloorIndex);
+  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const isFloorPlanRendered = useAppSelector(
+    (state) => state.ui.isFloorPlanRendered,
+  );
 
   const [curFloorPath, setCurFloorPath] = useState<Node[] | null>(null);
   const [restPath, setRestPath] = useState<Node[] | null>(null);
@@ -138,21 +144,26 @@ const NavLine = ({ map }: Props) => {
 
     const pathOverlay = getPathOverlay();
 
-    // set time out so the floor plan can render first when changing floors
-    setTimeout(() => {
-      if (pathOverlay) {
-        map.addOverlays(pathOverlay);
-      }
-    }, 200);
+    if (pathOverlay) {
+      map.addOverlays(pathOverlay);
+    }
 
     return () => {
-      setTimeout(() => {
-        if (pathOverlay) {
-          map.removeOverlays(pathOverlay);
-        }
-      }, 200);
+      if (pathOverlay) {
+        map.removeOverlays(pathOverlay);
+      }
     };
-  });
+  }, [
+    curFloorPath,
+    map,
+    recommendedPath,
+    restPath,
+    selectedPathName,
+    startedNavigation,
+    focusedFloor,
+    isFloorPlanRendered,
+    dispatch,
+  ]);
 
   const renderIcon = () => {
     if (recommendedPath) {
