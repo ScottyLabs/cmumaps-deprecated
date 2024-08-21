@@ -182,118 +182,120 @@ const NavLine = ({ map }: Props) => {
 
   // calculate the icons (annotations)
   useEffect(() => {
-    if (recommendedPath) {
-      const calculateIcon = (path: Node[] | null) => {
-        if (!path) {
-          return [];
-        }
+    if (!recommendedPath) {
+      setIconInfos([]);
+      return;
+    }
 
-        const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
-
-        for (let i = 0; i < path.length; i++) {
-          // always use outside node to prevent overlapping the start and end icon
-          let nextToFloorInfo;
-          if (i < path.length - 1) {
-            nextToFloorInfo = path[i].neighbors[path[i + 1].id].toFloorInfo;
-          }
-
-          let lastToFloorInfo;
-          if (i > 0) {
-            lastToFloorInfo = path[i].neighbors[path[i - 1].id].toFloorInfo;
-          }
-
-          // going outside
-          if (nextToFloorInfo) {
-            if (nextToFloorInfo.toFloor.includes('outside')) {
-              iconInfos.push({
-                coordinate: path[i + 1].coordinate,
-                icon: exitIcon,
-              });
-            }
-          }
-
-          // going inside
-          if (lastToFloorInfo) {
-            if (lastToFloorInfo.toFloor.includes('outside')) {
-              iconInfos.push({
-                coordinate: path[i - 1].coordinate,
-                icon: enterIcon,
-              });
-            }
-          }
-
-          // elevator
-          const nextElevator =
-            nextToFloorInfo && nextToFloorInfo.type == 'elevator';
-          const lastNotElevator =
-            !lastToFloorInfo || lastToFloorInfo.type != 'elevator';
-
-          // the next one is an elevtor and the last one is not an elevator
-          if (nextElevator && lastNotElevator) {
-            iconInfos.push({
-              coordinate: path[i].coordinate,
-              icon: elevatorIcon,
-            });
-          }
-
-          // stairs
-          const nextStairs =
-            nextToFloorInfo && nextToFloorInfo.type == 'stairs';
-          const lastNotStairs =
-            !lastToFloorInfo || lastToFloorInfo.type != 'stairs';
-
-          // the next one is a stairs and the last one is not an stairs
-          if (nextStairs && lastNotStairs) {
-            const up =
-              path[i].floor.split('-')[1] < path[i + 1].floor.split('-')[1];
-
-            if (up) {
-              iconInfos.push({
-                coordinate: path[i].coordinate,
-                icon: upstairsIcon,
-              });
-            } else {
-              iconInfos.push({
-                coordinate: path[i].coordinate,
-                icon: downstairsIcon,
-              });
-            }
-          }
-        }
-        return iconInfos;
-      };
-
-      const addStartEndIcons = () => {
-        const path = recommendedPath[selectedPathName].path;
-        newIconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
-        newIconInfos.push({
-          coordinate: path[path.length - 1].coordinate,
-          icon: endIcon,
-        });
-      };
-
-      let newIconInfos: IconInfo[] = [];
-
-      addStartEndIcons();
-
-      if (startedNavigation) {
-        newIconInfos = [
-          ...newIconInfos,
-          ...calculateIcon(curFloorPath),
-          ...calculateIcon(restPath).map((iconInfo) => ({
-            ...iconInfo,
-            className: 'opacity-50',
-          })),
-        ];
-      } else {
-        newIconInfos = [
-          ...newIconInfos,
-          ...calculateIcon(recommendedPath[selectedPathName].path),
-        ];
+    const calculateIcon = (path: Node[] | null) => {
+      if (!path) {
+        return [];
       }
 
-      setIconInfos(newIconInfos);
+      const iconInfos: { coordinate: Coordinate; icon: StaticImport }[] = [];
+
+      for (let i = 0; i < path.length; i++) {
+        // always use outside node to prevent overlapping the start and end icon
+        let nextToFloorInfo;
+        if (i < path.length - 1) {
+          nextToFloorInfo = path[i].neighbors[path[i + 1].id].toFloorInfo;
+        }
+
+        let lastToFloorInfo;
+        if (i > 0) {
+          lastToFloorInfo = path[i].neighbors[path[i - 1].id].toFloorInfo;
+        }
+
+        // going outside
+        if (nextToFloorInfo) {
+          if (nextToFloorInfo.toFloor.includes('outside')) {
+            iconInfos.push({
+              coordinate: path[i + 1].coordinate,
+              icon: exitIcon,
+            });
+          }
+        }
+
+        // going inside
+        if (lastToFloorInfo) {
+          if (lastToFloorInfo.toFloor.includes('outside')) {
+            iconInfos.push({
+              coordinate: path[i - 1].coordinate,
+              icon: enterIcon,
+            });
+          }
+        }
+
+        // elevator
+        const nextElevator =
+          nextToFloorInfo && nextToFloorInfo.type == 'elevator';
+        const lastNotElevator =
+          !lastToFloorInfo || lastToFloorInfo.type != 'elevator';
+
+        // the next one is an elevtor and the last one is not an elevator
+        if (nextElevator && lastNotElevator) {
+          iconInfos.push({
+            coordinate: path[i].coordinate,
+            icon: elevatorIcon,
+          });
+        }
+
+        // stairs
+        const nextStairs = nextToFloorInfo && nextToFloorInfo.type == 'stairs';
+        const lastNotStairs =
+          !lastToFloorInfo || lastToFloorInfo.type != 'stairs';
+
+        // the next one is a stairs and the last one is not an stairs
+        if (nextStairs && lastNotStairs) {
+          const up =
+            path[i].floor.split('-')[1] < path[i + 1].floor.split('-')[1];
+
+          if (up) {
+            iconInfos.push({
+              coordinate: path[i].coordinate,
+              icon: upstairsIcon,
+            });
+          } else {
+            iconInfos.push({
+              coordinate: path[i].coordinate,
+              icon: downstairsIcon,
+            });
+          }
+        }
+      }
+      return iconInfos;
+    };
+
+    const addStartEndIcons = () => {
+      const path = recommendedPath[selectedPathName].path;
+      newIconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
+      newIconInfos.push({
+        coordinate: path[path.length - 1].coordinate,
+        icon: endIcon,
+      });
+    };
+
+    let newIconInfos: IconInfo[] = [];
+
+    addStartEndIcons();
+
+    if (startedNavigation) {
+      newIconInfos = [
+        ...newIconInfos,
+        ...calculateIcon(curFloorPath),
+        ...calculateIcon(restPath).map((iconInfo) => ({
+          ...iconInfo,
+          className: 'opacity-50',
+        })),
+      ];
+    } else {
+      newIconInfos = [
+        ...newIconInfos,
+        ...calculateIcon(recommendedPath[selectedPathName].path),
+      ];
     }
+
+    setIconInfos(newIconInfos);
   }, [
     recommendedPath,
     startedNavigation,
