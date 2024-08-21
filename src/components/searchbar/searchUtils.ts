@@ -63,10 +63,10 @@ export const searchRoom = (
       Building: building,
       Rooms: findRooms(query, building, searchMap[building.code], mode),
     }))
-    .filter((buildingResult) =>
-      mode != 'rooms'
-        ? buildingResult['Rooms'][0].length > 0
-        : possiblyBuilding(query, buildingResult.Building),
+    .filter(
+      (buildingResult) =>
+        buildingResult['Rooms'][0].length > 0 ||
+        (mode == 'rooms' && possiblyBuilding(query, buildingResult.Building)),
     )
     .sort((a, b) => a['Rooms'][1] - b['Rooms'][1])
     .map(({ Building: building, Rooms: rooms }) => {
@@ -75,7 +75,6 @@ export const searchRoom = (
 };
 
 const possiblyBuilding = (query: string, building: Building): boolean => {
-  console.log(query, building);
   const queryTokens = query
     .toLowerCase()
     .split(nonAsciiRe)
