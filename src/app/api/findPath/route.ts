@@ -137,15 +137,20 @@ function findPath(
         );
       })
       .map((node) => {
-        const [startId, neigh] = Object.entries(node.neighbors || {}).find(
-          ([id, e]) => e?.toFloorInfo?.toFloor.split('-')[0] === rooms[0].code,
+        if (outsideRooms['rooms'][node.roomId]?.name === rooms[0]?.code) {
+          return node;
+        }
+        const [endId, neigh] = Object.entries(node.neighbors || {}).find(
+          ([id, e]) =>
+            e?.toFloorInfo?.toFloor?.split('-')?.[0] === rooms[0].code,
         );
-        if (startId && neigh) {
-          return nodes[startId];
+        if (endId && neigh) {
+          return nodes[endId];
         }
         return node;
       });
   }
+
   if (rooms[1].id) {
     end = [Object.values(nodes).find((e) => e.roomId == rooms[1].id)];
   } else {
@@ -164,8 +169,12 @@ function findPath(
         );
       })
       .map((node) => {
+        if (outsideRooms['rooms'][node.roomId]?.name === rooms[1]?.code) {
+          return node;
+        }
         const [endId, neigh] = Object.entries(node.neighbors || {}).find(
-          ([id, e]) => e?.toFloorInfo?.toFloor.split('-')[0] === rooms[1].code,
+          ([id, e]) =>
+            e?.toFloorInfo?.toFloor?.split('-')?.[0] === rooms[1].code,
         );
         if (endId && neigh) {
           return nodes[endId];

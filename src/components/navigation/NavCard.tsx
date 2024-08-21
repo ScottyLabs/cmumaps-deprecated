@@ -68,9 +68,9 @@ const NavCard = ({ map }: Props) => {
           }
         })
         .then((j) => {
-          if (j.Fastest.error) {
+          if (j.Fastest && j.Fastest.error) {
             toast.error('Sorry, we are not able to find a path :(');
-          } else if (j.Alternative.error) {
+          } else if (j.Alternative && j.Alternative.error) {
             dispatch(setRecommendedPath({ Fastest: j.Fastest }));
             dispatch(setSelectedPathName('Fastest'));
           } else {
