@@ -223,6 +223,7 @@ const Events = ({ map }: Props) => {
                     onClick={handleClick(subEvent.roomName)}
                   >
                     <p className="text-gray-700">{subEvent.subGroup}</p>
+                    <p className="text-gray-500">{subEvent.time}</p>
                     <p className="text-gray-500">{subEvent.location}</p>
                   </button>
                 );
