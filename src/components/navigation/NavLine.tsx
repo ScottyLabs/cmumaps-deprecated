@@ -14,6 +14,11 @@ import React, { useEffect, useState } from 'react';
 import { Node } from '@/app/api/findPath/route';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
+interface IconInfo {
+  coordinate: Coordinate;
+  icon: StaticImport;
+  className?: string;
+}
 interface Props {
   map: mapkit.Map;
 }
@@ -37,6 +42,9 @@ const NavLine = ({ map }: Props) => {
   const [curFloorPath, setCurFloorPath] = useState<Node[] | null>(null);
   const [restPath, setRestPath] = useState<Node[] | null>(null);
 
+  const [iconInfos, setIconInfos] = useState<IconInfo[]>([]);
+
+  // calculate curFloorPath and restPath
   useEffect(() => {
     if (
       startedNavigation &&
@@ -69,6 +77,7 @@ const NavLine = ({ map }: Props) => {
     }
   }, [curFloorIndex, recommendedPath, selectedPathName, startedNavigation]);
 
+  // render the polylines so they stay on top
   useEffect(() => {
     const getPathOverlay = (): mapkit.PolylineOverlay[] | null => {
       if (startedNavigation) {
@@ -166,7 +175,8 @@ const NavLine = ({ map }: Props) => {
     dispatch,
   ]);
 
-  const renderIcon = () => {
+  // calculate the icons (annotations)
+  useEffect(() => {
     if (recommendedPath) {
       const calculateIcon = (path: Node[] | null) => {
         if (!path) {
@@ -250,26 +260,20 @@ const NavLine = ({ map }: Props) => {
 
       const addStartEndIcons = () => {
         const path = recommendedPath[selectedPathName].path;
-        iconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
-        iconInfos.push({
+        newIconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
+        newIconInfos.push({
           coordinate: path[path.length - 1].coordinate,
           icon: endIcon,
         });
       };
 
-      interface IconInfo {
-        coordinate: Coordinate;
-        icon: StaticImport;
-        className?: string;
-      }
-
-      let iconInfos: IconInfo[] = [];
+      let newIconInfos: IconInfo[] = [];
 
       addStartEndIcons();
 
       if (startedNavigation) {
-        iconInfos = [
-          ...iconInfos,
+        newIconInfos = [
+          ...newIconInfos,
           ...calculateIcon(curFloorPath),
           ...calculateIcon(restPath).map((iconInfo) => ({
             ...iconInfo,
@@ -277,31 +281,37 @@ const NavLine = ({ map }: Props) => {
           })),
         ];
       } else {
-        iconInfos = [
-          ...iconInfos,
+        newIconInfos = [
+          ...newIconInfos,
           ...calculateIcon(recommendedPath[selectedPathName].path),
         ];
       }
 
-      return iconInfos.map((iconInfo, index) => (
-        <Annotation
-          key={index}
-          latitude={iconInfo.coordinate.latitude}
-          longitude={iconInfo.coordinate.longitude}
-          displayPriority={'required'}
-        >
-          <Image
-            src={iconInfo.icon}
-            alt="Icon"
-            height={40}
-            className={iconInfo.className}
-          />
-        </Annotation>
-      ));
+      setIconInfos(newIconInfos);
     }
-  };
+  }, [
+    recommendedPath,
+    startedNavigation,
+    selectedPathName,
+    curFloorPath,
+    restPath,
+  ]);
 
-  return renderIcon();
+  return iconInfos.map((iconInfo, index) => (
+    <Annotation
+      key={index}
+      latitude={iconInfo.coordinate.latitude}
+      longitude={iconInfo.coordinate.longitude}
+      displayPriority={'required'}
+    >
+      <Image
+        src={iconInfo.icon}
+        alt="Icon"
+        height={40}
+        className={iconInfo.className}
+      />
+    </Annotation>
+  ));
 };
 
 export default NavLine;
