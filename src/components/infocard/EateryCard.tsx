@@ -3,7 +3,7 @@ import { ImSpoonKnife } from 'react-icons/im';
 
 import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
-import { eateryRoomToId } from '@/util/eateryUtils';
+import { getEateryId } from '@/util/eateryUtils';
 
 import ButtonsRow, { renderMiddleButtonHelper } from './ButtonsRow';
 import CardWrapper from './CardWrapper';
@@ -21,8 +21,7 @@ const Eaterycard = ({ room }: Props) => {
     return;
   }
 
-  const id = eateryRoomToId[room.floor.buildingCode + ' ' + room.name];
-  const eateryInfo = eateryData[id];
+  const eateryInfo = eateryData[getEateryId(room)];
 
   const renderEateryImage = () => {
     if (eateryInfo) {

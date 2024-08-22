@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EateryInfo, EateryData, LocationState, SearchRoom } from '@/types';
+import {
+  EateryInfo,
+  EateryData,
+  LocationState,
+  SearchRoom,
+  Room,
+} from '@/types';
 
 const daysOfWeek = [
   'Sunday', // 0
@@ -170,8 +176,12 @@ export const getEateryData = async (): Promise<EateryData> => {
   return EateryInfo;
 };
 
-export const eateryRoomToId = {
+const eateryRoomToId = {
   'CUC 231': '174',
+};
+
+export const getEateryId = (room: Room | SearchRoom) => {
+  return eateryRoomToId[room.floor.buildingCode + ' ' + room.name];
 };
 
 export const sortEateries = (
@@ -187,8 +197,8 @@ export const sortEateries = (
   ];
 
   eateries.sort((eatery1, eatery2) => {
-    const eateryInfo1 = eateryData[eatery1.alias.toUpperCase()];
-    const eateryInfo2 = eateryData[eatery2.alias.toUpperCase()];
+    const eateryInfo1 = eateryData[getEateryId(eatery1)];
+    const eateryInfo2 = eateryData[getEateryId(eatery2)];
 
     if (eateryInfo1 && eateryInfo2) {
       if (eateryInfo1.locationState == eateryInfo2.locationState) {
@@ -201,6 +211,14 @@ export const sortEateries = (
           locationStateOrder.indexOf(eateryInfo1.locationState) -
           locationStateOrder.indexOf(eateryInfo2.locationState)
         );
+      }
+    } else {
+      if (eateryInfo1) {
+        return -1;
+      } else if (eateryInfo2) {
+        return 1;
+      } else {
+        return 0;
       }
     }
   });

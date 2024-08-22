@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
-import { sortEateries } from '@/util/eateryUtils';
+import { getEateryId, sortEateries } from '@/util/eateryUtils';
 
 import { zoomOnObject, zoomOnRoom } from '../../buildings/mapUtils';
 import EateryInfoDisplay from '../../infocard/EateryInfoDisplay';
@@ -86,7 +86,7 @@ const FoodSearchResults = ({ map, query }: Props) => {
     sortEateries(eateries, eateryData);
 
     return eateries.map((eatery: SearchRoom) => {
-      const eateryInfo = eateryData[eatery.alias.toUpperCase()];
+      const eateryInfo = eateryData[getEateryId(eatery)];
 
       return (
         <SearchResultWrapper
