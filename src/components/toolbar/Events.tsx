@@ -17,9 +17,8 @@ interface EventInfo {
   name: string;
   location: string;
   time: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  subEvents?: any[];
-  roomName?: string;
+  subEvents?: EventInfo[];
+  room?: string;
   featured?: boolean;
 }
 
@@ -218,11 +217,11 @@ const Events = ({ map }: Props) => {
               eventInfo.subEvents.map((subEvent) => {
                 return (
                   <button
-                    key={subEvent.subGroup}
+                    key={subEvent.name}
                     className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
-                    onClick={handleClick(subEvent.roomName)}
+                    onClick={handleClick(subEvent.room)}
                   >
-                    <p className="text-gray-700">{subEvent.subGroup}</p>
+                    <p className="text-gray-700">{subEvent.name}</p>
                     <p className="text-gray-500">{subEvent.time}</p>
                     <p className="text-gray-500">{subEvent.location}</p>
                   </button>
@@ -257,7 +256,7 @@ const Events = ({ map }: Props) => {
           >
             <button
               className="w-full text-left"
-              onClick={handleClick(eventInfo.roomName)}
+              onClick={handleClick(eventInfo.room)}
             >
               {eventInfo.featured && (
                 <div className="relative">
