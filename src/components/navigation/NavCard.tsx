@@ -58,7 +58,7 @@ const NavCard = ({ map }: Props) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ rooms: [startLocation, endLocation] }),
+        body: JSON.stringify({ waypoints: [startLocation, endLocation] }),
       })
         .then((r) => {
           try {
@@ -164,7 +164,7 @@ const NavCard = ({ map }: Props) => {
     return renderRoomInput(endLocation, placeHolder, endIcon, handleClick);
   };
 
-  const renderPathInfo = (pathName: string) => {
+  const renderPathInfo = (pathName: string, distanceMeters: number) => {
     return (
       <div key={pathName} className="flex w-full justify-center">
         <button
@@ -187,8 +187,8 @@ const NavCard = ({ map }: Props) => {
               </div>
             </div>
             <div className="text-right">
-              <p>Time Placeholder</p>
-              <p>Distance Placeholder</p>
+              <p>{((distanceMeters / 1609) * 20).toFixed(1)} mins.</p>
+              <p>{(distanceMeters / 1609).toFixed(2)} mi.</p>
             </div>
           </div>
         </button>
@@ -200,8 +200,9 @@ const NavCard = ({ map }: Props) => {
     return (
       recommendedPath && (
         <div className="my-2 space-y-2">
-          {Object.keys(recommendedPath).map((pathName) =>
-            renderPathInfo(pathName),
+          {Object.entries(recommendedPath).map(
+            ([pathName, { path, distance }]) =>
+              renderPathInfo(pathName, distance),
           )}
         </div>
       )

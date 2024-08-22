@@ -1,26 +1,11 @@
 import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
 import fs from 'fs';
-import { Position } from 'geojson';
-import { Coordinate } from 'mapkit-react';
 import { NextRequest } from 'next/server';
 import path from 'path';
 
-import { Building, Placement, Room } from '@/types';
-import { latitudeRatio, longitudeRatio } from '@/util/geometry';
+import { Building, Floor } from '@/types';
 
-export type Node = {
-  pos: { x: number; y: number };
-  neighbors: {
-    [neighborId: string]: {
-      dist: number;
-      toFloorInfo: { toFloor: string; type: string };
-    };
-  };
-  roomId: string;
-  floor: string;
-  coordinate: Coordinate;
-  id: string;
-};
+import { MaybeRoute, Node, Route, Waypoint } from './types';
 
 const outsideRooms = JSON.parse(
   fs.readFileSync(
@@ -32,168 +17,45 @@ const outsideRooms = JSON.parse(
   ),
 );
 
-const bridges = [
-  'eb1d6e15-a052-4df0-bc0b-fa70feeea3d6',
-  '1a7b853f-cb9b-44d0-a1ec-c339c13b83bd',
-];
-
-const buildings: Record<string, Building> = JSON.parse(
+const allNodes: Record<string, Node> = JSON.parse(
   fs.readFileSync(
-    path.resolve(process.cwd(), './public/json/buildings.json'),
+    path.resolve(process.cwd(), './public/json/all_graph.json'),
     'utf8',
   ),
 );
-const allFloors = Object.entries(buildings)
-  .map(([code, building]) => getAllFloorNames({ code, ...building }))
-  .flat(2);
 
-let nodes2 = {};
-// const floorPath2 = iter.next().value || [startFloorName, endFloorName];
-for (const floorName of allFloors.concat(['outside-1'])) {
-  const graphPath = path.resolve(
-    process.cwd(),
-    `./public/json/floor_plan/${floorName.split('-')[0]}/`,
-    `${floorName}-graph.json`,
-  );
-  if (!fs.existsSync(graphPath)) {
-    continue;
-  }
+const high_level_graph: Record<string, [string, string][]> = JSON.parse(
+  fs.readFileSync(
+    path.resolve(process.cwd(), `./public/json/high_level_floor_plan.json`),
+    'utf8',
+  ),
+);
 
-  const f: { [id: string]: Node } = JSON.parse(
-    fs.readFileSync(graphPath, 'utf-8'),
-  );
-
-  Object.keys(f).forEach((id: string) => {
-    const node = f[id];
-    f[id] = {
-      ...node,
-      floor: floorName,
-      id,
-    };
-  });
-  nodes2 = { ...nodes2, ...f };
-}
-export interface GraphResponse {
-  nodes: { [nodeId: string]: Node };
-}
-
-export function rotate(x: number, y: number, angle: number): number[] {
-  const radians = (Math.PI / 180) * angle;
-  const cos = Math.cos(radians);
-  const sin = Math.sin(radians);
-  const nx = cos * x + sin * y;
-  const ny = cos * y - sin * x;
-  return [nx, ny];
-}
-
-export const positionOnMap = (
-  absolute: Position,
-  placement: Placement,
-  center: Position,
-) => {
-  const [absoluteY, absoluteX] = rotate(
-    absolute[0] - center[0],
-    absolute[1] - center[1],
-    placement.angle,
-  );
-  return {
-    latitude:
-      absoluteY / latitudeRatio / placement.scale + placement.center.latitude,
-    longitude:
-      absoluteX / longitudeRatio / placement.scale + placement.center.longitude,
-  };
-};
-
-interface Path {
+// The 'search nodes' in the dijkstra's graph
+interface PathNode {
   node: Node;
   currPath: Node[];
   length: number;
 }
 
-const comparePaths: ICompare<Path> = (a: Path, b: Path) => a.length - b.length;
+const comparePaths: ICompare<PathNode> = (a: PathNode, b: PathNode) =>
+  a.length - b.length;
 
 // Dijkstras algorithm to search from room 1 to room 2
 function findPath(
-  rooms: Room[],
-  nodes: { [nodeId: string]: Node },
-): { path: Node[]; distance: number } | { error: string } {
-  let start;
-  let end;
-  if (rooms[0].id) {
-    start = [Object.values(nodes).find((e) => e.roomId == rooms[0].id)];
-  } else {
-    // Find a node with the building code
-    start = Object.values(nodes)
-      .filter((e) => {
-        return (
-          (e.floor == 'outside-1' || bridges.includes(e.roomId)) &&
-          (outsideRooms['rooms'][e.roomId]?.name === rooms[0]?.code ||
-            Object.entries(e.neighbors).some(
-              ([id, f]) =>
-                f?.toFloorInfo &&
-                f?.toFloorInfo.toFloor.split('-')[0] === rooms[0].code &&
-                nodes[id],
-            ))
-        );
-      })
-      .map((node) => {
-        if (outsideRooms['rooms'][node.roomId]?.name === rooms[0]?.code) {
-          return node;
-        }
-        const [endId, neigh] = Object.entries(node.neighbors || {}).find(
-          ([id, e]) =>
-            e?.toFloorInfo?.toFloor?.split('-')?.[0] === rooms[0].code,
-        );
-        if (endId && neigh) {
-          return nodes[endId];
-        }
-        return node;
-      });
-  }
+  start: Node[],
+  end: Node[],
+  nodesFilter: (node: Node) => boolean = () => true,
+  transitionFilter: ([string, Edge]) => boolean = () => true,
+  stairsCost = 15, // cost of taking stairs in Meters
+): MaybeRoute {
+  const nodes = allNodes;
 
-  if (rooms[1].id) {
-    end = [Object.values(nodes).find((e) => e.roomId == rooms[1].id)];
-  } else {
-    // Find a node with the building code
-    end = Object.values(nodes)
-      .filter((e) => {
-        return (
-          (e.floor == 'outside-1' || bridges.includes(e.roomId)) &&
-          (outsideRooms['rooms'][e.roomId]?.name === rooms[1]?.code ||
-            Object.entries(e.neighbors).some(
-              ([id, f]) =>
-                f?.toFloorInfo &&
-                f?.toFloorInfo.toFloor.split('-')[0] === rooms[1].code &&
-                nodes[id],
-            ))
-        );
-      })
-      .map((node) => {
-        if (outsideRooms['rooms'][node.roomId]?.name === rooms[1]?.code) {
-          return node;
-        }
-        const [endId, neigh] = Object.entries(node.neighbors || {}).find(
-          ([id, e]) =>
-            e?.toFloorInfo?.toFloor?.split('-')?.[0] === rooms[1].code,
-        );
-        if (endId && neigh) {
-          return nodes[endId];
-        }
-        return node;
-      });
-  }
-  console.log(start[0], end[0], 'SE');
-
-  if (!start) {
-    return { error: 'Start room not found' };
-  } else if (!end) {
-    return { error: 'End room not found' };
-  }
-  // Dijkstras algorithm
+  // Dijkstras algorithm, performed over all start nodes
   const paths = start.map((s) => {
     const visited = new Set();
 
-    const queue = new PriorityQueue<Path>(comparePaths);
+    const queue = new PriorityQueue<PathNode>(comparePaths);
     queue.enqueue({
       node: s,
       currPath: [s],
@@ -206,136 +68,151 @@ function findPath(
       if (!node) {
         continue;
       }
-      if (end.map((e) => e?.pos || false).includes(node.pos)) {
+
+      // Supports multiple end nodes
+      if (end.map((e) => e.pos).includes(node.pos)) {
         return { path: currPath, distance: length };
       }
+
       if (!visited.has(node)) {
         visited.add(node);
 
-        Object.entries(node.neighbors).forEach((neigh) => {
-          const n_id = neigh[0];
-          const n_dist = neigh[1]['dist'] < 0 ? 0.001 : neigh[1]['dist'];
-          const nextNode = nodes[n_id];
-          if (!nextNode) {
-            return;
-          }
-          queue.enqueue({
-            node: nextNode,
-            currPath: [...currPath, nextNode],
-            length: length + n_dist,
+        Object.entries(node.neighbors)
+          .filter(transitionFilter)
+          .filter(([id, neighbor]) => nodesFilter(nodes[id]))
+          .forEach(([n_id, neighbor]) => {
+            const n_dist = neighbor.dist < 0 ? stairsCost : neighbor.dist;
+            const nextNode = nodes[n_id];
+            if (!nextNode) {
+              return;
+            }
+            queue.enqueue({
+              node: nextNode,
+              currPath: [...currPath, nextNode],
+              length: length + n_dist,
+            });
           });
-        });
       }
     }
     return { error: 'Path not found' };
   });
 
-  const goodpaths = paths.filter((p) => !!p.path);
-  goodpaths.sort((a, b) => a.distance - b.distance);
-  console.log(goodpaths, 'PATH');
-  return goodpaths[0] || { error: 'Path not found' };
+  let shortestRoute: Route | null = null;
+  for (const route of paths) {
+    if (
+      route.distance &&
+      (!shortestRoute || route.distance < shortestRoute.distance)
+    ) {
+      shortestRoute = route;
+    }
+  }
+
+  return shortestRoute || { error: 'Path not found' };
 }
 
-function getAllFloorNames(building: Building): string[][] {
-  return (building.floors || []).map((floor) => {
-    return [building.code + '-' + floor];
-  });
-}
+const waypointToNodes = (
+  waypoint: Waypoint,
+  nodesFilter: (node: Node) => boolean = () => true,
+): Node[] | null => {
+  const nodes = Object.values(allNodes).filter(nodesFilter);
 
-export async function POST(req: NextRequest) {
-  const { rooms } = await req.json();
-  if (!rooms || rooms.length !== 2) {
-    return Response.json({ error: 'Invalid rooms' }, { status: 400 });
+  if ('id' in waypoint) {
+    // Waypoint is a Room
+    const node = nodes.find((e: Node) => e.roomId == waypoint.id);
+    if (!node) {
+      return null;
+    }
+    return [node];
   }
-  const isActuallyBuilding = !(rooms[0].floor && rooms[1].floor);
-  const startFloorName = rooms[0].floor
-    ? rooms[0].floor.buildingCode + '-' + rooms[0].floor.level
-    : rooms[0].code + '-' + rooms[0].defaultFloor;
-  const endFloorName = rooms[1].floor
-    ? rooms[1].floor.buildingCode + '-' + rooms[1].floor.level
-    : rooms[1].code + '-' + rooms[1].defaultFloor;
+  if ('code' in waypoint) {
+    // Waypoint is a Building, 2 cases: building without floorplan, building with floorplan
+    const building = waypoint as Building;
+    if (!building?.floors?.length) {
+      // Building without floorplan, just get it from outside
+      const buildingNodes = nodes.filter(
+        (e: Node) => outsideRooms['rooms'][e.roomId]?.name === building.code,
+      );
+      return buildingNodes.length ? buildingNodes : null;
+    }
+    // Building with floorplan, find all nodes in the building linked to outside
+    const buildingNodes = nodes.filter(
+      (e: Node) =>
+        e.floor.buildingCode == building.code &&
+        Object.values(e.neighbors).some(
+          (neigh) => neigh?.toFloorInfo?.toFloor == 'outside-1',
+        ),
+    );
+    return buildingNodes.length ? buildingNodes : null;
+  }
+  return null;
+};
 
-  const high_level_path = JSON.parse(
-    fs.readFileSync(
-      path.resolve(process.cwd(), `./public/json/high_level_floor_plan.json`),
-      'utf8',
-    ),
-  );
-  if (!high_level_path[startFloorName] || !high_level_path[endFloorName]) {
-    return Response.json({
-      Fastest: findPath(rooms, nodes2),
-    });
-  }
+const waypointToFloor = (waypoint: Waypoint): string | null =>
+  'floor' in waypoint
+    ? waypoint.floor.buildingCode + '-' + waypoint.floor.level // if is room
+    : (waypoint as Building).code + '-' + (waypoint as Building).defaultFloor;
+
+const highLevelPath = (
+  startFloor: string,
+  endFloor: string,
+): string[] | null => {
   const explored = new Set();
-  const queue = [[startFloorName]];
-  let current = [];
-  const options = new Set();
+  const queue = [[startFloor]];
+  const endFloorName = endFloor;
+  let current: string[] = [];
   while (queue.length) {
-    current = queue.shift();
+    current = queue.shift() || [];
     if (current[0] === endFloorName) {
-      options.add(current);
-      if (options.size > 1) {
-        break;
-      }
-      continue;
+      return current;
     }
     explored.add(current[0]);
-    Object.values(high_level_path[current[0]])
+    Object.values(high_level_graph[current[0]])
       .filter((n) => !explored.has(n))
       .forEach((neighbor) => {
         queue.push([neighbor[0], ...current]);
       });
   }
+  return null;
+};
 
-  const iter = options.values();
-  let nodes1 = {};
-  const floorPath1 = iter.next().value || [startFloorName, endFloorName];
-  for (const floorName of floorPath1.concat(
-    isActuallyBuilding ? ['outside-1'] : [],
-  )) {
-    const graphPath = path.resolve(
-      process.cwd(),
-      `./public/json/floor_plan/${floorName.split('-')[0]}/`,
-      `${floorName}-graph.json`,
-    );
-    if (!fs.existsSync(graphPath)) {
-      continue;
-    }
-    const f: { [id: string]: Node } = JSON.parse(
-      fs.readFileSync(graphPath, 'utf-8'),
-    );
-
-    Object.keys(f).forEach((id: string) => {
-      const node = f[id];
-      f[id] = {
-        ...node,
-        floor: floorName,
-        id,
-      };
-    });
-    nodes1 = { ...nodes1, ...f };
+export async function POST(req: NextRequest) {
+  const { waypoints } = await req.json();
+  if (!waypoints || waypoints.length !== 2) {
+    return Response.json({ error: 'Invalid waypoints' }, { status: 400 });
   }
-  console.log('IMHERE', floorPath1);
 
-  // const path1 = findPath(rooms, nodes1);
-  // const path2 = findPath(rooms, nodes2);
+  const [startFloorName, endFloorName] = waypoints.map(waypointToFloor);
+  const [startNodes, endNodes] = waypoints.map((waypoint) =>
+    waypointToNodes(waypoint),
+  );
 
-  // if (path1['error']) {
-  //   return Response.json({
-  //     Fastest: path2,
-  //   });
-  // } else if (path2['error']) {
-  //   return Response.json({
-  //     Fastest: path1,
-  //   });
-  // }
-  const paths = [findPath(rooms, nodes1), findPath(rooms, nodes2)];
-  // if (paths[0]['error'] && paths[1]['error']) {
-  //   return Response.json({
-  //     error: 'Path not found',
-  //   });
-  // }
-  console.log(paths, 'PATHS');
+  if (!startNodes || !endNodes) {
+    return Response.json(
+      { error: 'Cannot find nodes for waypoints' },
+      { status: 400 },
+    );
+  }
+
+  const allowFloors = highLevelPath(startFloorName, endFloorName);
+
+  if (
+    !high_level_graph[startFloorName] ||
+    !high_level_graph[endFloorName] ||
+    !allowFloors
+  ) {
+    return Response.json({
+      Fastest: findPath(startNodes, endNodes),
+    });
+  }
+
+  const nodeFilter = (node) =>
+    allowFloors.includes(node.floor.buildingCode + '-' + node.floor.level);
+
+  const paths = [
+    findPath(startNodes, endNodes, nodeFilter),
+    findPath(startNodes, endNodes),
+  ];
+  console.log(paths[0], allowFloors);
   // Find the path
   return Response.json({
     Fastest: paths[1],

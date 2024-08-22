@@ -239,8 +239,7 @@ const NavLine = ({ map }: Props) => {
 
         // the next one is a stairs and the last one is not an stairs
         if (nextStairs && lastNotStairs) {
-          const up =
-            path[i].floor.split('-')[1] < path[i + 1].floor.split('-')[1];
+          const up = path[i].floor.level < path[i + 1].floor.level;
 
           if (up) {
             iconInfos.push({
