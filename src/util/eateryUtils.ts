@@ -177,7 +177,10 @@ export const getEateryData = async (): Promise<EateryData> => {
 };
 
 const eateryRoomToId = {
-  'CUC 231': '174',
+  'CUC 220': 113,
+  'TEP 2016': 175,
+  'CUC 233B': 184,
+  'CUC 231': 174,
 };
 
 export const getEateryId = (room: Room | SearchRoom) => {
