@@ -50,7 +50,7 @@ def position_on_map(
     center: tuple[float, float],
 ) -> dict[str, float]:
     absolute_y, absolute_x = rotate(
-        absolute["x"] - center[0], absolute["y"] - center[1], placement["angle"]
+        float(absolute["x"]) - center[0], float(absolute["y"]) - center[1], placement["angle"]
     )
 
     return {
