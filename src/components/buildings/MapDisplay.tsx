@@ -28,7 +28,7 @@ import BuildingShape from './BuildingShape';
 import FloorPlanOverlay from './FloorPlanOverlay';
 
 //#region Constants
-const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 400_000;
+const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 200_000;
 const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 750_000;
 
 const cameraBoundary = {
