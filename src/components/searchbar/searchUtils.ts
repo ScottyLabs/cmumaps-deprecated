@@ -57,11 +57,28 @@ export const searchRoom = (
   if (query.length == 0 && mode == 'rooms') {
     return [];
   }
-
+  console.log(Object.values(buildings));
   return Object.values(buildings)
+    .concat([
+      {
+        code: 'OUT',
+        name: 'Outside',
+        floors: ['1'],
+        defaultFloor: '1',
+        defaultOrdinal: 0,
+        labelPosition: { latitude: 40.443, longitude: -79.943 },
+        shapes: [],
+        hitbox: null,
+      },
+    ])
     .map((building: Building) => ({
       Building: building,
-      Rooms: findRooms(query, building, searchMap[building.code], mode),
+      Rooms: findRooms(
+        query,
+        building,
+        searchMap[building.code == 'OUT' ? 'outside' : building.code],
+        mode,
+      ),
     }))
     .filter(
       (buildingResult) =>
@@ -124,7 +141,11 @@ const findRooms = (
       return (
         Object.values(roomsObj)
           .filter((room: SearchRoom) => {
-            if (mode != 'rooms' && room.type != modeToType[mode]) {
+            if (
+              (mode != 'rooms' && room.type != modeToType[mode]) ||
+              !room.name ||
+              (room.floor.buildingCode == 'outside' && room.name.length <= 3)
+            ) {
               return false;
             }
             if (queryTokens.length == 0) {
