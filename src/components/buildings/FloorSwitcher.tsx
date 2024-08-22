@@ -9,7 +9,6 @@ import {
   getIsCardOpen,
   selectBuilding,
   setFocusedFloor,
-  setIsFloorPlanRendered,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -65,7 +64,6 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           className={canGoDown ? '' : 'text-gray-300'}
           disabled={!canGoDown}
           onClick={() => {
-            dispatch(setIsFloorPlanRendered(false));
             dispatch(
               setFocusedFloor({
                 buildingCode: building.code,
@@ -115,7 +113,6 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           className={canGoUp ? '' : 'text-gray-300'}
           disabled={!canGoUp}
           onClick={() => {
-            dispatch(setIsFloorPlanRendered(false));
             dispatch(
               setFocusedFloor({
                 buildingCode: building.code,
@@ -158,7 +155,6 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
               }
               onClick={() => {
                 setShowFloorPicker(false);
-                dispatch(setIsFloorPlanRendered(false));
                 dispatch(
                   setFocusedFloor({
                     buildingCode: building.code,

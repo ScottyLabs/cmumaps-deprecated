@@ -89,7 +89,7 @@ const NavCard = ({ map }: Props) => {
           className="cursor-pointer text-gray-500"
           onClick={() => {
             if (startedNavigation) {
-              dispatch(setCurFloorIndex(0));
+              dispatch(setCurFloorIndex(-1));
               dispatch(setStartedNavigation(false));
             } else {
               dispatch(setRecommendedPath(null));

@@ -11,7 +11,7 @@ import { Building, Floor, FloorPlanMap, ID } from '@/types';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 const setIsZoomingAsync = (isZooming: boolean) => {
-  return (dispatch) => {
+  return (dispatch: Dispatch) => {
     return new Promise<void>((resolve) => {
       dispatch(setIsZooming(isZooming));
       resolve();

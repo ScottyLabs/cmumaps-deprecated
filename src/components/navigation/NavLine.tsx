@@ -34,7 +34,6 @@ const NavLine = ({ map }: Props) => {
     (state) => state.nav.startedNavigation,
   );
   const curFloorIndex = useAppSelector((state) => state.nav.curFloorIndex);
-  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isFloorPlanRendered = useAppSelector(
     (state) => state.ui.isFloorPlanRendered,
   );
@@ -171,14 +170,7 @@ const NavLine = ({ map }: Props) => {
         map.removeOverlays(pathOverlay);
       }
     };
-  }, [
-    map,
-    map.region,
-    pathOverlay,
-    focusedFloor,
-    isFloorPlanRendered,
-    dispatch,
-  ]);
+  }, [map, map.region, pathOverlay, isFloorPlanRendered, dispatch]);
 
   // calculate the icons (annotations)
   useEffect(() => {
