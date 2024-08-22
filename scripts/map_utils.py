@@ -54,3 +54,9 @@ def position_on_map(
         + placement["center"]["longitude"],
     }
 
+def get_latlong_dist(point1: dict, point2: dict):
+    lat1, lon1 = point1.values()
+    lat2, lon2 = point2.values()
+    latdiffM = (lat2 - lat1) * latitude_ratio
+    londiffM = (lon2 - lon1) * longitude_ratio
+    return math.sqrt(latdiffM**2 + londiffM**2)
