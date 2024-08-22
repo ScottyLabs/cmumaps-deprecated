@@ -274,9 +274,10 @@ export type LocationState =
   | 'CLOSED'
   | 'CLOSED_LONG_TERM';
 
-export type EateryName = string;
+// conceptId of the eatery
+export type EateryId = number;
 export interface EateryInfo {
-  name: EateryName;
+  name: string;
   url: string;
   shortDescription: string;
   statusMsg: string;
@@ -284,7 +285,7 @@ export interface EateryInfo {
   hoursUntilStateChange: number;
 }
 
-export type EateryData = Record<EateryName, EateryInfo>;
+export type EateryData = Record<EateryId, EateryInfo>;
 
 export type Department = string;
 export type CourseCode = string;
