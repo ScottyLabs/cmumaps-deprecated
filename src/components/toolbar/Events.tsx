@@ -19,6 +19,7 @@ interface EventInfo {
   time: string;
   subEvents?: EventInfo[];
   room?: string;
+  building?: string;
   featured?: boolean;
 }
 
@@ -113,7 +114,15 @@ const Events = ({ map }: Props) => {
     }
   }, [dayOfWeek, eventData]);
 
-  const handleClick = (room: string | undefined) => () => {
+  const handleClick = (eventInfo: EventInfo) => () => {
+    const building = eventInfo.building;
+
+    if (building) {
+      router.push(building);
+      return;
+    }
+
+    const room = eventInfo.room;
     if (!room) {
       toast.error("Sorry, we can't find the location for this event :(");
       return;
@@ -219,7 +228,7 @@ const Events = ({ map }: Props) => {
                   <button
                     key={subEvent.name}
                     className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
-                    onClick={handleClick(subEvent.room)}
+                    onClick={handleClick(subEvent)}
                   >
                     <p className="text-gray-700">{subEvent.name}</p>
                     <p className="text-gray-500">{subEvent.time}</p>
@@ -256,7 +265,7 @@ const Events = ({ map }: Props) => {
           >
             <button
               className="w-full text-left"
-              onClick={handleClick(eventInfo.room)}
+              onClick={handleClick(eventInfo)}
             >
               {eventInfo.featured && (
                 <div className="relative">
