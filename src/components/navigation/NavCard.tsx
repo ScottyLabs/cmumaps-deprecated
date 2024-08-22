@@ -198,11 +198,13 @@ const NavCard = ({ map }: Props) => {
 
   const renderPathWrapper = () => {
     return (
-      <div className="my-2 space-y-2">
-        {Object.keys(recommendedPath).map((pathName) =>
-          renderPathInfo(pathName),
-        )}
-      </div>
+      recommendedPath && (
+        <div className="my-2 space-y-2">
+          {Object.keys(recommendedPath).map((pathName) =>
+            renderPathInfo(pathName),
+          )}
+        </div>
+      )
     );
   };
 
@@ -242,14 +244,15 @@ const NavCard = ({ map }: Props) => {
     return (
       <>
         {!startedNavigation ? renderGoButton() : renderCancelButton()}
-        {!startedNavigation ? (
-          renderPathWrapper()
-        ) : (
-          <NavDirections
-            path={recommendedPath[selectedPathName].path}
-            map={map}
-          />
-        )}
+        {!startedNavigation
+          ? renderPathWrapper()
+          : recommendedPath &&
+            map && (
+              <NavDirections
+                path={recommendedPath[selectedPathName].path}
+                map={map}
+              />
+            )}
       </>
     );
   };

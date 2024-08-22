@@ -27,7 +27,7 @@ const NavDirections = ({ map, path }: Props) => {
   useEffect(() => {
     if (path) {
       const passedByRooms: Room[] = [];
-      const newPassedByFloors = [];
+      const newPassedByFloors: string[] = [];
       for (const node of path) {
         if (
           !newPassedByFloors.at(-1) ||
@@ -36,7 +36,7 @@ const NavDirections = ({ map, path }: Props) => {
           newPassedByFloors.push(node.floor);
         }
 
-        if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
+        if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1)?.id) {
           const floorArr = node.floor.split('-');
           const buildingCode = floorArr[0];
           const level = floorArr[1];
@@ -86,6 +86,10 @@ const NavDirections = ({ map, path }: Props) => {
   };
 
   const renderRoomsOnFloor = (curFloor: string) => {
+    if (!passedByRooms) {
+      return;
+    }
+
     const curRooms = passedByRooms.filter(
       (room) =>
         room.floor.buildingCode + '-' + room.floor.level == curFloor &&
@@ -121,9 +125,7 @@ const NavDirections = ({ map, path }: Props) => {
             <button
               key={index}
               className={'w-full p-1 text-left ' + getBgClass(index)}
-              onClick={() => {
-                dispatch(setCurFloorIndex(index));
-              }}
+              onClick={() => dispatch(setCurFloorIndex(index))}
             >
               <p
                 className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}
