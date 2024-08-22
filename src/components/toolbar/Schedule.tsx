@@ -158,7 +158,7 @@ const Schedule = () => {
   };
 
   return (
-    <CollapsibleWrapper title="Schedule" defaultOpenState={false}>
+    <CollapsibleWrapper title="Schedule">
       <div className="space-y-2 pb-2">
         {scheduleData.length > 0 ? renderSchedule() : renderNoSchedule()}
       </div>
