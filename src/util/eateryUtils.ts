@@ -164,10 +164,14 @@ export const getEateryData = async (): Promise<EateryData> => {
   const EateryInfo: EateryData = {};
 
   for (const eatery of cmueatsData) {
-    EateryInfo[eatery.name] = parseEatery(eatery);
+    EateryInfo[eatery.conceptId] = parseEatery(eatery);
   }
 
   return EateryInfo;
+};
+
+export const eateryRoomToId = {
+  'CUC 231': '174',
 };
 
 export const sortEateries = (
