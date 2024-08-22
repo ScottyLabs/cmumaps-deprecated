@@ -180,6 +180,8 @@ const eateryRoomToId = {
   'CUC 220': 113,
   'TEP 2016': 175,
   'CUC 233B': 184,
+  'CUC 233C': 193,
+  'HL 110': 95,
   'CUC 231': 174,
 };
 
