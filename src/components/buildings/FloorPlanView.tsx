@@ -96,7 +96,7 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
                   >
                     {showRoomNames && <p>{room.name}</p>}
                     {room.alias && (
-                      <p className="w-10 text-wrap italic">{room.alias}</p>
+                      <p className="text-wrap italic">{room.alias}</p>
                     )}
                   </div>
                 )}
