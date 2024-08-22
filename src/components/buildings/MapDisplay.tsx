@@ -25,7 +25,10 @@ import { isInPolygonCoordinates } from '@/util/geometry';
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
 import BuildingShape from './BuildingShape';
-import FloorPlanOverlay from './FloorPlanOverlay';
+import FloorPlanOverlay, {
+  getFloorAtOrdinal,
+  getOrdinalOfFloor,
+} from './FloorPlanOverlay';
 
 //#region Constants
 const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 350_000;
@@ -168,18 +171,28 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           ) ?? null;
 
         if (centerBuilding) {
-          // only focus on the default floor of the center building if
-          // either no floor is selected or we are focusing on a different building
-          if (
-            !focusedFloor ||
-            buildings[focusedFloor.buildingCode].code != centerBuilding.code
-          ) {
+          // focus on the default floor of the center building if no floor is focused
+          if (!focusedFloor) {
             const newFocusFloor = {
               buildingCode: centerBuilding.code,
               level: centerBuilding.defaultFloor,
             };
 
             dispatch(setFocusedFloor(newFocusFloor));
+          }
+
+          // if we are focusing on a different building,
+          // then focus on the floor of the center building that is the same ordinal as the currently focused floor
+          else {
+            const focusedBuilding = buildings[focusedFloor.buildingCode];
+            if (focusedBuilding.code != centerBuilding.code) {
+              const newFocusFloor = getFloorAtOrdinal(
+                centerBuilding,
+                getOrdinalOfFloor(focusedBuilding, focusedFloor),
+              );
+
+              dispatch(setFocusedFloor(newFocusFloor));
+            }
           }
         }
       }
