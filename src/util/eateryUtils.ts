@@ -182,7 +182,21 @@ const eateryRoomToId = {
   'CUC 233B': 184,
   'CUC 233C': 193,
   'HL 110': 95,
+  'RES 121': 178,
+  'CUC 143': 103,
+  'POS A36': 92,
+  'CUC 140': 91,
+  'NSH 3403': 110,
+  'GHC 3101': 115,
+  'WEH 5000A': 94,
   'CUC 231': 174,
+  'CUC 202': 108,
+  'MI 401': 148,
+  'CUC 233A': 138,
+  'SC 4S101B': 155,
+  'CFA 134A': 84,
+  'TEP 2007': 136,
+  'RES 111': 82,
 };
 
 export const getEateryId = (room: Room | SearchRoom) => {
