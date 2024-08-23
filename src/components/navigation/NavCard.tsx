@@ -64,11 +64,14 @@ const NavCard = ({ map }: Props) => {
           try {
             return r.json();
           } catch {
-            return [];
+            return null;
           }
         })
+        .catch(() => {
+          return null;
+        })
         .then((j) => {
-          if (j.error) {
+          if (!j || j.error) {
             toast.error('Sorry, we are not able to find a path :(');
           } else {
             dispatch(setRecommendedPath(j));
