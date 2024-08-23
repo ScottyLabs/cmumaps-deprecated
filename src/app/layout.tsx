@@ -16,6 +16,14 @@ const lato = Lato({
 export const metadata: Metadata = {
   title: 'CMU Maps',
   description: 'Interactive map of the CMU campus',
+  appleWebApp: {
+    title: 'CMU Maps',
+    statusBarStyle: 'black-translucent',
+  },
+  manifest: '/manifest.json',
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
 };
 
 export default function RootLayout({
@@ -36,16 +44,6 @@ export default function RootLayout({
             />
             <meta name="description" content="Google Maps for CMU" />
             <script>const global = globalThis;</script>
-
-            {/* For PWA, next does not like these */}
-            {/* <meta name="mobile-web-app-capable" content="yes" />
-            <meta name="apple-mobile-web-app-capable" content="yes" />
-            <meta
-              name="apple-mobile-web-app-status-bar-style"
-              content="black-translucent"
-            /> */}
-            {/* <meta name="theme-color" content="#000000" /> */}
-            {/* <meta name="color-scheme" content="dark" /> */}
           </head>
 
           <body>{children}</body>

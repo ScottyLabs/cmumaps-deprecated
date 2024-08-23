@@ -1,0 +1,17 @@
+{
+  "short_name": "CMUMaps",
+  "name": "CMU Maps",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/assets/icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "scope": "/",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff"
+}
