@@ -231,11 +231,6 @@ export async function POST(req: NextRequest) {
   ];
 
   let resp = {};
-  if ('error' in paths[0]) {
-    resp = { error: 'Path not found' };
-    return Response.json(resp);
-  }
-
   if ('path' in paths[0]) {
     resp['Alternative'] = paths[0];
   }
