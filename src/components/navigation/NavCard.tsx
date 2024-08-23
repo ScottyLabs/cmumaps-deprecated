@@ -68,11 +68,8 @@ const NavCard = ({ map }: Props) => {
           }
         })
         .then((j) => {
-          if (j.Fastest && j.Fastest.error) {
+          if (j.error) {
             toast.error('Sorry, we are not able to find a path :(');
-          } else if (j.Alternative && j.Alternative.error) {
-            dispatch(setRecommendedPath({ Fastest: j.Fastest }));
-            dispatch(setSelectedPathName('Fastest'));
           } else {
             dispatch(setRecommendedPath(j));
             dispatch(setSelectedPathName(Object.keys(j)[0]));
@@ -200,9 +197,8 @@ const NavCard = ({ map }: Props) => {
     return (
       recommendedPath && (
         <div className="my-2 space-y-2">
-          {Object.entries(recommendedPath).map(
-            ([pathName, { path, distance }]) =>
-              renderPathInfo(pathName, distance),
+          {Object.entries(recommendedPath).map(([pathName, { distance }]) =>
+            renderPathInfo(pathName, distance),
           )}
         </div>
       )
