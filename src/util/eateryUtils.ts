@@ -83,9 +83,11 @@ export const getEateryData = async (): Promise<EateryData> => {
 
   const getStatusMsgAndLocationState = (
     eatery: any,
-    curTime: CmuEatsTimeIntervalType | undefined,
+    curIndex: number,
     res: Partial<EateryInfo>,
   ) => {
+    const curTime = eatery['times'][curIndex];
+
     // if the eatery opens today
     if (curTime) {
       const startTime = convertToDate(curTime.start);
@@ -110,18 +112,15 @@ export const getEateryData = async (): Promise<EateryData> => {
         // if today's time interval haven't started
         if (now < startTime) {
           closeHelper(startTime, res);
+          return;
         }
 
         // otherwise get the next index
-        const todayIndex = eatery.times.findIndex(
-          (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
-        );
-
-        const nextTime = eatery.times[(todayIndex + 1) % eatery.times.length];
+        const nextTime = eatery.times[(curIndex + 1) % eatery.times.length];
 
         // edge case where are multiple time intervals in the same day
-        if (nextTime.start.day == currentDay) {
-          getStatusMsgAndLocationState(eatery, nextTime, res);
+        if (nextTime?.start.day == currentDay) {
+          getStatusMsgAndLocationState(eatery, curIndex + 1, res);
           return;
         }
 
@@ -157,11 +156,11 @@ export const getEateryData = async (): Promise<EateryData> => {
       res.statusMsg = 'Closed until further notice';
       res.hoursUntilStateChange = Infinity;
     } else {
-      // the initial curTime is the first entry where the day is today's day
-      const curTime = eatery['times'].find(
+      // the initial index is the index of the first entry where the day is today's day
+      const curIndex = eatery['times'].findIndex(
         (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
       );
-      getStatusMsgAndLocationState(eatery, curTime, res);
+      getStatusMsgAndLocationState(eatery, curIndex, res);
     }
 
     return res as EateryInfo;
