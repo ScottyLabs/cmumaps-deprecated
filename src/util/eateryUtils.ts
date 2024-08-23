@@ -29,7 +29,7 @@ interface CmuEatsTimeIntervalType {
 }
 
 export const getEateryData = async (): Promise<EateryData> => {
-  const response = await fetch('https://dining.apis.scottylabs.org/locations/');
+  const response = await fetch('/json/emergency_fix.json');
   const cmueatsData = (await response.json())['locations'];
 
   const now = new Date();
