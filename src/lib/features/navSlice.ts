@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Coordinate } from 'mapkit-react';
 
-import { Node } from '@/app/api/findPath/route';
+import { Node } from '@/app/api/findPath/types';
 import { Building, Room } from '@/types';
 
 type ChoosingRoomMode = 'start' | 'end' | null;
