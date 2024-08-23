@@ -240,7 +240,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       paddingRight={4}
       paddingTop={10}
       showsZoomControl={!isMobile}
-      showsCompass={FeatureVisibility.Adaptive}
+      showsCompass={FeatureVisibility.Visible}
       allowWheelToZoom
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={() => {
