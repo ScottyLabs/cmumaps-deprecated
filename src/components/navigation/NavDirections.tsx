@@ -31,7 +31,8 @@ const NavDirections = ({ map, path }: Props) => {
       for (const node of path) {
         if (
           !newPassedByFloors.at(-1) ||
-          newPassedByFloors.at(-1) != node.floor
+          (newPassedByFloors.at(-1)?.buildingCode != node.floor.buildingCode &&
+            newPassedByFloors.at(-1)?.level != node.floor.level)
         ) {
           newPassedByFloors.push(node.floor);
         }
