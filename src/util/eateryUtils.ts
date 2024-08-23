@@ -201,6 +201,11 @@ const eateryRoomToId = {
   'MOR B105': 190,
   'RES 116A': 98,
   'RES 111A': 114,
+  'TEP 2016A': 134,
+  'TEP 2016B': 185,
+  'TEP 2016C': 175,
+  'TEP 2016D': 173,
+  'TEP 2008A': 154,
 };
 
 export const getEateryId = (room: Room | SearchRoom) => {
