@@ -241,8 +241,5 @@ export async function POST(req: NextRequest) {
   }
 
   // Find the path
-  return Response.json({
-    Fastest: paths[1],
-    Alternative: paths[0],
-  });
+  return Response.json(resp);
 }
