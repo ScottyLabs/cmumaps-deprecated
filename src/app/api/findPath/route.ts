@@ -3,7 +3,7 @@ import fs from 'fs';
 import { NextRequest } from 'next/server';
 import path from 'path';
 
-import { Building, Floor } from '@/types';
+import { Building } from '@/types';
 
 import { MaybeRoute, Node, Route, Waypoint } from './types';
 
@@ -127,7 +127,11 @@ const waypointToNodes = (
   if ('code' in waypoint) {
     // Waypoint is a Building, 2 cases: building without floorplan, building with floorplan
     const building = waypoint as Building;
-    if (!building?.floors?.length) {
+    if (
+      !building?.floors?.length ||
+      building.code === 'FBA' ||
+      building.code === 'MOR'
+    ) {
       // Building without floorplan, just get it from outside
       const buildingNodes = nodes.filter(
         (e: Node) => outsideRooms['rooms'][e.roomId]?.name === building.code,
@@ -157,8 +161,16 @@ const highLevelPath = (
   endFloor: string,
 ): string[] | null => {
   const explored = new Set();
-  const queue = [[startFloor]];
-  const endFloorName = endFloor;
+  let endFloorName = endFloor;
+  if (!high_level_graph[endFloor]) {
+    endFloorName = 'outside-1';
+  }
+  let startFloorName = startFloor;
+  if (!high_level_graph[startFloor]) {
+    startFloorName = 'outside-1';
+  }
+  const queue = [[startFloorName]];
+
   let current: string[] = [];
   while (queue.length) {
     current = queue.shift() || [];
@@ -177,14 +189,15 @@ const highLevelPath = (
 
 export async function POST(req: NextRequest) {
   const { waypoints } = await req.json();
+
   if (!waypoints || waypoints.length !== 2) {
     return Response.json({ error: 'Invalid waypoints' }, { status: 400 });
   }
-
   const [startFloorName, endFloorName] = waypoints.map(waypointToFloor);
   const [startNodes, endNodes] = waypoints.map((waypoint) =>
     waypointToNodes(waypoint),
   );
+  console.log(startNodes, endNodes);
 
   if (!startNodes || !endNodes) {
     return Response.json(
@@ -192,8 +205,12 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
-
-  const allowFloors = highLevelPath(startFloorName, endFloorName);
+  let allowFloors: string[] | null = null;
+  try {
+    allowFloors = highLevelPath(startFloorName, endFloorName);
+  } catch {
+    allowFloors = null;
+  }
 
   if (
     !high_level_graph[startFloorName] ||
@@ -212,7 +229,17 @@ export async function POST(req: NextRequest) {
     findPath(startNodes, endNodes, nodeFilter),
     findPath(startNodes, endNodes),
   ];
-  console.log(paths[0], allowFloors);
+
+  let resp = {};
+  if ('path' in paths[0]) {
+    resp['Alternative'] = paths[0];
+  }
+  if ('path' in paths[1]) {
+    resp['Fastest'] = paths[1];
+  } else if ('error' in paths[0]) {
+    resp = { error: 'Path not found' };
+  }
+
   // Find the path
   return Response.json({
     Fastest: paths[1],

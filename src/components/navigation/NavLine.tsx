@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 import React, { useEffect, useState } from 'react';
 
-import { Node } from '@/app/api/findPath/route';
+import { Node } from '@/app/api/findPath/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 interface IconInfo {
