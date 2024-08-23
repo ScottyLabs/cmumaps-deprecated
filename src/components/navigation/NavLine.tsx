@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Node } from '@/app/api/findPath/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { areFloorsEqual } from '@/types';
 
 interface IconInfo {
   coordinate: Coordinate;
@@ -57,7 +58,7 @@ const NavLine = ({ map }: Props) => {
       const newRestPath: Node[] = [];
       let count = 0;
       for (let i = 0; i < path.length; i++) {
-        if (i != 0 && path[i - 1].floor != path[i].floor) {
+        if (i != 0 && !areFloorsEqual(path[i - 1].floor, path[i].floor)) {
           count++;
           if (count == curFloorIndex) {
             newCurFloorPath.push(path[i - 1]);

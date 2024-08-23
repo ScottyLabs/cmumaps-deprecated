@@ -71,6 +71,10 @@ const NavCard = ({ map }: Props) => {
           return null;
         })
         .then((j) => {
+          if (!j || j.error) {
+            toast.error('Sorry, we are not able to find a path :(');
+            return;
+          }
           if (j.Fastest && j.Fastest.error) {
             toast.error('Sorry, we are not able to find a path :(');
           } else if (j.Alternative && j.Alternative.error) {
