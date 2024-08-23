@@ -1,3 +1,4 @@
+import ScottyLabsFeaturedIcon from '@icons/ScottyLabs-featured.png';
 import featuredIcon from '@icons/featured.svg';
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
 import Image from 'next/image';
@@ -20,7 +21,9 @@ interface EventInfo {
   subEvents?: EventInfo[];
   room?: string;
   building?: string;
+  searchFood?: boolean;
   featured?: boolean;
+  ScottyLabs?: boolean;
 }
 
 const convertDateToDayName = (date: Date) => {
@@ -269,7 +272,14 @@ const Events = ({ map }: Props) => {
             >
               {eventInfo.featured && (
                 <div className="relative">
-                  <Image src={featuredIcon} alt="Feature Icon" />
+                  <Image
+                    src={
+                      eventInfo.ScottyLabs
+                        ? ScottyLabsFeaturedIcon
+                        : featuredIcon
+                    }
+                    alt="Feature Icon"
+                  />
                   <p className="absolute bottom-1 left-2 text-white">
                     Featured
                   </p>
@@ -278,7 +288,11 @@ const Events = ({ map }: Props) => {
               <div className="p-2">
                 <h3 className="text-gray-800">{eventInfo.name}</h3>
                 <p>{eventInfo.time}</p>
-                <p className="text-wrap">{eventInfo.location}</p>
+                <p
+                  className={`text-wrap ${eventInfo.searchFood ? 'italic' : ''}`}
+                >
+                  {eventInfo.location}
+                </p>
               </div>
             </button>
           </div>
