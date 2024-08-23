@@ -30,21 +30,22 @@ export default function RootLayout({
       >
         <html lang="en" className={lato.className}>
           <head>
-            {/* For PWA, next does not like these */}
-            <meta name="mobile-web-app-capable" content="yes" />
-            <meta name="apple-mobile-web-app-capable" content="yes" />
-            <meta
-              name="apple-mobile-web-app-status-bar-style"
-              content="black-translucent"
-            />
             <meta
               name="viewport"
               content="width=device-width, initial-scale=1"
             />
-            <meta name="theme-color" content="#000000" />
-            <meta name="color-scheme" content="dark" />
             <meta name="description" content="Google Maps for CMU" />
             <script>const global = globalThis;</script>
+
+            {/* For PWA, next does not like these */}
+            {/* <meta name="mobile-web-app-capable" content="yes" />
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta
+              name="apple-mobile-web-app-status-bar-style"
+              content="black-translucent"
+            /> */}
+            {/* <meta name="theme-color" content="#000000" /> */}
+            {/* <meta name="color-scheme" content="dark" /> */}
           </head>
 
           <body>{children}</body>
