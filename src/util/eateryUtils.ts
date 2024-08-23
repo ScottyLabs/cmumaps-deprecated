@@ -199,6 +199,8 @@ const eateryRoomToId = {
   'FBA 152': 180,
   'MOR B104': 188,
   'MOR B105': 190,
+  'RES 116A': 98,
+  'RES 111A': 114,
 };
 
 export const getEateryId = (room: Room | SearchRoom) => {
