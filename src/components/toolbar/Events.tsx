@@ -1,5 +1,7 @@
 import ScottyLabsFeaturedIcon from '@icons/ScottyLabs-featured.png';
 import featuredIcon from '@icons/featured.svg';
+import foodFeaturedIcon from '@icons/food-featured.png';
+import foodIcon from '@icons/quick_search/food.svg';
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -9,7 +11,8 @@ import Collapsible from 'react-collapsible';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
-import { useAppSelector } from '@/lib/hooks';
+import { setIsSearchOpen, setSearchMode } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 import { zoomOnObject } from '../buildings/mapUtils';
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
@@ -59,6 +62,7 @@ interface Props {
 
 const Events = ({ map }: Props) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const today = useMemo(() => {
     const today = new Date();
@@ -118,6 +122,12 @@ const Events = ({ map }: Props) => {
   }, [dayOfWeek, eventData]);
 
   const handleClick = (eventInfo: EventInfo) => () => {
+    if (eventInfo.searchFood) {
+      dispatch(setIsSearchOpen(true));
+      dispatch(setSearchMode('food'));
+      return;
+    }
+
     const building = eventInfo.building;
 
     if (building) {
@@ -271,7 +281,7 @@ const Events = ({ map }: Props) => {
               onClick={handleClick(eventInfo)}
             >
               {eventInfo.featured && (
-                <div className="relative">
+                <div className="relative -mb-1">
                   <Image
                     src={
                       eventInfo.ScottyLabs
@@ -283,6 +293,15 @@ const Events = ({ map }: Props) => {
                   <p className="absolute bottom-1 left-2 text-white">
                     Featured
                   </p>
+                </div>
+              )}
+              {eventInfo.searchFood && (
+                <div className="relative -mb-1">
+                  <Image src={foodFeaturedIcon} alt="Food Featured Icon" />
+                  <div className="absolute bottom-1 left-2 flex items-center gap-2 text-white">
+                    <Image src={foodIcon} alt="Food Icon" height={18} />
+                    <p> Food</p>
+                  </div>
                 </div>
               )}
               <div className="p-2">
