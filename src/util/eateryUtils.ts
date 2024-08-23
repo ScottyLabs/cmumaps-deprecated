@@ -196,6 +196,9 @@ const eateryRoomToId = {
   'CFA 134A': 84,
   'TEP 2007': 136,
   'RES 111': 82,
+  'FBA 152': 180,
+  'MOR B104': 188,
+  'MOR B105': 190,
 };
 
 export const getEateryId = (room: Room | SearchRoom) => {

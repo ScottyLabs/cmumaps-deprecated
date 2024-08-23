@@ -161,7 +161,7 @@ const BuildingCard = ({ map, building }: Props) => {
               return (
                 <div
                   key={eatery.id}
-                  className="cursor-pointer rounded border p-1"
+                  className="cursor-pointer rounded border p-1 transition duration-150 ease-out hover:bg-[#efefef]"
                   onClick={handleClick(eatery)}
                 >
                   <EateryInfoDisplay
