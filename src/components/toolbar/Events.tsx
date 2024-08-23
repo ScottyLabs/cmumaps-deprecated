@@ -135,13 +135,7 @@ const Events = ({ map }: Props) => {
       return;
     }
 
-    const room = eventInfo.room;
-    if (!room) {
-      toast.error("Sorry, we can't find the location for this event :(");
-      return;
-    }
-
-    if (room == 'The Cut') {
+    if (eventInfo.location == 'The Cut') {
       if (map) {
         zoomOnObject(map, [
           { latitude: 40.443228550178866, longitude: -79.94351913028393 },
@@ -151,6 +145,12 @@ const Events = ({ map }: Props) => {
           { latitude: 40.443228550178866, longitude: -79.94351913028393 },
         ]);
       }
+      return;
+    }
+
+    const room = eventInfo.room;
+    if (!room) {
+      toast.error("Sorry, we can't find the location for this event :(");
       return;
     }
 
