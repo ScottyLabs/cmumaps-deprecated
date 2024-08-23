@@ -4,7 +4,7 @@ import { Node } from '@/app/api/findPath/types';
 import { setCurFloorIndex } from '@/lib/features/navSlice';
 import { setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Floor, Room } from '@/types';
+import { Floor, Room, areFloorsEqual } from '@/types';
 
 import { zoomOnFloor, zoomOnObject } from '../buildings/mapUtils';
 
@@ -29,11 +29,8 @@ const NavDirections = ({ map, path }: Props) => {
       const passedByRooms: Room[] = [];
       const newPassedByFloors: Floor[] = [];
       for (const node of path) {
-        if (
-          !newPassedByFloors.at(-1) ||
-          (newPassedByFloors.at(-1)?.buildingCode != node.floor.buildingCode &&
-            newPassedByFloors.at(-1)?.level != node.floor.level)
-        ) {
+        const lastFloor = newPassedByFloors.at(-1);
+        if (!lastFloor || !areFloorsEqual(lastFloor, node.floor)) {
           newPassedByFloors.push(node.floor);
         }
 

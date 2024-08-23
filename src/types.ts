@@ -201,6 +201,12 @@ export interface Placement {
   angle: number;
 }
 
+export const areFloorsEqual = (floor1: Floor, floor2: Floor) => {
+  return (
+    floor1.buildingCode == floor2.buildingCode && floor1.level == floor2.level
+  );
+};
+
 /**
  * A floor in a building.
  */
