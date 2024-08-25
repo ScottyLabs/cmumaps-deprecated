@@ -10,7 +10,7 @@ export type RoomSearchResult = {
   searchRoom: SearchRoom[];
 };
 
-const nonAsciiRe = /[^a-zA-Z0-9]/;
+const nonAsciiRe = /[^a-zA-Z0-9']/; //Includes ' for scotty's market
 
 const modeToType: Partial<Record<SearchMode, RoomType>> = {
   food: 'food',
