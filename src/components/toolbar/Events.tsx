@@ -98,7 +98,7 @@ const Events = ({ map }: Props) => {
 
   // load data
   useEffect(() => {
-    fetch('/json/O-Week.json').then((response) =>
+    fetch('/cmumaps-data/O-Week.json').then((response) =>
       response.json().then((data) => {
         setEventData(data);
       }),

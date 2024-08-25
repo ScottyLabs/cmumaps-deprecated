@@ -70,10 +70,10 @@ def simplify_polygon(polygon):
     return simplify(shape(polygon), tolerance=5)
 
 
-with open("public/json/placements.json", "r") as file:
+with open("public/cmumaps-data/placements.json", "r") as file:
     placements = json.loads(file.read())
 
-for root, dirs, files in os.walk("public/json/floor_plan"):
+for root, dirs, files in os.walk("public/cmumaps-data/floor_plan"):
     building_code = root.split("/")[-1]
 
     if "floor_plan" in building_code:
@@ -164,8 +164,8 @@ for building_code in floor_plan_map:
         search_map[building_code][floor] = search_rooms
 
 
-with open("public/json/floorPlanMap.json", "w") as file:
+with open("public/cmumaps-data/floorPlanMap.json", "w") as file:
     file.write(json.dumps(floor_plan_map))
 
-with open("public/json/searchMap.json", "w") as file:
+with open("public/cmumaps-data/searchMap.json", "w") as file:
     file.write(json.dumps(search_map))

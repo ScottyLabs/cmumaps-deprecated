@@ -11,7 +11,7 @@ const outsideRooms = JSON.parse(
   fs.readFileSync(
     path.resolve(
       process.cwd(),
-      `./public/json/floor_plan/outside/outside-1-outline.json`,
+      `./public/cmumaps-data/floor_plan/outside/outside-1-outline.json`,
     ),
     'utf8',
   ),
@@ -19,14 +19,17 @@ const outsideRooms = JSON.parse(
 
 const allNodes: Record<string, Node> = JSON.parse(
   fs.readFileSync(
-    path.resolve(process.cwd(), './public/json/all_graph.json'),
+    path.resolve(process.cwd(), './public/cmumaps-data/all_graph.json'),
     'utf8',
   ),
 );
 
 const high_level_graph: Record<string, [string, string][]> = JSON.parse(
   fs.readFileSync(
-    path.resolve(process.cwd(), `./public/json/high_level_floor_plan.json`),
+    path.resolve(
+      process.cwd(),
+      `./public/cmumaps-data/high_level_floor_plan.json`,
+    ),
     'utf8',
   ),
 );
