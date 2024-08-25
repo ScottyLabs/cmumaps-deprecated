@@ -1,5 +1,3 @@
-GITHUB_ACCESS_TOKEN=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
-
 # github submodule repo address without https:// prefix
 SUBMODULE_GITHUB=github.com/ScottyLabs/cmumaps-data.git
 
