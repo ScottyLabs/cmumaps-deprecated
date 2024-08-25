@@ -1,0 +1,3 @@
+[submodule "public/--force"]
+	path = public/--force
+	url = https://github.com/ScottyLabs/cmumaps-data.git
