@@ -10,7 +10,7 @@ response = requests.get(url)
 for eatery in response.json()["locations"]:
     eatery_names.append(eatery["name"])
 
-for root, dirs, files in os.walk("public/json/floor_plan"):
+for root, dirs, files in os.walk("public/cmumaps-data/floor_plan"):
     for file in files:
         file_path = os.path.join(root, file)
         if "outline" in file_path:

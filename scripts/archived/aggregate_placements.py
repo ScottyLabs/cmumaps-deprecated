@@ -3,7 +3,7 @@ import json
 
 placements = dict()
 
-for root, dirs, files in os.walk("public/json/floor_plan"):
+for root, dirs, files in os.walk("public/cmumaps-data/floor_plan"):
     building_code = root.split("/")[-1]
 
     if "floor_plan" in building_code:
@@ -20,5 +20,5 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
                 if "placement" in content:
                     placements[building_code][floor_level] = content["placement"]
 
-with open("public/json/placements.json", "w") as file:
+with open("public/cmumaps-data/placements.json", "w") as file:
     file.write(json.dumps(placements))

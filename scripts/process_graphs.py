@@ -9,13 +9,13 @@ import json
 
 from map_utils import get_floor_center, position_on_map, get_latlong_dist
 
-with open("public/json/placements.json", "r") as file:
+with open("public/cmumaps-data/placements.json", "r") as file:
     placements = json.load(file)
 
 floor_graph = {}
 all_graph = {}
 
-for root, dirs, files in os.walk("public/json/floor_plan"):
+for root, dirs, files in os.walk("public/cmumaps-data/floor_plan"):
     building_code = root.split("/")[-1]
 
     if "floor_plan" in building_code:

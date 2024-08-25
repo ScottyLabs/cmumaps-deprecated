@@ -3,7 +3,7 @@ import json
 
 search_map = dict()
 
-for root, dirs, files in os.walk("public/json/floor_plan"):
+for root, dirs, files in os.walk("public/cmumaps-data/floor_plan"):
     building_code = root.split("/")[-1]
 
     if "floor_plan" in building_code:
@@ -35,5 +35,5 @@ for root, dirs, files in os.walk("public/json/floor_plan"):
 
                 search_map[building_code][floor_level] = search_rooms
 
-with open("public/json/searchMap.json", "w") as file:
+with open("public/cmumaps-data/searchMap.json", "w") as file:
     file.write(json.dumps(search_map))

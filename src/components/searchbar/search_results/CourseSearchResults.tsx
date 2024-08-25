@@ -64,7 +64,7 @@ const CourseSearchResults = ({ query }: Props) => {
   useEffect(() => {
     setTimeout(() => {
       if (!courseData) {
-        fetch('/json/courses.json').then((response) =>
+        fetch('/cmumaps-data/courses.json').then((response) =>
           response.json().then((data) => {
             dispatch(setCourseData(data));
           }),

@@ -1,7 +1,7 @@
 import json
 
 
-with open("public/json/buildings.json", "r") as file:
+with open("public/cmumaps-data/buildings.json", "r") as file:
     buildings = json.loads(file.read())
     res = dict()
     for building in buildings:

@@ -168,19 +168,19 @@ const Page = ({ params, searchParams }: Props) => {
       return;
     }
     // set buildings
-    fetch('/json/buildings.json').then((response) =>
+    fetch('/cmumaps-data/buildings.json').then((response) =>
       response.json().then((buildings) => dispatch(setBuildings(buildings))),
     );
 
     // set searchMap
-    fetch('/json/searchMap.json').then((response) =>
+    fetch('/cmumaps-data/searchMap.json').then((response) =>
       response.json().then((searchMap) => {
         dispatch(setSearchMap(searchMap));
       }),
     );
 
     // set floorPlanMap
-    fetch('/json/floorPlanMap.json').then((response) =>
+    fetch('/cmumaps-data/floorPlanMap.json').then((response) =>
       response.json().then((floorPlanMap) => {
         dispatch(setFloorPlanMap(floorPlanMap));
       }),
