@@ -229,18 +229,23 @@ export async function POST(req: NextRequest) {
     allowFloors.includes(node.floor.buildingCode + '-' + node.floor.level);
 
   const paths = [
-    findPath(startNodes, endNodes, nodeFilter),
     findPath(startNodes, endNodes),
-  ];
+    findPath(startNodes, endNodes, nodeFilter),
+  ]; // If there is no fastest path, there is no alterative path
 
   let resp = {};
-  if ('path' in paths[0]) {
-    resp['Alternative'] = paths[0];
+  // paths[0] -> Fastest path
+  // paths[1] -> Alternative path
+  // if no alternative path, return only fastest path
+  // if no fastest path, return error
+
+  if ('error' in paths[0]) {
+    return Response.json({ error: 'Path not found' }, { status: 404 });
   }
-  if ('path' in paths[1]) {
-    resp['Fastest'] = paths[1];
-  } else if ('error' in paths[0]) {
-    resp = { error: 'Path not found' };
+  if ('error' in paths[1]) {
+    resp = { Fastest: paths[0] };
+  } else {
+    resp = { Fastest: paths[0], Alternative: paths[1] };
   }
 
   // Find the path
