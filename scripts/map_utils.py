@@ -54,6 +54,7 @@ def position_on_map(
         + placement["center"]["longitude"],
     }
 
+
 def get_latlong_dist(point1: dict, point2: dict):
     lat1, lon1 = point1.values()
     lat2, lon2 = point2.values()
