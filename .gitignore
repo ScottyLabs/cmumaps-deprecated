@@ -24,3 +24,5 @@ yarn-error.log*
 
 
 certificates
+
+__pycache__/
