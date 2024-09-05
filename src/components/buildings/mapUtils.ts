@@ -7,7 +7,7 @@ import {
   setIsZooming,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
-import { Building, Floor, FloorPlanMap, Name, Room } from '@/types';
+import { Building, Floor, Room } from '@/types';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 const setIsZoomingAsync = (isZooming: boolean) => {

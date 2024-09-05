@@ -4,7 +4,6 @@
 import { Coordinate } from 'mapkit-react';
 
 export type ID = string;
-export type Name = string;
 
 export type BuildingCode = string;
 export type FloorLevel = string;
