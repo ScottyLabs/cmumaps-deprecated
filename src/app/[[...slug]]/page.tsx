@@ -70,7 +70,11 @@ const Page = ({ params, searchParams }: Props) => {
       } else {
         // at least floor level
         const buildingCode = code.split('-')[0];
-        const floorLevel = code.split('-')[1][0]; // assumes single digit floor level
+        const floorRegexStr = buildings[buildingCode].floors
+          .map((floor) => floor.toString())
+          .join('|');
+        const floorRegex = new RegExp(floorRegexStr);
+        const floorLevel = code.match(floorRegex)?.[0];
         const roomName = code.split('-')[1];
 
         const building = buildings[buildingCode];
@@ -82,7 +86,7 @@ const Page = ({ params, searchParams }: Props) => {
         }
 
         // validations on the floor level
-        if (!building.floors.includes(floorLevel)) {
+        if (!floorLevel || !building.floors.includes(floorLevel)) {
           router.push(buildingCode);
           return;
         }
