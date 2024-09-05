@@ -13,18 +13,18 @@ import MapDisplay from '@/components/buildings/MapDisplay';
 import { zoomOnObject, zoomOnRoom } from '@/components/buildings/mapUtils';
 import ToolBar from '@/components/toolbar/ToolBar';
 import {
+  setAvailableRoomImages,
   setBuildings,
   setEateryData,
-  setAvailableRoomImages,
-  setSearchMap,
   setFloorPlanMap,
+  setSearchMap,
 } from '@/lib/features/dataSlice';
 import { setUserPosition } from '@/lib/features/navSlice';
 import {
+  getIsCardOpen,
+  selectBuilding,
   setFocusedFloor,
   setIsMobile,
-  selectBuilding,
-  getIsCardOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
@@ -66,8 +66,7 @@ const Page = ({ params, searchParams }: Props) => {
       const code = params.slug[0];
       if (!code.includes('-')) {
         // only building code
-        const buildingCode = code;
-        dispatch(selectBuilding(buildings[buildingCode]));
+        dispatch(selectBuilding(buildings[code]));
       } else {
         // Can be room name "5314" or floor name "5"
         const [buildingCode, roomOrFloorName] = code.split('-');
@@ -78,16 +77,13 @@ const Page = ({ params, searchParams }: Props) => {
           router.push('/');
           return;
         }
+        // Zoom into building first
+        router.push(buildingCode);
 
         // Extracting floor level from room name or floor level
         const floorRegexStr = building.floors.map((floor) => floor).join('|');
         const floorRegex = new RegExp(floorRegexStr);
         const floorLevel = roomOrFloorName.match(floorRegex)?.[0];
-        // validation of floor level
-        if (!floorLevel) {
-          router.push(buildingCode);
-          return;
-        }
 
         // Dont check this earlier so we can zoom on a building before the floorplan is loaded
         if (!Object.keys(floorPlanMap).length) {
@@ -95,13 +91,31 @@ const Page = ({ params, searchParams }: Props) => {
         }
         // Retrieve room with name roomName / check if it exists
         const roomName = roomOrFloorName;
-        const room = Object.values(
-          floorPlanMap[buildingCode.toUpperCase()][floorLevel],
-        ).find((r: Room) => r.name === roomName);
+        let room: Room | undefined;
+        if (floorLevel) {
+          room = Object.values(
+            floorPlanMap[buildingCode.toUpperCase()][floorLevel],
+          ).find((r: Room) => r.name === roomName);
+        }
 
-        const floor = { buildingCode, level: floorLevel };
+        // If can't find room on floor, search the entire building
+        if (!room) {
+          const allBuildingRooms = Object.values(
+            floorPlanMap[buildingCode.toUpperCase()],
+          )
+            .flat()
+            .map((floorPlan) => Object.values(floorPlan))
+            .flat();
+          room = allBuildingRooms.find((r: Room) => r.name === roomName);
+        }
+
         // if the room name is not provided, then zoom to the floor level
         if (!room) {
+          if (!floorLevel) {
+            return;
+          }
+          console.log(floorLevel);
+          const floor = { buildingCode, level: floorLevel };
           dispatch(selectBuilding(building));
           zoomOnObject(mapRef.current, building.shapes.flat());
           dispatch(setFocusedFloor(floor));
