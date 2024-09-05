@@ -70,7 +70,8 @@ const Page = ({ params, searchParams }: Props) => {
       } else {
         // at least floor level
         const buildingCode = code.split('-')[0];
-        const floorLevel = code.split('-')[1];
+        const floorLevel = code.split('-')[1][0]; // assumes single digit floor level
+        const roomName = code.split('-')[1];
 
         const building = buildings[buildingCode];
 
@@ -87,9 +88,8 @@ const Page = ({ params, searchParams }: Props) => {
         }
 
         const floor = { buildingCode, level: floorLevel };
-        const roomId = params.slug[1];
 
-        if (!roomId) {
+        if (!roomName || roomName === floorLevel) {
           // up to floor level
           dispatch(selectBuilding(building));
           zoomOnObject(mapRef.current, building.shapes.flat());
@@ -97,7 +97,7 @@ const Page = ({ params, searchParams }: Props) => {
         } else {
           zoomOnRoom(
             mapRef.current,
-            roomId,
+            roomName,
             floor,
             buildings,
             floorPlanMap,
@@ -210,7 +210,7 @@ const Page = ({ params, searchParams }: Props) => {
     let url = window.location.origin + '/';
     if (selectedRoom) {
       const floor = selectedRoom.floor;
-      url += `${floor.buildingCode}-${floor.level}/${selectedRoom.id}`;
+      url += `${floor.buildingCode}-${selectedRoom.name}`;
     } else if (focusedFloor) {
       url += `${focusedFloor.buildingCode}`;
       url += `-${focusedFloor.level}`;
