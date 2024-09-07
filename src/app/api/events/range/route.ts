@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
 
   const groupedEvents = [];
   let date = new Date(startDate);
-  date = new Date(date.valueOf() - 60 * 60 * 24 * 1000);
+  date = new Date(date.valueOf());
   for (let i = 0; i < 7; i++) {
     const dateEvents = events.filter(
       (event) => event.date.getDate() == date.getDate(),
