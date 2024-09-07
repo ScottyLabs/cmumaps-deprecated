@@ -52,8 +52,8 @@ const RoomSchedule = () => {
 
     fetchEvents(
       `${selectedRoom.floor.buildingCode} ${selectedRoom.name}`,
-      startOfCurrentWeek,
-      endOfCurrentWeek,
+      startOfCurrentWeek.valueOf(),
+      endOfCurrentWeek.valueOf(),
       setWeekEvents,
     );
   }, [selectedRoom, currentWeek, startOfCurrentWeek, endOfCurrentWeek]);
