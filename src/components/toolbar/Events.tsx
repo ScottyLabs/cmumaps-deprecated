@@ -165,7 +165,7 @@ const Events = ({ map }: Props) => {
     );
 
     if (selectedRoom) {
-      router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
+      router.push(`${buildingCode}-${selectedRoom.name}`);
     } else {
       toast.error('Unable to find this location :(');
     }
