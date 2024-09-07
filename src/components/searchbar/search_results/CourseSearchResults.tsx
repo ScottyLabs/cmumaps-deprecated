@@ -47,7 +47,7 @@ export const handleCourseClick =
       if (!selectedRoom) {
         toast.error('Room not available!');
       } else {
-        router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
+        router.push(`${buildingCode}-${selectedRoom.name}`);
       }
     }
   };

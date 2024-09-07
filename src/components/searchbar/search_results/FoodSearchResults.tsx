@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 import { getEateryId, sortEateries } from '@/util/eateryUtils';
 
-import { zoomOnObject, zoomOnRoom } from '../../buildings/mapUtils';
+import { zoomOnObject, zoomOnRoomById } from '../../buildings/mapUtils';
 import EateryInfoDisplay from '../../infocard/EateryInfoDisplay';
 import Roundel from '../../shared/Roundel';
 import LoadingDisplay from '../display_helpers/LoadingDisplay';
@@ -92,7 +92,7 @@ const FoodSearchResults = ({ map, query }: Props) => {
         <SearchResultWrapper
           key={eatery.id}
           handleClick={() => {
-            zoomOnRoom(
+            zoomOnRoomById(
               map,
               eatery.id,
               eatery.floor,

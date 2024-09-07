@@ -10,7 +10,10 @@ import { getSelectorsByUserAgent } from 'react-device-detect';
 import { Slide, ToastContainer } from 'react-toastify';
 
 import MapDisplay from '@/components/buildings/MapDisplay';
-import { zoomOnObject, zoomOnRoom } from '@/components/buildings/mapUtils';
+import {
+  zoomOnObject,
+  zoomOnRoomByName,
+} from '@/components/buildings/mapUtils';
 import ToolBar from '@/components/toolbar/ToolBar';
 import {
   setBuildings,
@@ -70,7 +73,8 @@ const Page = ({ params, searchParams }: Props) => {
       } else {
         // at least floor level
         const buildingCode = code.split('-')[0];
-        const floorLevel = code.split('-')[1];
+        const roomName = code.split('-')[1];
+        const floorLevel = roomName[0];
 
         const building = buildings[buildingCode];
 
@@ -87,17 +91,17 @@ const Page = ({ params, searchParams }: Props) => {
         }
 
         const floor = { buildingCode, level: floorLevel };
-        const roomId = params.slug[1];
 
-        if (!roomId) {
+        // if only contains floor information
+        if (roomName.length == 1) {
           // up to floor level
           dispatch(selectBuilding(building));
           zoomOnObject(mapRef.current, building.shapes.flat());
           dispatch(setFocusedFloor(floor));
         } else {
-          zoomOnRoom(
+          zoomOnRoomByName(
             mapRef.current,
-            roomId,
+            roomName,
             floor,
             buildings,
             floorPlanMap,
@@ -210,7 +214,7 @@ const Page = ({ params, searchParams }: Props) => {
     let url = window.location.origin + '/';
     if (selectedRoom) {
       const floor = selectedRoom.floor;
-      url += `${floor.buildingCode}-${floor.level}/${selectedRoom.id}`;
+      url += `${floor.buildingCode}-${selectedRoom.name}`;
     } else if (focusedFloor) {
       url += `${focusedFloor.buildingCode}`;
       url += `-${focusedFloor.level}`;
