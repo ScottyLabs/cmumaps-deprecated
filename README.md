@@ -38,7 +38,7 @@
 
 ## Sending a PR(Pull Request)
 
-1. Co to the CMU Maps GitHub Repo and click on the code button, Codespaces tab, and find your code space.
+1. Create 
 ![alt text](image-10.png)
 
 2.  Click on the three dots "**. . .**" and click from the dropdown options "**Export Changes to a branch**"
