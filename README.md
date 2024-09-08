@@ -52,6 +52,6 @@
 
 ![alt text](/public/imgs/image-17.png)
 
-4.Type in a decription of your pull request change and hit sync.
+4. Type in a decription of your pull request change and hit sync.
 
 
