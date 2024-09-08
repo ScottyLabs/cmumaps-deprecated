@@ -42,16 +42,19 @@
 11. Accept all the pop ups for nessecary installation. 
 
 ## Sending a PR(Pull Request)
-1.Locate the source control icon on the nav bar
+1. Locate the source control icon on the nav bar
 ![alt text](/public/imgs/image-16.png)
 
-2. Type a decription of your pull request change and hit commit.
+2. Type a decription of your change and hit commit.
 ![alt text](/public/imgs/image-18.png)
 
 3. Click on "yes" for staging all your changes 
 
 ![alt text](/public/imgs/image-17.png)
 
-4. Type in a decription of your pull request change and hit sync.
+4. Go back to the CMU Maps GitHub Repo and click on the "**Compare & pull request**
+![alt text](/public/imgs/image-19.png)
 
+5. Type a title and brief description of your pull request and clikc on "**Create Pull Request**"
+![alt text](/public/imgs/image-20.png)
 
