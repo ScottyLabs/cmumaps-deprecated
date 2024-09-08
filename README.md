@@ -35,3 +35,13 @@
 ![alt text](image-11.png)
 
 11. Accept all the pop ups for nessecary installation. 
+
+## Sending a PR(Pull Request)
+
+1. Co to the CMU Maps GitHub Repo and click on the code button, Codespaces tab, and find your code space.
+![alt text](image-10.png)
+
+2.  Click on the three dots "**. . .**" and click from the dropdown options "**Export Changes to a branch**"
+![alt text](image-11.png)
+
+![alt text](image-1.png)
