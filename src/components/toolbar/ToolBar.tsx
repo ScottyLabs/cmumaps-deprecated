@@ -7,7 +7,6 @@ import FloorSwitcher from '../buildings/FloorSwitcher';
 import InfoCard from '../infocard/InfoCard';
 import NavCard from '../navigation/NavCard';
 import SearchBar from '../searchbar/SearchBar';
-import Events from './Events';
 import Schedule from './Schedule';
 
 interface Props {
@@ -61,7 +60,7 @@ const ToolBar = ({ map }: Props) => {
         {!isSearchOpen && !isCardOpen && (
           <>
             <Schedule />
-            <Events map={map} />
+            {/* <Events map={map} /> */}
           </>
         )}
 
