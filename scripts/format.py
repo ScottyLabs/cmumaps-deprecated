@@ -19,7 +19,5 @@ for root, dirs, files in os.walk("public/cmumaps-data/floor_plan"):
         with open(file_path, "r+") as file:
             content = json.loads(file.read())  # Read the existing JSON content
             file.seek(0)  # Move the cursor to the start of the file
-            file.write(json.dumps(content, indent=2))  # Write the formatted JSON back
+            file.write(json.dumps(content, indent=4))  # Write the formatted JSON back
             file.truncate()  # Remove any leftover data if new content is shorter
-
-        break
