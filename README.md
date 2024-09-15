@@ -22,22 +22,16 @@
 6. Run this command **npm run dev** in the terminal after this text pops up.
    ![alt text](/public/imgs/image-6.png)
 
-7. If you see this error pop up, follow step 8, otherwise skip to step 9.
-   ![alt text](/public/imgs/image-8.png)
-
-8. Run this command **nvm install node** in the terminal and then rerun **npm run dev** in the terminal after it finishes downloading all the packages.
-   ![alt text](/public/imgs/image-12.png)
-
-9. If you see that the program is running like below, you are set up unless you want to work in vscode then follow step 9.
+7. If you see that the program is running like below and you have CMU Maps running locally in the link given by "Local:", you are set up! If you want to work in VSCode though, continue to follow step 8.
    ![alt text](/public/imgs/image-7.png)
 
-10. Go back to the CMU Maps GitHub Repo and click on the code button, Codespaces tab, and find your code space.
+8. Go back to the CMU Maps GitHub Repo and click on the code button, Codespaces tab, and find your code space.
     ![alt text](/public/imgs/image-10.png)
 
-11. Click on the three dots "**. . .**" and click from the dropdown options "**Open in Visual Studio Code**".
+9. Click on the three dots "**. . .**" and click from the dropdown options "**Open in Visual Studio Code**".
     ![alt text](/public/imgs/image-11.png)
 
-12. Accept all the pop ups for nessecary installation.
+10. Accept all the pop ups for nessecary installation.
 
 ## Sending a PR(Pull Request)
 
