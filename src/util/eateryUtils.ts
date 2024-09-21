@@ -71,10 +71,10 @@ export const getEateryData = async (): Promise<EateryData> => {
     res.hoursUntilStateChange = hourDif;
     if (hourDif < 1) {
       res.locationState = 'OPENS_SOON';
-      res.statusMsg = `Closed (${Math.round(hourDif * 60)} minutes until open)`;
+      res.statusMsg = `Closed (${Math.round(hourDif * 60)} minutes until opening)`;
     } else if (hourDif < 24) {
       res.locationState = 'CLOSED';
-      res.statusMsg = `Closed (${Math.round(hourDif)} hours until open)`;
+      res.statusMsg = `Closed (${Math.round(hourDif)} hours until opening)`;
     } else {
       res.locationState = 'CLOSED';
       res.statusMsg = `Closed (open on ${daysOfWeek[nextDate.getDay()]})`;
@@ -99,12 +99,15 @@ export const getEateryData = async (): Promise<EateryData> => {
 
         // message depend on if more than an hour until closing
         res.hoursUntilStateChange = hourDif;
-        if (hourDif > 1) {
+        if (hourDif > 1 && Math.round(hourDif) > 1) {
           res.locationState = 'OPEN';
-          res.statusMsg = `Open (${Math.round(hourDif)} hours until close)`;
+          res.statusMsg = `Open (${Math.round(hourDif)} hours until closing)`;
+        } else if (hourDif > 1 && Math.round(hourDif) <= 1) {
+          res.locationState = 'OPEN';
+          res.statusMsg = `Open (${Math.round(hourDif)} hour until closing)`;
         } else {
           res.locationState = 'CLOSES_SOON';
-          res.statusMsg = `Open (${Math.round(hourDif * 60)} minutes until close)`;
+          res.statusMsg = `Open (${Math.round(hourDif * 60)} minutes until closing)`;
         }
       }
       // when close
