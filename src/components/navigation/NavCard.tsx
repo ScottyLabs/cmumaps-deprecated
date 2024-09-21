@@ -58,21 +58,22 @@ const NavCard = ({ map }: Props) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ rooms: [startLocation, endLocation] }),
+        body: JSON.stringify({ waypoints: [startLocation, endLocation] }),
       })
         .then((r) => {
           try {
             return r.json();
           } catch {
-            return [];
+            return null;
           }
         })
+        .catch(() => {
+          return null;
+        })
         .then((j) => {
-          if (j.Fastest && j.Fastest.error) {
+          if (!j || j.error) {
             toast.error('Sorry, we are not able to find a path :(');
-          } else if (j.Alternative && j.Alternative.error) {
-            dispatch(setRecommendedPath({ Fastest: j.Fastest }));
-            dispatch(setSelectedPathName('Fastest'));
+            return;
           } else {
             dispatch(setRecommendedPath(j));
             dispatch(setSelectedPathName(Object.keys(j)[0]));
@@ -89,7 +90,7 @@ const NavCard = ({ map }: Props) => {
           className="cursor-pointer text-gray-500"
           onClick={() => {
             if (startedNavigation) {
-              dispatch(setCurFloorIndex(0));
+              dispatch(setCurFloorIndex(-1));
               dispatch(setStartedNavigation(false));
             } else {
               dispatch(setRecommendedPath(null));
@@ -164,7 +165,7 @@ const NavCard = ({ map }: Props) => {
     return renderRoomInput(endLocation, placeHolder, endIcon, handleClick);
   };
 
-  const renderPathInfo = (pathName: string) => {
+  const renderPathInfo = (pathName: string, distanceMeters: number) => {
     return (
       <div key={pathName} className="flex w-full justify-center">
         <button
@@ -187,8 +188,8 @@ const NavCard = ({ map }: Props) => {
               </div>
             </div>
             <div className="text-right">
-              <p>Time Placeholder</p>
-              <p>Distance Placeholder</p>
+              <p>{((distanceMeters / 1609) * 20).toFixed(1)} mins.</p>
+              <p>{(distanceMeters / 1609).toFixed(2)} mi.</p>
             </div>
           </div>
         </button>
@@ -198,11 +199,13 @@ const NavCard = ({ map }: Props) => {
 
   const renderPathWrapper = () => {
     return (
-      <div className="my-2 space-y-2">
-        {Object.keys(recommendedPath).map((pathName) =>
-          renderPathInfo(pathName),
-        )}
-      </div>
+      recommendedPath && (
+        <div className="my-2 space-y-2">
+          {Object.entries(recommendedPath).map(([pathName, { distance }]) =>
+            renderPathInfo(pathName, distance),
+          )}
+        </div>
+      )
     );
   };
 
@@ -242,14 +245,15 @@ const NavCard = ({ map }: Props) => {
     return (
       <>
         {!startedNavigation ? renderGoButton() : renderCancelButton()}
-        {!startedNavigation ? (
-          renderPathWrapper()
-        ) : (
-          <NavDirections
-            path={recommendedPath[selectedPathName].path}
-            map={map}
-          />
-        )}
+        {!startedNavigation
+          ? renderPathWrapper()
+          : recommendedPath &&
+            map && (
+              <NavDirections
+                path={recommendedPath[selectedPathName].path}
+                map={map}
+              />
+            )}
       </>
     );
   };

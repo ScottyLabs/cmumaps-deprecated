@@ -1,5 +1,6 @@
 import restroomIcon from '@icons/quick_search/restroom.svg';
 import corridorIcon from '@icons/search_results/corridor.svg';
+import diningIcon from '@icons/search_results/dining.svg';
 import elevatorIcon from '@icons/search_results/elevator.svg';
 import foodIcon from '@icons/search_results/food.svg';
 import pinIcon from '@icons/search_results/pin.svg';
@@ -15,7 +16,7 @@ import { Room, SearchRoom, getRoomTypeDetails } from '@/types';
 const icons: { [type: string]: SVGElement } = {
   elevator: elevatorIcon,
   corridor: corridorIcon,
-  dining: foodIcon,
+  dining: diningIcon,
   food: foodIcon,
   stairs: stairsIcon,
   library: studyIcon,

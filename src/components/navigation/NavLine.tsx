@@ -11,8 +11,9 @@ import Image from 'next/image';
 
 import React, { useEffect, useState } from 'react';
 
-import { Node } from '@/app/api/findPath/route';
+import { Node } from '@/app/api/findPath/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { areFloorsEqual } from '@/types';
 
 interface IconInfo {
   coordinate: Coordinate;
@@ -34,7 +35,6 @@ const NavLine = ({ map }: Props) => {
     (state) => state.nav.startedNavigation,
   );
   const curFloorIndex = useAppSelector((state) => state.nav.curFloorIndex);
-  const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isFloorPlanRendered = useAppSelector(
     (state) => state.ui.isFloorPlanRendered,
   );
@@ -58,7 +58,7 @@ const NavLine = ({ map }: Props) => {
       const newRestPath: Node[] = [];
       let count = 0;
       for (let i = 0; i < path.length; i++) {
-        if (i != 0 && path[i - 1].floor != path[i].floor) {
+        if (i != 0 && !areFloorsEqual(path[i - 1].floor, path[i].floor)) {
           count++;
           if (count == curFloorIndex) {
             newCurFloorPath.push(path[i - 1]);
@@ -171,14 +171,7 @@ const NavLine = ({ map }: Props) => {
         map.removeOverlays(pathOverlay);
       }
     };
-  }, [
-    map,
-    map.region,
-    pathOverlay,
-    focusedFloor,
-    isFloorPlanRendered,
-    dispatch,
-  ]);
+  }, [map, map.region, pathOverlay, isFloorPlanRendered, dispatch]);
 
   // calculate the icons (annotations)
   useEffect(() => {
@@ -247,8 +240,7 @@ const NavLine = ({ map }: Props) => {
 
         // the next one is a stairs and the last one is not an stairs
         if (nextStairs && lastNotStairs) {
-          const up =
-            path[i].floor.split('-')[1] < path[i + 1].floor.split('-')[1];
+          const up = path[i].floor.level < path[i + 1].floor.level;
 
           if (up) {
             iconInfos.push({

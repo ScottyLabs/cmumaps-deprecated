@@ -6,7 +6,13 @@ import { Building, Floor } from '@/types';
 
 import FloorPlanView from './FloorPlanView';
 
-const getFloorAtOrdinal = (
+export const getOrdinalOfFloor = (building: Building, floor: Floor) => {
+  const defaultIndex = building.floors.indexOf(building.defaultFloor);
+  const focusedIndex = building.floors.indexOf(floor.level);
+  return (building?.defaultOrdinal || 0) + focusedIndex - defaultIndex;
+};
+
+export const getFloorAtOrdinal = (
   building: Building,
   ordinal: number,
 ): Floor | null => {
@@ -48,13 +54,7 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
 
   // some math to get the correct ordinal
   const focusedBuilding = buildings[focusedFloor?.buildingCode];
-  const defaultIndex = focusedBuilding.floors.indexOf(
-    focusedBuilding.defaultFloor,
-  );
-
-  const focusedIndex = focusedBuilding.floors.indexOf(focusedFloor.level);
-  const ordinal =
-    (focusedBuilding?.defaultOrdinal || 0) + focusedIndex - defaultIndex;
+  const ordinal = getOrdinalOfFloor(focusedBuilding, focusedFloor);
 
   const visibleFloors = visibleBuildings.map((building) => {
     return getFloorAtOrdinal(building, ordinal);

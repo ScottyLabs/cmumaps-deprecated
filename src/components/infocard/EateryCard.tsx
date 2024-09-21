@@ -3,6 +3,7 @@ import { ImSpoonKnife } from 'react-icons/im';
 
 import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
+import { getEateryId } from '@/util/eateryUtils';
 
 import ButtonsRow, { renderMiddleButtonHelper } from './ButtonsRow';
 import CardWrapper from './CardWrapper';
@@ -16,7 +17,11 @@ interface Props {
 const Eaterycard = ({ room }: Props) => {
   const eateryData = useAppSelector((state) => state.data.eateryData);
 
-  const eateryInfo = eateryData[room.alias.toUpperCase()];
+  if (!eateryData) {
+    return;
+  }
+
+  const eateryInfo = eateryData[getEateryId(room)];
 
   const renderEateryImage = () => {
     if (eateryInfo) {

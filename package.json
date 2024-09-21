@@ -11,14 +11,15 @@
     "lint:fix": "next lint --fix",
     "lint:strict": "next lint '*/**/*.{js,jsx,ts,tsx}'",
     "prettier": "prettier --write */**/*.{js,jsx,json,ts,tsx,scss,css,md}",
-    "prepare": "husky install"
+    "prepare": "husky",
+    "vercel-install": "./init_submodule.sh && next build",
+    "update-data": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.3.1",
     "@datastructures-js/priority-queue": "github:datastructures-js/priority-queue",
     "@prisma/client": "^5.11.0",
     "@reduxjs/toolkit": "^2.2.6",
-    "clerk": "^0.8.3",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "fastest-levenshtein": "^1.0.16",
@@ -59,7 +60,7 @@
     "eslint-config-next": "^14.2.5",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "husky": "^9.1.4",
+    "husky": "^9.1.5",
     "lint-staged": "^15.2.8",
     "postcss": "^8.4.35",
     "postcss-cli": "^11.0.0",

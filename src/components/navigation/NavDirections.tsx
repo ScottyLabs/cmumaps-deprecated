@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { Node } from '@/app/api/findPath/route';
+import { Node } from '@/app/api/findPath/types';
 import { setCurFloorIndex } from '@/lib/features/navSlice';
 import { setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Room } from '@/types';
+import { Floor, Room, areFloorsEqual } from '@/types';
 
 import { zoomOnFloor, zoomOnObject } from '../buildings/mapUtils';
 
@@ -20,26 +20,23 @@ const NavDirections = ({ map, path }: Props) => {
   const curFloorIndex = useAppSelector((state) => state.nav.curFloorIndex);
   const buildings = useAppSelector((state) => state.data.buildings);
 
-  const [passedByFloors, setPassedByFloors] = useState<string[] | null>(null);
+  const [passedByFloors, setPassedByFloors] = useState<Floor[] | null>(null);
   const [passedByRooms, setPassedByRooms] = useState<Room[] | null>(null);
 
   // calculate passedByFloors and passedByRooms
   useEffect(() => {
     if (path) {
       const passedByRooms: Room[] = [];
-      const newPassedByFloors = [];
+      const newPassedByFloors: Floor[] = [];
       for (const node of path) {
-        if (
-          !newPassedByFloors.at(-1) ||
-          newPassedByFloors.at(-1) != node.floor
-        ) {
+        const lastFloor = newPassedByFloors.at(-1);
+        if (!lastFloor || !areFloorsEqual(lastFloor, node.floor)) {
           newPassedByFloors.push(node.floor);
         }
 
-        if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1).id) {
-          const floorArr = node.floor.split('-');
-          const buildingCode = floorArr[0];
-          const level = floorArr[1];
+        if (!passedByRooms.at(-1) || node.roomId != passedByRooms.at(-1)?.id) {
+          const level = node.floor.level;
+          const buildingCode = node.floor.buildingCode;
 
           if (floorPlanMap[buildingCode][level][node.roomId]) {
             passedByRooms.push(floorPlanMap[buildingCode][level][node.roomId]);
@@ -56,8 +53,7 @@ const NavDirections = ({ map, path }: Props) => {
   useEffect(() => {
     if (passedByFloors) {
       const curFloor = passedByFloors[curFloorIndex];
-      const buildingCode = curFloor.split('-')[0];
-      const level = curFloor.split('-')[1];
+      const { buildingCode, level } = curFloor;
       if (buildingCode != 'outside') {
         zoomOnFloor(map, buildings, { buildingCode, level }, dispatch);
       } else {
@@ -86,6 +82,10 @@ const NavDirections = ({ map, path }: Props) => {
   };
 
   const renderRoomsOnFloor = (curFloor: string) => {
+    if (!passedByRooms) {
+      return;
+    }
+
     const curRooms = passedByRooms.filter(
       (room) =>
         room.floor.buildingCode + '-' + room.floor.level == curFloor &&
@@ -121,18 +121,22 @@ const NavDirections = ({ map, path }: Props) => {
             <button
               key={index}
               className={'w-full p-1 text-left ' + getBgClass(index)}
-              onClick={() => {
-                dispatch(setCurFloorIndex(index));
-              }}
+              onClick={() => dispatch(setCurFloorIndex(index))}
             >
               <p
                 className={`${curFloorIndex == index ? 'text-lg font-bold text-white' : ''}`}
               >
-                {curFloor == 'outside-1' ? 'Outside' : curFloor}
+                {curFloor.buildingCode == 'outside'
+                  ? 'Outside'
+                  : curFloor.buildingCode + ' ' + curFloor.level}
               </p>
-              {curFloorIndex == index &&
-                passedByRooms &&
-                renderRoomsOnFloor(curFloor)}
+              {
+                curFloorIndex == index &&
+                  passedByRooms &&
+                  renderRoomsOnFloor(
+                    curFloor.buildingCode + ' ' + curFloor.level,
+                  ) // TODO: update this with new floor type
+              }
             </button>
           ))}
       </div>

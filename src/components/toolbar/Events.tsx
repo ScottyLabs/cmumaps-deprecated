@@ -1,4 +1,7 @@
+import ScottyLabsFeaturedIcon from '@icons/ScottyLabs-featured.png';
 import featuredIcon from '@icons/featured.svg';
+import foodFeaturedIcon from '@icons/food-featured.png';
+import foodIcon from '@icons/quick_search/food.svg';
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -8,7 +11,8 @@ import Collapsible from 'react-collapsible';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
-import { useAppSelector } from '@/lib/hooks';
+import { setIsSearchOpen, setSearchMode } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 import { zoomOnObject } from '../buildings/mapUtils';
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
@@ -17,10 +21,12 @@ interface EventInfo {
   name: string;
   location: string;
   time: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  subEvents?: any[];
-  roomName?: string;
+  subEvents?: EventInfo[];
+  room?: string;
+  building?: string;
+  searchFood?: boolean;
   featured?: boolean;
+  ScottyLabs?: boolean;
 }
 
 const convertDateToDayName = (date: Date) => {
@@ -56,6 +62,7 @@ interface Props {
 
 const Events = ({ map }: Props) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const today = useMemo(() => {
     const today = new Date();
@@ -91,7 +98,7 @@ const Events = ({ map }: Props) => {
 
   // load data
   useEffect(() => {
-    fetch('/json/O-Week.json').then((response) =>
+    fetch('/cmumaps-data/O-Week.json').then((response) =>
       response.json().then((data) => {
         setEventData(data);
       }),
@@ -114,13 +121,21 @@ const Events = ({ map }: Props) => {
     }
   }, [dayOfWeek, eventData]);
 
-  const handleClick = (room: string | undefined) => () => {
-    if (!room) {
-      toast.error("Sorry, we can't find the location for this event :(");
+  const handleClick = (eventInfo: EventInfo) => () => {
+    if (eventInfo.searchFood) {
+      dispatch(setIsSearchOpen(true));
+      dispatch(setSearchMode('food'));
       return;
     }
 
-    if (room == 'The Cut') {
+    const building = eventInfo.building;
+
+    if (building) {
+      router.push(building);
+      return;
+    }
+
+    if (eventInfo.location == 'The Cut') {
       if (map) {
         zoomOnObject(map, [
           { latitude: 40.443228550178866, longitude: -79.94351913028393 },
@@ -130,6 +145,12 @@ const Events = ({ map }: Props) => {
           { latitude: 40.443228550178866, longitude: -79.94351913028393 },
         ]);
       }
+      return;
+    }
+
+    const room = eventInfo.room;
+    if (!room) {
+      toast.error("Sorry, we can't find the location for this event :(");
       return;
     }
 
@@ -144,7 +165,7 @@ const Events = ({ map }: Props) => {
     );
 
     if (selectedRoom) {
-      router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
+      router.push(`${buildingCode}-${selectedRoom.name}`);
     } else {
       toast.error('Unable to find this location :(');
     }
@@ -218,11 +239,11 @@ const Events = ({ map }: Props) => {
               eventInfo.subEvents.map((subEvent) => {
                 return (
                   <button
-                    key={subEvent.subGroup}
+                    key={subEvent.name}
                     className="w-full border p-1 text-left transition-colors duration-100 hover:bg-gray-200"
-                    onClick={handleClick(subEvent.roomName)}
+                    onClick={handleClick(subEvent)}
                   >
-                    <p className="text-gray-700">{subEvent.subGroup}</p>
+                    <p className="text-gray-700">{subEvent.name}</p>
                     <p className="text-gray-500">{subEvent.time}</p>
                     <p className="text-gray-500">{subEvent.location}</p>
                   </button>
@@ -257,20 +278,40 @@ const Events = ({ map }: Props) => {
           >
             <button
               className="w-full text-left"
-              onClick={handleClick(eventInfo.roomName)}
+              onClick={handleClick(eventInfo)}
             >
               {eventInfo.featured && (
-                <div className="relative">
-                  <Image src={featuredIcon} alt="Feature Icon" />
+                <div className="relative -mb-1">
+                  <Image
+                    src={
+                      eventInfo.ScottyLabs
+                        ? ScottyLabsFeaturedIcon
+                        : featuredIcon
+                    }
+                    alt="Feature Icon"
+                  />
                   <p className="absolute bottom-1 left-2 text-white">
                     Featured
                   </p>
                 </div>
               )}
+              {eventInfo.searchFood && (
+                <div className="relative -mb-1">
+                  <Image src={foodFeaturedIcon} alt="Food Featured Icon" />
+                  <div className="absolute bottom-1 left-2 flex items-center gap-2 text-white">
+                    <Image src={foodIcon} alt="Food Icon" height={18} />
+                    <p> Food</p>
+                  </div>
+                </div>
+              )}
               <div className="p-2">
                 <h3 className="text-gray-800">{eventInfo.name}</h3>
                 <p>{eventInfo.time}</p>
-                <p className="text-wrap">{eventInfo.location}</p>
+                <p
+                  className={`text-wrap ${eventInfo.searchFood ? 'italic' : ''}`}
+                >
+                  {eventInfo.location}
+                </p>
               </div>
             </button>
           </div>

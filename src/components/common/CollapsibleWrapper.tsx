@@ -13,7 +13,7 @@ interface Props {
 
 const CollapsibleWrapper = ({
   title,
-  defaultOpenState = true,
+  defaultOpenState = false,
   children,
 }: Props) => {
   const [open, setOpen] = useState(defaultOpenState);

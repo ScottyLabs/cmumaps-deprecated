@@ -1,4 +1,6 @@
 building_room_images
+├── 2SC
+│   └── 2SC.jpg
 ├── 3SC
 │   └── 3SC.jpg
 ├── 4SC
@@ -20,6 +22,8 @@ building_room_images
 │   ├── A51.jpg
 │   ├── A53.jpg
 │   └── BH.jpg
+├── BOS
+│   └── BOS.jpg
 ├── BR
 │   └── BR.jpg
 ├── CC
@@ -33,6 +37,8 @@ building_room_images
 │   └── CFA.jpg
 ├── CIC
 │   └── CIC.jpg
+├── CLY
+│   └── CLY.jpg
 ├── CUC
 │   └── CUC.jpg
 ├── CYH
@@ -51,8 +57,18 @@ building_room_images
 │   ├── 2315.jpg
 │   ├── A302.jpg
 │   └── DH.jpg
+├── DON
+│   └── DON.jpg
 ├── EDS
 │   └── EDS.jpg
+├── FAF
+│   └── FAF.jpg
+├── FBA
+│   └── FBA.jpg
+├── FCL
+│   └── FCL.jpg
+├── FIF
+│   └── FIF.jpg
 ├── FM
 │   └── FM.jpg
 ├── FRB
@@ -67,21 +83,44 @@ building_room_images
 │   ├── 4401.jpg
 │   ├── 5222.jpg
 │   └── GHC.jpg
+├── GQ1
+│   └── GQ1.jpg
+├── GQ2
+│   └── GQ2.jpg
+├── GQ3
+│   └── GQ3.jpg
+├── GQ4
+│   └── GQ4.jpg
+├── GQ5
+│   └── GQ5.jpg
+├── GQ6
+│   └── GQ6.jpg
+├── HAM
+│   └── HAM.jpg
 ├── HBH
 │   └── HBH.jpg
+├── HEN
+│   └── HEN.jpg
 ├── HH
 │   ├── B103.jpg
 │   ├── B131.jpg
 │   └── HH.jpg
+├── HIL
+│   └── HIL.jpg
 ├── HL
 │   └── HL.jpg
 ├── HOA
 │   ├── 107.jpg
-│   └── 160.jpg
+│   ├── 160.jpg
+│   └── HOA.jpg
 ├── III
 │   └── III.jpg
+├── INI
+│   └── INI.jpg
 ├── MC
 │   └── MC.jpg
+├── MCG
+│   └── MCG.jpg
 ├── MI
 │   ├── 348.jpg
 │   ├── 355.jpg
@@ -91,11 +130,19 @@ building_room_images
 │   ├── 103.jpg
 │   ├── A14.jpg
 │   └── MM.jpg
+├── MMA
+│   └── MMA.jpg
+├── MOE
+│   └── MOE.jpg
 ├── MOR
 │   ├── MOR.jpg
 │   └── MOREWOODLAB.jpg
+├── MUD
+│   └── MUD.jpg
 ├── NSH
 │   └── NSH.jpg
+├── NVL
+│   └── NVL.jpg
 ├── PC
 │   └── PC.jpg
 ├── PCA
@@ -123,6 +170,8 @@ building_room_images
 │   ├── A21A.jpg
 │   ├── A22.jpg
 │   └── PH.jpg
+├── PO
+│   └── PO.jpg
 ├── POS
 │   ├── 145.jpg
 │   ├── 146.jpg
@@ -134,15 +183,31 @@ building_room_images
 │   └── POS.jpg
 ├── REH
 │   └── REH.jpg
+├── RES
+│   └── RES.jpg
 ├── ROF
 │   ├── RESIDENCEFIFTH.jpg
 │   └── ROF.jpg
+├── ROS1
+│   └── ROS1.jpg
+├── ROS2
+│   └── ROS2.jpg
+├── ROS3
+│   └── ROS3.jpg
+├── SC
+│   └── SC.jpg
+├── SCO
+│   └── SCO.jpg
 ├── SH
 │   ├── 105.jpg
 │   ├── 234.jpg
 │   ├── 236.jpg
 │   ├── 238.jpg
 │   └── SH.jpg
+├── SPT
+│   └── SPT.jpg
+├── STE
+│   └── STE.jpg
 ├── TCS
 │   └── TCS.jpg
 ├── TEP
@@ -174,14 +239,20 @@ building_room_images
 │   ├── 7500.jpg
 │   ├── 8427.jpg
 │   └── WEH.jpg
+├── WEL
+│   └── WEL.jpg
+├── WF
+│   └── WF.jpg
 ├── WH
 │   └── WH.jpg
 ├── WHIT
 │   └── WHIT.jpg
+├── WOO
+│   └── WOO.jpg
 ├── WQ
 │   └── WQ.jpg
 └── WWG
     ├── WESTWING.jpg
     └── WWG.jpg
 
-42 directories, 143 files
+77 directories, 179 files

@@ -5,16 +5,16 @@ import { Floor, FloorPlan, Room } from '@/types';
 
 export async function fetchEvents(
   roomName: string,
-  startDate: Date,
-  endDate: Date,
+  startDate: number,
+  endDate: number,
   callback: (events: Event[][]) => void,
 ) {
   const response = await fetch('/api/events/range', {
     method: 'GET',
     headers: {
       roomName,
-      startDate: startDate.valueOf().toString(),
-      endDate: endDate.valueOf().toString(),
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
     },
   });
 

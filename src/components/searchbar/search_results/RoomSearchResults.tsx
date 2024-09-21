@@ -9,7 +9,7 @@ import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 
-import { zoomOnObject, zoomOnRoom } from '../../buildings/mapUtils';
+import { zoomOnObject, zoomOnRoomById } from '../../buildings/mapUtils';
 import RoomPin from '../../shared/RoomPin';
 import Roundel from '../../shared/Roundel';
 import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
@@ -82,17 +82,15 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
 
   const renderRoomResults = (rooms: SearchRoom[], building: Building) => {
     const renderText = (room: SearchRoom) => (
-      <div className="flex flex-col">
-        <p>
-          <span>
-            {building.code} {room.name}
-          </span>
-          {room.type !== 'default' && (
-            <span className="px-[8px] text-gray-400">{room.type}</span>
-          )}
-          {room.alias && <span className="truncate">{room.alias}</span>}
-        </p>
-      </div>
+      <p className="space-x-2">
+        <span>
+          {building.code} {room.name}
+        </span>
+        {room.type !== 'default' && (
+          <span className="text-gray-400">{room.type}</span>
+        )}
+        {room.alias && <span className="truncate">{room.alias}</span>}
+      </p>
     );
 
     const handleClick = (searchRoom: SearchRoom) => () => {
@@ -105,7 +103,7 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
         dispatch(setIsSearchOpen(false));
         dispatch(setChoosingRoomMode(null));
       } else {
-        zoomOnRoom(
+        zoomOnRoomById(
           map,
           searchRoom.id,
           searchRoom.floor,
@@ -122,7 +120,7 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
         handleClick={handleClick(searchRoom)}
         isSelected={searchRoom.id == selectedRoom?.id}
       >
-        <div className="flex h-12 items-center space-x-3">
+        <div className="flex h-12 items-center gap-3">
           <RoomPin room={searchRoom} />
           {renderText(searchRoom)}
         </div>

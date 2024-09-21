@@ -9,7 +9,6 @@ import {
   getIsCardOpen,
   selectBuilding,
   setFocusedFloor,
-  setIsFloorPlanRendered,
   setIsSearchOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -65,7 +64,6 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           className={canGoDown ? '' : 'text-gray-300'}
           disabled={!canGoDown}
           onClick={() => {
-            dispatch(setIsFloorPlanRendered(false));
             dispatch(
               setFocusedFloor({
                 buildingCode: building.code,
@@ -115,7 +113,6 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           className={canGoUp ? '' : 'text-gray-300'}
           disabled={!canGoUp}
           onClick={() => {
-            dispatch(setIsFloorPlanRendered(false));
             dispatch(
               setFocusedFloor({
                 buildingCode: building.code,
@@ -158,7 +155,6 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
               }
               onClick={() => {
                 setShowFloorPicker(false);
-                dispatch(setIsFloorPlanRendered(false));
                 dispatch(
                   setFocusedFloor({
                     buildingCode: building.code,
@@ -176,25 +172,18 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
   };
 
   const Wrapper = ({ children }: { children: ReactElement }) => {
-    if (isMobile) {
-      // different distance from the bottom of the page when on mobile depending on if the card is open
-      const bottomClass = isCardOpen ? 'bottom-10' : 'bottom-2';
+    // farther from the bottom of the page when on mobile and the card is open
+    const bottomClass = isMobile && isCardOpen ? 'bottom-10' : 'bottom-2';
 
-      return (
-        <div
-          className={`fixed left-1/2 z-10 w-fit -translate-x-1/2 px-2 ${bottomClass}`}
-        >
-          {children}
-        </div>
-      );
-    } else {
-      return (
-        <div className="fixed bottom-2 left-1/2 -z-10 w-fit -translate-x-1/2 px-2">
-          {children}
-        </div>
-      );
-    }
+    return (
+      <div
+        className={`fixed left-1/2 w-fit -translate-x-1/2 px-2 ${bottomClass}`}
+      >
+        {children}
+      </div>
+    );
   };
+
   return (
     <Wrapper>
       <div className="btn-shadow flex items-stretch justify-center rounded bg-white">

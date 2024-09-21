@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EateryInfo, EateryData, LocationState, SearchRoom } from '@/types';
+import {
+  EateryInfo,
+  EateryData,
+  LocationState,
+  SearchRoom,
+  Room,
+} from '@/types';
 
 const daysOfWeek = [
   'Sunday', // 0
@@ -23,7 +29,7 @@ interface CmuEatsTimeIntervalType {
 }
 
 export const getEateryData = async (): Promise<EateryData> => {
-  const response = await fetch('https://dining.apis.scottylabs.org/locations/');
+  const response = await fetch('https://dining.apis.scottylabs.org/locations');
   const cmueatsData = (await response.json())['locations'];
 
   const now = new Date();
@@ -77,9 +83,11 @@ export const getEateryData = async (): Promise<EateryData> => {
 
   const getStatusMsgAndLocationState = (
     eatery: any,
-    curTime: CmuEatsTimeIntervalType | undefined,
+    curIndex: number,
     res: Partial<EateryInfo>,
   ) => {
+    const curTime = eatery['times'][curIndex];
+
     // if the eatery opens today
     if (curTime) {
       const startTime = convertToDate(curTime.start);
@@ -104,18 +112,15 @@ export const getEateryData = async (): Promise<EateryData> => {
         // if today's time interval haven't started
         if (now < startTime) {
           closeHelper(startTime, res);
+          return;
         }
 
         // otherwise get the next index
-        const todayIndex = eatery.times.findIndex(
-          (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
-        );
-
-        const nextTime = eatery.times[(todayIndex + 1) % eatery.times.length];
+        const nextTime = eatery.times[(curIndex + 1) % eatery.times.length];
 
         // edge case where are multiple time intervals in the same day
-        if (nextTime.start.day == currentDay) {
-          getStatusMsgAndLocationState(eatery, nextTime, res);
+        if (nextTime?.start.day == currentDay) {
+          getStatusMsgAndLocationState(eatery, curIndex + 1, res);
           return;
         }
 
@@ -151,11 +156,11 @@ export const getEateryData = async (): Promise<EateryData> => {
       res.statusMsg = 'Closed until further notice';
       res.hoursUntilStateChange = Infinity;
     } else {
-      // the initial curTime is the first entry where the day is today's day
-      const curTime = eatery['times'].find(
+      // the initial index is the index of the first entry where the day is today's day
+      const curIndex = eatery['times'].findIndex(
         (time: CmuEatsTimeIntervalType) => time.start.day == currentDay,
       );
-      getStatusMsgAndLocationState(eatery, curTime, res);
+      getStatusMsgAndLocationState(eatery, curIndex, res);
     }
 
     return res as EateryInfo;
@@ -164,10 +169,47 @@ export const getEateryData = async (): Promise<EateryData> => {
   const EateryInfo: EateryData = {};
 
   for (const eatery of cmueatsData) {
-    EateryInfo[eatery.name] = parseEatery(eatery);
+    EateryInfo[eatery.conceptId] = parseEatery(eatery);
   }
 
   return EateryInfo;
+};
+
+const eateryRoomToId = {
+  'CUC 220': 113,
+  'TEP 2016': 175,
+  'CUC 233B': 184,
+  'CUC 233C': 193,
+  'HL 110': 95,
+  'RES 121': 178,
+  'CUC 143': 103,
+  'POS A36': 92,
+  'CUC 140': 91,
+  'NSH 3403': 110,
+  'GHC 3101': 115,
+  'WEH 5000A': 94,
+  'CUC 231': 174,
+  'CUC 202': 108,
+  'MI 401': 148,
+  'CUC 233A': 138,
+  'SC 4S101B': 155,
+  'CFA 134A': 84,
+  'TEP 2007': 136,
+  'RES 111': 82,
+  'FBA 152': 180,
+  'MOR B104': 188,
+  'MOR B105': 190,
+  'RES 116A': 98,
+  'RES 111A': 114,
+  'TEP 2016A': 134,
+  'TEP 2016B': 185,
+  'TEP 2016C': 175,
+  'TEP 2016D': 173,
+  'TEP 2008A': 154,
+};
+
+export const getEateryId = (room: Room | SearchRoom) => {
+  return eateryRoomToId[room.floor.buildingCode + ' ' + room.name];
 };
 
 export const sortEateries = (
@@ -183,8 +225,8 @@ export const sortEateries = (
   ];
 
   eateries.sort((eatery1, eatery2) => {
-    const eateryInfo1 = eateryData[eatery1.alias.toUpperCase()];
-    const eateryInfo2 = eateryData[eatery2.alias.toUpperCase()];
+    const eateryInfo1 = eateryData[getEateryId(eatery1)];
+    const eateryInfo2 = eateryData[getEateryId(eatery2)];
 
     if (eateryInfo1 && eateryInfo2) {
       if (eateryInfo1.locationState == eateryInfo2.locationState) {
@@ -197,6 +239,14 @@ export const sortEateries = (
           locationStateOrder.indexOf(eateryInfo1.locationState) -
           locationStateOrder.indexOf(eateryInfo2.locationState)
         );
+      }
+    } else {
+      if (eateryInfo1) {
+        return -1;
+      } else if (eateryInfo2) {
+        return 1;
+      } else {
+        return 0;
       }
     }
   });

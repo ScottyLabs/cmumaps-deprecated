@@ -47,7 +47,7 @@ export const handleCourseClick =
       if (!selectedRoom) {
         toast.error('Room not available!');
       } else {
-        router.push(`${buildingCode}-${floorLevel}/${selectedRoom.id}`);
+        router.push(`${buildingCode}-${selectedRoom.name}`);
       }
     }
   };
@@ -64,7 +64,7 @@ const CourseSearchResults = ({ query }: Props) => {
   useEffect(() => {
     setTimeout(() => {
       if (!courseData) {
-        fetch('/json/courses.json').then((response) =>
+        fetch('/cmumaps-data/courses.json').then((response) =>
           response.json().then((data) => {
             dispatch(setCourseData(data));
           }),
@@ -118,8 +118,8 @@ const CourseSearchResults = ({ query }: Props) => {
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-700">
             <Image alt={'Event Icon'} src={courseIcon} />
           </div>
-          <div>
-            <p className="truncate font-bold text-gray-800">
+          <div className="overflow-hidden">
+            <p className="font-bold text-gray-800">
               {courseCode} {sectionCode}
             </p>
             <p className="truncate font-bold text-gray-800">{course.name}</p>

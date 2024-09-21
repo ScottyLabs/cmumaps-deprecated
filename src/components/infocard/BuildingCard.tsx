@@ -5,9 +5,9 @@ import 'react-multi-carousel/lib/styles.css';
 import { selectRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
-import { sortEateries } from '@/util/eateryUtils';
+import { getEateryId, sortEateries } from '@/util/eateryUtils';
 
-import { zoomOnRoom } from '../buildings/mapUtils';
+import { zoomOnRoomById } from '../buildings/mapUtils';
 import ButtonsRow from './ButtonsRow';
 import CardWrapper from './CardWrapper';
 import EateryInfoDisplay from './EateryInfoDisplay';
@@ -118,7 +118,7 @@ const BuildingCard = ({ map, building }: Props) => {
             customDot={<CustomDot />}
           >
             {eateries.map((eatery) => {
-              const eateryInfo = eateryData[eatery.alias.toUpperCase()];
+              const eateryInfo = eateryData[getEateryId(eatery)];
               return (
                 <div
                   key={eatery.id}
@@ -141,7 +141,7 @@ const BuildingCard = ({ map, building }: Props) => {
     } else {
       const handleClick = (eatery: SearchRoom) => () => {
         dispatch(selectRoom(eatery));
-        zoomOnRoom(
+        zoomOnRoomById(
           map,
           eatery.id,
           eatery.floor,
@@ -156,12 +156,12 @@ const BuildingCard = ({ map, building }: Props) => {
           <p className="mb-2 ml-3 text-base text-gray-500">Eateries nearby</p>
           <div className="max-h-96 space-y-3 overflow-y-auto px-2 pb-3">
             {eateries.map((eatery) => {
-              const eateryInfo = eateryData[eatery.alias.toUpperCase()];
+              const eateryInfo = eateryData[getEateryId(eatery)];
 
               return (
                 <div
                   key={eatery.id}
-                  className="cursor-pointer rounded border p-1"
+                  className="cursor-pointer rounded border p-1 transition duration-150 ease-out hover:bg-[#efefef]"
                   onClick={handleClick(eatery)}
                 >
                   <EateryInfoDisplay
