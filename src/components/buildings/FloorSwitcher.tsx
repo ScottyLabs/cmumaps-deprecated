@@ -57,11 +57,13 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
     const canGoDown = floorIndex > 0;
     const canGoUp = floorIndex < building.floors.length - 1;
 
+    const buttonBaseClasses = 'h-full w-full px-2 flex items-center ';
+
     const renderDownArrow = () => (
-      <div className="mr-2 flex items-center border-x border-gray-300 px-2">
+      <div className="border-x border-gray-300">
         <button
           title="Decrement floor"
-          className={canGoDown ? '' : 'text-gray-300'}
+          className={buttonBaseClasses + (canGoDown ? '' : 'text-gray-300')}
           disabled={!canGoDown}
           onClick={() => {
             dispatch(
@@ -107,10 +109,10 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
     };
 
     const renderUpArrow = () => (
-      <div className="ml-2 flex items-center border-l border-gray-300 px-2">
+      <div className="flex items-center border-l border-gray-300">
         <button
           title="Increment floor"
-          className={canGoUp ? '' : 'text-gray-300'}
+          className={buttonBaseClasses + (canGoUp ? '' : 'text-gray-300')}
           disabled={!canGoUp}
           onClick={() => {
             dispatch(
