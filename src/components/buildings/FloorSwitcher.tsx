@@ -60,7 +60,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
     const buttonBaseClasses = 'h-full w-full px-2 flex items-center ';
 
     const renderDownArrow = () => (
-      <div className="mr-2 border-x border-gray-300">
+      <div className="border-x border-gray-300">
         <button
           title="Decrement floor"
           className={buttonBaseClasses + (canGoDown ? '' : 'text-gray-300')}
@@ -109,7 +109,7 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
     };
 
     const renderUpArrow = () => (
-      <div className="ml-2 flex items-center border-l border-gray-300">
+      <div className="flex items-center border-l border-gray-300">
         <button
           title="Increment floor"
           className={buttonBaseClasses + (canGoUp ? '' : 'text-gray-300')}
