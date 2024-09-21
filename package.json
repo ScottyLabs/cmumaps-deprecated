@@ -12,7 +12,8 @@
     "lint:strict": "next lint '*/**/*.{js,jsx,ts,tsx}'",
     "prettier": "prettier --write */**/*.{js,jsx,json,ts,tsx,scss,css,md}",
     "prepare": "husky",
-    "vercel-install": "./init_submodule.sh && next build"
+    "vercel-install": "./init_submodule.sh && next build",
+    "update-data": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.3.1",
