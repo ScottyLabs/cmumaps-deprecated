@@ -100,9 +100,10 @@ export default function FloorSwitcher({ focusedFloor }: FloorSwitcherProps) {
           onClick={() => {
             setShowFloorPicker(true);
           }}
+          className="px-2"
           disabled={building.floors.length < 2}
         >
-          <div className="px-2 text-center">{building.floors[floorIndex]}</div>
+          <div className="text-center">{building.floors[floorIndex]}</div>
           {renderEllipses()}
         </button>
       );
