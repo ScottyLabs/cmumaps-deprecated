@@ -124,7 +124,6 @@ const Page = ({ params, searchParams }: Props) => {
   // get user position
   useEffect(() => {
     navigator?.geolocation?.getCurrentPosition((pos) => {
-      alert(pos.coords.altitude);
       const coord = {
         latitude: pos.coords.latitude,
         longitude: pos.coords.longitude,
