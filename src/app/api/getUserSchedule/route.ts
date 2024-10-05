@@ -11,5 +11,9 @@ export async function GET(req: NextRequest) {
     },
   });
 
-  return Response.json(user.schedule);
+  if (user && user.schedule) {
+    return Response.json(user.schedule);
+  } else {
+    return Response.json({});
+  }
 }
