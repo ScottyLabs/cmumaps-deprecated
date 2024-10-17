@@ -72,7 +72,7 @@ interface RoomTypeDetails {
  * @param type The type of the room
  * @returns See RoomTypeDetails
  */
-export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
+export function getRoomTypeDetails2(type: RoomType): RoomTypeDetails {
   switch (type) {
     case 'default':
       return { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' };
@@ -117,6 +117,47 @@ export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
       return { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' };
   }
 }
+
+export function getRoomTypeDetails(type: string): RoomTypeDetails {
+  return (
+    RoomTypeDetails[type] || {
+      primary: '#b5b3b2',
+      background: '#eeeeee',
+      border: '#cccccc',
+    }
+  );
+}
+
+export const RoomTypeDetails: Record<string, RoomTypeDetails> = {
+  corridor: { primary: '#cecece', background: '#fefefe', border: '#cccccc' },
+  office: { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' },
+  auditorium: { primary: '#7082b3', background: '#e6ecfe', border: '#9eabcd' },
+  classroom: { primary: '#7082b3', background: '#e6ecfe', border: '#9eabcd' },
+  conference: { primary: '#7082b3', background: '#e6ecfe', border: '#9eabcd' },
+  operational: { primary: '#808080', background: '#ece3d5', border: '#b9b9b9' },
+  storage: { primary: '#808080', background: '#ece3d5', border: '#b9b9b9' },
+  laboratory: { primary: '#ff7e81', background: '#ffdbdc', border: '#ff7e81' },
+  'computer lab': {
+    primary: '#ff7e81',
+    background: '#ffdbdc',
+    border: '#ff7e81',
+  },
+  studio: { primary: '#ff7e81', background: '#ffdbdc', border: '#ff7e81' },
+  workshop: { primary: '#ff7e81', background: '#ffdbdc', border: '#ff7e81' },
+  vestibule: { primary: '#cecece', background: '#fefefe', border: '#cccccc' },
+  restroom: { primary: '#c39dff', background: '#e7dfed', border: '#d6d0db' },
+  stairs: { primary: '#3b92f0', background: '#c4dadf', border: '#9bacb0' },
+  elevator: { primary: '#3b92f0', background: '#c4dadf', border: '#9bacb0' },
+  ramp: { primary: '#3b92f0', background: '#c4dadf', border: '#9bacb0' },
+  dining: { primary: '#ff961c', background: '#ffdcb2', border: '#f8992a' },
+  food: { primary: '#ff961c', background: '#ffdcb2', border: '#f8992a' },
+  study: { primary: '#d18e63', background: '#f5dbc8', border: '#d18e63' },
+  library: { primary: '#d18e63', background: '#f5dbc8', border: '#d18e63' },
+  sport: { primary: '#6bc139', background: '#e1fcd1', border: '#9ac382' },
+  parking: { primary: '#51a2f7', background: '#d4e9ff', border: '#51a2f7' },
+  default: { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' },
+  '': { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' },
+};
 
 export interface SearchRoom {
   /**
