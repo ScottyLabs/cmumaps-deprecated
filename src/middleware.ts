@@ -1,7 +1,10 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
-const isPublicRoute = createRouteMatcher(['/manifest.json']);
+const isPublicRoute = createRouteMatcher([
+  '/manifest.json',
+  '/.well-known/assetlinks.json',
+]);
 
 export default clerkMiddleware((auth, request) => {
   if (!isPublicRoute(request)) {
