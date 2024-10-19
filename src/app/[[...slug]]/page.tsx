@@ -30,6 +30,7 @@ import {
   getIsCardOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { Building, Room } from '@/types';
 import { getEateryData } from '@/util/eateryUtils';
 
 // const mockUserPosition = [40.44249719447571, -79.94314319195851];
@@ -54,12 +55,16 @@ const Page = ({ params, searchParams }: Props) => {
 
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const buildings = useAppSelector((state) => state.data.buildings);
+
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
+
+  const startLocation = useAppSelector((state) => state.nav.startLocation);
+  const endLocation = useAppSelector((state) => state.nav.endLocation);
 
   // extracting data in the initial loading of the page
   useEffect(() => {
@@ -212,18 +217,44 @@ const Page = ({ params, searchParams }: Props) => {
   // update the URL
   useEffect(() => {
     let url = window.location.origin + '/';
+
+    const roomToString = (room: Room) => {
+      const floor = room.floor;
+      return `${floor.buildingCode}-${room.name}`;
+    };
+
+    // selected/focused room, floor, building
     if (selectedRoom) {
-      const floor = selectedRoom.floor;
-      url += `${floor.buildingCode}-${selectedRoom.name}`;
+      url += roomToString(selectedRoom);
     } else if (focusedFloor) {
       url += `${focusedFloor.buildingCode}`;
       url += `-${focusedFloor.level}`;
     } else if (selectedBuilding) {
       url += selectedBuilding.code;
     }
+
+    // navigation
+    if (startLocation && endLocation) {
+      const toString = (location: Room | Building) => {
+        if ('id' in location) {
+          return roomToString(location);
+        } else {
+          return location.code;
+        }
+      };
+
+      url += `?src=${toString(startLocation)}&dst=${toString(endLocation)}`;
+    }
+
     window.history.pushState({}, '', url);
     // use window instead of the next router to prevent rezooming in
-  }, [selectedRoom, focusedFloor, selectedBuilding]);
+  }, [
+    selectedRoom,
+    focusedFloor,
+    selectedBuilding,
+    startLocation,
+    endLocation,
+  ]);
 
   const renderIcons = () => {
     // don't show icons if in mobile and either the search is open or the card is open
