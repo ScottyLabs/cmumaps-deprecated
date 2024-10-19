@@ -9,7 +9,6 @@ import {
 
 import React, { useState } from 'react';
 
-import { setChoosingRoomMode, setIsNavOpen } from '@/lib/features/navSlice';
 import {
   deselectBuilding,
   selectRoom,
@@ -65,7 +64,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const isZooming = useAppSelector((state) => state.ui.isZooming);
 
-  const [usedRegionChange, setUsedRegionChange] = useState<boolean>(false);
+  const [usedScrolling, setUsedScrolling] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
   const [showFloor, setShowFloor] = useState<boolean>(false);
 
@@ -209,6 +208,10 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       return;
     }
 
+    mapRef.current.addEventListener('scroll-end', () => {
+      setUsedScrolling(true);
+    });
+
     const randomCoordinate = new mapkit.Coordinate(40.444, -79.945);
     const pinOptions = {
       url: {
@@ -245,18 +248,16 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={() => {
         dispatch(setIsZooming(false));
-        setUsedRegionChange(true);
         onRegionChangeEnd();
       }}
       onClick={() => {
-        if (!usedRegionChange && !choosingRoomMode && !isNavOpen) {
+        // need to check usedScrolling because end of panning is a click
+        if (!usedScrolling && !choosingRoomMode && !isNavOpen) {
           dispatch(setIsSearchOpen(false));
           dispatch(deselectBuilding());
           dispatch(selectRoom(null));
-          dispatch(setIsNavOpen(false));
-          dispatch(setChoosingRoomMode(null));
         }
-        setUsedRegionChange(false);
+        setUsedScrolling(false);
       }}
       onLoad={handleLoad}
     >
