@@ -40,7 +40,7 @@ const cameraBoundary = {
   longitudeDelta: 0.014410141520116326,
 };
 
-const initialRegion = {
+export const initialRegion = {
   centerLatitude: 40.444,
   centerLongitude: -79.945,
   latitudeDelta: 0.006337455593801167,
