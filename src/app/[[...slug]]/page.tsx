@@ -28,7 +28,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { getEateryData } from '@/util/eateryUtils';
 
-// const mockUserPosition = [40.44249719447571, -79.94314319195851];
+// const mockUserPosition = [40.4453911, -79.9449912];
 
 interface Props {
   params: {
@@ -118,14 +118,22 @@ const Page = ({ params, searchParams }: Props) => {
 
   // get user position
   useEffect(() => {
-    navigator?.geolocation?.getCurrentPosition((pos) => {
-      const coord = {
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-      };
+    navigator?.geolocation?.watchPosition(
+      (pos) => {
+        const coord = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        };
 
-      dispatch(setUserPosition(coord));
-    });
+        dispatch(setUserPosition(coord));
+      },
+      (err) => {
+        console.error(err);
+      },
+      {
+        enableHighAccuracy: true,
+      },
+    );
   }, [dispatch]);
 
   // load the list of images of the rooms
