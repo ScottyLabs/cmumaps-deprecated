@@ -11,6 +11,7 @@ import { Slide, ToastContainer } from 'react-toastify';
 
 import MapDisplay from '@/components/buildings/MapDisplay';
 import {
+  getRoomIdByNameAndFloor,
   zoomOnObject,
   zoomOnRoomByName,
 } from '@/components/buildings/mapUtils';
@@ -22,7 +23,12 @@ import {
   setSearchMap,
   setFloorPlanMap,
 } from '@/lib/features/dataSlice';
-import { setUserPosition } from '@/lib/features/navSlice';
+import {
+  setEndLocation,
+  setIsNavOpen,
+  setStartLocation,
+  setUserPosition,
+} from '@/lib/features/navSlice';
 import {
   setFocusedFloor,
   setIsMobile,
@@ -40,6 +46,8 @@ interface Props {
     slug?: string[];
   };
   searchParams: {
+    src?: string;
+    dst?: string;
     userAgent?: string;
   };
 }
@@ -71,12 +79,13 @@ const Page = ({ params, searchParams }: Props) => {
     // makes all required things are loaded
     if (mapRef.current && buildings && params.slug && params.slug.length > 0) {
       const code = params.slug[0];
+      // only building code
       if (!code.includes('-')) {
-        // only building code
-        const buildingCode = code;
-        dispatch(selectBuilding(buildings[buildingCode]));
-      } else {
-        // at least floor level
+        // the code is the building code
+        dispatch(selectBuilding(buildings[code]));
+      }
+      // at least floor level
+      else {
         const buildingCode = code.split('-')[0];
         const roomName = code.split('-')[1];
         const floorLevel = roomName[0];
@@ -114,8 +123,85 @@ const Page = ({ params, searchParams }: Props) => {
           );
         }
       }
+
+      // navigation
+      const src = searchParams.src;
+      const dst = searchParams.dst;
+
+      if (src && dst) {
+        const assignHelper = (code: string, setLocation): boolean => {
+          // only building code
+          if (!code.includes('-')) {
+            if (!buildings[code]) {
+              return false;
+            }
+
+            // the code is the building code
+            dispatch(setLocation(buildings[code]));
+            return true;
+          }
+          // at least floor level
+          else {
+            const buildingCode = code.split('-')[0];
+            const roomName = code.split('-')[1];
+            const floorLevel = roomName[0];
+
+            const building = buildings[buildingCode];
+
+            // validations on the building code
+            if (!building) {
+              return false;
+            }
+
+            // if only contains floor information
+            if (roomName.length == 1) {
+              return false;
+            }
+
+            const floor = { buildingCode, level: floorLevel };
+
+            const roomId = getRoomIdByNameAndFloor(
+              roomName,
+              floor,
+              buildings,
+              floorPlanMap,
+            );
+
+            // validations on the room name
+            if (!roomId) {
+              return false;
+            }
+
+            // validations on the floor level
+            if (!building.floors.includes(floorLevel)) {
+              return false;
+            }
+
+            const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
+            const room = floorPlan[roomId];
+
+            dispatch(setLocation(room));
+
+            return true;
+          }
+        };
+
+        const startSucceeded = assignHelper(src, setStartLocation);
+        const endSucceeded = assignHelper(dst, setEndLocation);
+        if (startSucceeded && endSucceeded) {
+          dispatch(setIsNavOpen(true));
+        }
+      }
     }
-  }, [buildings, dispatch, params.slug, router, mapRef, floorPlanMap]);
+  }, [
+    buildings,
+    dispatch,
+    params.slug,
+    router,
+    mapRef,
+    floorPlanMap,
+    searchParams,
+  ]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
