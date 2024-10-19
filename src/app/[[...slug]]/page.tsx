@@ -128,7 +128,8 @@ const Page = ({ params, searchParams }: Props) => {
       const src = searchParams.src;
       const dst = searchParams.dst;
 
-      if (src && dst) {
+      // only dst is required; you can't have only src and not dst
+      if (dst) {
         const assignHelper = (code: string, setLocation): boolean => {
           // only building code
           if (!code.includes('-')) {
@@ -186,9 +187,12 @@ const Page = ({ params, searchParams }: Props) => {
           }
         };
 
-        const startSucceeded = assignHelper(src, setStartLocation);
-        const endSucceeded = assignHelper(dst, setEndLocation);
-        if (startSucceeded && endSucceeded) {
+        if (src) {
+          assignHelper(src, setStartLocation);
+        }
+
+        const succeeded = assignHelper(dst, setEndLocation);
+        if (succeeded) {
           dispatch(setIsNavOpen(true));
         }
       }
@@ -320,16 +324,25 @@ const Page = ({ params, searchParams }: Props) => {
     }
 
     // navigation
-    if (startLocation && endLocation) {
-      const toString = (location: Room | Building) => {
-        if ('id' in location) {
-          return roomToString(location);
-        } else {
-          return location.code;
-        }
-      };
+    const toString = (location: Room | Building) => {
+      if ('id' in location) {
+        return roomToString(location);
+      } else {
+        return location.code;
+      }
+    };
 
-      url += `?src=${toString(startLocation)}&dst=${toString(endLocation)}`;
+    if (startLocation) {
+      url += `?src=${toString(startLocation)}`;
+    }
+
+    if (endLocation) {
+      if (startLocation) {
+        url += '&';
+      } else {
+        url += '?';
+      }
+      url += `dst=${toString(endLocation)}`;
     }
 
     window.history.pushState({}, '', url);
