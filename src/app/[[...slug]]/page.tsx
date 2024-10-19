@@ -10,10 +10,7 @@ import { getSelectorsByUserAgent } from 'react-device-detect';
 import { Slide, ToastContainer } from 'react-toastify';
 
 import MapDisplay from '@/components/buildings/MapDisplay';
-import {
-  zoomOnObject,
-  zoomOnRoomByName,
-} from '@/components/buildings/mapUtils';
+import { zoomOnFloor, zoomOnRoomByName } from '@/components/buildings/mapUtils';
 import ToolBar from '@/components/toolbar/ToolBar';
 import {
   setBuildings,
@@ -24,7 +21,6 @@ import {
 } from '@/lib/features/dataSlice';
 import { setUserPosition } from '@/lib/features/navSlice';
 import {
-  setFocusedFloor,
   setIsMobile,
   selectBuilding,
   getIsCardOpen,
@@ -96,8 +92,7 @@ const Page = ({ params, searchParams }: Props) => {
         if (roomName.length == 1) {
           // up to floor level
           dispatch(selectBuilding(building));
-          zoomOnObject(mapRef.current, building.shapes.flat());
-          dispatch(setFocusedFloor(floor));
+          zoomOnFloor(mapRef.current, buildings, floor, dispatch);
         } else {
           zoomOnRoomByName(
             mapRef.current,
