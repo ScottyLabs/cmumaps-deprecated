@@ -196,6 +196,8 @@ const eateryRoomToId = {
   'WEH 5000A': 94,
   'CUC 231': 174,
   'CUC 202': 108,
+  'CUC 202-A': 88,
+
   'MI 401': 148,
   'CUC 233A': 138,
   'SC 4S101B': 155,
@@ -207,10 +209,13 @@ const eateryRoomToId = {
   'MOR B105': 190,
   'RES 116A': 98,
   'RES 111A': 114,
+
   'TEP 2016A': 134,
   'TEP 2016B': 185,
   'TEP 2016C': 175,
   'TEP 2016D': 173,
+  'TEP 2016E': 192,
+
   'TEP 2008A': 154,
 };
 

@@ -13,7 +13,9 @@
     "prettier": "prettier --write */**/*.{js,jsx,json,ts,tsx,scss,css,md}",
     "prepare": "husky",
     "vercel-install": "./init_submodule.sh && next build",
-    "update-data": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py"
+    "update-data": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py & python3 public/cmumaps-data/scripts/process_graphs.py",
+    "update-rooms": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py",
+    "update-graph": "python3 public/cmumaps-data/scripts/process_graphs.py"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.3.1",
