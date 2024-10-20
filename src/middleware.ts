@@ -1,7 +1,10 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)']);
+const isPublicRoute = createRouteMatcher([
+  '/manifest.json',
+  '/.well-known/assetlinks.json',
+]);
 
 export default clerkMiddleware((auth, request) => {
   if (!isPublicRoute(request)) {
@@ -14,7 +17,7 @@ export default clerkMiddleware((auth, request) => {
 
   return NextResponse.rewrite(url);
 });
-//Nothingburger2.1
+
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params

@@ -43,7 +43,7 @@ const Schedule = () => {
   useEffect(() => {
     if (user) {
       getUserSchedule(user.id).then((dbScheduleData) => {
-        if (dbScheduleData) {
+        if (Object.keys(dbScheduleData).length !== 0) {
           setScheduleData(JSON.parse(dbScheduleData));
         }
       });
