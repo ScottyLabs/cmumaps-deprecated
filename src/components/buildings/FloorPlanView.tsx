@@ -75,7 +75,8 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
         />
 
         {focusedFloor?.buildingCode == floor.buildingCode &&
-          focusedFloor.level == floor.level && (
+          focusedFloor.level == floor.level &&
+          !isSelected && (
             <Annotation
               latitude={room.labelPosition.latitude}
               longitude={room.labelPosition.longitude}
@@ -92,7 +93,9 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
                 <RoomPin room={{ ...room, id: roomId }} />
                 {(showRoomNames || room.alias) && (
                   <div
-                    className={`text-center text-sm leading-[1.1] tracking-wide ${isSelected ? 'font-bold' : ''}`}
+                    className={
+                      'text-center text-sm font-bold leading-[1.1] tracking-wide'
+                    }
                   >
                     {showRoomNames && <p>{room.name}</p>}
                     {room.alias && (
