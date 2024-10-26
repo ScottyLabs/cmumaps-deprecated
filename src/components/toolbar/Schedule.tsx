@@ -2,7 +2,7 @@ import { useUser } from '@clerk/nextjs';
 import ical from 'ical';
 import { useRouter } from 'next/navigation';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { getUserSchedule, postUserSchedule } from '@/lib/apiRoutes';
 import { useAppSelector } from '@/lib/hooks';
@@ -33,12 +33,12 @@ const dayMap = {
 
 const Schedule = () => {
   const router = useRouter();
-
   const { user } = useUser();
-
   const searchMap = useAppSelector((state) => state.data.searchMap);
-
   const [scheduleData, setScheduleData] = useState<CourseData[]>([]);
+
+  // Create a ref for the file input
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (user) {
@@ -92,9 +92,21 @@ const Schedule = () => {
     }
   };
 
+  // Function to handle reimport button click
+  const handleReimportClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   const renderSchedule = () => {
     const formatDate = (date: Date) => {
-      return `${new Date(date).getHours().toString().padStart(2, '0')}:${new Date(date).getMinutes().toString().padStart(2, '0')}`;
+      return `${new Date(date).getHours().toString().padStart(2, '0')}:${new Date(
+        date,
+      )
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}`;
     };
 
     return (
@@ -127,6 +139,21 @@ const Schedule = () => {
             </div>
           </button>
         ))}
+        {/* Reimport Schedule Button */}
+        <button
+          onClick={handleReimportClick}
+          className="mt-2 text-blue-600 underline"
+        >
+          Reimport Schedule
+        </button>
+        {/* Hidden File Input */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          accept=".ics"
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+        />
       </div>
     );
   };
