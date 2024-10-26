@@ -13,9 +13,9 @@ export type RoomSearchResult = {
 const nonAsciiRe = /[^a-zA-Z0-9']/; //Includes ' for scotty's market
 
 const modeToType: Partial<Record<SearchMode, RoomType>> = {
-  food: 'food',
-  restrooms: 'restroom',
-  study: 'classroom',
+  food: 'Food',
+  restrooms: 'Restroom',
+  study: 'Classroom',
 };
 
 // sort building by distance

@@ -40,7 +40,7 @@ const BuildingCard = ({ map, building }: Props) => {
           return [];
         }
         const rooms = searchMap[`${building.code}`][`${floorLevel}`];
-        return rooms.filter((room) => room.type == 'food');
+        return rooms.filter((room) => room.type == 'Food');
       })
       .flat();
 

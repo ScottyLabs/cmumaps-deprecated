@@ -86,7 +86,7 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
         <span>
           {building.code} {room.name}
         </span>
-        {room.type !== 'default' && (
+        {room.type !== 'Default' && (
           <span className="text-gray-400">{room.type}</span>
         )}
         {room.alias && <span className="truncate">{room.alias}</span>}
