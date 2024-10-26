@@ -47,27 +47,35 @@ const RoomCard = ({ room }: Props) => {
   };
 
   const renderRoomTitle = () => {
-    const getText = () => {
+    const renderTitle = () => {
       if (room.alias) {
         return room.alias;
       }
 
       if (
-        room.type == 'restroom' ||
-        room.type == 'stairs' ||
-        room.type == 'elevator'
+        room.type == 'Restroom' ||
+        room.type == 'Stairs' ||
+        room.type == 'Elevator'
       ) {
-        return room.type;
+        return <h2>{room.type}</h2>;
       }
-      return `${buildings[room.floor.buildingCode].name} ${room.name}`;
+
+      return (
+        <div className="flex items-center justify-between">
+          <h2>
+            {buildings[room.floor.buildingCode].name} {room.name}
+          </h2>
+          <p className="italic">{room.type}</p>
+        </div>
+      );
     };
 
     if (hasSchedule) {
-      return <h2 className="ml-3 mt-2">{getText()}</h2>;
+      return <div className="mx-3 mt-2">{renderTitle()}</div>;
     } else {
       return (
-        <div className="ml-3 mt-2">
-          <h2>{getText()}</h2>
+        <div className="mx-3 mt-2">
+          {renderTitle()}
           <p className="text-[--color-gray]">No Room Schedule Available</p>
         </div>
       );
