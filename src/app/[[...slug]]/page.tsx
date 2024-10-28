@@ -277,10 +277,7 @@ const Page = ({ params, searchParams }: Props) => {
     <main className="relative h-screen">
       <div className="h-10 bg-[#007fff] p-1.5 text-center text-lg text-white">
         ‼️ Sign up for{' '}
-        <a
-          href="https://go.scottylabs.org/nova-cmucourses"
-          className="underline"
-        >
+        <a href="https://go.scottylabs.org/nova-cmumaps" className="underline">
           <strong>Nova</strong>
         </a>
         , ScottyLabs&apos; new GenAI Hackathon! 🖥️
