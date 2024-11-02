@@ -7,7 +7,6 @@ const Collapsible = dynamic(() => import('react-collapsible'), { ssr: false });
 
 interface Props {
   title: string | React.ReactElement;
-  footer: string | React.ReactElement;
   defaultOpenState?: boolean;
   children: React.ReactElement;
 }
@@ -21,7 +20,7 @@ const CollapsibleWrapper = ({
 
   const renderTrigger = () => (
     <div className="flex items-center justify-between rounded px-4 pb-1 pt-2">
-      {typeof title === 'string' ? <h3>{title}</h3> : title}
+      <h3>{title}</h3>
       <div>
         {open ? <IoIosArrowUp size={15} /> : <IoIosArrowDown size={15} />}
       </div>

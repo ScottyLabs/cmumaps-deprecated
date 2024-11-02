@@ -161,15 +161,14 @@ const Schedule = () => {
   const renderReuploadButton = () => {
     return (
       <div className="flex justify-end">
-        {' '}
         {/* Upload New Button, hide default html picker */}
         <label className="mb-1 mr-4 cursor-pointer rounded-md bg-blue-600 px-2 py-1 font-medium text-white">
           <Image
             alt={'Lock Icon'}
             src={slidersIcon}
             className="inline-block pb-1"
-          />{' '}
-          Upload New
+          />
+          Upload New Schedule
           <input
             type="file"
             id="reUploadFileInput"
@@ -184,10 +183,12 @@ const Schedule = () => {
 
   return (
     <CollapsibleWrapper title="Schedule">
-      <div className="space-y-2 pb-2">
-        {scheduleData.length > 0 ? renderSchedule() : renderNoSchedule()}
-      </div>
-      {scheduleData.length > 0 ? renderReuploadButton() : null}
+      <>
+        <div className="space-y-2 pb-2">
+          {scheduleData.length > 0 ? renderSchedule() : renderNoSchedule()}
+        </div>
+        {scheduleData.length > 0 ? renderReuploadButton() : null}
+      </>
     </CollapsibleWrapper>
   );
 };
