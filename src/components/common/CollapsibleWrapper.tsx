@@ -6,7 +6,7 @@ import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 const Collapsible = dynamic(() => import('react-collapsible'), { ssr: false });
 
 interface Props {
-  title: string;
+  title: string | React.ReactElement;
   defaultOpenState?: boolean;
   children: React.ReactElement;
 }
