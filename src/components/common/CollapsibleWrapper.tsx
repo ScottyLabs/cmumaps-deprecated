@@ -6,7 +6,8 @@ import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 const Collapsible = dynamic(() => import('react-collapsible'), { ssr: false });
 
 interface Props {
-  title: string;
+  title: string | React.ReactElement;
+  footer: string | React.ReactElement;
   defaultOpenState?: boolean;
   children: React.ReactElement;
 }
@@ -20,7 +21,7 @@ const CollapsibleWrapper = ({
 
   const renderTrigger = () => (
     <div className="flex items-center justify-between rounded px-4 pb-1 pt-2">
-      <h3>{title}</h3>
+      {typeof title === 'string' ? <h3>{title}</h3> : title}
       <div>
         {open ? <IoIosArrowUp size={15} /> : <IoIosArrowDown size={15} />}
       </div>
