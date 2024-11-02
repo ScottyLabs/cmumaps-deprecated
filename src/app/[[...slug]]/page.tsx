@@ -10,7 +10,11 @@ import { getSelectorsByUserAgent } from 'react-device-detect';
 import { Slide, ToastContainer } from 'react-toastify';
 
 import MapDisplay from '@/components/buildings/MapDisplay';
-import { zoomOnFloor, zoomOnRoomByName } from '@/components/buildings/mapUtils';
+import {
+  getRoomIdByNameAndFloor,
+  zoomOnFloor,
+  zoomOnRoomByName,
+} from '@/components/buildings/mapUtils';
 import ToolBar from '@/components/toolbar/ToolBar';
 import {
   setBuildings,
@@ -19,13 +23,19 @@ import {
   setSearchMap,
   setFloorPlanMap,
 } from '@/lib/features/dataSlice';
-import { setUserPosition } from '@/lib/features/navSlice';
+import {
+  setEndLocation,
+  setIsNavOpen,
+  setStartLocation,
+  setUserPosition,
+} from '@/lib/features/navSlice';
 import {
   setIsMobile,
   selectBuilding,
   getIsCardOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { Building, Room } from '@/types';
 import { getEateryData } from '@/util/eateryUtils';
 
 // const mockUserPosition = [40.44249719447571, -79.94314319195851];
@@ -35,6 +45,8 @@ interface Props {
     slug?: string[];
   };
   searchParams: {
+    src?: string;
+    dst?: string;
     userAgent?: string;
   };
 }
@@ -50,6 +62,7 @@ const Page = ({ params, searchParams }: Props) => {
 
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const buildings = useAppSelector((state) => state.data.buildings);
+
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
@@ -57,17 +70,21 @@ const Page = ({ params, searchParams }: Props) => {
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
 
+  const startLocation = useAppSelector((state) => state.nav.startLocation);
+  const endLocation = useAppSelector((state) => state.nav.endLocation);
+
   // extracting data in the initial loading of the page
   useEffect(() => {
     // makes all required things are loaded
     if (mapRef.current && buildings && params.slug && params.slug.length > 0) {
       const code = params.slug[0];
+      // only building code
       if (!code.includes('-')) {
-        // only building code
-        const buildingCode = code;
-        dispatch(selectBuilding(buildings[buildingCode]));
-      } else {
-        // at least floor level
+        // the code is the building code
+        dispatch(selectBuilding(buildings[code]));
+      }
+      // at least floor level
+      else {
         const buildingCode = code.split('-')[0].toUpperCase();
         const roomName = code.split('-')[1];
         const floorLevel = roomName[0];
@@ -104,8 +121,89 @@ const Page = ({ params, searchParams }: Props) => {
           );
         }
       }
+
+      // navigation
+      const src = searchParams.src;
+      const dst = searchParams.dst;
+
+      // only dst is required; you can't have only src and not dst
+      if (dst) {
+        const assignHelper = (code: string, setLocation): boolean => {
+          // only building code
+          if (!code.includes('-')) {
+            if (!buildings[code]) {
+              return false;
+            }
+
+            // the code is the building code
+            dispatch(setLocation(buildings[code]));
+            return true;
+          }
+          // at least floor level
+          else {
+            const buildingCode = code.split('-')[0];
+            const roomName = code.split('-')[1];
+            const floorLevel = roomName[0];
+
+            const building = buildings[buildingCode];
+
+            // validations on the building code
+            if (!building) {
+              return false;
+            }
+
+            // if only contains floor information
+            if (roomName.length == 1) {
+              return false;
+            }
+
+            const floor = { buildingCode, level: floorLevel };
+
+            const roomId = getRoomIdByNameAndFloor(
+              roomName,
+              floor,
+              buildings,
+              floorPlanMap,
+            );
+
+            // validations on the room name
+            if (!roomId) {
+              return false;
+            }
+
+            // validations on the floor level
+            if (!building.floors.includes(floorLevel)) {
+              return false;
+            }
+
+            const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
+            const room = floorPlan[roomId];
+
+            dispatch(setLocation(room));
+
+            return true;
+          }
+        };
+
+        if (src) {
+          assignHelper(src, setStartLocation);
+        }
+
+        const succeeded = assignHelper(dst, setEndLocation);
+        if (succeeded) {
+          dispatch(setIsNavOpen(true));
+        }
+      }
     }
-  }, [buildings, dispatch, params.slug, router, mapRef, floorPlanMap]);
+  }, [
+    buildings,
+    dispatch,
+    params.slug,
+    router,
+    mapRef,
+    floorPlanMap,
+    searchParams,
+  ]);
 
   // determine the device type
   const userAgent = searchParams.userAgent || '';
@@ -207,18 +305,53 @@ const Page = ({ params, searchParams }: Props) => {
   // update the URL
   useEffect(() => {
     let url = window.location.origin + '/';
+
+    const roomToString = (room: Room) => {
+      const floor = room.floor;
+      return `${floor.buildingCode}-${room.name}`;
+    };
+
+    // selected/focused room, floor, building
     if (selectedRoom) {
-      const floor = selectedRoom.floor;
-      url += `${floor.buildingCode}-${selectedRoom.name}`;
+      url += roomToString(selectedRoom);
     } else if (focusedFloor) {
       url += `${focusedFloor.buildingCode}`;
       url += `-${focusedFloor.level}`;
     } else if (selectedBuilding) {
       url += selectedBuilding.code;
     }
+
+    // navigation
+    const toString = (location: Room | Building) => {
+      if ('id' in location) {
+        return roomToString(location);
+      } else {
+        return location.code;
+      }
+    };
+
+    if (startLocation) {
+      url += `?src=${toString(startLocation)}`;
+    }
+
+    if (endLocation) {
+      if (startLocation) {
+        url += '&';
+      } else {
+        url += '?';
+      }
+      url += `dst=${toString(endLocation)}`;
+    }
+
     window.history.pushState({}, '', url);
     // use window instead of the next router to prevent rezooming in
-  }, [selectedRoom, focusedFloor, selectedBuilding]);
+  }, [
+    selectedRoom,
+    focusedFloor,
+    selectedBuilding,
+    startLocation,
+    endLocation,
+  ]);
 
   const renderIcons = () => {
     // don't show icons if in mobile and either the search is open or the card is open
