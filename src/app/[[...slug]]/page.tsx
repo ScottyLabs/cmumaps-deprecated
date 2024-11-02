@@ -68,7 +68,7 @@ const Page = ({ params, searchParams }: Props) => {
         dispatch(selectBuilding(buildings[buildingCode]));
       } else {
         // at least floor level
-        const buildingCode = code.split('-')[0];
+        const buildingCode = code.split('-')[0].toUpperCase();
         const roomName = code.split('-')[1];
         const floorLevel = roomName[0];
 
