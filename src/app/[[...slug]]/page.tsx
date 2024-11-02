@@ -12,7 +12,7 @@ import { Slide, ToastContainer } from 'react-toastify';
 import MapDisplay from '@/components/buildings/MapDisplay';
 import {
   getRoomIdByNameAndFloor,
-  zoomOnObject,
+  zoomOnFloor,
   zoomOnRoomByName,
 } from '@/components/buildings/mapUtils';
 import ToolBar from '@/components/toolbar/ToolBar';
@@ -30,7 +30,6 @@ import {
   setUserPosition,
 } from '@/lib/features/navSlice';
 import {
-  setFocusedFloor,
   setIsMobile,
   selectBuilding,
   getIsCardOpen,
@@ -86,7 +85,7 @@ const Page = ({ params, searchParams }: Props) => {
       }
       // at least floor level
       else {
-        const buildingCode = code.split('-')[0];
+        const buildingCode = code.split('-')[0].toUpperCase();
         const roomName = code.split('-')[1];
         const floorLevel = roomName[0];
 
@@ -110,8 +109,7 @@ const Page = ({ params, searchParams }: Props) => {
         if (roomName.length == 1) {
           // up to floor level
           dispatch(selectBuilding(building));
-          zoomOnObject(mapRef.current, building.shapes.flat());
-          dispatch(setFocusedFloor(floor));
+          zoomOnFloor(mapRef.current, buildings, floor, dispatch);
         } else {
           zoomOnRoomByName(
             mapRef.current,
@@ -410,6 +408,14 @@ const Page = ({ params, searchParams }: Props) => {
 
   return (
     <main className="relative h-screen">
+      <div className="h-10 bg-[#007fff] p-1.5 text-center text-lg text-white">
+        ‼️ Sign up for{' '}
+        <a href="https://go.scottylabs.org/nova-cmumaps" className="underline">
+          <strong>Nova</strong>
+        </a>
+        , ScottyLabs&apos; new GenAI Hackathon! 🖥️
+      </div>
+
       <div className="absolute z-10">
         <ToolBar map={mapRef.current} />
 

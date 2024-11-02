@@ -31,11 +31,12 @@ d = x.json()
 
 urls = []
 names = []
-save_directory = "dining_location_images"
+save_directory = "public/assets/location_images/eatery_images"
 
 locations = d["locations"]
 for location in locations:
-    if "Tepper" in location["location"]:
+    if (location["conceptId"]) == 88:
+        # if "Tepper" in location["location"]:
         urls.append(location["url"])
         names.append(location["name"])
 

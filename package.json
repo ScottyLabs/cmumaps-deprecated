@@ -13,7 +13,9 @@
     "prettier": "prettier --write */**/*.{js,jsx,json,ts,tsx,scss,css,md}",
     "prepare": "husky",
     "vercel-install": "./init_submodule.sh && next build",
-    "update-data": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py"
+    "update-data": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py & python3 public/cmumaps-data/scripts/process_graphs.py",
+    "update-rooms": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py",
+    "update-graph": "python3 public/cmumaps-data/scripts/process_graphs.py"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.3.1",
@@ -29,7 +31,7 @@
     "lodash": "^4.17.21",
     "mapkit-react": "^1.14.0",
     "netlify-plugin-mapkitjs-token": "^1.2.0",
-    "next": "^14.1.4",
+    "next": "^14.2.15",
     "react": "^18.3.1",
     "react-collapsible": "^2.10.0",
     "react-device-detect": "^2.2.3",
@@ -57,7 +59,7 @@
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-next": "^14.2.5",
+    "eslint-config-next": "^14.2.15",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "husky": "^9.1.5",

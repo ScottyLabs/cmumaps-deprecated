@@ -15,7 +15,7 @@ const InfoCard = ({ map }: Props) => {
   const building = useAppSelector((state) => state.ui.selectedBuilding);
 
   if (room) {
-    if (room.type == 'food') {
+    if (room.type == 'Food') {
       return <EateryCard room={room} />;
     } else {
       return <RoomCard room={room} />;
