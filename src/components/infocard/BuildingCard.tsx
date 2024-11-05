@@ -154,7 +154,7 @@ const BuildingCard = ({ map, building }: Props) => {
       return (
         <>
           <p className="mb-2 ml-3 text-base text-gray-500">Eateries nearby</p>
-          <div className="max-h-96 space-y-3 overflow-y-auto px-2 pb-3">
+          <div className="space-y-3 overflow-y-auto px-2 pb-3">
             {eateries.map((eatery) => {
               const eateryInfo = eateryData[getEateryId(eatery)];
 
