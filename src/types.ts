@@ -25,6 +25,7 @@ export const RoomTypeList = [
   'Operational', // Used for storage or maintenance, not publicly accessible
   'Conference',
   'Study',
+  'Library Study Room',
   'Laboratory',
   'Computer Lab',
   'Studio',

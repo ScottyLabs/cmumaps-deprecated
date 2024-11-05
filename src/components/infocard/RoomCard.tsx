@@ -92,6 +92,14 @@ const RoomCard = ({ room }: Props) => {
           icon,
           'https://25live.collegenet.com/pro/cmu#!/home/event/form',
         );
+      } else if (room.type == 'Library Study Room') {
+        const icon = <Image src={reserveIcon} alt="Reserve Icon" />;
+
+        return renderMiddleButtonHelper(
+          'Reserve Study Room',
+          icon,
+          'https://cmu.libcal.com/r',
+        );
       } else {
         return <></>;
       }
