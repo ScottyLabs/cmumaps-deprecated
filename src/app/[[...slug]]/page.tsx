@@ -15,6 +15,7 @@ import {
   zoomOnFloor,
   zoomOnRoomByName,
 } from '@/components/buildings/mapUtils';
+import Banner from '@/components/toolbar/Banner';
 import ToolBar from '@/components/toolbar/ToolBar';
 import {
   setBuildings,
@@ -397,44 +398,33 @@ const Page = ({ params, searchParams }: Props) => {
       <>
         {renderClerkIcon()}
         {renderQuestionMarkIcon()}
-        {/* {isMobile && (
-          <div className="fixed bottom-16 right-2 size-10 cursor-pointer rounded-full bg-black">
-            <Image alt="Schedule" src={scheduleIcon} />
-          </div>
-        )} */}
       </>
     );
   };
 
   return (
     <main className="relative h-screen">
-      <div className="h-10 bg-[#007fff] p-1.5 text-center text-lg text-white">
-        ‼️ Sign up for{' '}
-        <a href="https://go.scottylabs.org/nova-cmumaps" className="underline">
-          <strong>Nova</strong>
-        </a>
-        , ScottyLabs&apos; new GenAI Hackathon! 🖥️
-      </div>
+      <Banner />
 
       <div className="absolute z-10">
         <ToolBar map={mapRef.current} />
-
-        {renderIcons()}
-
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar={true}
-          closeOnClick
-          theme="colored"
-          transition={Slide}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-          }}
-        />
       </div>
+
+      <div className="fixed z-10">{renderIcons()}</div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={true}
+        closeOnClick
+        theme="colored"
+        transition={Slide}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+        }}
+      />
 
       <MapDisplay mapRef={mapRef} />
     </main>
