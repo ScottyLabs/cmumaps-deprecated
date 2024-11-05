@@ -49,7 +49,7 @@ const RoomCard = ({ room }: Props) => {
   const renderRoomTitle = () => {
     const renderTitle = () => {
       if (room.alias) {
-        return room.alias;
+        return <h2>{room.alias}</h2>;
       }
 
       if (
