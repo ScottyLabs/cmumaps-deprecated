@@ -1,9 +1,11 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Lato } from 'next/font/google';
 
 import StoreProvider from './StoreProvider';
 import './globals.css';
+import { PHProvider } from './providers';
 
 // https://nextjs.org/docs/app/building-your-application/optimizing/fonts
 const lato = Lato({
@@ -26,6 +28,10 @@ export const metadata: Metadata = {
   },
 };
 
+const PostHogPageView = dynamic(() => import('./PostHogPageView'), {
+  ssr: false,
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -45,8 +51,12 @@ export default function RootLayout({
             <meta name="description" content="Google Maps for CMU" />
             <script>const global = globalThis;</script>
           </head>
-
-          <body>{children}</body>
+          <PHProvider>
+            <body>
+              <PostHogPageView />
+              {children}
+            </body>
+          </PHProvider>
         </html>
       </ClerkProvider>
     </StoreProvider>
