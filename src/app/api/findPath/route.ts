@@ -4,8 +4,19 @@ import { NextRequest } from 'next/server';
 import path from 'path';
 
 import { Building } from '@/types';
+import { latitudeRatio, longitudeRatio } from '@/util/geometry';
 
 import { MaybeRoute, Node, Route, Waypoint } from './types';
+
+function coordDistance(
+  a: { latitude: number; longitude: number },
+  b: { latitude: number; longitude: number },
+) {
+  const squareSum =
+    ((a.latitude - b.latitude) * latitudeRatio) ** 2 +
+    ((a.longitude - b.longitude) * longitudeRatio) ** 2;
+  return Math.sqrt(squareSum);
+}
 
 const outsideRooms = JSON.parse(
   fs.readFileSync(
@@ -151,6 +162,20 @@ const waypointToNodes = (
     );
     return buildingNodes.length ? buildingNodes : null;
   }
+  if ('userPosition' in waypoint) {
+    // Waypoint is a userPosition
+    const userPosition = waypoint.userPosition;
+    const bestNode = nodes.reduce((old_node, node) => {
+      if (
+        coordDistance(node.coordinate, userPosition) <
+        coordDistance(old_node.coordinate, userPosition)
+      ) {
+        return node;
+      } // Memoize this distance.
+      return old_node;
+    });
+    return [bestNode];
+  }
   return null;
 };
 
@@ -242,7 +267,7 @@ export async function POST(req: NextRequest) {
   if ('error' in paths[0]) {
     return Response.json({ error: 'Path not found' }, { status: 404 });
   }
-  if ('error' in paths[1]) {
+  if ('error' in paths[1] || !paths[1]) {
     resp = { Fastest: paths[0] };
   } else {
     resp = { Fastest: paths[0], Alternative: paths[1] };

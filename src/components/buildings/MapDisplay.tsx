@@ -10,6 +10,11 @@ import {
 import React, { useState } from 'react';
 
 import {
+  setChoosingRoomMode,
+  setEndLocation,
+  setStartLocation,
+} from '@/lib/features/navSlice';
+import {
   deselectBuilding,
   selectRoom,
   setFocusedFloor,
@@ -250,12 +255,20 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         dispatch(setIsZooming(false));
         onRegionChangeEnd();
       }}
-      onClick={() => {
+      onClick={(e) => {
         // need to check usedScrolling because end of panning is a click
         if (!usedScrolling && !choosingRoomMode && !isNavOpen) {
           dispatch(setIsSearchOpen(false));
           dispatch(deselectBuilding());
           dispatch(selectRoom(null));
+        } else if (choosingRoomMode) {
+          if (choosingRoomMode == 'start') {
+            dispatch(setStartLocation({ userPosition: e.toCoordinates() }));
+          } else if (choosingRoomMode == 'end') {
+            dispatch(setEndLocation({ userPosition: e.toCoordinates() }));
+          }
+          dispatch(setIsSearchOpen(false));
+          dispatch(setChoosingRoomMode(null));
         }
         setUsedScrolling(false);
       }}
