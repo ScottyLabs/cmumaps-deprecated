@@ -15,7 +15,6 @@ import {
   zoomOnFloor,
   zoomOnRoomByName,
 } from '@/components/buildings/mapUtils';
-import Banner from '@/components/toolbar/Banner';
 import ToolBar from '@/components/toolbar/ToolBar';
 import {
   setBuildings,
@@ -404,8 +403,6 @@ const Page = ({ params, searchParams }: Props) => {
 
   return (
     <main className="relative h-screen">
-      <Banner />
-
       <div className="absolute z-10">
         <ToolBar map={mapRef.current} />
       </div>
