@@ -1,5 +1,6 @@
 import { Room } from '@prisma/client';
 import { Annotation, Polygon } from 'mapkit-react';
+import { usePostHog } from 'posthog-js/react';
 
 import React from 'react';
 
@@ -22,6 +23,8 @@ interface Props {
 const FloorPlanView = ({ floor, floorPlan }: Props) => {
   const dispatch = useAppDispatch();
 
+  const posthog = usePostHog();
+
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const showRoomNames = useAppSelector((state) => state.ui.showRoomNames);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
@@ -38,6 +41,8 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
     if (isNavOpen && !choosingRoomMode) {
       return;
     }
+
+    posthog.capture('Selected Room', { 'Room Name': room.name });
 
     if (choosingRoomMode == 'start') {
       dispatch(setStartLocation(room));
