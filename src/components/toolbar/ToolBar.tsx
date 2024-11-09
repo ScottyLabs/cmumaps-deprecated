@@ -55,7 +55,7 @@ const ToolBar = ({ map }: Props) => {
       style={{ maxHeight: `calc(100vh)` }}
       className="fixed flex w-full px-2 sm:box-content sm:w-96"
     >
-      <div className="flex w-full flex-col space-y-2 overflow-y-hidden py-2">
+      <div className="flex w-full flex-col space-y-2 overflow-hidden py-2">
         {showSearchBar() && <SearchBar map={map} />}
 
         {!isSearchOpen && !isCardOpen && <Schedule />}
