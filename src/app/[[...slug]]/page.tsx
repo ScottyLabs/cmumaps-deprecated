@@ -77,7 +77,7 @@ const Page = ({ params, searchParams }: Props) => {
   useEffect(() => {
     // makes all required things are loaded
     if (mapRef.current && buildings && params.slug && params.slug.length > 0) {
-      const code = params.slug[0];
+      const code = decodeURIComponent(params.slug[0]);
       // only building code
       if (!code.includes('-')) {
         // the code is the building code
