@@ -52,18 +52,13 @@ const ToolBar = ({ map }: Props) => {
   return (
     // need box content in the desktop version so the width of the search bar match the card
     <div
-      style={{ maxHeight: `calc(100vh - 2.5rem)` }}
-      className="fixed top-10 flex w-full px-2 sm:box-content sm:w-96"
+      style={{ maxHeight: `calc(100vh)` }}
+      className="fixed flex w-full px-2 sm:box-content sm:w-96"
     >
-      <div className="flex w-full flex-col space-y-2 overflow-y-hidden py-2">
+      <div className="flex w-full flex-col space-y-2 overflow-hidden py-2">
         {showSearchBar() && <SearchBar map={map} />}
 
-        {!isSearchOpen && !isCardOpen && (
-          <>
-            <Schedule />
-            {/* <Events map={map} /> */}
-          </>
-        )}
+        {!isSearchOpen && !isCardOpen && <Schedule />}
 
         {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
         {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard map={map} />}

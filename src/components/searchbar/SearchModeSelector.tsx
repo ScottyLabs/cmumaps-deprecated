@@ -40,6 +40,7 @@ const SearchModeSelector = () => {
 
     return (
       <div
+        id={searchMode}
         key={searchMode}
         onClick={() => dispatch(setSearchMode(searchMode))}
         className={`flex flex-col items-center gap-1 p-2 ${searchMode == selectedSearchMode ? 'bg-gray-200' : ''}`}

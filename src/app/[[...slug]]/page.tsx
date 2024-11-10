@@ -15,7 +15,6 @@ import {
   zoomOnFloor,
   zoomOnRoomByName,
 } from '@/components/buildings/mapUtils';
-import Banner from '@/components/toolbar/Banner';
 import ToolBar from '@/components/toolbar/ToolBar';
 import {
   setBuildings,
@@ -78,7 +77,7 @@ const Page = ({ params, searchParams }: Props) => {
   useEffect(() => {
     // makes all required things are loaded
     if (mapRef.current && buildings && params.slug && params.slug.length > 0) {
-      const code = params.slug[0];
+      const code = decodeURIComponent(params.slug[0]);
       // only building code
       if (!code.includes('-')) {
         // the code is the building code
@@ -404,8 +403,6 @@ const Page = ({ params, searchParams }: Props) => {
 
   return (
     <main className="relative h-screen">
-      <Banner />
-
       <div className="absolute z-10">
         <ToolBar map={mapRef.current} />
       </div>

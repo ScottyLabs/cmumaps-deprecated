@@ -82,7 +82,7 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
 
   const renderRoomResults = (rooms: SearchRoom[], building: Building) => {
     const renderText = (room: SearchRoom) => (
-      <p className="space-x-2">
+      <p className="flex-col space-x-2 truncate">
         <span>
           {building.code} {room.name}
         </span>
@@ -120,8 +120,10 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
         handleClick={handleClick(searchRoom)}
         isSelected={searchRoom.id == selectedRoom?.id}
       >
-        <div className="flex h-12 items-center gap-3">
-          <RoomPin room={searchRoom} />
+        <div className="flex h-12 items-center gap-3 overflow-x-hidden">
+          <div className="flex-1">
+            <RoomPin room={searchRoom} />
+          </div>
           {renderText(searchRoom)}
         </div>
       </SearchResultWrapper>
