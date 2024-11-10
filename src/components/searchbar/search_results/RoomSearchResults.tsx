@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaLocationCrosshairs } from 'react-icons/fa6';
 
 import {
   setChoosingRoomMode,
@@ -39,7 +40,18 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
 
   if (query.length < 2 && searchMode == 'rooms') {
-    return <KeepTypingDisplay />;
+    if (choosingRoomMode == null) {
+      return <KeepTypingDisplay />;
+    } else {
+      return (
+        <button className="flex h-16 w-full items-center gap-3 pl-3 hover:bg-blue-200">
+          <div className="text-lg text-blue-600">
+            <FaLocationCrosshairs />
+          </div>
+          <p> User Position</p>
+        </button>
+      );
+    }
   }
 
   if (searchResult.length == 0) {
