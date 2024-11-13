@@ -11,6 +11,5 @@ export function encodeCoord(coord: Coordinate): string {
 export function decodeCoord(s: string): Coordinate {
   const decoded = Buffer.from(s, 'base64').toString();
   const [latitude, longitude] = decoded.split(',').map(Number);
-  console.log(decoded, latitude, longitude);
   return { latitude, longitude };
 }

@@ -127,13 +127,11 @@ const Page = ({ params, searchParams }: Props) => {
       // navigation
       const src = searchParams.src;
       const dst = searchParams.dst;
-      console.log('src: ' + src, 'dst: ' + dst);
 
       // only dst is required; you can't have only src and not dst
       if (dst) {
         const assignHelper = (code: string, setLocation): boolean => {
           // only building code
-          console.log(code);
           if (!code.includes('-') && buildings[code]) {
             // the code is the building code
             dispatch(setLocation(buildings[code]));
@@ -349,7 +347,6 @@ const Page = ({ params, searchParams }: Props) => {
     }
 
     if (endLocation) {
-      console.log(startLocation);
       if (startLocation) {
         url += '&';
       } else {
