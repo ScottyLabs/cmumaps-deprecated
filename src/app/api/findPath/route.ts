@@ -162,9 +162,10 @@ const waypointToNodes = (
     );
     return buildingNodes.length ? buildingNodes : null;
   }
-  if ('userPosition' in waypoint) {
+  if ('userPosition' in waypoint || 'waypoint' in waypoint) {
     // Waypoint is a userPosition
-    const userPosition = waypoint.userPosition;
+    const userPosition =
+      'userPosition' in waypoint ? waypoint.userPosition : waypoint.waypoint;
     const bestNode = nodes.reduce((old_node, node) => {
       if (
         coordDistance(node.coordinate, userPosition) <
@@ -225,7 +226,6 @@ export async function POST(req: NextRequest) {
   const [startNodes, endNodes] = waypoints.map((waypoint) =>
     waypointToNodes(waypoint),
   );
-  console.log(startNodes, endNodes);
 
   if (!startNodes || !endNodes) {
     return Response.json(
@@ -245,8 +245,12 @@ export async function POST(req: NextRequest) {
     !high_level_graph[endFloorName] ||
     !allowFloors
   ) {
+    const path = findPath(startNodes, endNodes);
+    if ('error' in path) {
+      return Response.json({ error: 'Path not found' }, { status: 404 });
+    }
     return Response.json({
-      Fastest: findPath(startNodes, endNodes),
+      Fastest: path,
     });
   }
 
@@ -257,7 +261,6 @@ export async function POST(req: NextRequest) {
     findPath(startNodes, endNodes),
     findPath(startNodes, endNodes, nodeFilter),
   ]; // If there is no fastest path, there is no alterative path
-
   let resp = {};
   // paths[0] -> Fastest path
   // paths[1] -> Alternative path

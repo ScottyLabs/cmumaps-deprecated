@@ -36,6 +36,7 @@ import {
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Room } from '@/types';
+import { decodeCoord, encodeCoord } from '@/util/coordEncoding';
 import { getEateryData } from '@/util/eateryUtils';
 
 // const mockUserPosition = [40.44249719447571, -79.94314319195851];
@@ -72,6 +73,7 @@ const Page = ({ params, searchParams }: Props) => {
 
   const startLocation = useAppSelector((state) => state.nav.startLocation);
   const endLocation = useAppSelector((state) => state.nav.endLocation);
+  const userPosition = useAppSelector((state) => state.nav.userPosition);
 
   // extracting data in the initial loading of the page
   useEffect(() => {
@@ -125,18 +127,24 @@ const Page = ({ params, searchParams }: Props) => {
       // navigation
       const src = searchParams.src;
       const dst = searchParams.dst;
+      console.log('src: ' + src, 'dst: ' + dst);
 
       // only dst is required; you can't have only src and not dst
       if (dst) {
         const assignHelper = (code: string, setLocation): boolean => {
           // only building code
-          if (!code.includes('-')) {
-            if (!buildings[code]) {
-              return false;
-            }
-
+          console.log(code);
+          if (!code.includes('-') && buildings[code]) {
             // the code is the building code
             dispatch(setLocation(buildings[code]));
+            return true;
+          } else if (!code.includes('-')) {
+            // the code is the user position
+            if (code === 'user') {
+              dispatch(setLocation({ userPosition }));
+            } else {
+              dispatch(setLocation({ waypoint: decodeCoord(code) }));
+            }
             return true;
           }
           // at least floor level
@@ -331,16 +339,29 @@ const Page = ({ params, searchParams }: Props) => {
     };
 
     if (startLocation) {
-      url += `?src=${toString(startLocation)}`;
+      if ('userPosition' in startLocation) {
+        url += `?src=user`;
+      } else if ('waypoint' in startLocation) {
+        url += `?src=${encodeCoord(startLocation.waypoint)}`;
+      } else {
+        url += `?src=${toString(startLocation)}`;
+      }
     }
 
     if (endLocation) {
+      console.log(startLocation);
       if (startLocation) {
         url += '&';
       } else {
         url += '?';
       }
-      url += `dst=${toString(endLocation)}`;
+      if ('userPosition' in endLocation) {
+        url += `dst=user`;
+      } else if ('waypoint' in endLocation) {
+        url += `dst=${encodeCoord(endLocation.waypoint)}`;
+      } else {
+        url += `dst=${toString(endLocation)}`;
+      }
     }
 
     window.history.pushState({}, '', url);

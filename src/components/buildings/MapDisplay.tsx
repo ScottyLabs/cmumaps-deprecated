@@ -263,9 +263,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           dispatch(selectRoom(null));
         } else if (choosingRoomMode) {
           if (choosingRoomMode == 'start') {
-            dispatch(setStartLocation({ userPosition: e.toCoordinates() }));
+            dispatch(setStartLocation({ waypoint: e.toCoordinates() }));
           } else if (choosingRoomMode == 'end') {
-            dispatch(setEndLocation({ userPosition: e.toCoordinates() }));
+            dispatch(setEndLocation({ waypoint: e.toCoordinates() }));
           }
           dispatch(setIsSearchOpen(false));
           dispatch(setChoosingRoomMode(null));

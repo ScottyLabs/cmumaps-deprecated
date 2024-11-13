@@ -124,6 +124,8 @@ const NavCard = ({ map }: Props) => {
         } else if ('name' in navLocation) {
           return <p>{navLocation.name}</p>;
         } else if ('userPosition' in navLocation) {
+          return <p>Your Location</p>;
+        } else if ('waypoint' in navLocation) {
           return <p>Waypoint</p>;
         }
       } else {

@@ -26,4 +26,8 @@ export type MaybeRoute = Route | { error: string };
 export type RouteResponse = Record<string, Route>;
 
 // The things we navigate between
-export type Waypoint = Room | Building | { userPosition: Coordinate };
+export type Waypoint =
+  | Room
+  | Building
+  | { userPosition: Coordinate }
+  | { waypoint: Coordinate };
