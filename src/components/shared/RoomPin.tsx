@@ -11,24 +11,24 @@ import Image from 'next/image';
 import React from 'react';
 
 import { useAppSelector } from '@/lib/hooks';
-import { Room, SearchRoom, getRoomTypeDetails } from '@/types';
+import { Room, RoomType, SearchRoom, getRoomTypeDetails } from '@/types';
 
-const icons: { [type: string]: SVGElement } = {
-  elevator: elevatorIcon,
-  corridor: corridorIcon,
-  dining: diningIcon,
-  food: foodIcon,
-  stairs: stairsIcon,
-  library: studyIcon,
-  restroom: restroomIcon,
-  classroom: studyIcon,
-  parking: pinIcon,
-  studio: pinIcon,
-  vestibule: pinIcon,
-  auditorium: pinIcon,
-  sport: pinIcon,
-  workshop: pinIcon,
-  store: pinIcon,
+const icons: Partial<Record<RoomType, SVGElement>> = {
+  Elevator: elevatorIcon,
+  Corridor: corridorIcon,
+  Dining: diningIcon,
+  Food: foodIcon,
+  Stairs: stairsIcon,
+  Library: studyIcon,
+  Restroom: restroomIcon,
+  Classroom: studyIcon,
+  Parking: pinIcon,
+  Studio: pinIcon,
+  Vestibule: pinIcon,
+  Auditorium: pinIcon,
+  Sport: pinIcon,
+  Workshop: pinIcon,
+  Store: pinIcon,
 };
 
 interface RoomPinProps {

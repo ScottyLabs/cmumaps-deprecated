@@ -173,7 +173,7 @@ const SearchBar = ({ map }: Props) => {
 
     return (
       <div
-        className={`z-10 flex-1 overflow-y-scroll rounded bg-white transition-opacity duration-150 ease-in-out ${
+        className={`z-10 flex-1 overflow-x-hidden overflow-y-scroll rounded bg-white transition-opacity duration-150 ease-in-out ${
           showResult ? 'mt-1 h-fit opacity-100' : 'h-0 opacity-0'
         }`}
       >

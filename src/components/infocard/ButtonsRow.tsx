@@ -42,6 +42,7 @@ const ButtonsRow = ({ middleButton }: Props) => {
   const renderDirectionButton = () => {
     return (
       <button
+        id="DirectionButton"
         type="button"
         className="flex items-center gap-2 rounded-lg bg-[#56b57b] px-3 py-1 text-white"
         onClick={() => {
