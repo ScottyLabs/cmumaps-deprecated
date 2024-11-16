@@ -234,6 +234,27 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     mapRef.current?.addAnnotation(pinAnnotation);
   };
 
+  const renderSelectedRoomPin = () => {
+    if (selectedRoom) {
+      return (
+        <Annotation
+          latitude={selectedRoom.labelPosition.latitude}
+          longitude={selectedRoom.labelPosition.longitude}
+        >
+          <div className="flex flex-col items-center">
+            <RoomPin room={{ ...selectedRoom, id: selectedRoom?.id }} />
+            <div className="text-center text-sm font-bold leading-[1.1] tracking-wide">
+              <p>{selectedRoom.name}</p>
+              {selectedRoom.alias && (
+                <p className="w-16 text-wrap italic">{selectedRoom.alias}</p>
+              )}
+            </div>
+          </div>
+        </Annotation>
+      );
+    }
+  };
+
   return (
     <Map
       ref={mapRef}
@@ -295,22 +316,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
       {mapRef.current && <NavLine map={mapRef.current} />}
 
-      {selectedRoom ? (
-        <Annotation
-          latitude={selectedRoom.labelPosition.latitude}
-          longitude={selectedRoom.labelPosition.longitude}
-        >
-          <div className="flex flex-col items-center">
-            <RoomPin room={{ ...selectedRoom, id: selectedRoom?.id }} />
-            <div className="text-center text-sm font-bold leading-[1.1] tracking-wide">
-              <p>{selectedRoom.name}</p>
-              {selectedRoom.alias && (
-                <p className="w-16 text-wrap italic">{selectedRoom.alias}</p>
-              )}
-            </div>
-          </div>
-        </Annotation>
-      ) : null}
+      {renderSelectedRoomPin()}
     </Map>
   );
 };
