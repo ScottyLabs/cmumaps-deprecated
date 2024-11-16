@@ -27,8 +27,17 @@ const BuildingCard = ({ map, building }: Props) => {
   const eateryData = useAppSelector((state) => state.data.eateryData);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const searchMap = useAppSelector((state) => state.data.searchMap);
+  const isFullyOpen = useAppSelector(
+    (state) => state.ui.isCardWrapperFullyOpen,
+  );
 
   const [eateries, setEateries] = useState<SearchRoom[]>([]);
+
+  // const [isFullyOpen, setIsFullyOpen] = useState(true);
+
+  // function toggleFullyOpen() {
+  //   setIsFullyOpen((isOpen) => !isOpen);
+  // }
 
   useEffect(() => {
     const newEateries = building.floors
@@ -106,36 +115,73 @@ const BuildingCard = ({ map, building }: Props) => {
         );
       };
 
+      const handleClick = (eatery: SearchRoom) => () => {
+        dispatch(selectRoom(eatery));
+        zoomOnRoomById(
+          map,
+          eatery.id,
+          eatery.floor,
+          buildings,
+          floorPlanMap,
+          dispatch,
+        );
+      };
+
       return (
         <div className="mb-1">
           <p className="-mb-3 ml-3 text-base text-gray-500">Eateries nearby</p>
-          <Carousel
-            showDots
-            responsive={responsive}
-            arrows={false}
-            containerClass="react-multi-carousel-list"
-            dotListClass="gap-2"
-            customDot={<CustomDot />}
-          >
-            {eateries.map((eatery) => {
-              const eateryInfo = eateryData[getEateryId(eatery)];
-              return (
-                <div
-                  key={eatery.id}
-                  className="mx-3 cursor-pointer border"
-                  onClick={() => dispatch(selectRoom(eatery))}
-                >
-                  <div className="carousel-item active">
+          {!isFullyOpen && (
+            <div>
+              <Carousel
+                showDots
+                responsive={responsive}
+                arrows={false}
+                containerClass="react-multi-carousel-list"
+                dotListClass="gap-2"
+                customDot={<CustomDot />}
+              >
+                {eateries.map((eatery) => {
+                  const eateryInfo = eateryData[getEateryId(eatery)];
+                  return (
+                    <div
+                      key={eatery.id}
+                      className="mx-3 cursor-pointer border"
+                      onClick={() => dispatch(selectRoom(eatery))}
+                    >
+                      <div className="carousel-item active">
+                        <EateryInfoDisplay
+                          room={eatery}
+                          title={renderTitle(eatery)}
+                          eateryInfo={eateryInfo}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </Carousel>
+            </div>
+          )}
+          {isFullyOpen && (
+            <div className="mt-4 max-h-96 space-y-3 overflow-y-auto px-2 pb-3">
+              {eateries.map((eatery) => {
+                const eateryInfo = eateryData[getEateryId(eatery)];
+
+                return (
+                  <div
+                    key={eatery.id}
+                    className="cursor-pointer rounded border p-1 transition duration-150 ease-out hover:bg-[#efefef]"
+                    onClick={handleClick(eatery)}
+                  >
                     <EateryInfoDisplay
                       room={eatery}
                       title={renderTitle(eatery)}
                       eateryInfo={eateryInfo}
                     />
                   </div>
-                </div>
-              );
-            })}
-          </Carousel>
+                );
+              })}
+            </div>
+          )}
         </div>
       );
     } else {

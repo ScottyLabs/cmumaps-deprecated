@@ -14,6 +14,7 @@ interface UIState {
   isSearchOpen: boolean;
 
   isCardWrapperCollapsed: boolean;
+  isCardWrapperFullyOpen: boolean;
 
   showRoomNames: boolean;
 
@@ -31,6 +32,7 @@ const initialState: UIState = {
   focusedFloor: null,
   isSearchOpen: false,
   isCardWrapperCollapsed: true,
+  isCardWrapperFullyOpen: false,
   showRoomNames: false,
   searchMode: 'rooms',
   isZooming: false,
@@ -64,6 +66,9 @@ const uiSlice = createSlice({
     setIsCardWrapperCollapsed(state, action: PayloadAction<boolean>) {
       state.isCardWrapperCollapsed = action.payload;
     },
+    setIsCardWrapperFullyOpen(state, action: PayloadAction<boolean>) {
+      state.isCardWrapperFullyOpen = action.payload;
+    },
     setIsMobile(state, action: PayloadAction<boolean>) {
       state.isMobile = action.payload;
     },
@@ -96,6 +101,7 @@ export const {
   setFocusedFloor,
   setIsSearchOpen,
   setIsCardWrapperCollapsed,
+  setIsCardWrapperFullyOpen,
   setIsMobile,
   setShowRoomNames,
   setSearchMode,
