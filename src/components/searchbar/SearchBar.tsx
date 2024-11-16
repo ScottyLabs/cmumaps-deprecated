@@ -165,27 +165,27 @@ const SearchBar = ({ map }: Props) => {
           // work around for shuttle just for this weekend! (11/16/2024)
           onKeyDown={(event) => {
             if (event.key === 'Enter' && searchMode == 'shuttle') {
-              let destination = searchQuery;
+              let destinationStr = searchQuery;
               if (searchQuery.length == 0) {
-                destination =
+                destinationStr =
                   '{"latitude":40.414934526138246,"longitude":-79.88890223850737}';
               }
+
+              const destination = JSON.parse(destinationStr);
 
               if (!userPosition) {
                 const tempUserPosition = {
                   latitude: 40.44315713248135,
                   longitude: -79.94097245738384,
                 };
-                findShuttlePath(tempUserPosition, JSON.parse(destination)).then(
-                  (res) => dispatch(setShuttlePath(res)),
+                findShuttlePath(tempUserPosition, destination).then((res) =>
+                  dispatch(setShuttlePath(res)),
                 );
-                return;
+              } else {
+                findShuttlePath(userPosition, destination).then((res) =>
+                  dispatch(setShuttlePath(res)),
+                );
               }
-              destination = JSON.parse(destination);
-
-              findShuttlePath(userPosition, destination).then((res) =>
-                dispatch(setShuttlePath(res)),
-              );
             }
           }}
         />

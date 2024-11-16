@@ -10,9 +10,11 @@ import {
 
 import React, { useEffect, useState } from 'react';
 
+import { findShuttlePath } from '@/lib/apiRoutes';
 import {
   setChoosingRoomMode,
   setEndLocation,
+  setShuttlePath,
   setStartLocation,
 } from '@/lib/features/navSlice';
 import {
@@ -90,6 +92,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const [showFloor, setShowFloor] = useState<boolean>(false);
 
   const searchMode = useAppSelector((state) => state.ui.searchMode);
+  const userPosition = useAppSelector((state) => state.nav.userPosition);
 
   const [maxCameraDistance, setMaxCameraDistance] = useState<number>(
     CAMPUS_CAMERA_DISTANCE,
@@ -323,18 +326,33 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       }}
       onClick={(e) => {
         // need to check usedScrolling because end of panning is a click
-        if (!usedScrolling && !choosingRoomMode && !isNavOpen) {
-          dispatch(setIsSearchOpen(false));
-          dispatch(deselectBuilding());
-          dispatch(selectRoom(null));
-        } else if (choosingRoomMode) {
-          if (choosingRoomMode == 'start') {
-            dispatch(setStartLocation({ waypoint: e.toCoordinates() }));
-          } else if (choosingRoomMode == 'end') {
-            dispatch(setEndLocation({ waypoint: e.toCoordinates() }));
+        if (!usedScrolling) {
+          if (!isNavOpen) {
+            dispatch(setIsSearchOpen(false));
+            dispatch(deselectBuilding());
+            dispatch(selectRoom(null));
           }
-          dispatch(setIsSearchOpen(false));
-          dispatch(setChoosingRoomMode(null));
+
+          // click to choose end location for shuttle path
+          if (searchMode == 'shuttle') {
+            if (userPosition) {
+              findShuttlePath(userPosition, e.toCoordinates()).then((res) =>
+                dispatch(setShuttlePath(res)),
+              );
+            } else {
+              alert('Please allow User Position!');
+            }
+          }
+          // click to choose start/end location for navigation
+          else if (choosingRoomMode) {
+            if (choosingRoomMode == 'start') {
+              dispatch(setStartLocation({ waypoint: e.toCoordinates() }));
+            } else if (choosingRoomMode == 'end') {
+              dispatch(setEndLocation({ waypoint: e.toCoordinates() }));
+            }
+            dispatch(setIsSearchOpen(false));
+            dispatch(setChoosingRoomMode(null));
+          }
         }
         setUsedScrolling(false);
       }}
