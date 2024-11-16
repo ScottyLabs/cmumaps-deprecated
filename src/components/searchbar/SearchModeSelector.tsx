@@ -5,25 +5,13 @@ import React from 'react';
 import { setSearchMode } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
-import { SearchMode, SearchModeList, searchModeToIcon } from './searchMode';
-
-const searchModeToDisplayText: Record<SearchMode, string> = {
-  rooms: 'Rooms',
-  food: 'Food',
-  courses: 'Courses',
-  events: 'Events',
-  restrooms: 'Restrooms',
-  study: 'Study',
-};
-
-const searchModeToBgColor: Record<SearchMode, string> = {
-  rooms: 'bg-[#636672]',
-  food: 'bg-[#FFBD59]',
-  courses: 'bg-[#C41230]',
-  events: 'bg-[#87BCFB]',
-  restrooms: 'bg-[#EFB1F4]',
-  study: 'bg-[#A6E08B]',
-};
+import {
+  SearchMode,
+  SearchModeList,
+  searchModeToBgColor,
+  searchModeToDisplayText,
+  searchModeToIcon,
+} from './searchMode';
 
 const SearchModeSelector = () => {
   const dispatch = useAppDispatch();
