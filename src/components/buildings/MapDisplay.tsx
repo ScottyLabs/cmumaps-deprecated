@@ -8,7 +8,7 @@ import {
   Annotation,
 } from 'mapkit-react';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   deselectBuilding,
@@ -21,6 +21,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
 import { isInPolygonCoordinates } from '@/util/geometry';
+import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
@@ -30,17 +31,28 @@ import FloorPlanOverlay, {
   getFloorAtOrdinal,
   getOrdinalOfFloor,
 } from './FloorPlanOverlay';
+import { toMapKitCoordinateRegion, zoomOnCameraBoundary } from './mapUtils';
 
 //#region Constants
 const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 350_000;
 const THRESHOLD_DENSITY_TO_SHOW_ROOMS = 750_000;
 
-const cameraBoundary = {
+const CAMPUS_CAMERA_BOUNDARY: CoordinateRegion = {
   centerLatitude: 40.44533940432823,
   centerLongitude: -79.9457060010195,
   latitudeDelta: 0.009258427149788417,
   longitudeDelta: 0.014410141520116326,
 };
+
+const SHUTTLE_CAMERA_BOUNDARY: CoordinateRegion = {
+  centerLatitude: 40.44533940432823,
+  centerLongitude: -79.9457060010195,
+  latitudeDelta: 0.020258427149788417,
+  longitudeDelta: 0.04441014152011632,
+};
+
+const CAMPUS_CAMERA_DISTANCE = 1500;
+const SHUTTLE_CAMERA_DISTANCE = 6000;
 
 export const initialRegion = {
   centerLatitude: 40.444,
@@ -70,6 +82,56 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const [usedScrolling, setUsedScrolling] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
   const [showFloor, setShowFloor] = useState<boolean>(false);
+
+  const searchMode = useAppSelector((state) => state.ui.searchMode);
+
+  const [maxCameraDistance, setMaxCameraDistance] = useState<number>(
+    CAMPUS_CAMERA_DISTANCE,
+  );
+
+  // zooming of the map for shuttle mode
+  useEffect(() => {
+    if (!mapRef.current) {
+      return;
+    }
+
+    // when switched to shuttle mode, we zoom out
+    if (
+      searchMode == 'shuttle' &&
+      maxCameraDistance == CAMPUS_CAMERA_DISTANCE
+    ) {
+      setMaxCameraDistance(SHUTTLE_CAMERA_DISTANCE);
+      mapRef.current.setCameraBoundaryAnimated(
+        toMapKitCoordinateRegion(SHUTTLE_CAMERA_BOUNDARY),
+        false,
+      );
+    }
+    // we zoom back in when switching from shuttle mode
+    else if (maxCameraDistance == SHUTTLE_CAMERA_DISTANCE) {
+      zoomOnCameraBoundary(mapRef.current, initialRegion);
+
+      // no way to know when the animation end so we have to estimate it this
+      // way to set the max camera distance and camera boundary
+      setTimeout(() => {
+        setMaxCameraDistance(CAMPUS_CAMERA_DISTANCE);
+        mapRef.current?.setCameraBoundaryAnimated(
+          toMapKitCoordinateRegion(CAMPUS_CAMERA_BOUNDARY),
+          false,
+        );
+      }, 500);
+    }
+  }, [mapRef, searchMode]);
+
+  // need another useEffect so the maxCameraDistance of the map can update first
+  // and then we set the camera distance with animation
+  useEffect(() => {
+    if (maxCameraDistance == SHUTTLE_CAMERA_DISTANCE) {
+      mapRef.current?.setCameraDistanceAnimated(
+        SHUTTLE_CAMERA_DISTANCE,
+        !prefersReducedMotion(),
+      );
+    }
+  }, [maxCameraDistance]);
 
   const throttledCalculateVisibleBuildings = throttle(
     (region: CoordinateRegion) => {
@@ -235,9 +297,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       token={process.env.NEXT_PUBLIC_MAPKITJS_TOKEN || ''}
       initialRegion={initialRegion}
       includedPOICategories={[]}
-      cameraBoundary={cameraBoundary}
+      cameraBoundary={CAMPUS_CAMERA_BOUNDARY}
       minCameraDistance={5}
-      maxCameraDistance={1500}
+      maxCameraDistance={maxCameraDistance}
       showsUserLocationControl
       showsUserLocation={true}
       mapType={MapType.MutedStandard}

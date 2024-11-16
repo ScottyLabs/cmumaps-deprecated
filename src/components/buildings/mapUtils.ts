@@ -1,5 +1,5 @@
 import { Dispatch, UnknownAction } from '@reduxjs/toolkit';
-import { Coordinate } from 'mapkit-react';
+import { Coordinate, CoordinateRegion } from 'mapkit-react';
 
 import {
   selectRoom,
@@ -139,5 +139,29 @@ export const zoomOnObject = (map: mapkit.Map, points: Coordinate[]) => {
       Math.min(...allLon),
     ).toCoordinateRegion(),
     !prefersReducedMotion(),
+  );
+};
+
+export const zoomOnCameraBoundary = (
+  map: mapkit.Map,
+  region: CoordinateRegion,
+) => {
+  map.setRegionAnimated(
+    new mapkit.BoundingRegion(
+      region.centerLatitude + region.latitudeDelta / 2,
+      region.centerLongitude + region.longitudeDelta / 2,
+      region.centerLatitude - region.latitudeDelta / 2,
+      region.centerLongitude - region.longitudeDelta / 2,
+    ).toCoordinateRegion(),
+    !prefersReducedMotion(),
+  );
+};
+
+export const toMapKitCoordinateRegion = (
+  region: CoordinateRegion,
+): mapkit.CoordinateRegion => {
+  return new mapkit.CoordinateRegion(
+    new mapkit.Coordinate(region.centerLatitude, region.centerLongitude),
+    new mapkit.CoordinateSpan(region.latitudeDelta, region.longitudeDelta),
   );
 };
