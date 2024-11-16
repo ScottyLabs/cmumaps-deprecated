@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event } from '@prisma/client';
+import { Coordinate } from 'mapkit-react';
 
 import { Floor, FloorPlan, Room } from '@/types';
 
@@ -137,3 +138,31 @@ export const postUserSchedule = async (
   console.error('Failed to post schedule', response);
   return false;
 };
+
+export async function findShuttlePath(
+  startLocation: Coordinate,
+  endLocation: Coordinate,
+) {
+  console.log('wrapper', startLocation, endLocation);
+  const response = await fetch('/api/findShuttlePath', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ startLocation, endLocation }),
+  });
+
+  try {
+    const body = await response.json();
+
+    if (!response.ok) {
+      console.error(body.error);
+      return '';
+    }
+
+    return body;
+  } catch (e) {
+    console.error('Failed to get parse schedule', response);
+    return '';
+  }
+}

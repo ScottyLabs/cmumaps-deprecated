@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 
 import useEscapeKey from '@/hooks/useEscapeKey';
+import { findShuttlePath } from '@/lib/apiRoutes';
 import {
   setChoosingRoomMode,
   setIsNavOpen,
@@ -139,20 +140,6 @@ const SearchBar = ({ map }: Props) => {
 
     const placeholder = `You are searching ${searchMode} now...`;
 
-    const findShuttlePath = async (userPosition, destination) => {
-      // const response = await fetch('/api/findShuttlePath', {
-      //   method: 'POST',
-      //   body: JSON.stringify({
-      //     userPosition,
-      //     destination,
-      //   }),
-      // });
-
-      // return response;
-
-      return [userPosition, destination];
-    };
-
     return (
       <div className="flex w-full items-center rounded bg-white p-1">
         <Image
@@ -184,9 +171,17 @@ const SearchBar = ({ map }: Props) => {
                   '{"latitude":40.414934526138246,"longitude":-79.88890223850737}';
               }
 
+              if (!userPosition) {
+                const tempUserPosition = {
+                  latitude: 40.44315713248135,
+                  longitude: -79.94097245738384,
+                };
+                findShuttlePath(tempUserPosition, JSON.parse(destination)).then(
+                  (res) => dispatch(setShuttlePath(res)),
+                );
+                return;
+              }
               destination = JSON.parse(destination);
-              console.log(userPosition);
-              console.log(destination);
 
               findShuttlePath(userPosition, destination).then((res) =>
                 dispatch(setShuttlePath(res)),

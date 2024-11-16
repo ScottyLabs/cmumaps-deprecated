@@ -7,8 +7,8 @@ import path from 'path';
 import { Route, Stop } from './types';
 
 export async function POST(req: NextRequest) {
-  const { startCoordinate, endCoordinate } = await req.json();
-
+  const { startLocation, endLocation } = await req.json();
+  console.log(startLocation, endLocation);
   const routes: Route[] = JSON.parse(
     fs.readFileSync(
       path.resolve(process.cwd(), `./public/cmumaps-data/routes.json`),
@@ -22,8 +22,8 @@ export async function POST(req: NextRequest) {
   for (const route of activeRoutes) {
     for (const stop of route.Stops) {
       const endDist = Math.sqrt(
-        Math.pow(endCoordinate.latitude - stop.Latitude, 2) +
-          Math.pow(endCoordinate.longitude - stop.Longitude, 2),
+        Math.pow(endLocation.latitude - stop.Latitude, 2) +
+          Math.pow(endLocation.longitude - stop.Longitude, 2),
       );
 
       if (!closestEndDist || endDist < closestEndDist) {
@@ -48,8 +48,8 @@ export async function POST(req: NextRequest) {
   let closestStartDist: null | number = null;
   for (const stop of bestRoute.Stops) {
     const startDist = Math.sqrt(
-      Math.pow(startCoordinate.latitude - stop.Latitude, 2) +
-        Math.pow(startCoordinate.longitude - stop.Longitude, 2),
+      Math.pow(startLocation.latitude - stop.Latitude, 2) +
+        Math.pow(startLocation.longitude - stop.Longitude, 2),
     );
 
     if (!closestStartDist || startDist < closestStartDist) {
@@ -67,14 +67,13 @@ export async function POST(req: NextRequest) {
     latitude: coord[0],
     longitude: coord[1],
   }));
-  routeCoords = routeCoords.concat(routeCoords);
 
   const closestStartIdx = routeCoords.reduce(
     (acc, coord, idx) => {
       const dist = Math.sqrt(
         Math.pow(coord.latitude - closestStartStop!.Latitude, 2) +
           Math.pow(coord.longitude - closestStartStop!.Longitude, 2),
-      );
+      ).toFixed(3);
 
       if (dist < acc[1]) {
         return [idx, dist];
@@ -84,12 +83,16 @@ export async function POST(req: NextRequest) {
     },
     [0, Infinity],
   );
-  const closestEndIdx = routeCoords.reduce(
+  routeCoords = routeCoords.concat(routeCoords);
+  let closestEndIdx = routeCoords.reduce(
     (acc, coord, idx) => {
+      if (idx < closestStartIdx[0]) {
+        return acc;
+      }
       const dist = Math.sqrt(
         Math.pow(coord.latitude - closestEndStop!.Latitude, 2) +
           Math.pow(coord.longitude - closestEndStop!.Longitude, 2),
-      );
+      ).toFixed(3);
 
       if (dist < acc[1]) {
         return [idx, dist];
@@ -99,11 +102,19 @@ export async function POST(req: NextRequest) {
     },
     [0, Infinity],
   );
+  console.log(closestStartIdx, closestEndIdx);
+  if (closestEndIdx[0] < closestStartIdx[0]) {
+    closestEndIdx = [closestEndIdx[0] + routeCoords.length, closestEndIdx[1]];
+  }
 
   const response: Coordinate[] = routeCoords.slice(
     closestStartIdx[0],
     closestEndIdx[0] + 1,
   );
-
-  return Response.json([startCoordinate, ...response, endCoordinate]);
+  console.log(response);
+  return Response.json([startLocation, ...response, endLocation]);
+  // return Response.json([startLocation,
+  //   {longitude: closestStartStop.Longitude, latitude: closestStartStop.Latitude},
+  //   {longitude: closestEndStop.Longitude, latitude: closestEndStop.Latitude},
+  //   endLocation]);
 }
