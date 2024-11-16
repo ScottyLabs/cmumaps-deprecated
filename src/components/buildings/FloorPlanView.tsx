@@ -64,6 +64,8 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
 
     const showIcon = hasIcon(room) || isSelected;
 
+    const pinlessRoomTypes = ['Default', 'Corridors'];
+
     return (
       <div key={room.id}>
         <Polygon
@@ -95,13 +97,11 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
                   e.stopPropagation();
                 }}
               >
-                <RoomPin room={{ ...room, id: roomId }} />
+                {(!pinlessRoomTypes.includes(room.type) || isSelected) && (
+                  <RoomPin room={{ ...room, id: roomId }} />
+                )}
                 {(showRoomNames || room.alias) && (
-                  <div
-                    className={
-                      'text-center text-sm font-bold leading-[1.1] tracking-wide'
-                    }
-                  >
+                  <div className="text-center text-sm leading-[1.1] tracking-wide">
                     {showRoomNames && <p>{room.name}</p>}
                     {room.alias && (
                       <p className="w-16 text-wrap italic">{room.alias}</p>

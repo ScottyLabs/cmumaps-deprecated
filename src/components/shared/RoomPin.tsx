@@ -50,21 +50,17 @@ export default function RoomPin({ room }: RoomPinProps) {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const isSelected = room.id === selectedRoom?.id;
 
-  const pinlessRoomTypes = ['Default', 'Corridors'];
-
-  if (!pinlessRoomTypes.includes(room.type) || isSelected) {
-    return (
-      <div
-        className={`flex items-center justify-center rounded ${isSelected ? 'size-10' : 'size-5'} `}
-        style={{ background: roomColors.primary }}
-        title={room.type}
-      >
-        <Image
-          alt={'Room Pin'}
-          src={hasGraphic ? icon : pinIcon}
-          height={isSelected ? 20 : 10}
-        />
-      </div>
-    );
-  }
+  return (
+    <div
+      className={`flex items-center justify-center rounded ${isSelected ? 'size-10' : 'size-5'} `}
+      style={{ background: roomColors.primary }}
+      title={room.type}
+    >
+      <Image
+        alt={'Room Pin'}
+        src={hasGraphic ? icon : pinIcon}
+        height={isSelected ? 20 : 10}
+      />
+    </div>
+  );
 }
