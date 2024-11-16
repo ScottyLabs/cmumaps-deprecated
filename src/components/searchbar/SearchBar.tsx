@@ -167,17 +167,9 @@ const SearchBar = ({ map }: Props) => {
   };
 
   const renderSearchResults = () => {
-    // displays all food, restroom, and study even if search query is empty
-    const showResult =
-      searchQuery !== '' || ['food', 'restrooms', 'study'].includes(searchMode);
-
     return (
-      <div
-        className={`z-10 flex-1 overflow-x-hidden overflow-y-scroll rounded bg-white transition-opacity duration-150 ease-in-out ${
-          showResult ? 'mt-1 h-fit opacity-100' : 'h-0 opacity-0'
-        }`}
-      >
-        {showResult && <SearchResults map={map} query={searchQuery} />}
+      <div className="z-10 mt-1 h-fit flex-1 overflow-y-scroll rounded bg-white opacity-100 transition-opacity duration-150 ease-in-out">
+        <SearchResults map={map} query={searchQuery} />
       </div>
     );
   };

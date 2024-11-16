@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaLocationCrosshairs } from 'react-icons/fa6';
 
 import {
   setChoosingRoomMode,
@@ -37,15 +38,41 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
   );
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const selectedBuilding = useAppSelector((state) => state.ui.selectedBuilding);
+  const userPosition = useAppSelector((state) => state.nav.userPosition);
+
+  const handlePositionClick = () => {
+    if (choosingRoomMode) {
+      if (choosingRoomMode == 'start') {
+        dispatch(setStartLocation({ userPosition }));
+      } else if (choosingRoomMode == 'end') {
+        dispatch(setEndLocation({ userPosition }));
+      }
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+    }
+  };
 
   if (query.length < 2 && searchMode == 'rooms') {
-    return <KeepTypingDisplay />;
+    if (choosingRoomMode == null) {
+      return <KeepTypingDisplay />;
+    } else {
+      return (
+        <button
+          className="flex h-16 w-full items-center gap-3 pl-3 hover:bg-blue-200"
+          onClick={handlePositionClick}
+        >
+          <div className="text-lg text-blue-600">
+            <FaLocationCrosshairs />
+          </div>
+          <p> User Position</p>
+        </button>
+      );
+    }
   }
 
   if (searchResult.length == 0) {
     return <NoResultDisplay />;
   }
-
   const renderBuildingResults = (building: Building) => {
     const handleClick = () => {
       if (choosingRoomMode) {
