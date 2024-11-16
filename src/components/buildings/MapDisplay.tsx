@@ -264,7 +264,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           dispatch(setIsSearchOpen(false));
           dispatch(deselectBuilding());
           dispatch(selectRoom(null));
-        } else if (choosingRoomMode) {
+        }
+        // select start/end location by clicking on the map
+        else if (choosingRoomMode) {
           if (choosingRoomMode == 'start') {
             dispatch(setStartLocation({ waypoint: e.toCoordinates() }));
           } else if (choosingRoomMode == 'end') {
