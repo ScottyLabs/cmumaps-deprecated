@@ -5,6 +5,7 @@ import {
   Map,
   MapType,
   CoordinateRegion,
+  Annotation,
 } from 'mapkit-react';
 
 import React, { useState } from 'react';
@@ -23,6 +24,7 @@ import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
+import RoomPin from '../shared/RoomPin';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay, {
   getFloorAtOrdinal,
@@ -57,6 +59,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
@@ -278,6 +281,23 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       )}
 
       {mapRef.current && <NavLine map={mapRef.current} />}
+
+      {selectedRoom ? (
+        <Annotation
+          latitude={selectedRoom.labelPosition.latitude}
+          longitude={selectedRoom.labelPosition.longitude}
+        >
+          <div className="flex flex-col items-center">
+            <RoomPin room={{ ...selectedRoom, id: selectedRoom?.id }} />
+            <div className="text-center text-sm font-bold leading-[1.1] tracking-wide">
+              <p>{selectedRoom.name}</p>
+              {selectedRoom.alias && (
+                <p className="w-16 text-wrap italic">{selectedRoom.alias}</p>
+              )}
+            </div>
+          </div>
+        </Annotation>
+      ) : null}
     </Map>
   );
 };
