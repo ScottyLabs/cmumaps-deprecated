@@ -30,6 +30,7 @@ import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
+import ShuttleLine from '../navigation/ShuttleLine';
 import RoomPin from '../shared/RoomPin';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay, {
@@ -52,12 +53,12 @@ const CAMPUS_CAMERA_BOUNDARY: CoordinateRegion = {
 const SHUTTLE_CAMERA_BOUNDARY: CoordinateRegion = {
   centerLatitude: 40.44533940432823,
   centerLongitude: -79.9457060010195,
-  latitudeDelta: 0.020258427149788417,
-  longitudeDelta: 0.04441014152011632,
+  latitudeDelta: 0.04,
+  longitudeDelta: 0.04,
 };
 
 const CAMPUS_CAMERA_DISTANCE = 1500;
-const SHUTTLE_CAMERA_DISTANCE = 6000;
+const SHUTTLE_CAMERA_DISTANCE = 10000;
 
 export const initialRegion = {
   centerLatitude: 40.444,
@@ -356,6 +357,8 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       )}
 
       {mapRef.current && <NavLine map={mapRef.current} />}
+
+      {mapRef.current && <ShuttleLine map={mapRef.current} />}
 
       {selectedRoom ? (
         <Annotation

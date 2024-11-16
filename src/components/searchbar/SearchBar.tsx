@@ -9,6 +9,7 @@ import {
   setChoosingRoomMode,
   setIsNavOpen,
   setRecommendedPath,
+  setShuttlePath,
 } from '@/lib/features/navSlice';
 import {
   selectBuilding,
@@ -40,6 +41,7 @@ const SearchBar = ({ map }: Props) => {
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );
+  const userPosition = useAppSelector((state) => state.nav.userPosition);
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -137,6 +139,20 @@ const SearchBar = ({ map }: Props) => {
 
     const placeholder = `You are searching ${searchMode} now...`;
 
+    const findShuttlePath = async (userPosition, destination) => {
+      // const response = await fetch('/api/findShuttlePath', {
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     userPosition,
+      //     destination,
+      //   }),
+      // });
+
+      // return response;
+
+      return [userPosition, destination];
+    };
+
     return (
       <div className="flex w-full items-center rounded bg-white p-1">
         <Image
@@ -158,6 +174,24 @@ const SearchBar = ({ map }: Props) => {
           title="Search query"
           onFocus={() => {
             dispatch(setIsSearchOpen(true));
+          }}
+          // work around for shuttle just for this weekend! (11/16/2024)
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' && searchMode == 'shuttle') {
+              let destination = searchQuery;
+              if (searchQuery.length == 0) {
+                destination =
+                  '{"latitude":40.414934526138246,"longitude":-79.88890223850737}';
+              }
+
+              destination = JSON.parse(destination);
+              console.log(userPosition);
+              console.log(destination);
+
+              findShuttlePath(userPosition, destination).then((res) =>
+                dispatch(setShuttlePath(res)),
+              );
+            }
           }}
         />
 

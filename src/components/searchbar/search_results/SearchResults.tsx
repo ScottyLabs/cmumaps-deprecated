@@ -60,6 +60,8 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
     return <EventSearchResults map={map} query={query} />;
   } else if (searchMode == 'courses') {
     return <CourseSearchResults map={map} query={query} />;
+  } else if (searchMode == 'shuttle') {
+    return <></>;
   }
 };
 

@@ -18,6 +18,8 @@ interface NavState {
   isNavOpen: boolean;
   userPosition: Coordinate | null;
   choosingRoomMode: ChoosingRoomMode;
+
+  shuttlePath: Coordinate[] | null;
 }
 
 const initialState: NavState = {
@@ -30,6 +32,7 @@ const initialState: NavState = {
   choosingRoomMode: null,
   startedNavigation: false,
   curFloorIndex: 0,
+  shuttlePath: null,
 };
 
 const navSlice = createSlice({
@@ -66,6 +69,10 @@ const navSlice = createSlice({
     setCurFloorIndex(state, action) {
       state.curFloorIndex = action.payload;
     },
+
+    setShuttlePath(state, action) {
+      state.shuttlePath = action.payload;
+    },
   },
 });
 
@@ -79,5 +86,6 @@ export const {
   setSelectedPathName,
   setStartedNavigation,
   setCurFloorIndex,
+  setShuttlePath,
 } = navSlice.actions;
 export default navSlice.reducer;
