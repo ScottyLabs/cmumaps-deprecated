@@ -376,7 +376,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
       {mapRef.current && <NavLine map={mapRef.current} />}
 
-      {mapRef.current && <ShuttleLine map={mapRef.current} />}
+      {mapRef.current && searchMode == 'shuttle' && (
+        <ShuttleLine map={mapRef.current} />
+      )}
 
       {selectedRoom ? (
         <Annotation

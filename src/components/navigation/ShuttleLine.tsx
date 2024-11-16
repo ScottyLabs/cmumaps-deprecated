@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
+import { getShuttleRoutesOverlays, shuttlePathToOverlay } from './ShuttleUtils';
+
 interface IconInfo {
   coordinate: Coordinate;
   icon: StaticImport;
@@ -20,10 +22,6 @@ const ShuttleLine = ({ map }: Props) => {
 
   const shuttlePath = useAppSelector((state) => state.nav.shuttlePath);
 
-  const isFloorPlanRendered = useAppSelector(
-    (state) => state.ui.isFloorPlanRendered,
-  );
-
   const [pathOverlay, setPathOverlay] = useState<mapkit.PolylineOverlay[]>([]);
 
   // no icons for now
@@ -31,24 +29,10 @@ const ShuttleLine = ({ map }: Props) => {
 
   // calculate the pathOverlay
   useEffect(() => {
-    if (shuttlePath) {
-      const newPathOverlays: mapkit.PolylineOverlay[] = [];
-      const curFloorPathOverlay = new mapkit.PolylineOverlay(
-        shuttlePath.map(
-          (c: Coordinate) => new mapkit.Coordinate(c.latitude, c.longitude),
-        ),
-        {
-          style: new mapkit.Style({
-            strokeColor: 'blue',
-            strokeOpacity: 0.9,
-            lineWidth: 5,
-          }),
-        },
-      );
-
-      newPathOverlays.push(curFloorPathOverlay);
-
-      setPathOverlay(newPathOverlays);
+    if (!shuttlePath) {
+      getShuttleRoutesOverlays().then((res) => setPathOverlay(res));
+    } else {
+      setPathOverlay(shuttlePathToOverlay(shuttlePath));
     }
   }, [shuttlePath]);
 
@@ -63,7 +47,7 @@ const ShuttleLine = ({ map }: Props) => {
         map.removeOverlays(pathOverlay);
       }
     };
-  }, [map, map.region, pathOverlay, isFloorPlanRendered, dispatch]);
+  }, [map, map.region, pathOverlay, dispatch]);
 
   return iconInfos.map((iconInfo, index) => (
     <Annotation
