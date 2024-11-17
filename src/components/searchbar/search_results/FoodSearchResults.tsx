@@ -36,12 +36,16 @@ const FoodSearchResults = ({ map, query }: Props) => {
   useEffect(() => {
     if (buildings) {
       setIsLoading(true);
-      setTimeout(() => {
+      const handler = setTimeout(() => {
         setSearchResults(
           searchRoom(buildings, query, userPostion, searchMap, 'food'),
         );
         setIsLoading(false);
       }, 500);
+
+      return () => {
+        clearTimeout(handler);
+      };
     }
   }, [buildings, query, searchMap, userPostion]);
 
