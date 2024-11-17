@@ -54,7 +54,7 @@ const ShuttleSearchResults = ({ query }: Props) => {
           return;
         }
 
-        setSearchResults(data.results);
+        setSearchResults(data.results.filter((result) => result.coordinate));
       });
     }, 500);
 

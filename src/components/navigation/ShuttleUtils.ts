@@ -38,10 +38,26 @@ export const getShuttleRoutesOverlays = async (): Promise<
 
 export const shuttlePathToOverlay = (shuttlePath: Coordinate[]) => {
   const pathOverlays: mapkit.PolylineOverlay[] = [];
+
+  const walkingPathOverlay = new mapkit.PolylineOverlay(
+    shuttlePath
+      .slice(0, 2)
+      .map((c: Coordinate) => new mapkit.Coordinate(c.latitude, c.longitude)),
+    {
+      style: new mapkit.Style({
+        strokeColor: 'green',
+        strokeOpacity: 0.9,
+        lineWidth: 5,
+      }),
+    },
+  );
+
+  pathOverlays.push(walkingPathOverlay);
+
   const shuttlePathOverlay = new mapkit.PolylineOverlay(
-    shuttlePath.map(
-      (c: Coordinate) => new mapkit.Coordinate(c.latitude, c.longitude),
-    ),
+    shuttlePath
+      .slice(1, shuttlePath.length - 1)
+      .map((c: Coordinate) => new mapkit.Coordinate(c.latitude, c.longitude)),
     {
       style: new mapkit.Style({
         strokeColor: 'blue',
@@ -52,6 +68,21 @@ export const shuttlePathToOverlay = (shuttlePath: Coordinate[]) => {
   );
 
   pathOverlays.push(shuttlePathOverlay);
+
+  const walkingPathOverlay2 = new mapkit.PolylineOverlay(
+    shuttlePath
+      .slice(shuttlePath.length - 2, shuttlePath.length)
+      .map((c: Coordinate) => new mapkit.Coordinate(c.latitude, c.longitude)),
+    {
+      style: new mapkit.Style({
+        strokeColor: 'green',
+        strokeOpacity: 0.9,
+        lineWidth: 5,
+      }),
+    },
+  );
+
+  pathOverlays.push(walkingPathOverlay2);
 
   return pathOverlays;
 };
