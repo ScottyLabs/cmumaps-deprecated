@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { SHUTTLE_CAMERA_BOUNDARY } from '@/components/buildings/MapDisplay';
+import { findShuttlePath } from '@/lib/apiRoutes';
+import { setShuttlePath } from '@/lib/features/navSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 import { toMapKitCoordinateRegion } from '../../buildings/mapUtils';
 import LoadingDisplay from '../display_helpers/LoadingDisplay';
@@ -15,6 +18,10 @@ interface Props {
  * Displays the shuttle search results.
  */
 const ShuttleSearchResults = ({ query }: Props) => {
+  const dispatch = useAppDispatch();
+
+  const userPosition = useAppSelector((state) => state.nav.userPosition);
+
   const [searchResults, setSearchResults] = useState<
     mapkit.SearchAutocompleteResult[]
   >([]);
@@ -56,6 +63,10 @@ const ShuttleSearchResults = ({ query }: Props) => {
     };
   }, [query, search]);
 
+  if (query.length == 0) {
+    return <></>;
+  }
+
   if (isLoading) {
     return <LoadingDisplay />;
   }
@@ -68,7 +79,13 @@ const ShuttleSearchResults = ({ query }: Props) => {
     return (
       <SearchResultWrapper
         handleClick={() => {
-          console.log(result.coordinate);
+          if (userPosition) {
+            findShuttlePath(userPosition, result.coordinate).then((res) =>
+              dispatch(setShuttlePath(res)),
+            );
+          } else {
+            alert('Please Allow User Position!');
+          }
         }}
       >
         <div className="w-full cursor-pointer rounded border p-1">

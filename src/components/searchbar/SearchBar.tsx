@@ -5,7 +5,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 
 import useEscapeKey from '@/hooks/useEscapeKey';
-import { findShuttlePath } from '@/lib/apiRoutes';
 import {
   setChoosingRoomMode,
   setIsNavOpen,
@@ -42,7 +41,6 @@ const SearchBar = ({ map }: Props) => {
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );
-  const userPosition = useAppSelector((state) => state.nav.userPosition);
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -105,6 +103,7 @@ const SearchBar = ({ map }: Props) => {
       dispatch(setIsSearchOpen(false));
       dispatch(setIsNavOpen(false));
       dispatch(setRecommendedPath(null));
+      dispatch(setShuttlePath(null));
       dispatch(selectBuilding(null));
       dispatch(selectRoom(null));
       dispatch(setSearchMode('rooms'));
@@ -161,32 +160,6 @@ const SearchBar = ({ map }: Props) => {
           title="Search query"
           onFocus={() => {
             dispatch(setIsSearchOpen(true));
-          }}
-          // work around for shuttle just for this weekend! (11/16/2024)
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' && searchMode == 'shuttle') {
-              let destinationStr = searchQuery;
-              if (searchQuery.length == 0) {
-                destinationStr =
-                  '{"latitude":40.414934526138246,"longitude":-79.88890223850737}';
-              }
-
-              const destination = JSON.parse(destinationStr);
-
-              if (!userPosition) {
-                const tempUserPosition = {
-                  latitude: 40.44315713248135,
-                  longitude: -79.94097245738384,
-                };
-                findShuttlePath(tempUserPosition, destination).then((res) =>
-                  dispatch(setShuttlePath(res)),
-                );
-              } else {
-                findShuttlePath(userPosition, destination).then((res) =>
-                  dispatch(setShuttlePath(res)),
-                );
-              }
-            }
           }}
         />
 
