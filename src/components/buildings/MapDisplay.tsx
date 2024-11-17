@@ -52,7 +52,7 @@ const CAMPUS_CAMERA_BOUNDARY: CoordinateRegion = {
   longitudeDelta: 0.014410141520116326,
 };
 
-const SHUTTLE_CAMERA_BOUNDARY: CoordinateRegion = {
+export const SHUTTLE_CAMERA_BOUNDARY: CoordinateRegion = {
   centerLatitude: 40.44533940432823,
   centerLongitude: -79.9457060010195,
   latitudeDelta: 0.04,
@@ -116,7 +116,10 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       );
     }
     // we zoom back in when switching from shuttle mode
-    else if (maxCameraDistance == SHUTTLE_CAMERA_DISTANCE) {
+    else if (
+      searchMode != 'shuttle' &&
+      maxCameraDistance == SHUTTLE_CAMERA_DISTANCE
+    ) {
       zoomOnCameraBoundary(mapRef.current, initialRegion);
 
       // no way to know when the animation end so we have to estimate it this
@@ -127,9 +130,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           toMapKitCoordinateRegion(CAMPUS_CAMERA_BOUNDARY),
           false,
         );
-      }, 500);
+      }, 1000);
     }
-  }, [mapRef, searchMode]);
+  }, [mapRef, maxCameraDistance, searchMode]);
 
   // need another useEffect so the maxCameraDistance of the map can update first
   // and then we set the camera distance with animation
@@ -140,7 +143,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         !prefersReducedMotion(),
       );
     }
-  }, [maxCameraDistance]);
+  }, [mapRef, maxCameraDistance]);
 
   const throttledCalculateVisibleBuildings = throttle(
     (region: CoordinateRegion) => {
