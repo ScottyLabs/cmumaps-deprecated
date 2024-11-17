@@ -81,7 +81,7 @@ const ShuttleSearchResults = ({ query }: Props) => {
         handleClick={() => {
           if (userPosition) {
             findShuttlePath(userPosition, result.coordinate).then((res) =>
-              dispatch(setShuttlePath(res)),
+              dispatch(setShuttlePath(res.routePath)),
             );
           } else {
             alert('Please Allow User Position!');

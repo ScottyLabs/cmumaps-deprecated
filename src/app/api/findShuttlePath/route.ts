@@ -8,7 +8,7 @@ import { Route, Stop } from './types';
 
 export async function POST(req: NextRequest) {
   const { startLocation, endLocation } = await req.json();
-  console.log(startLocation, endLocation);
+
   const routes: Route[] = JSON.parse(
     fs.readFileSync(
       path.resolve(process.cwd(), `./public/cmumaps-data/routes.json`),
@@ -62,6 +62,20 @@ export async function POST(req: NextRequest) {
     return Response.error();
   }
 
+  const stopsPath = bestRoute.Stops.slice(
+    closestStartStop.Order - 1,
+    closestEndStop.Order,
+  ) // Order is one-indexed
+    .map((stop) => {
+      return {
+        coordinate: {
+          latitude: stop.Latitude,
+          longitude: stop.Longitude,
+        },
+        name: stop.Description,
+      };
+    });
+
   let routeCoords = polyline.decode(bestRoute.EncodedPolyline);
   routeCoords = routeCoords.map((coord) => ({
     latitude: coord[0],
@@ -102,7 +116,7 @@ export async function POST(req: NextRequest) {
     },
     [0, Infinity],
   );
-  console.log(closestStartIdx, closestEndIdx);
+
   if (closestEndIdx[0] < closestStartIdx[0]) {
     closestEndIdx = [closestEndIdx[0] + routeCoords.length, closestEndIdx[1]];
   }
@@ -111,10 +125,9 @@ export async function POST(req: NextRequest) {
     closestStartIdx[0],
     closestEndIdx[0] + 1,
   );
-  console.log(response);
-  return Response.json([startLocation, ...response, endLocation]);
-  // return Response.json([startLocation,
-  //   {longitude: closestStartStop.Longitude, latitude: closestStartStop.Latitude},
-  //   {longitude: closestEndStop.Longitude, latitude: closestEndStop.Latitude},
-  //   endLocation]);
+  return Response.json({
+    routeId: bestRoute.RouteID,
+    routePath: [startLocation, ...response, endLocation],
+    routeStops: stopsPath,
+  });
 }
