@@ -7,6 +7,7 @@ import CourseSearchResults from './CourseSearchResults';
 import EventSearchResults from './EventSearchResults';
 import FoodSearchResults from './FoodSearchResults';
 import RoomSearchResults from './RoomSearchResults';
+import ShuttleSearchResults from './ShuttleSearchResults';
 
 interface SearchResultsProps {
   map: mapkit.Map | null;
@@ -61,7 +62,7 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
   } else if (searchMode == 'courses') {
     return <CourseSearchResults map={map} query={query} />;
   } else if (searchMode == 'shuttle') {
-    return <></>;
+    return <ShuttleSearchResults query={query} />;
   }
 };
 

@@ -130,7 +130,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           toMapKitCoordinateRegion(CAMPUS_CAMERA_BOUNDARY),
           false,
         );
-      }, 1000);
+      }, 500);
     }
   }, [mapRef, maxCameraDistance, searchMode]);
 
