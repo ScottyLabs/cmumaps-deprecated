@@ -55,8 +55,8 @@ const CAMPUS_CAMERA_BOUNDARY: CoordinateRegion = {
 export const SHUTTLE_CAMERA_BOUNDARY: CoordinateRegion = {
   centerLatitude: 40.44533940432823,
   centerLongitude: -79.9457060010195,
-  latitudeDelta: 0.04,
-  longitudeDelta: 0.04,
+  latitudeDelta: 0.05,
+  longitudeDelta: 0.05,
 };
 
 const CAMPUS_CAMERA_DISTANCE = 1500;
