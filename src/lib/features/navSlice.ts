@@ -1,14 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Coordinate } from 'mapkit-react';
 
-import { Node } from '@/app/api/findPath/types';
-import { Building, Room } from '@/types';
+import { Node, Waypoint } from '@/app/api/findPath/types';
 
 type ChoosingRoomMode = 'start' | 'end' | null;
 
 interface NavState {
-  startLocation: Room | Building | null;
-  endLocation: Room | Building | null; // This can be expanded in the future to node/ position?
+  startLocation: Waypoint | null;
+  endLocation: Waypoint | null;
   recommendedPath: Record<string, { path: Node[]; distance: number }> | null;
   startedNavigation: boolean;
 
