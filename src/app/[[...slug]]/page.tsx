@@ -1,9 +1,10 @@
 'use client';
 
-import { UserButton } from '@clerk/nextjs';
+import { UserButton, useAuth } from '@clerk/nextjs';
 import questionMarkIcon from '@icons/question-mark.png';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { usePostHog } from 'posthog-js/react';
 
 import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
@@ -74,6 +75,19 @@ const Page = ({ params, searchParams }: Props) => {
   const startLocation = useAppSelector((state) => state.nav.startLocation);
   const endLocation = useAppSelector((state) => state.nav.endLocation);
   const userPosition = useAppSelector((state) => state.nav.userPosition);
+
+  // Identify posthog user with Clerk id
+  const { isSignedIn, userId } = useAuth();
+
+  const posthog = usePostHog();
+
+  useEffect(() => {
+    if (isSignedIn && userId) {
+      posthog?.identify(userId);
+    } else {
+      posthog?.reset();
+    }
+  }, [posthog, isSignedIn, userId]);
 
   // extracting data in the initial loading of the page
   useEffect(() => {
