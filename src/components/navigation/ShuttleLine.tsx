@@ -1,4 +1,6 @@
-import { Annotation } from 'mapkit-react';
+import shuttleIcon from '@icons/quick_search/shuttle.svg';
+import { Annotation, Coordinate } from 'mapkit-react';
+import Image from 'next/image';
 
 import React, { useEffect, useState } from 'react';
 
@@ -19,6 +21,7 @@ const ShuttleLine = ({ map }: Props) => {
   );
 
   const [pathOverlay, setPathOverlay] = useState<mapkit.Overlay[]>([]);
+  const [shuttleLocation, setShuttleLocation] = useState<Coordinate>();
 
   // calculate the pathOverlay
   useEffect(() => {
@@ -26,6 +29,32 @@ const ShuttleLine = ({ map }: Props) => {
       getShuttleRoutesOverlays().then((res) => setPathOverlay(res));
     } else {
       setPathOverlay(shuttlePathToOverlay(shuttlePath));
+
+      const getShuttleLocation = async () => {
+        const response = await fetch('/api/getLiveShuttleGPS', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            routeId: shuttlePath.routeId,
+          }),
+        });
+
+        if (!response.ok) {
+          alert('Shuttle Route not running!');
+          return;
+        }
+
+        const body = await response.json();
+
+        setShuttleLocation(body.location);
+      };
+
+      // update shuttle location every 3 seconds
+      const intervalId = setInterval(() => getShuttleLocation(), 3000);
+
+      return () => clearInterval(intervalId);
     }
   }, [shuttlePath]);
 
@@ -42,16 +71,39 @@ const ShuttleLine = ({ map }: Props) => {
     };
   }, [map, map.region, pathOverlay, dispatch]);
 
-  return shuttlePath?.routeStops.map((routeStop, index) => (
-    <Annotation
-      key={index}
-      latitude={routeStop.coordinate.latitude}
-      longitude={routeStop.coordinate.longitude}
-      visible={index == hoveredShuttleStopIndex}
-    >
-      <p>{routeStop.name}</p>
-    </Annotation>
-  ));
+  const displayShuttleLocation = () => {
+    if (shuttleLocation) {
+      console.log(shuttleLocation);
+      return (
+        <Annotation
+          latitude={shuttleLocation.latitude}
+          longitude={shuttleLocation.longitude}
+        >
+          <Image
+            alt={'Shuttle Pin'}
+            src={shuttleIcon}
+            className="size-5 rounded-full bg-black p-2"
+          />
+        </Annotation>
+      );
+    }
+  };
+
+  return (
+    <>
+      {displayShuttleLocation()}
+      {shuttlePath?.routeStops.map((routeStop, index) => (
+        <Annotation
+          key={index}
+          latitude={routeStop.coordinate.latitude}
+          longitude={routeStop.coordinate.longitude}
+          visible={index == hoveredShuttleStopIndex}
+        >
+          <p>{routeStop.name}</p>
+        </Annotation>
+      ))}
+    </>
+  );
 };
 
 export default ShuttleLine;
