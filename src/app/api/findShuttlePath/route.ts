@@ -1,5 +1,6 @@
 import polyline from '@mapbox/polyline';
 import fs from 'fs';
+import { first } from 'lodash';
 import { Coordinate } from 'mapkit-react';
 import { NextRequest } from 'next/server';
 import path from 'path';
@@ -47,12 +48,16 @@ export async function POST(req: NextRequest) {
   let closestStartStop: Stop | null = null;
   let closestStartDist: null | number = null;
   for (const stop of bestRoute.Stops) {
-    const startDist = Math.sqrt(
-      Math.pow(startLocation.latitude - stop.Latitude, 2) +
-        Math.pow(startLocation.longitude - stop.Longitude, 2),
-    );
-
-    if (!closestStartDist || startDist < closestStartDist) {
+    const startDist =
+      Math.sqrt(
+        Math.pow(startLocation.latitude - stop.Latitude, 2) +
+          Math.pow(startLocation.longitude - stop.Longitude, 2),
+      ) * 1.5;
+    console.log(startDist.toFixed(3), closestStartDist?.toFixed(3));
+    if (
+      !closestStartDist ||
+      startDist.toFixed(2) < closestStartDist.toFixed(2)
+    ) {
       closestStartDist = startDist;
       closestStartStop = stop;
     }
@@ -62,19 +67,29 @@ export async function POST(req: NextRequest) {
     return Response.error();
   }
 
-  const stopsPath = bestRoute.Stops.slice(
-    closestStartStop.Order - 1,
-    closestEndStop.Order,
-  ) // Order is one-indexed
-    .map((stop) => {
-      return {
-        coordinate: {
-          latitude: stop.Latitude,
-          longitude: stop.Longitude,
-        },
-        name: stop.Description,
-      };
-    });
+  let sortedStops = bestRoute.Stops.sort((a, b) => a.Order - b.Order);
+
+  const firstStopIdx = sortedStops.findIndex(
+    (stop) => stop.Order === closestStartStop!.Order,
+  );
+  let lastStopIdx = sortedStops.findIndex(
+    (stop) => stop.Order === closestEndStop!.Order,
+  );
+  if (firstStopIdx > lastStopIdx) {
+    lastStopIdx = lastStopIdx + sortedStops.length;
+    sortedStops = sortedStops.concat(sortedStops);
+  }
+  // console.log(sortedStops.map(stop => stop.Order), firstStopIdx, lastStopIdx)
+  // console.log(closestStartStop.Order, closestEndStop.Order, sortedStops.map(stop => stop.Order).slice(firstStopIdx, lastStopIdx))
+  const stopsPath = sortedStops.slice(firstStopIdx, lastStopIdx).map((stop) => {
+    return {
+      coordinate: {
+        latitude: stop.Latitude,
+        longitude: stop.Longitude,
+      },
+      name: stop.Description,
+    };
+  });
 
   let routeCoords = polyline.decode(bestRoute.EncodedPolyline);
   routeCoords = routeCoords.map((coord) => ({
@@ -82,48 +97,56 @@ export async function POST(req: NextRequest) {
     longitude: coord[1],
   }));
 
-  const closestStartIdx = routeCoords.reduce(
-    (acc, coord, idx) => {
-      const dist = Math.sqrt(
-        Math.pow(coord.latitude - closestStartStop!.Latitude, 2) +
-          Math.pow(coord.longitude - closestStartStop!.Longitude, 2),
-      ).toFixed(3);
+  const possibleEndIdxs = routeCoords
+    .map((coord, idx) => [coord, idx])
+    .filter(([coord, idx]) => {
+      return (
+        Math.sqrt(
+          Math.pow(coord.latitude - closestEndStop!.Latitude, 2) +
+            Math.pow(coord.longitude - closestEndStop!.Longitude, 2),
+        ).toFixed(3) == '0.000'
+      );
+    })
+    .map(([coord, idx]) => idx);
 
-      if (dist < acc[1]) {
-        return [idx, dist];
+  const possibleStartIdxs = routeCoords
+    .map((coord, idx) => [coord, idx])
+    .filter(([coord, idx]) => {
+      return (
+        Math.sqrt(
+          Math.pow(coord.latitude - closestStartStop!.Latitude, 2) +
+            Math.pow(coord.longitude - closestStartStop!.Longitude, 2),
+        ).toFixed(3) == '0.000'
+      );
+    })
+    .map(([coord, idx]) => idx);
+
+  console.log(possibleStartIdxs, possibleEndIdxs);
+
+  let closestPair = [0, Infinity];
+  let minDist = Infinity;
+  for (const idx of possibleStartIdxs) {
+    for (const idx2 of possibleEndIdxs) {
+      const dist =
+        (idx2 - (idx % routeCoords.length) + routeCoords.length) %
+        routeCoords.length;
+      if (dist < minDist) {
+        minDist = dist;
+        closestPair = [idx, idx2];
       }
-
-      return acc;
-    },
-    [0, Infinity],
-  );
-  routeCoords = routeCoords.concat(routeCoords);
-  let closestEndIdx = routeCoords.reduce(
-    (acc, coord, idx) => {
-      if (idx < closestStartIdx[0]) {
-        return acc;
-      }
-      const dist = Math.sqrt(
-        Math.pow(coord.latitude - closestEndStop!.Latitude, 2) +
-          Math.pow(coord.longitude - closestEndStop!.Longitude, 2),
-      ).toFixed(3);
-
-      if (dist < acc[1]) {
-        return [idx, dist];
-      }
-
-      return acc;
-    },
-    [0, Infinity],
-  );
-
-  if (closestEndIdx[0] < closestStartIdx[0]) {
-    closestEndIdx = [closestEndIdx[0] + routeCoords.length, closestEndIdx[1]];
+    }
+  }
+  console.log(closestPair);
+  let [closestStartIdx, closestEndIdx] = closestPair;
+  if (closestEndIdx < closestStartIdx) {
+    console.log('this happened', closestEndIdx, closestStartIdx);
+    routeCoords = routeCoords.concat(routeCoords);
+    closestEndIdx = closestEndIdx + routeCoords.length;
   }
 
   const response: Coordinate[] = routeCoords.slice(
-    closestStartIdx[0],
-    closestEndIdx[0] + 1,
+    closestStartIdx,
+    closestEndIdx + 1,
   );
   return Response.json({
     routeId: bestRoute.RouteID,
