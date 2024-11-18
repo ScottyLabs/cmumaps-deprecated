@@ -14,9 +14,11 @@ const ShuttleLine = ({ map }: Props) => {
   const dispatch = useAppDispatch();
 
   const shuttlePath = useAppSelector((state) => state.nav.shuttlePath);
+  const hoveredShuttleStopIndex = useAppSelector(
+    (state) => state.nav.hoveredShuttleStopIndex,
+  );
 
   const [pathOverlay, setPathOverlay] = useState<mapkit.Overlay[]>([]);
-  const [hoverIndex, setHoverIndex] = useState<number>(-1);
 
   // calculate the pathOverlay
   useEffect(() => {
@@ -40,21 +42,14 @@ const ShuttleLine = ({ map }: Props) => {
     };
   }, [map, map.region, pathOverlay, dispatch]);
 
-  console.log(hoverIndex);
-
   return shuttlePath?.routeStops.map((routeStop, index) => (
     <Annotation
       key={index}
       latitude={routeStop.coordinate.latitude}
       longitude={routeStop.coordinate.longitude}
+      visible={index == hoveredShuttleStopIndex}
     >
-      <div
-        onMouseEnter={() => setHoverIndex(index)}
-        onMouseLeave={() => setHoverIndex(-1)}
-        className={hoverIndex === index ? '' : 'opacity-0'}
-      >
-        <p>{routeStop.name}</p>
-      </div>
+      <p>{routeStop.name}</p>
     </Annotation>
   ));
 };

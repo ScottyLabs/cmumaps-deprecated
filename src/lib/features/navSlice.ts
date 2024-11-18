@@ -21,6 +21,7 @@ interface NavState {
   choosingRoomMode: ChoosingRoomMode;
 
   shuttlePath: ShuttlePath | null;
+  hoveredShuttleStopIndex: number;
 }
 
 const initialState: NavState = {
@@ -34,6 +35,7 @@ const initialState: NavState = {
   startedNavigation: false,
   curFloorIndex: 0,
   shuttlePath: null,
+  hoveredShuttleStopIndex: -1,
 };
 
 const navSlice = createSlice({
@@ -74,6 +76,10 @@ const navSlice = createSlice({
     setShuttlePath(state, action) {
       state.shuttlePath = action.payload;
     },
+
+    setHoveredShuttleStopIndex(state, action) {
+      state.hoveredShuttleStopIndex = action.payload;
+    },
   },
 });
 
@@ -88,5 +94,6 @@ export const {
   setStartedNavigation,
   setCurFloorIndex,
   setShuttlePath,
+  setHoveredShuttleStopIndex,
 } = navSlice.actions;
 export default navSlice.reducer;
