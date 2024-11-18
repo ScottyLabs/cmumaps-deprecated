@@ -201,6 +201,8 @@ const Page = ({ params, searchParams }: Props) => {
         }
       }
     }
+    // userPosition shouldn't cause an update
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     buildings,
     dispatch,
