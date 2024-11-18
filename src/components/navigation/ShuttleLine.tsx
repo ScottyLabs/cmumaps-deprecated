@@ -22,7 +22,7 @@ const ShuttleLine = ({ map }: Props) => {
 
   const shuttlePath = useAppSelector((state) => state.nav.shuttlePath);
 
-  const [pathOverlay, setPathOverlay] = useState<mapkit.PolylineOverlay[]>([]);
+  const [pathOverlay, setPathOverlay] = useState<mapkit.Overlay[]>([]);
 
   // no icons for now
   const iconInfos: IconInfo[] = [];

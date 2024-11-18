@@ -38,8 +38,10 @@ export const getShuttleRoutesOverlays = async (): Promise<
 };
 
 export const shuttlePathToOverlay = (shuttlePath: ShuttlePath) => {
-  const pathOverlays: mapkit.PolylineOverlay[] = [];
+  const pathOverlays: mapkit.Overlay[] = [];
 
+  // the line overlays
+  // Note: the walkingPathOverlays be replaced with on Campus route later
   const walkingPathOverlay = new mapkit.PolylineOverlay(
     shuttlePath.routePath
       .slice(0, 2)
@@ -54,8 +56,6 @@ export const shuttlePathToOverlay = (shuttlePath: ShuttlePath) => {
   );
 
   pathOverlays.push(walkingPathOverlay);
-
-  console.log(shuttlePath.routeColor);
 
   const shuttlePathOverlay = new mapkit.PolylineOverlay(
     shuttlePath.routePath
@@ -86,6 +86,26 @@ export const shuttlePathToOverlay = (shuttlePath: ShuttlePath) => {
   );
 
   pathOverlays.push(walkingPathOverlay2);
+
+  // stops
+  const stopOverlays = shuttlePath.routeStops.map((routeStop) => {
+    return new mapkit.CircleOverlay(
+      new mapkit.Coordinate(
+        routeStop.coordinate.latitude,
+        routeStop.coordinate.longitude,
+      ),
+      15,
+      {
+        style: new mapkit.Style({
+          strokeColor: 'black',
+          fillColor: 'white',
+          fillOpacity: 1,
+        }),
+      },
+    );
+  });
+
+  pathOverlays.push(...stopOverlays);
 
   return pathOverlays;
 };
