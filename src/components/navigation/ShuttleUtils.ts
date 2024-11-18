@@ -3,6 +3,8 @@ import { Coordinate } from 'mapkit-react';
 import { ShuttlePath } from '@/app/api/findShuttlePath/types';
 import { RouteDisplay } from '@/app/api/getAllShuttleRoutes/route';
 
+export const SHUTTLE_STOP_CIRCLE_RADIUS = 15;
+
 export const getShuttleRoutesOverlays = async (): Promise<
   mapkit.PolylineOverlay[]
 > => {
@@ -88,22 +90,23 @@ export const shuttlePathToOverlay = (shuttlePath: ShuttlePath) => {
   pathOverlays.push(walkingPathOverlay2);
 
   // stops
-  const stopOverlays = shuttlePath.routeStops.map((routeStop) => {
-    return new mapkit.CircleOverlay(
-      new mapkit.Coordinate(
-        routeStop.coordinate.latitude,
-        routeStop.coordinate.longitude,
+  const stopOverlays = shuttlePath.routeStops.map(
+    (routeStop) =>
+      new mapkit.CircleOverlay(
+        new mapkit.Coordinate(
+          routeStop.coordinate.latitude,
+          routeStop.coordinate.longitude,
+        ),
+        SHUTTLE_STOP_CIRCLE_RADIUS,
+        {
+          style: new mapkit.Style({
+            strokeColor: 'black',
+            fillColor: 'white',
+            fillOpacity: 1,
+          }),
+        },
       ),
-      15,
-      {
-        style: new mapkit.Style({
-          strokeColor: 'black',
-          fillColor: 'white',
-          fillOpacity: 1,
-        }),
-      },
-    );
-  });
+  );
 
   pathOverlays.push(...stopOverlays);
 

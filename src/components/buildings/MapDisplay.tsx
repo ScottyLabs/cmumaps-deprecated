@@ -14,6 +14,7 @@ import { findShuttlePath } from '@/lib/apiRoutes';
 import {
   setChoosingRoomMode,
   setEndLocation,
+  setHoveredShuttleStopIndex,
   setShuttlePath,
   setStartLocation,
 } from '@/lib/features/navSlice';
@@ -27,12 +28,13 @@ import {
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
-import { isInPolygonCoordinates } from '@/util/geometry';
+import { isInPolygonCoordinates, mapDistance } from '@/util/geometry';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
 import ShuttleLine from '../navigation/ShuttleLine';
+import { SHUTTLE_STOP_CIRCLE_RADIUS } from '../navigation/ShuttleUtils';
 import RoomPin from '../shared/RoomPin';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay, {
@@ -55,8 +57,8 @@ const CAMPUS_CAMERA_BOUNDARY: CoordinateRegion = {
 export const SHUTTLE_CAMERA_BOUNDARY: CoordinateRegion = {
   centerLatitude: 40.44533940432823,
   centerLongitude: -79.9457060010195,
-  latitudeDelta: 0.04,
-  longitudeDelta: 0.04,
+  latitudeDelta: 0.05,
+  longitudeDelta: 0.05,
 };
 
 const CAMPUS_CAMERA_DISTANCE = 1500;
@@ -93,6 +95,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
   const searchMode = useAppSelector((state) => state.ui.searchMode);
   const userPosition = useAppSelector((state) => state.nav.userPosition);
+  const shuttlePath = useAppSelector((state) => state.nav.shuttlePath);
 
   const [maxCameraDistance, setMaxCameraDistance] = useState<number>(
     CAMPUS_CAMERA_DISTANCE,
@@ -277,6 +280,31 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     initialRegion,
   );
 
+  // show shuttle stop name based on the mouse position
+  const handleOnMouseMove = (mouseCoordinate: Coordinate) => {
+    if (shuttlePath) {
+      // find the closest shuttle stop
+      const closest = shuttlePath.routeStops.reduce(
+        (acc, routeStop, index) => {
+          const curDist = mapDistance(routeStop.coordinate, mouseCoordinate);
+          if (curDist < acc.minDist) {
+            return { minDist: curDist, index };
+          }
+          return acc;
+        },
+        { minDist: Number.MAX_VALUE, index: -1 },
+      );
+
+      // show the name of the closest shuttle stop if it is close enough
+      // to the circle overlay
+      if (closest.minDist < SHUTTLE_STOP_CIRCLE_RADIUS * 2) {
+        dispatch(setHoveredShuttleStopIndex(closest.index));
+      } else {
+        dispatch(setHoveredShuttleStopIndex(-1));
+      }
+    }
+  };
+
   // DO NOT DELETE THIS MYSTERIOUS CODE IT HELPS THE PINS TO LOAD FASTER
   // The working theory on why this works is that without any annotations, mapkit deletes the annotation layer
   // so when we want to conjure the pins, we need to create a new annotation layer, which takes ~3s for no apparent reason
@@ -322,6 +350,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       showsZoomControl={!isMobile}
       showsCompass={FeatureVisibility.Visible}
       allowWheelToZoom
+      onMouseMove={(e) => handleOnMouseMove(e.toCoordinates())}
       onRegionChangeStart={onRegionChangeStart}
       onRegionChangeEnd={() => {
         dispatch(setIsZooming(false));
