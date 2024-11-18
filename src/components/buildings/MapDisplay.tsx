@@ -361,7 +361,8 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       }}
       onLoad={handleLoad}
     >
-      {buildings &&
+      {searchMode !== 'shuttle' &&
+        buildings &&
         Object.values(buildings).map(
           (building) =>
             mapRef.current && (

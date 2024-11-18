@@ -1,3 +1,5 @@
+import { Coordinate } from 'mapkit-react';
+
 export type Stop = {
   AddressID: number;
   City: string;
@@ -27,4 +29,14 @@ export type Route = {
   MapLongitude: number;
   RouteID: number;
   Stops: Stop[];
+};
+
+export type ShuttlePath = {
+  routeId: string;
+  routeColor: string;
+  routePath: Coordinate[];
+  routeStops: {
+    name: string;
+    coordinate: Coordinate;
+  }[];
 };

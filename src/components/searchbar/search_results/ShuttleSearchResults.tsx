@@ -37,6 +37,7 @@ const ShuttleSearchResults = ({ query }: Props) => {
     [],
   );
 
+  // set search results using Apple Mapkit autocomplete
   useEffect(() => {
     // empty query = empty results
     if (!query) {
@@ -81,7 +82,7 @@ const ShuttleSearchResults = ({ query }: Props) => {
         handleClick={() => {
           if (userPosition) {
             findShuttlePath(userPosition, result.coordinate).then((res) =>
-              dispatch(setShuttlePath(res.routePath)),
+              dispatch(setShuttlePath(res)),
             );
           } else {
             alert('Please Allow User Position!');

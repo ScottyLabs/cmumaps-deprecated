@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Coordinate } from 'mapkit-react';
 
 import { Node } from '@/app/api/findPath/types';
+import { ShuttlePath } from '@/app/api/findShuttlePath/types';
 import { Building, Room } from '@/types';
 
 type ChoosingRoomMode = 'start' | 'end' | null;
@@ -19,7 +20,7 @@ interface NavState {
   userPosition: Coordinate | null;
   choosingRoomMode: ChoosingRoomMode;
 
-  shuttlePath: Coordinate[] | null;
+  shuttlePath: ShuttlePath | null;
 }
 
 const initialState: NavState = {

@@ -127,6 +127,7 @@ export async function POST(req: NextRequest) {
   );
   return Response.json({
     routeId: bestRoute.RouteID,
+    routeColor: bestRoute.MapLineColor,
     routePath: [startLocation, ...response, endLocation],
     routeStops: stopsPath,
   });
