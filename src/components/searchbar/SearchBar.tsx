@@ -137,7 +137,10 @@ const SearchBar = ({ map }: Props) => {
       icon = searchModeToIcon[searchMode];
     }
 
-    const placeholder = `You are searching ${searchMode} now...`;
+    let placeholder = `You are searching ${searchMode} now...`;
+    if (searchMode == 'shuttle') {
+      placeholder = 'Search a location for shuttle path...';
+    }
 
     return (
       <div className="flex w-full items-center rounded bg-white p-1">

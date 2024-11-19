@@ -48,9 +48,7 @@ const ShuttleLine = ({ map }: Props) => {
         });
 
         if (!response.ok) {
-          if (!hasAlerted.current) {
-            toast.error('Shuttle Route not running!');
-          }
+          toast.error('Shuttle Route not running!');
           setShuttleLocation(null);
           hasAlerted.current = true;
           return;
@@ -64,7 +62,11 @@ const ShuttleLine = ({ map }: Props) => {
       getShuttleLocation();
 
       // update shuttle location every 3 seconds
-      const intervalId = setInterval(() => getShuttleLocation(), 3000);
+      const intervalId = setInterval(() => {
+        if (!hasAlerted.current) {
+          getShuttleLocation();
+        }
+      }, 3000);
 
       return () => clearInterval(intervalId);
     }
