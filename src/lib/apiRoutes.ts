@@ -2,6 +2,8 @@
 import { Event } from '@prisma/client';
 import { Coordinate } from 'mapkit-react';
 
+import { toast } from 'react-toastify';
+
 import { Floor, FloorPlan, Room } from '@/types';
 
 export async function fetchEvents(
@@ -140,9 +142,17 @@ export const postUserSchedule = async (
 };
 
 export async function findShuttlePath(
-  startLocation: Coordinate,
+  startLocation: Coordinate | null,
   endLocation: Coordinate,
 ) {
+  if (!startLocation) {
+    toast.warn('Dummy position used!');
+    startLocation = {
+      latitude: 40.44315713248135,
+      longitude: -79.94097245738384,
+    };
+  }
+
   console.log('wrapper', startLocation, endLocation);
   const response = await fetch('/api/findShuttlePath', {
     method: 'POST',
@@ -162,7 +172,7 @@ export async function findShuttlePath(
 
     return body;
   } catch (e) {
-    console.error('Failed to get parse schedule', response);
+    console.error('Failed to find shuttle path', response);
     return '';
   }
 }

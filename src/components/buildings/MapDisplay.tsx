@@ -367,13 +367,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
           // click to choose end location for shuttle path
           if (searchMode == 'shuttle') {
-            if (userPosition) {
-              findShuttlePath(userPosition, e.toCoordinates()).then((res) =>
-                dispatch(setShuttlePath(res)),
-              );
-            } else {
-              alert('Please allow User Position!');
-            }
+            findShuttlePath(userPosition, e.toCoordinates()).then((res) =>
+              dispatch(setShuttlePath(res)),
+            );
           }
           // click to choose start/end location for navigation
           else if (choosingRoomMode) {

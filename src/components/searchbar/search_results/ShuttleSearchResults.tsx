@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { SHUTTLE_CAMERA_BOUNDARY } from '@/components/buildings/MapDisplay';
 import { findShuttlePath } from '@/lib/apiRoutes';
 import { setShuttlePath } from '@/lib/features/navSlice';
+import { setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 import { toMapKitCoordinateRegion } from '../../buildings/mapUtils';
@@ -80,13 +81,10 @@ const ShuttleSearchResults = ({ query }: Props) => {
     return (
       <SearchResultWrapper
         handleClick={() => {
-          if (userPosition) {
-            findShuttlePath(userPosition, result.coordinate).then((res) =>
-              dispatch(setShuttlePath(res)),
-            );
-          } else {
-            alert('Please Allow User Position!');
-          }
+          dispatch(setIsSearchOpen(false));
+          findShuttlePath(userPosition, result.coordinate).then((res) =>
+            dispatch(setShuttlePath(res)),
+          );
         }}
       >
         <div className="w-full cursor-pointer rounded border p-1">
