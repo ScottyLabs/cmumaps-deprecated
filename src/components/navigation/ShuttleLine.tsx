@@ -2,7 +2,8 @@ import shuttleIcon from '@icons/quick_search/shuttle.svg';
 import { Annotation, Coordinate } from 'mapkit-react';
 import Image from 'next/image';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
@@ -21,13 +22,18 @@ const ShuttleLine = ({ map }: Props) => {
   );
 
   const [pathOverlay, setPathOverlay] = useState<mapkit.Overlay[]>([]);
-  const [shuttleLocation, setShuttleLocation] = useState<Coordinate>();
+  const [shuttleLocation, setShuttleLocation] = useState<Coordinate | null>();
+
+  const hasAlerted = useRef(false);
 
   // calculate the pathOverlay
   useEffect(() => {
     if (!shuttlePath) {
       getShuttleRoutesOverlays().then((res) => setPathOverlay(res));
     } else {
+      // reset alert
+      hasAlerted.current = false;
+
       setPathOverlay(shuttlePathToOverlay(shuttlePath));
 
       const getShuttleLocation = async () => {
@@ -42,7 +48,11 @@ const ShuttleLine = ({ map }: Props) => {
         });
 
         if (!response.ok) {
-          alert('Shuttle Route not running!');
+          if (!hasAlerted.current) {
+            toast.error('Shuttle Route not running!');
+          }
+          setShuttleLocation(null);
+          hasAlerted.current = true;
           return;
         }
 
@@ -50,6 +60,8 @@ const ShuttleLine = ({ map }: Props) => {
 
         setShuttleLocation(body.location);
       };
+
+      getShuttleLocation();
 
       // update shuttle location every 3 seconds
       const intervalId = setInterval(() => getShuttleLocation(), 3000);
@@ -73,7 +85,6 @@ const ShuttleLine = ({ map }: Props) => {
 
   const displayShuttleLocation = () => {
     if (shuttleLocation) {
-      console.log(shuttleLocation);
       return (
         <Annotation
           latitude={shuttleLocation.latitude}
