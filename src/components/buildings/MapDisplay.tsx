@@ -399,9 +399,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
             ),
         )}
 
-      {focusedFloor && showFloor && (
+      {/* {focusedFloor && showFloor && (
         <FloorPlanOverlay visibleBuildings={visibleBuildings} />
-      )}
+      )} */}
 
       {mapRef.current && <NavLine map={mapRef.current} />}
 
@@ -409,7 +409,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         <ShuttleLine map={mapRef.current} />
       )}
 
-      {selectedRoom ? (
+      {/* {selectedRoom ? (
         <Annotation
           latitude={selectedRoom.labelPosition.latitude}
           longitude={selectedRoom.labelPosition.longitude}
@@ -424,7 +424,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
             </div>
           </div>
         </Annotation>
-      ) : null}
+      ) : null} */}
     </Map>
   );
 };

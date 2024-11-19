@@ -8,7 +8,7 @@ const isPublicRoute = createRouteMatcher([
 
 export default clerkMiddleware((auth, request) => {
   if (!isPublicRoute(request)) {
-    auth().protect();
+    // auth().protect();
   }
   const userAgent = request.headers.get('user-agent') || '';
   const url = new URL(request.url);
