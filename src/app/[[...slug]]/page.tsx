@@ -33,6 +33,7 @@ import {
   setIsMobile,
   selectBuilding,
   getIsCardOpen,
+  setSearchMode,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Room } from '@/types';
@@ -80,6 +81,12 @@ const Page = ({ params, searchParams }: Props) => {
     // makes all required things are loaded
     if (mapRef.current && buildings && params.slug && params.slug.length > 0) {
       const code = decodeURIComponent(params.slug[0]);
+
+      if (code == 'shuttle') {
+        dispatch(setSearchMode('shuttle'));
+        return;
+      }
+
       // only building code
       if (!code.includes('-')) {
         // the code is the building code
