@@ -17,7 +17,7 @@ import { useAppSelector } from '@/lib/hooks';
 
 const RoomSchedule = () => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-
+  console.log(selectedRoom);
   const today = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -155,6 +155,10 @@ const RoomSchedule = () => {
         </div>
       );
     }
+  };
+
+  const renderScheduleButtons = () => {
+    return <button></button>;
   };
 
   return (
