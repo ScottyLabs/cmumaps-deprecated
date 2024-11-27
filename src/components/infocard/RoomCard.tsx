@@ -14,9 +14,10 @@ import RoomSchedule from './RoomSchedule';
 
 interface Props {
   room: Room;
+  initSnapPoint: (number) => void;
 }
 
-const RoomCard = ({ room }: Props) => {
+const RoomCard = ({ room, initSnapPoint }: Props) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const availableRoomImages = useAppSelector(
     (state) => state.data.availableRoomImages,
@@ -92,15 +93,17 @@ const RoomCard = ({ room }: Props) => {
     return <ButtonsRow middleButton={renderMiddleButton()} />;
   };
 
+  initSnapPoint(hasSchedule ? 403 : 300);
+
   return (
-    <CardWrapper snapPoint={hasSchedule ? 403 : 300}>
-      <>
-        {renderRoomImage()}
-        {renderRoomTitle()}
-        {renderButtonsRow()}
-        {hasSchedule && <RoomSchedule />}
-      </>
-    </CardWrapper>
+    // <CardWrapper snapPoint={hasSchedule ? 403 : 300}>
+    <>
+      {renderRoomImage()}
+      {renderRoomTitle()}
+      {renderButtonsRow()}
+      {hasSchedule && <RoomSchedule />}
+    </>
+    // </CardWrapper>
   );
 };
 

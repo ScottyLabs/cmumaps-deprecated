@@ -9,16 +9,16 @@ import { getEateryId, sortEateries } from '@/util/eateryUtils';
 
 import { zoomOnRoomById } from '../buildings/mapUtils';
 import ButtonsRow from './ButtonsRow';
-import CardWrapper from './CardWrapper';
 import EateryInfoDisplay from './EateryInfoDisplay';
 import InfoCardImage from './InfoCardImage';
 
 interface Props {
   map: mapkit.Map | null;
   building: Building;
+  initSnapPoint: (number) => void;
 }
 
-const BuildingCard = ({ map, building }: Props) => {
+const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
   const dispatch = useAppDispatch();
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
@@ -224,17 +224,19 @@ const BuildingCard = ({ map, building }: Props) => {
     }
   };
 
+  initSnapPoint(eateries.length > 0 ? 440 : 275);
+
   return (
-    <CardWrapper snapPoint={eateries.length > 0 ? 440 : 275}>
-      <>
-        {renderBuildingImage()}
-        <h2 className="ml-3 mt-2">
-          {building.name} ({building.code})
-        </h2>
-        {renderButtonsRow()}
-        {renderEateryCarousel()}
-      </>
-    </CardWrapper>
+    // <CardWrapper snapPoint={eateries.length > 0 ? 440 : 275}>
+    <>
+      {renderBuildingImage()}
+      <h2 className="ml-3 mt-2">
+        {building.name} ({building.code})
+      </h2>
+      {renderButtonsRow()}
+      {renderEateryCarousel()}
+    </>
+    // </CardWrapper>
   );
 };
 

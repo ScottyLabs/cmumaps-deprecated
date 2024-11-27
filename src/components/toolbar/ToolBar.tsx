@@ -1,9 +1,13 @@
-import React from 'react';
+import { staticGenerationAsyncStorage } from 'next/dist/client/components/static-generation-async-storage-instance';
+import { Truculenta } from 'next/font/google';
+
+import React, { useState, Children } from 'react';
 
 import { getIsCardOpen } from '@/lib/features/uiSlice';
 import { useAppSelector } from '@/lib/hooks';
 
 import FloorSwitcher from '../buildings/FloorSwitcher';
+import CardWrapper from '../infocard/CardWrapper';
 import InfoCard from '../infocard/InfoCard';
 import NavCard from '../navigation/NavCard';
 import SearchBar from '../searchbar/SearchBar';
@@ -11,6 +15,7 @@ import Schedule from './Schedule';
 
 interface Props {
   map: mapkit.Map | null;
+  initSnapPoint: (a: number) => void;
 }
 
 const ToolBar = ({ map }: Props) => {
@@ -49,6 +54,20 @@ const ToolBar = ({ map }: Props) => {
     return true;
   };
 
+  const [snapPoint, setSnapPoint] = useState(340);
+  // var [visible, setVisible] = useState(true);
+
+  const initSnapPoint = (sp) => {
+    if (sp != snapPoint) {
+      setSnapPoint(sp);
+    }
+  };
+
+  let [cardVisible, setCardVisibile] = useState(true);
+  const setCardVisibility = (b) => {
+    cardVisible = b;
+  };
+
   return (
     <div
       // need box content in the desktop version so the width of the search bar match the card
@@ -64,7 +83,15 @@ const ToolBar = ({ map }: Props) => {
           </>
         )}
 
-        {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
+        {!isNavOpen && !isSearchOpen && (
+          <CardWrapper snapPoint={snapPoint} isOpen={cardVisible}>
+            <InfoCard
+              map={map}
+              setCardVisibility={setCardVisibile}
+              initSnapPoint={initSnapPoint}
+            />
+          </CardWrapper>
+        )}
         {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard map={map} />}
       </div>
 

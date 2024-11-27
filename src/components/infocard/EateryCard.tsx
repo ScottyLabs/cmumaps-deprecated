@@ -6,15 +6,15 @@ import { Room } from '@/types';
 import { getEateryId } from '@/util/eateryUtils';
 
 import ButtonsRow, { renderMiddleButtonHelper } from './ButtonsRow';
-import CardWrapper from './CardWrapper';
 import EateryInfoDisplay from './EateryInfoDisplay';
 import InfoCardImage from './InfoCardImage';
 
 interface Props {
   room: Room;
+  initSnapPoint: (number) => void;
 }
 
-const Eaterycard = ({ room }: Props) => {
+const Eaterycard = ({ room, initSnapPoint }: Props) => {
   const eateryData = useAppSelector((state) => state.data.eateryData);
 
   if (!eateryData) {
@@ -64,14 +64,16 @@ const Eaterycard = ({ room }: Props) => {
     );
   };
 
+  initSnapPoint(340);
+
   return (
-    <CardWrapper snapPoint={340}>
-      <>
-        {renderEateryImage()}
-        {renderInfo()}
-        {renderButtonsRow()}
-      </>
-    </CardWrapper>
+    // <CardWrapper snapPoint={340}>
+    <>
+      {renderEateryImage()}
+      {renderInfo()}
+      {renderButtonsRow()}
+    </>
+    // </CardWrapper>
   );
 };
 
