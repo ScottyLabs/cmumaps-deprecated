@@ -160,6 +160,10 @@ const Events = ({ map }: Props) => {
     const roomName = roomInfoArr[1];
     const floorLevel = roomName.charAt(0);
 
+    if (!searchMap) {
+      return;
+    }
+
     const selectedRoom = searchMap[buildingCode][floorLevel].find(
       (room) => room.name == roomName,
     );

@@ -39,7 +39,7 @@ const NavDirections = ({ map, path }: Props) => {
           const level = node.floor.level;
           const buildingCode = node.floor.buildingCode;
 
-          if (floorPlanMap[buildingCode][level][node.roomId]) {
+          if (floorPlanMap && floorPlanMap[buildingCode][level][node.roomId]) {
             passedByRooms.push(floorPlanMap[buildingCode][level][node.roomId]);
           }
         }

@@ -34,7 +34,7 @@ const FoodSearchResults = ({ map, query }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (buildings) {
+    if (buildings && searchMap) {
       setIsLoading(true);
       setTimeout(() => {
         setSearchResults(

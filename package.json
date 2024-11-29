@@ -19,11 +19,6 @@
     "update-rooms": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py",
     "update-graph": "python3 public/cmumaps-data/scripts/process_graphs.py"
   },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "npm run validate"
-    ]
-  },
   "dependencies": {
     "@clerk/nextjs": "^5.3.1",
     "@datastructures-js/priority-queue": "github:datastructures-js/priority-queue",

@@ -18,8 +18,16 @@ interface Props {
 }
 
 export const handleCourseClick =
-  (roomInfoArr: string[], searchMap: SearchMap, router: AppRouterInstance) =>
+  (
+    roomInfoArr: string[],
+    searchMap: SearchMap | null,
+    router: AppRouterInstance,
+  ) =>
   () => {
+    if (!searchMap) {
+      return;
+    }
+
     const buildingCode = roomInfoArr[0];
 
     const buildingMap = searchMap[buildingCode];

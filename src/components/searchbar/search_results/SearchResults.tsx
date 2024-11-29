@@ -28,7 +28,7 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
   >([]);
 
   useEffect(() => {
-    if (buildings) {
+    if (buildings && searchMap) {
       setTimeout(() => {
         if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
           setRoomSearchResults(

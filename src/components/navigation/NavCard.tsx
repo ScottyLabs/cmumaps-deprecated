@@ -10,6 +10,7 @@ import React, { useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
+import { Waypoint } from '@/app/api/findPath/types';
 import {
   setChoosingRoomMode,
   setSelectedPathName,
@@ -22,7 +23,6 @@ import {
 } from '@/lib/features/navSlice';
 import { setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, Room } from '@/types';
 
 import CardWrapper from '../infocard/CardWrapper';
 import NavDirections from './NavDirections';
@@ -106,7 +106,7 @@ const NavCard = ({ map }: Props) => {
   };
 
   const renderRoomInput = (
-    navLocation: Room | Building | null,
+    navLocation: Waypoint | null,
     placeHolder: string,
     icon: StaticImport,
     handleClick: () => void,

@@ -48,5 +48,6 @@ export async function GET(req: NextRequest) {
     groupedEvents.push(dateEvents);
     date = new Date(date.valueOf() + 60 * 60 * 24 * 1000); // Increment date by 1 day
   }
+
   return Response.json(groupedEvents);
 }
