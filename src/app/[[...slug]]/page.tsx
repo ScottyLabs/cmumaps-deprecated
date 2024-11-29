@@ -56,6 +56,14 @@ interface Props {
 
 /**
  * The main page of the CMU Maps website.
+ *
+ * Responsible for
+ *   - Load data: buildings, searchMap, floorPlanMap, eatery data,
+ *     and the list of available room images.
+ *   - Extract information from URL, as well as upating the URL and page title.
+ *   - Setup posthog and service worker.
+ *   - Determine the device type and ask for user position.
+ *   - Render the icons and setup toast container.
  */
 const Page = ({ params, searchParams }: Props) => {
   const router = useRouter();
@@ -151,7 +159,7 @@ const Page = ({ params, searchParams }: Props) => {
     getEateryData().then((eateryData) => dispatch(setEateryData(eateryData)));
   }, [dispatch]);
 
-  // load the buildings and searchMap and floorPlanMap data
+  // load the buildings, searchMap, and floorPlanMap data
   useEffect(() => {
     if (!dispatch) {
       return;
@@ -305,6 +313,7 @@ const Page = ({ params, searchParams }: Props) => {
       // only building code
       if (!input.includes('-') && buildings[input]) {
         dispatch(setLocation(buildings[input]));
+        return;
       } else if (!input.includes('-')) {
         // the code is the user position
         if (input === 'user') {
@@ -312,6 +321,7 @@ const Page = ({ params, searchParams }: Props) => {
         } else {
           dispatch(setLocation({ waypoint: decodeCoord(input) }));
         }
+        return;
       }
 
       // set location to room level if possible
