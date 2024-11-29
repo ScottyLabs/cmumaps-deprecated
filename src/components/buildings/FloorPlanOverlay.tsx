@@ -48,7 +48,7 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
     dispatch(setIsFloorPlanRendered(true));
   });
 
-  if (!buildings || !focusedFloor?.buildingCode || !focusedFloor?.level) {
+  if (!(buildings && focusedFloor && floorPlanMap)) {
     return;
   }
 

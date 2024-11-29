@@ -49,7 +49,7 @@ export const zoomOnRoomById = (
   roomId: RoomId,
   floor: Floor,
   buildings: Record<string, Building> | null,
-  floorPlanMap: FloorPlanMap,
+  floorPlanMap: FloorPlanMap | null,
   dispatch: Dispatch<UnknownAction>,
 ) => {
   if (!buildings || !map || !floorPlanMap) {

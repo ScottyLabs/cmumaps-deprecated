@@ -88,6 +88,10 @@ const EventSearchResults = ({ query }: Props) => {
       const roomName = roomInfoArr[1];
       const floorLevel = roomName.charAt(0);
 
+      if (!searchMap) {
+        return;
+      }
+
       const buildingMap = searchMap[buildingCode];
 
       if (!buildingMap) {

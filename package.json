@@ -7,6 +7,8 @@
     "build": "next build",
     "postinstall": "prisma generate",
     "start": "next start",
+    "validate": "npm run lint && npm run type-check",
+    "type-check": "tsc --noEmit",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "lint:strict": "next lint '*/**/*.{js,jsx,ts,tsx}'",
@@ -16,6 +18,11 @@
     "update-data": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py & python3 public/cmumaps-data/scripts/process_graphs.py",
     "update-rooms": "python3 public/cmumaps-data/scripts/combine_all_floor_plans.py",
     "update-graph": "python3 public/cmumaps-data/scripts/process_graphs.py"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npm run validate"
+    ]
   },
   "dependencies": {
     "@clerk/nextjs": "^5.3.1",

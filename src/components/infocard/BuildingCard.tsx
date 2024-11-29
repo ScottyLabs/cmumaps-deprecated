@@ -34,12 +34,15 @@ const BuildingCard = ({ map, building }: Props) => {
     const newEateries = building.floors
       .map((floorLevel) => {
         if (
-          !searchMap[`${building.code}`] ||
-          !searchMap[`${building.code}`][floorLevel]
+          !(
+            searchMap &&
+            searchMap[building.code] &&
+            searchMap[building.code][floorLevel]
+          )
         ) {
           return [];
         }
-        const rooms = searchMap[`${building.code}`][`${floorLevel}`];
+        const rooms = searchMap[building.code][floorLevel];
         return rooms.filter((room) => room.type == 'Food');
       })
       .flat();
