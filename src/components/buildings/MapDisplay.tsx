@@ -178,8 +178,18 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           ) ?? null;
 
         if (centerBuilding) {
-          // focus on the default floor of the center building if no floor is focused
+          // if no floor is focused
+          //   - we focus on the floor of the selected room if there is one
+          //     and it is in the center building
+          //   - otherwise we focus on the default floor of the center building
           if (!focusedFloor) {
+            if (selectedRoom) {
+              if (selectedRoom.floor.buildingCode == centerBuilding.code) {
+                dispatch(setFocusedFloor(selectedRoom.floor));
+                return;
+              }
+            }
+
             const newFocusFloor = {
               buildingCode: centerBuilding.code,
               level: centerBuilding.defaultFloor,
@@ -189,7 +199,8 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           }
 
           // if we are focusing on a different building,
-          // then focus on the floor of the center building that is the same ordinal as the currently focused floor
+          // then focus on the floor of the center building
+          // that is the same ordinal as the currently focused floor
           else {
             const focusedBuilding = buildings[focusedFloor.buildingCode];
             if (focusedBuilding.code != centerBuilding.code) {
