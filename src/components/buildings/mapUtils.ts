@@ -7,7 +7,7 @@ import {
   setIsZooming,
   setShowRoomNames,
 } from '@/lib/features/uiSlice';
-import { Building, Floor, FloorPlanMap, ID } from '@/types';
+import { Building, Floor, FloorPlanMap, RoomId } from '@/types';
 import prefersReducedMotion from '@/util/prefersReducedMotion';
 
 const setIsZoomingAsync = (isZooming: boolean) => {
@@ -49,37 +49,9 @@ export const getRoomIdByNameAndFloor = (
   return roomId;
 };
 
-/**
- * Also assign the redux variables accordingly
- */
-export const zoomOnRoomByName = (
-  map: mapkit.Map | null,
-  roomName: string,
-  floor: Floor,
-  buildings: Record<string, Building> | null,
-  floorPlanMap: FloorPlanMap,
-  dispatch: Dispatch<UnknownAction>,
-) => {
-  if (!map) {
-    return;
-  }
-
-  const roomId = getRoomIdByNameAndFloor(
-    roomName,
-    floor,
-    buildings,
-    floorPlanMap,
-  );
-
-  if (roomId) {
-    // call roomOnRoomByID
-    zoomOnRoomById(map, roomId, floor, buildings, floorPlanMap, dispatch);
-  }
-};
-
 export const zoomOnRoomById = (
   map: mapkit.Map | null,
-  roomId: ID,
+  roomId: RoomId,
   floor: Floor,
   buildings: Record<string, Building> | null,
   floorPlanMap: FloorPlanMap,

@@ -3,8 +3,7 @@
  */
 import { Coordinate } from 'mapkit-react';
 
-export type ID = string;
-
+export type RoomId = string;
 export type BuildingCode = string;
 export type FloorLevel = string;
 
@@ -123,7 +122,7 @@ export interface SearchRoom {
   /**
    * Unique ID (UUID)
    */
-  id: string;
+  id: RoomId;
 
   /**
    * The short name of the room, without the building name but including the
@@ -149,7 +148,7 @@ export interface Room {
   /**
    * Unique ID (UUID)
    */
-  id: string;
+  id: RoomId;
 
   /**
    * Building-Floor code (e.g. 'WEH-4')
@@ -219,7 +218,7 @@ export interface Floor {
 /**
  * Details about a specific building floor.
  */
-export type FloorPlan = Record<ID, Room>;
+export type FloorPlan = Record<RoomId, Room>;
 
 /**
  * The details of a building.
