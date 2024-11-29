@@ -8,13 +8,13 @@ import { usePostHog } from 'posthog-js/react';
 
 import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
-import { Slide, ToastContainer } from 'react-toastify';
+import { Slide, toast, ToastContainer } from 'react-toastify';
 
 import MapDisplay from '@/components/buildings/MapDisplay';
 import {
   getRoomIdByNameAndFloor,
   zoomOnFloor,
-  zoomOnRoomByName,
+  zoomOnRoomById,
 } from '@/components/buildings/mapUtils';
 import ToolBar from '@/components/toolbar/ToolBar';
 import {
@@ -36,7 +36,7 @@ import {
   getIsCardOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, Room } from '@/types';
+import { Building, BuildingCode, Floor, Room, RoomId } from '@/types';
 import { decodeCoord, encodeCoord } from '@/util/coordEncoding';
 import { getEateryData } from '@/util/eateryUtils';
 
@@ -54,7 +54,7 @@ interface Props {
 }
 
 /**
- * The main page of the CMU Map website.
+ * The main page of the CMU Maps website.
  */
 const Page = ({ params, searchParams }: Props) => {
   const router = useRouter();
@@ -78,9 +78,7 @@ const Page = ({ params, searchParams }: Props) => {
 
   // Identify posthog user with Clerk id
   const { isSignedIn, userId } = useAuth();
-
   const posthog = usePostHog();
-
   useEffect(() => {
     if (isSignedIn && userId) {
       posthog?.identify(userId);
@@ -89,47 +87,137 @@ const Page = ({ params, searchParams }: Props) => {
     }
   }, [posthog, isSignedIn, userId]);
 
-  // extracting data in the initial loading of the page
+  // extracting data from URL in the initial loading of the page
+  // cmumaps.com/{buildingCode}-{roomName}?src={}&dst={}.
   useEffect(() => {
-    // makes all required things are loaded
-    if (mapRef.current && buildings && params.slug && params.slug.length > 0) {
-      const code = decodeURIComponent(params.slug[0]);
-      // only building code
-      if (!code.includes('-')) {
-        // the code is the building code
+    // makes sure mapRef, buildings, and floorPlanMap are loaded
+    if (!(mapRef.current && buildings && floorPlanMap)) {
+      return;
+    }
+
+    // extract if there is a nonempty params.slug or if there is a dst
+    // params.slug && params.slug.length > 0;
+
+    interface ParsedData {
+      buildingCode?: BuildingCode;
+      floor?: Floor;
+      roomId?: RoomId;
+    }
+
+    /**
+     * Parse a string to retrieve its building code, floor, and room id.
+     * @remarks Responsible for toasting errors.
+     * @param input The string to parse
+     * @returns Possibly null building code, floor, and room id.
+     */
+    const parseHelper = (input: string): ParsedData => {
+      // the input is just the building code
+      if (!input.includes('-')) {
+        // validating the building code
+        if (buildings[input]) {
+          return { buildingCode: input };
+        } else {
+          toast.warn('Invalid building code!');
+          return {};
+        }
+      }
+
+      // extract buildingCode, roomName, and floorLevel
+      // {buildingCode} - {roomName}
+      const buildingCode = code.split('-')[0].toUpperCase();
+      const roomName = code.split('-')[1];
+      const floorLevel = roomName[0];
+
+      const building = buildings[buildingCode];
+
+      // validating the building code
+      if (!building) {
+        toast.warn('Invalid building code!');
+        return {};
+      }
+
+      // validating the floor level
+      if (!building.floors.includes(floorLevel)) {
+        toast.warn('Invalid floor level!');
+        return { buildingCode };
+      }
+
+      const floor = { buildingCode, level: floorLevel };
+
+      // if the room name is the floor level,
+      // then the url is only up to floor level
+      if (roomName.length == floorLevel.length) {
+        return { buildingCode, floor };
+      }
+
+      // otherwise we can try to retrieve the room id
+      const roomId = getRoomIdByNameAndFloor(
+        roomName,
+        floor,
+        buildings,
+        floorPlanMap,
+      );
+
+      // validating the room name
+      if (!roomId) {
+        toast.warn('Invalid room name!');
+        return { buildingCode, floor };
+      }
+
+      return { buildingCode, floor, roomId };
+    };
+
+    // need to use decodeURIComponent for characters such as ':'
+    const code = decodeURIComponent(params.slug[0]);
+
+    parseHelper(code);
+
+    // only building code
+    if (!code.includes('-')) {
+      // the code is the building code
+      if (buildings[code]) {
         dispatch(selectBuilding(buildings[code]));
       }
-      // at least floor level
-      else {
-        const buildingCode = code.split('-')[0].toUpperCase();
-        const roomName = code.split('-')[1];
-        const floorLevel = roomName[0];
+    }
+    // at least floor level
+    else {
+      const buildingCode = code.split('-')[0].toUpperCase();
+      const roomName = code.split('-')[1];
+      const floorLevel = roomName[0];
 
-        const building = buildings[buildingCode];
+      const building = buildings[buildingCode];
 
-        // validations on the building code
-        if (!building) {
-          router.push('/');
-          return;
-        }
+      // validations on the building code
+      if (!building) {
+        router.push('/');
+        return;
+      }
 
-        // validations on the floor level
-        if (!building.floors.includes(floorLevel)) {
-          router.push(buildingCode);
-          return;
-        }
+      // validations on the floor level
+      if (!building.floors.includes(floorLevel)) {
+        router.push(buildingCode);
+        return;
+      }
 
-        const floor = { buildingCode, level: floorLevel };
+      const floor = { buildingCode, level: floorLevel };
 
-        // if only contains floor information
-        if (roomName.length == 1) {
-          // up to floor level
-          dispatch(selectBuilding(building));
-          zoomOnFloor(mapRef.current, buildings, floor, dispatch);
-        } else {
-          zoomOnRoomByName(
+      // if only contains floor information
+      if (roomName.length == 1) {
+        // up to floor level
+        dispatch(selectBuilding(building));
+        zoomOnFloor(mapRef.current, buildings, floor, dispatch);
+      } else {
+        const roomId = getRoomIdByNameAndFloor(
+          roomName,
+          floor,
+          buildings,
+          floorPlanMap,
+        );
+
+        if (roomId) {
+          zoomOnRoomById(
             mapRef.current,
-            roomName,
+            roomId,
             floor,
             buildings,
             floorPlanMap,
@@ -137,94 +225,95 @@ const Page = ({ params, searchParams }: Props) => {
           );
         }
       }
+    }
 
-      // navigation
-      const src = searchParams.src;
-      const dst = searchParams.dst;
+    // navigation
+    const src = searchParams.src;
+    const dst = searchParams.dst;
 
-      // only dst is required; you can't have only src and not dst
-      if (dst) {
-        const assignHelper = (code: string, setLocation): boolean => {
-          // only building code
-          if (!code.includes('-') && buildings[code]) {
-            // the code is the building code
-            dispatch(setLocation(buildings[code]));
-            return true;
-          } else if (!code.includes('-')) {
-            // the code is the user position
-            if (code === 'user') {
-              dispatch(setLocation({ userPosition }));
-            } else {
-              dispatch(setLocation({ waypoint: decodeCoord(code) }));
-            }
-            return true;
+    // only dst is required; you can't have only src and not dst
+    if (dst) {
+      const assignHelper = (code: string, setLocation): boolean => {
+        // only building code
+        if (!code.includes('-') && buildings[code]) {
+          // the code is the building code
+          dispatch(setLocation(buildings[code]));
+          return true;
+        } else if (!code.includes('-')) {
+          // the code is the user position
+          if (code === 'user') {
+            dispatch(setLocation({ userPosition }));
+          } else {
+            dispatch(setLocation({ waypoint: decodeCoord(code) }));
           }
-          // at least floor level
-          else {
-            const buildingCode = code.split('-')[0];
-            const roomName = code.split('-')[1];
-            const floorLevel = roomName[0];
+          return true;
+        }
+        // at least floor level
+        else {
+          const buildingCode = code.split('-')[0];
+          const roomName = code.split('-')[1];
+          const floorLevel = roomName[0];
 
-            const building = buildings[buildingCode];
+          const building = buildings[buildingCode];
 
-            // validations on the building code
-            if (!building) {
-              return false;
-            }
-
-            // if only contains floor information
-            if (roomName.length == 1) {
-              return false;
-            }
-
-            const floor = { buildingCode, level: floorLevel };
-
-            const roomId = getRoomIdByNameAndFloor(
-              roomName,
-              floor,
-              buildings,
-              floorPlanMap,
-            );
-
-            // validations on the room name
-            if (!roomId) {
-              return false;
-            }
-
-            // validations on the floor level
-            if (!building.floors.includes(floorLevel)) {
-              return false;
-            }
-
-            const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
-            const room = floorPlan[roomId];
-
-            dispatch(setLocation(room));
-
-            return true;
+          // validations on the building code
+          if (!building) {
+            return false;
           }
-        };
 
-        if (src) {
-          assignHelper(src, setStartLocation);
-        }
+          // if only contains floor information
+          if (roomName.length == 1) {
+            return false;
+          }
 
-        const succeeded = assignHelper(dst, setEndLocation);
-        if (succeeded) {
-          dispatch(setIsNavOpen(true));
+          const floor = { buildingCode, level: floorLevel };
+
+          const roomId = getRoomIdByNameAndFloor(
+            roomName,
+            floor,
+            buildings,
+            floorPlanMap,
+          );
+
+          // validations on the room name
+          if (!roomId) {
+            return false;
+          }
+
+          // validations on the floor level
+          if (!building.floors.includes(floorLevel)) {
+            return false;
+          }
+
+          const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
+          const room = floorPlan[roomId];
+
+          dispatch(setLocation(room));
+
+          return true;
         }
+      };
+
+      if (src) {
+        assignHelper(src, setStartLocation);
+      }
+
+      const succeeded = assignHelper(dst, setEndLocation);
+      if (succeeded) {
+        dispatch(setIsNavOpen(true));
       }
     }
+
     // userPosition shouldn't cause an update
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    buildings,
-    dispatch,
-    params.slug,
-    router,
     mapRef,
-    floorPlanMap,
+    params.slug,
     searchParams,
+    buildings,
+    floorPlanMap,
+    dispatch,
+    router,
   ]);
 
   // determine the device type
@@ -283,12 +372,18 @@ const Page = ({ params, searchParams }: Props) => {
 
   // load the buildings and searchMap and floorPlanMap data
   useEffect(() => {
+    console.log('once');
     if (!dispatch) {
       return;
     }
+    console.log('twice');
+
     // set buildings
     fetch('/cmumaps-data/buildings.json').then((response) =>
-      response.json().then((buildings) => dispatch(setBuildings(buildings))),
+      response.json().then((buildings) => {
+        console.log('Setting!');
+        dispatch(setBuildings(buildings));
+      }),
     );
 
     // set searchMap
