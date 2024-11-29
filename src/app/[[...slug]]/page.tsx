@@ -77,15 +77,6 @@ const Page = ({ params, searchParams }: Props) => {
   const endLocation = useAppSelector((state) => state.nav.endLocation);
   const userPosition = useAppSelector((state) => state.nav.userPosition);
 
-  // serviceWorker for caching
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js');
-      });
-    }
-  }, []);
-
   // Identify posthog user with Clerk id
   const { isSignedIn, userId } = useAuth();
   const posthog = usePostHog();
@@ -96,6 +87,97 @@ const Page = ({ params, searchParams }: Props) => {
       posthog?.reset();
     }
   }, [posthog, isSignedIn, userId]);
+
+  // serviceWorker for caching
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  }, []);
+
+  // determine the device type
+  const userAgent = searchParams.userAgent || '';
+  useEffect(() => {
+    if (userAgent) {
+      const { isMobile } = getSelectorsByUserAgent(userAgent);
+      dispatch(setIsMobile(isMobile));
+    }
+  }, [userAgent, dispatch]);
+
+  // get user position
+  useEffect(() => {
+    navigator?.geolocation?.getCurrentPosition((pos) => {
+      const coord = {
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+      };
+
+      dispatch(setUserPosition(coord));
+    });
+  }, [dispatch]);
+
+  // load the list of images of the rooms
+  useEffect(() => {
+    const getRoomImageList = async () => {
+      const res = await fetch('/assets/location_images/list_of_files.txt');
+      const txt = await res.text();
+      const lines = txt.trim().split('\n');
+
+      const roomImageList: Record<string, string[]> = {};
+
+      let curBuilding = '';
+
+      for (const line of lines) {
+        if (line.startsWith('├──')) {
+          curBuilding = line.substring(4);
+          roomImageList[curBuilding] = [];
+        } else if (line.includes('.jpg')) {
+          const curRoom = line.split(' ').at(-1);
+          if (curRoom) {
+            roomImageList[curBuilding].push(curRoom);
+          }
+        }
+      }
+
+      dispatch(setAvailableRoomImages(roomImageList));
+    };
+    getRoomImageList();
+  }, [dispatch]);
+
+  // load the eatery data
+  useEffect(() => {
+    getEateryData().then((eateryData) => dispatch(setEateryData(eateryData)));
+  }, [dispatch]);
+
+  // load the buildings and searchMap and floorPlanMap data
+  useEffect(() => {
+    if (!dispatch) {
+      return;
+    }
+
+    // set buildings
+    fetch('/cmumaps-data/buildings.json').then((response) =>
+      response.json().then((buildings) => {
+        dispatch(setBuildings(buildings));
+      }),
+    );
+
+    // set searchMap
+    fetch('/cmumaps-data/searchMap.json').then((response) =>
+      response.json().then((searchMap) => {
+        dispatch(setSearchMap(searchMap));
+      }),
+    );
+
+    // set floorPlanMap
+    fetch('/cmumaps-data/floorPlanMap.json').then((response) =>
+      response.json().then((floorPlanMap) => {
+        dispatch(setFloorPlanMap(floorPlanMap));
+      }),
+    );
+  }, [dispatch]);
 
   // extracting data from URL in the initial loading of the page
   // cmumaps.com/{buildingCode}-{roomName}?src={}&dst={}.
@@ -264,88 +346,6 @@ const Page = ({ params, searchParams }: Props) => {
     router,
   ]);
 
-  // determine the device type
-  const userAgent = searchParams.userAgent || '';
-  useEffect(() => {
-    if (userAgent) {
-      const { isMobile } = getSelectorsByUserAgent(userAgent);
-      dispatch(setIsMobile(isMobile));
-    }
-  }, [userAgent, dispatch]);
-
-  // get user position
-  useEffect(() => {
-    navigator?.geolocation?.getCurrentPosition((pos) => {
-      const coord = {
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-      };
-
-      dispatch(setUserPosition(coord));
-    });
-  }, [dispatch]);
-
-  // load the list of images of the rooms
-  useEffect(() => {
-    const getRoomImageList = async () => {
-      const res = await fetch('/assets/location_images/list_of_files.txt');
-      const txt = await res.text();
-      const lines = txt.trim().split('\n');
-
-      const roomImageList: Record<string, string[]> = {};
-
-      let curBuilding = '';
-
-      for (const line of lines) {
-        if (line.startsWith('├──')) {
-          curBuilding = line.substring(4);
-          roomImageList[curBuilding] = [];
-        } else if (line.includes('.jpg')) {
-          const curRoom = line.split(' ').at(-1);
-          if (curRoom) {
-            roomImageList[curBuilding].push(curRoom);
-          }
-        }
-      }
-
-      dispatch(setAvailableRoomImages(roomImageList));
-    };
-    getRoomImageList();
-  }, [dispatch]);
-
-  // load the eatery data
-  useEffect(() => {
-    getEateryData().then((eateryData) => dispatch(setEateryData(eateryData)));
-  }, [dispatch]);
-
-  // load the buildings and searchMap and floorPlanMap data
-  useEffect(() => {
-    if (!dispatch) {
-      return;
-    }
-
-    // set buildings
-    fetch('/cmumaps-data/buildings.json').then((response) =>
-      response.json().then((buildings) => {
-        dispatch(setBuildings(buildings));
-      }),
-    );
-
-    // set searchMap
-    fetch('/cmumaps-data/searchMap.json').then((response) =>
-      response.json().then((searchMap) => {
-        dispatch(setSearchMap(searchMap));
-      }),
-    );
-
-    // set floorPlanMap
-    fetch('/cmumaps-data/floorPlanMap.json').then((response) =>
-      response.json().then((floorPlanMap) => {
-        dispatch(setFloorPlanMap(floorPlanMap));
-      }),
-    );
-  }, [dispatch]);
-
   // update the page title
   useEffect(() => {
     let title = 'CMU Maps';
@@ -428,7 +428,8 @@ const Page = ({ params, searchParams }: Props) => {
   ]);
 
   const renderIcons = () => {
-    // don't show icons if in mobile and either the search is open or the card is open
+    // don't show icons if in mobile and
+    // either the search is open or the card is open
     if (isMobile && (isSearchOpen || isCardOpen)) {
       return <></>;
     }
@@ -481,6 +482,7 @@ const Page = ({ params, searchParams }: Props) => {
         <ToolBar map={mapRef.current} />
       </div>
 
+      <MapDisplay mapRef={mapRef} />
       <div className="fixed z-10">{renderIcons()}</div>
 
       <ToastContainer
@@ -496,7 +498,6 @@ const Page = ({ params, searchParams }: Props) => {
           alignItems: 'flex-end',
         }}
       />
-      <MapDisplay mapRef={mapRef} />
     </main>
   );
 };
