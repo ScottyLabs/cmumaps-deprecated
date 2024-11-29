@@ -6,7 +6,8 @@ import { Building, Floor, Room } from '@/types';
 interface UIState {
   isMobile: boolean;
 
-  // A room/building is selected iff the user has clicked on it. And has not since clicked on another room, building, or the map.
+  // Room and Building are mutually exclusively selected.
+  // (i.e: you can't select on a room and a building at the same time)
   selectedRoom: Room | null;
   selectedBuilding: Building | null;
 

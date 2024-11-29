@@ -49,6 +49,9 @@ export const getRoomIdByNameAndFloor = (
   return roomId;
 };
 
+/**
+ * Also assign the redux variables accordingly
+ */
 export const zoomOnRoomById = (
   map: mapkit.Map | null,
   roomId: RoomId,
@@ -82,21 +85,19 @@ export const zoomOnRoomById = (
   }
 };
 
+/**
+ * Also assign the redux variables accordingly
+ */
 export const zoomOnFloor = (
   map: mapkit.Map,
-  buildings: Record<string, Building> | null,
+  buildings: Record<string, Building>,
   floor: Floor,
   dispatch: Dispatch<UnknownAction>,
 ) => {
-  if (!buildings) {
-    return;
-  }
-
   // zoom after finish setting the floor
   setIsZoomingAsync(true)(dispatch).then(() => {
     dispatch(setFocusedFloor(floor));
-    const points = buildings[floor.buildingCode].shapes.flat();
-    zoomOnObject(map, points);
+    zoomOnObject(map, buildings[floor.buildingCode].shapes.flat());
   });
 };
 

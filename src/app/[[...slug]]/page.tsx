@@ -95,9 +95,6 @@ const Page = ({ params, searchParams }: Props) => {
       return;
     }
 
-    // extract if there is a nonempty params.slug or if there is a dst
-    // params.slug && params.slug.length > 0;
-
     interface ParsedData {
       buildingCode?: BuildingCode;
       floor?: Floor;
@@ -124,8 +121,8 @@ const Page = ({ params, searchParams }: Props) => {
 
       // extract buildingCode, roomName, and floorLevel
       // {buildingCode} - {roomName}
-      const buildingCode = code.split('-')[0].toUpperCase();
-      const roomName = code.split('-')[1];
+      const buildingCode = input.split('-')[0].toUpperCase();
+      const roomName = input.split('-')[1];
       const floorLevel = roomName[0];
 
       const building = buildings[buildingCode];
@@ -167,69 +164,47 @@ const Page = ({ params, searchParams }: Props) => {
       return { buildingCode, floor, roomId };
     };
 
-    // need to use decodeURIComponent for characters such as ':'
-    const code = decodeURIComponent(params.slug[0]);
-
-    parseHelper(code);
-
-    // only building code
-    if (!code.includes('-')) {
-      // the code is the building code
-      if (buildings[code]) {
-        dispatch(selectBuilding(buildings[code]));
-      }
+    // The selected room is parsed from
+    //   - params.slug if there is a non-empty params.slug
+    //   - the dst if the params.slug is empty
+    //   - the src otherwise
+    const dst = searchParams.dst;
+    const src = searchParams.src;
+    let path = dst || src;
+    if (params.slug && params.slug.length > 0) {
+      // need to use decodeURIComponent for characters such as ':'
+      path = decodeURIComponent(params.slug[0]);
     }
-    // at least floor level
-    else {
-      const buildingCode = code.split('-')[0].toUpperCase();
-      const roomName = code.split('-')[1];
-      const floorLevel = roomName[0];
 
-      const building = buildings[buildingCode];
+    // the url is empty in this case
+    if (!path) {
+      return;
+    }
 
-      // validations on the building code
-      if (!building) {
-        router.push('/');
-        return;
-      }
+    const { buildingCode, floor, roomId } = parseHelper(path);
 
-      // validations on the floor level
-      if (!building.floors.includes(floorLevel)) {
-        router.push(buildingCode);
-        return;
-      }
+    // either a romm or a building can be selected at the same time, not both
+    if (buildingCode && !roomId) {
+      dispatch(selectBuilding(buildings[buildingCode]));
+    }
 
-      const floor = { buildingCode, level: floorLevel };
-
-      // if only contains floor information
-      if (roomName.length == 1) {
-        // up to floor level
-        dispatch(selectBuilding(building));
-        zoomOnFloor(mapRef.current, buildings, floor, dispatch);
-      } else {
-        const roomId = getRoomIdByNameAndFloor(
-          roomName,
+    // zoom on the room/floor
+    if (floor) {
+      if (roomId) {
+        zoomOnRoomById(
+          mapRef.current,
+          roomId,
           floor,
           buildings,
           floorPlanMap,
+          dispatch,
         );
-
-        if (roomId) {
-          zoomOnRoomById(
-            mapRef.current,
-            roomId,
-            floor,
-            buildings,
-            floorPlanMap,
-            dispatch,
-          );
-        }
+      } else {
+        zoomOnFloor(mapRef.current, buildings, floor, dispatch);
       }
     }
 
     // navigation
-    const src = searchParams.src;
-    const dst = searchParams.dst;
 
     // only dst is required; you can't have only src and not dst
     if (dst) {
@@ -372,16 +347,13 @@ const Page = ({ params, searchParams }: Props) => {
 
   // load the buildings and searchMap and floorPlanMap data
   useEffect(() => {
-    console.log('once');
     if (!dispatch) {
       return;
     }
-    console.log('twice');
 
     // set buildings
     fetch('/cmumaps-data/buildings.json').then((response) =>
       response.json().then((buildings) => {
-        console.log('Setting!');
         dispatch(setBuildings(buildings));
       }),
     );

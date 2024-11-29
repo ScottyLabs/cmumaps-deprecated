@@ -52,6 +52,10 @@ const NavDirections = ({ map, path }: Props) => {
 
   // zoom on the selected floor
   useEffect(() => {
+    if (!buildings) {
+      return;
+    }
+
     if (passedByFloors) {
       const curFloor = passedByFloors[curFloorIndex];
       const { buildingCode, level } = curFloor;
