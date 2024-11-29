@@ -76,6 +76,8 @@ const Page = ({ params, searchParams }: Props) => {
   const startLocation = useAppSelector((state) => state.nav.startLocation);
   const endLocation = useAppSelector((state) => state.nav.endLocation);
   const userPosition = useAppSelector((state) => state.nav.userPosition);
+
+  // serviceWorker for caching
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -131,7 +133,6 @@ const Page = ({ params, searchParams }: Props) => {
       // {buildingCode}-{roomName}
       const buildingCode = input.split('-')[0].toUpperCase();
       const roomName = input.split('-')[1];
-
       const floorLevel = roomName.match(FLOOR_REGEX)?.[0] || '';
 
       const building = buildings[buildingCode];
@@ -213,79 +214,42 @@ const Page = ({ params, searchParams }: Props) => {
       }
     }
 
-    // navigation
+    // assign start/end nav locations.
+    const assignNavHelper = (input: string | undefined, setLocation) => {
+      if (!input) {
+        return;
+      }
 
-    // only dst is required; you can't have only src and not dst
-    if (dst) {
-      const assignHelper = (code: string, setLocation): boolean => {
-        // only building code
-        if (!code.includes('-') && buildings[code]) {
-          // the code is the building code
-          dispatch(setLocation(buildings[code]));
-          return true;
-        } else if (!code.includes('-')) {
-          // the code is the user position
-          if (code === 'user') {
-            dispatch(setLocation({ userPosition }));
-          } else {
-            dispatch(setLocation({ waypoint: decodeCoord(code) }));
-          }
-          return true;
+      // only building code
+      if (!input.includes('-') && buildings[input]) {
+        dispatch(setLocation(buildings[input]));
+      } else if (!input.includes('-')) {
+        // the code is the user position
+        if (input === 'user') {
+          dispatch(setLocation({ userPosition }));
+        } else {
+          dispatch(setLocation({ waypoint: decodeCoord(input) }));
         }
-        // at least floor level
-        else {
-          const buildingCode = code.split('-')[0];
-          const roomName = code.split('-')[1];
-          const floorLevel = roomName[0];
+      }
 
-          const building = buildings[buildingCode];
+      // set location to room level if possible
+      const { buildingCode, floor, roomId } = parseHelper(input);
+      if (buildingCode && floor && roomId) {
+        const building = buildings[buildingCode];
 
-          // validations on the building code
-          if (!building) {
-            return false;
-          }
-
-          // if only contains floor information
-          if (roomName.length == 1) {
-            return false;
-          }
-
-          const floor = { buildingCode, level: floorLevel };
-
-          const roomId = getRoomIdByNameAndFloor(
-            roomName,
-            floor,
-            buildings,
-            floorPlanMap,
-          );
-
-          // validations on the room name
-          if (!roomId) {
-            return false;
-          }
-
-          // validations on the floor level
-          if (!building.floors.includes(floorLevel)) {
-            return false;
-          }
-
+        // validating the building and floor level
+        if (building && building.floors.includes(floor.level)) {
           const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
           const room = floorPlan[roomId];
-
           dispatch(setLocation(room));
-
-          return true;
         }
-      };
-
-      if (src) {
-        assignHelper(src, setStartLocation);
       }
+    };
 
-      const succeeded = assignHelper(dst, setEndLocation);
-      if (succeeded) {
-        dispatch(setIsNavOpen(true));
-      }
+    if (src || dst) {
+      dispatch(setIsNavOpen(true));
+      assignNavHelper(src, setStartLocation);
+      assignNavHelper(dst, setEndLocation);
     }
 
     // userPosition shouldn't cause an update
