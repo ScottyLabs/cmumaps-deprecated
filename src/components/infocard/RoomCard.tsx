@@ -39,7 +39,10 @@ const RoomCard = ({ room }: Props) => {
     let url = `/assets/location_images/building_room_images/${buildingCode}/${buildingCode}.jpg`;
 
     // but get the room image if it exists
-    if (availableRoomImages[buildingCode].includes(room.name + '.jpg')) {
+    if (
+      availableRoomImages &&
+      availableRoomImages[buildingCode].includes(room.name + '.jpg')
+    ) {
       url = `/assets/location_images/building_room_images/${buildingCode}/${room.name}.jpg`;
     }
 

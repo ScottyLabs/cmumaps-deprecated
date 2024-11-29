@@ -93,7 +93,7 @@ function findPath(
 
         Object.entries(node.neighbors)
           .filter(transitionFilter)
-          .filter(([id, neighbor]) => nodesFilter(nodes[id]))
+          .filter(([id, _neighbor]) => nodesFilter(nodes[id]))
           .forEach(([n_id, neighbor]) => {
             const n_dist = neighbor.dist < 0 ? stairsCost : neighbor.dist;
             const nextNode = nodes[n_id];

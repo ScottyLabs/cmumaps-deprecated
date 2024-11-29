@@ -15,7 +15,7 @@ interface DataState {
   searchMap: SearchMap | null;
   floorPlanMap: FloorPlanMap | null;
   courseData: CourseData | null;
-  availableRoomImages: Record<string, string[]>;
+  availableRoomImages: Record<string, string[]> | null;
 }
 
 const initialState: DataState = {
@@ -24,7 +24,7 @@ const initialState: DataState = {
   searchMap: null,
   floorPlanMap: null,
   courseData: null,
-  availableRoomImages: {},
+  availableRoomImages: null,
 };
 
 const dataSlice = createSlice({
@@ -43,11 +43,9 @@ const dataSlice = createSlice({
     setAvailableRoomImages(state, action) {
       state.availableRoomImages = action.payload;
     },
-
     setSearchMap(state, action) {
       state.searchMap = action.payload;
     },
-
     setFloorPlanMap(state, action) {
       state.floorPlanMap = action.payload;
     },

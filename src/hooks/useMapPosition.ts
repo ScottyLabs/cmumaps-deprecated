@@ -65,7 +65,11 @@ export default function useMapPosition(
   };
 
   const onRegionChangeStart = () => {
-    const { region } = mapRef.current!;
+    if (!mapRef.current) {
+      return;
+    }
+
+    const { region } = mapRef.current;
     if (
       Math.abs(region.center.latitude - initialRegion.centerLatitude) < 1e-8 &&
       Math.abs(region.center.longitude - initialRegion.centerLongitude) <

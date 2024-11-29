@@ -1,32 +1,9 @@
-// app/PostHogPageView.tsx
 'use client';
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import { usePostHog } from 'posthog-js/react';
 
 import { useEffect } from 'react';
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
-
-// app/PostHogPageView.tsx
 
 export default function PostHogPageView(): null {
   const pathname = usePathname();
