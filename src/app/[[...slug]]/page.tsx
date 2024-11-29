@@ -41,6 +41,7 @@ import { decodeCoord, encodeCoord } from '@/util/coordEncoding';
 import { getEateryData } from '@/util/eateryUtils';
 
 // const mockUserPosition = [40.44249719447571, -79.94314319195851];
+const FLOOR_REGEX = /^[A-F0-9]|LL/; // matches A-F, 0-9, and LL at the start of a string
 
 interface Props {
   params: {
@@ -120,10 +121,11 @@ const Page = ({ params, searchParams }: Props) => {
       }
 
       // extract buildingCode, roomName, and floorLevel
-      // {buildingCode} - {roomName}
+      // {buildingCode}-{roomName}
       const buildingCode = input.split('-')[0].toUpperCase();
       const roomName = input.split('-')[1];
-      const floorLevel = roomName[0];
+
+      const floorLevel = roomName.match(FLOOR_REGEX)?.[0] || '';
 
       const building = buildings[buildingCode];
 
