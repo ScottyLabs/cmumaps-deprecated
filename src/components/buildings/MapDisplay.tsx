@@ -151,7 +151,6 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
       const newShowFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
       setShowFloor(newShowFloor);
-
       dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
 
       // don't set floor when zooming on room
