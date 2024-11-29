@@ -248,12 +248,7 @@ const Page = ({ params, searchParams }: Props) => {
       }
 
       // otherwise we can try to retrieve the room id
-      const roomId = getRoomIdByNameAndFloor(
-        roomName,
-        floor,
-        buildings,
-        floorPlanMap,
-      );
+      const roomId = getRoomIdByNameAndFloor(roomName, floor, floorPlanMap);
 
       // validating the room name
       if (!roomId) {

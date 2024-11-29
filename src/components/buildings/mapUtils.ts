@@ -22,26 +22,18 @@ const setIsZoomingAsync = (isZooming: boolean) => {
 export const getRoomIdByNameAndFloor = (
   roomName: string,
   floor: Floor,
-  buildings: Record<string, Building> | null,
   floorPlanMap: FloorPlanMap,
 ): string | null => {
-  // find the room id
   let roomId: string | null = null;
 
-  if (!buildings || !floorPlanMap) {
-    return roomId;
-  }
-
-  if (floor) {
-    if (
-      floorPlanMap[floor.buildingCode] &&
-      floorPlanMap[floor.buildingCode][floor.level]
-    ) {
-      const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
-      for (const room of Object.values(floorPlan)) {
-        if (room.name == roomName) {
-          roomId = room.id;
-        }
+  if (
+    floorPlanMap[floor.buildingCode] &&
+    floorPlanMap[floor.buildingCode][floor.level]
+  ) {
+    const floorPlan = floorPlanMap[floor.buildingCode][floor.level];
+    for (const room of Object.values(floorPlan)) {
+      if (room.name == roomName) {
+        roomId = room.id;
       }
     }
   }
