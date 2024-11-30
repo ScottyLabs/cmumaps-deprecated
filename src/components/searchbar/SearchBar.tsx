@@ -83,6 +83,15 @@ const SearchBar = ({ map }: Props) => {
     }
   }, [choosingRoomMode, dispatch]);
 
+  // focus on the input when search mode changed to not default room
+  useEffect(() => {
+    if (inputRef.current) {
+      if (searchMode !== 'rooms') {
+        inputRef.current.focus();
+      }
+    }
+  }, [searchMode, dispatch]);
+
   // blur the input field when not searching (mainly used for clicking on the map to close search)
   useEffect(() => {
     if (!isSearchOpen) {

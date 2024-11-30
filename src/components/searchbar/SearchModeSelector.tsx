@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import React from 'react';
 
-import { setSearchMode } from '@/lib/features/uiSlice';
+import { setIsSearchOpen, setSearchMode } from '@/lib/features/uiSlice';
 import { useAppDispatch } from '@/lib/hooks';
 
 import { SearchMode, SearchModeList, searchModeToIcon } from './searchMode';
@@ -41,7 +41,10 @@ const SearchModeSelector = () => {
       <div
         id={searchMode}
         key={searchMode}
-        onClick={() => dispatch(setSearchMode(searchMode))}
+        onClick={() => {
+          dispatch(setSearchMode(searchMode));
+          dispatch(setIsSearchOpen(true));
+        }}
         className="flex cursor-pointer items-center gap-2 rounded-full bg-white px-3 py-1 shadow-sm hover:bg-gray-100"
       >
         <div
@@ -54,7 +57,7 @@ const SearchModeSelector = () => {
     );
   };
 
-  // the default search mode is room, so room shouldn't be displayed
+  // the default search mode is room, so room button shouldn't be displayed
   return (
     <div className="no-scrollbar flex justify-between gap-2 overflow-x-auto">
       {SearchModeList.filter((searchMode) => searchMode !== 'rooms').map(
