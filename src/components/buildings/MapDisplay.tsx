@@ -35,6 +35,7 @@ import FloorPlanOverlay, {
   getFloorAtOrdinal,
   getOrdinalOfFloor,
 } from './FloorPlanOverlay';
+import { zoomOnRoom } from './mapUtils';
 
 //#region Constants
 const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 350_000;
@@ -251,7 +252,13 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           latitude={selectedRoom.labelPosition.latitude}
           longitude={selectedRoom.labelPosition.longitude}
         >
-          <div className="flex flex-col items-center">
+          <div
+            className="flex flex-col items-center"
+            onClick={(e) => {
+              zoomOnRoom(mapRef.current, selectedRoom, dispatch);
+              e.stopPropagation();
+            }}
+          >
             <RoomPin room={{ ...selectedRoom, id: selectedRoom?.id }} />
             <div className="text-center text-sm font-bold leading-[1.1] tracking-wide">
               <p>{selectedRoom.name}</p>
