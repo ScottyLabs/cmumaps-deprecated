@@ -154,7 +154,7 @@ const SearchBar = ({ map }: Props) => {
 
         <input
           type="text"
-          className="w-full rounded p-2 outline-none"
+          className="w-full rounded p-2 pr-6 outline-none"
           placeholder={placeholder}
           ref={inputRef}
           value={searchQuery}
