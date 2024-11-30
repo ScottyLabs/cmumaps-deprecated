@@ -51,8 +51,18 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
   };
 
   useEffect(() => {
-    // api.set({ y: snapPoints[2] });
-    api.start({ y: snapPoints[1] });
+    let closestSnap;
+    if (!isOpen) {
+      closestSnap = snapPoints[0];
+      api.set({ y: closestSnap });
+    } else {
+      closestSnap = snapPoints[1];
+      api.start({ y: closestSnap });
+    }
+
+    setSnapIndex(snapPoints.indexOf(closestSnap));
+    dispatch(setIsCardWrapperFullyOpen(closestSnap == snapPoints[2]));
+    setSnapPos(closestSnap);
   }, [isOpen]);
 
   const bind = useDrag(
@@ -85,7 +95,7 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
   }
 
   return (
-    <animated.div style={{ y, transform: 'translate(0px,50px)' }}>
+    <animated.div style={{ y, pointerEvents: 'auto' }}>
       <animated.div
         {...bind()}
         style={{
@@ -129,7 +139,7 @@ const CardWrapper = ({ snapPoint, children, isOpen }: CardWrapperProps) => {
           <div
             hidden={!isOpen}
             className="absolute inset-0"
-            style={{ transform: 'translate(0px, -50px)' }}
+            style={{ pointerEvents: 'none' }}
           >
             <DraggableSheet isOpen={isOpen} snapPoint={snapPoint}>
               {children}
