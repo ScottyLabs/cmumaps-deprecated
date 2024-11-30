@@ -26,3 +26,4 @@ yarn-error.log*
 certificates
 
 __pycache__/
+tsconfig.tsbuildinfo
