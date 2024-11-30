@@ -124,6 +124,22 @@ const SearchBar = ({ map }: Props) => {
     handleCloseSearch();
   });
 
+  // focus on the input if command f is pressed
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (inputRef.current) {
+        if ((event.metaKey || event.ctrlKey) && event.key === 'f') {
+          dispatch(setIsSearchOpen(true));
+          inputRef.current.focus();
+          event.preventDefault();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [dispatch]);
+
   const renderSearchQueryInput = () => {
     const renderCloseButton = () => (
       <IoIosClose
