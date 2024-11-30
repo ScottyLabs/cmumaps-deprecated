@@ -31,7 +31,7 @@ const SearchBar = ({ map }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
-  const room = useAppSelector((state) => state.ui.selectedRoom);
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
   const searchMode = useAppSelector((state) => state.ui.searchMode);
   const choosingRoomMode = useAppSelector(
@@ -47,25 +47,27 @@ const SearchBar = ({ map }: Props) => {
       return;
     }
 
-    if (room) {
+    if (selectedRoom) {
       // the search query is the room alias if the room has an alias,
-      if (room?.alias) {
-        setSearchQuery(room.alias);
+      if (selectedRoom?.alias) {
+        setSearchQuery(selectedRoom.alias);
         return;
       }
       // otherwise it is the room floor name + the room name
       else {
-        setSearchQuery(room.floor.buildingCode + ' ' + room.name);
+        setSearchQuery(
+          selectedRoom.floor.buildingCode + ' ' + selectedRoom.name,
+        );
         return;
       }
     }
 
     // set the search query to empty when there is no room or building selected
-    if (!room && !building) {
+    if (!selectedRoom && !building) {
       setSearchQuery('');
       return;
     }
-  }, [building, room]);
+  }, [building, selectedRoom]);
 
   // set the search query using room and building
   useEffect(() => {
@@ -165,7 +167,7 @@ const SearchBar = ({ map }: Props) => {
           }}
         />
 
-        {isSearchOpen && renderCloseButton()}
+        {(isSearchOpen || searchQuery.length > 0) && renderCloseButton()}
       </div>
     );
   };
