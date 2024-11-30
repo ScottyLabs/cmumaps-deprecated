@@ -16,6 +16,7 @@ interface Props {
 
 const ToolBar = ({ map }: Props) => {
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
+  const searchMode = useAppSelector((state) => state.ui.searchMode);
   const isCardOpen = useAppSelector((state) => getIsCardOpen(state.ui));
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
@@ -28,7 +29,8 @@ const ToolBar = ({ map }: Props) => {
     (state) => state.ui.isCardWrapperCollapsed,
   );
 
-  let showSearchModeSelector = !isCardOpen && !isNavOpen;
+  let showSearchModeSelector =
+    !isCardOpen && !isNavOpen && searchMode === 'rooms';
   if (isMobile && isSearchOpen) {
     showSearchModeSelector = false;
   }
@@ -82,9 +84,9 @@ const ToolBar = ({ map }: Props) => {
       <>
         <div
           style={{ maxHeight: `calc(100vh)` }}
-          className="fixed box-content flex w-96"
+          className="fixed box-content flex w-96 px-2"
         >
-          <div className="flex w-full flex-col space-y-2 overflow-hidden px-2 py-2">
+          <div className="flex w-full flex-col space-y-2 overflow-hidden py-2">
             {showSearchBar() && <SearchBar map={map} />}
 
             {!isSearchOpen && !isCardOpen && <Schedule />}
@@ -95,7 +97,7 @@ const ToolBar = ({ map }: Props) => {
             )}
           </div>
         </div>
-        <div className="fixed left-96 my-4">
+        <div className="fixed left-[25rem] my-4">
           {showSearchModeSelector && <SearchModeSelector />}
         </div>
       </>
