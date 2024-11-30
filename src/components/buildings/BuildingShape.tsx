@@ -68,6 +68,29 @@ export default function BuildingShape({ map, building }: BuildingShapeProps) {
   );
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
 
+  const handleSelectBuilding = () => {
+    if (isNavOpen && !choosingRoomMode) {
+      return;
+    }
+
+    // zoom on building if click on building already selected
+    if (selectedBuilding?.code == building.code) {
+      zoomOnObject(map, building.shapes.flat());
+    }
+
+    if (choosingRoomMode == 'start') {
+      dispatch(setStartLocation(building));
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+    } else if (choosingRoomMode == 'end') {
+      dispatch(setEndLocation(building));
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+    } else {
+      dispatch(selectBuilding(building));
+    }
+  };
+
   const renderBuildingPolygon = () => {
     const isSelected = selectedBuilding?.code == building.code;
 
@@ -135,27 +158,8 @@ export default function BuildingShape({ map, building }: BuildingShapeProps) {
             <div
               className="translate-y-1/2 cursor-pointer"
               onClick={(e) => {
-                if (isNavOpen && !choosingRoomMode) {
-                  return;
-                }
-
-                // zoom on building if click on building already selected
-                if (selectedBuilding?.code == building.code) {
-                  zoomOnObject(map, building.shapes.flat());
-                }
-
-                if (choosingRoomMode == 'start') {
-                  dispatch(setStartLocation(building));
-                  dispatch(setIsSearchOpen(false));
-                  dispatch(setChoosingRoomMode(null));
-                } else if (choosingRoomMode == 'end') {
-                  dispatch(setEndLocation(building));
-                  dispatch(setIsSearchOpen(false));
-                  dispatch(setChoosingRoomMode(null));
-                } else {
-                  dispatch(selectBuilding(building));
-                  e.stopPropagation();
-                }
+                handleSelectBuilding();
+                e.stopPropagation();
               }}
             >
               <Roundel code={building.code} />
