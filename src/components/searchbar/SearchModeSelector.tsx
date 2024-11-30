@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { setSearchMode } from '@/lib/features/uiSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppDispatch } from '@/lib/hooks';
 
 import { SearchMode, SearchModeList, searchModeToIcon } from './searchMode';
 
@@ -27,7 +27,6 @@ const searchModeToBgColor: Record<SearchMode, string> = {
 
 const SearchModeSelector = () => {
   const dispatch = useAppDispatch();
-  const selectedSearchMode = useAppSelector((state) => state.ui.searchMode);
 
   const renderSearchModeHelper = (searchMode: SearchMode) => {
     const displayText = searchModeToDisplayText[searchMode];
@@ -43,21 +42,24 @@ const SearchModeSelector = () => {
         id={searchMode}
         key={searchMode}
         onClick={() => dispatch(setSearchMode(searchMode))}
-        className={`flex flex-col items-center gap-1 p-2 ${searchMode == selectedSearchMode ? 'bg-gray-200' : ''}`}
+        className="flex cursor-pointer items-center gap-2 rounded-full bg-white px-3 py-1 shadow-sm hover:bg-gray-100"
       >
         <div
-          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full ${bgColorClass}`}
+          className={`flex h-6 w-6 cursor-pointer items-center justify-center rounded-full ${bgColorClass}`}
         >
-          <Image alt={displayText + ' icon'} src={icon} className="h-5 w-5" />
+          <Image alt={displayText + ' icon'} src={icon} className="h-4 w-4" />
         </div>
         <p className="text-xs text-[#8e8e8e]">{displayText}</p>
       </div>
     );
   };
 
+  // the default search mode is room, so room shouldn't be displayed
   return (
-    <div className="no-scrollbar flex justify-between gap-2 overflow-x-auto rounded bg-white">
-      {SearchModeList.map((searchmode) => renderSearchModeHelper(searchmode))}
+    <div className="no-scrollbar flex justify-between gap-2 overflow-x-auto">
+      {SearchModeList.filter((searchMode) => searchMode !== 'rooms').map(
+        (searchmode) => renderSearchModeHelper(searchmode),
+      )}
     </div>
   );
 };

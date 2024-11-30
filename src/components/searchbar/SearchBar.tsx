@@ -18,7 +18,6 @@ import {
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
-import SearchModeSelector from './SearchModeSelector';
 import { searchModeToIcon } from './searchMode';
 import SearchResults from './search_results/SearchResults';
 
@@ -32,8 +31,6 @@ const SearchBar = ({ map }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
-  const buildings = useAppSelector((state) => state.data.buildings);
-
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
   const searchMode = useAppSelector((state) => state.ui.searchMode);
@@ -42,8 +39,6 @@ const SearchBar = ({ map }: Props) => {
   );
 
   const [searchQuery, setSearchQuery] = useState('');
-
-  const showSearchModeSelector = isSearchOpen && !choosingRoomMode;
 
   const autoFillSearchQuery = useCallback(() => {
     // return the building name if a building is selected
@@ -131,7 +126,7 @@ const SearchBar = ({ map }: Props) => {
     let icon = searchIcon;
 
     // check if the search bar is focused to determine icon
-    if (document.activeElement === inputRef.current) {
+    if (isSearchOpen) {
       icon = searchModeToIcon[searchMode];
     }
 
@@ -174,18 +169,9 @@ const SearchBar = ({ map }: Props) => {
     );
   };
 
-  // don't display anything before the buildings are loaded
-  if (!buildings) {
-    return;
-  }
   return (
     <>
       {renderSearchQueryInput()}
-      {showSearchModeSelector && (
-        <div className="mt-2">
-          <SearchModeSelector />
-        </div>
-      )}
       {isSearchOpen && renderSearchResults()}
     </>
   );

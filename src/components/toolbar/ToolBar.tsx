@@ -7,6 +7,7 @@ import FloorSwitcher from '../buildings/FloorSwitcher';
 import InfoCard from '../infocard/InfoCard';
 import NavCard from '../navigation/NavCard';
 import SearchBar from '../searchbar/SearchBar';
+import SearchModeSelector from '../searchbar/SearchModeSelector';
 import Schedule from './Schedule';
 
 interface Props {
@@ -26,6 +27,11 @@ const ToolBar = ({ map }: Props) => {
   const isCardWrapperCollapsed = useAppSelector(
     (state) => state.ui.isCardWrapperCollapsed,
   );
+
+  let showSearchModeSelector = !isCardOpen && !isNavOpen;
+  if (isMobile && isSearchOpen) {
+    showSearchModeSelector = false;
+  }
 
   // first only show floor switcher if there is focused floor
   let showFloorSwitcher = !!focusedFloor;
@@ -49,25 +55,60 @@ const ToolBar = ({ map }: Props) => {
     return true;
   };
 
-  return (
-    // need box content in the desktop version so the width of the search bar match the card
-    <div
-      style={{ maxHeight: `calc(100vh)` }}
-      className="fixed flex w-full px-2 sm:box-content sm:w-96"
-    >
-      <div className="flex w-full flex-col space-y-2 overflow-hidden py-2">
-        {showSearchBar() && <SearchBar map={map} />}
+  const mobileRender = () => {
+    return (
+      <div
+        style={{ maxHeight: `calc(100vh)` }}
+        className="fixed flex w-full px-2"
+      >
+        <div className="flex w-full flex-col space-y-2 overflow-hidden py-2">
+          {showSearchBar() && <SearchBar map={map} />}
+          {showSearchModeSelector && <SearchModeSelector />}
 
-        {!isSearchOpen && !isCardOpen && <Schedule />}
+          {!isSearchOpen && !isCardOpen && <Schedule />}
 
-        {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
-        {isNavOpen && isCardOpen && !choosingRoomMode && <NavCard map={map} />}
+          {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
+          {isNavOpen && isCardOpen && !choosingRoomMode && (
+            <NavCard map={map} />
+          )}
+        </div>
       </div>
+    );
+  };
 
+  const desktopRender = () => {
+    // need box content so the width of the search bar match the card
+    return (
+      <>
+        <div
+          style={{ maxHeight: `calc(100vh)` }}
+          className="fixed box-content w-96"
+        >
+          <div className="flex w-full flex-col space-y-2 overflow-hidden px-2 py-2">
+            {showSearchBar() && <SearchBar map={map} />}
+
+            {!isSearchOpen && !isCardOpen && <Schedule />}
+
+            {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
+            {isNavOpen && isCardOpen && !choosingRoomMode && (
+              <NavCard map={map} />
+            )}
+          </div>
+        </div>
+        <div className="fixed left-96 my-4">
+          {showSearchModeSelector && <SearchModeSelector />}
+        </div>
+      </>
+    );
+  };
+
+  return (
+    <>
+      {isMobile ? mobileRender() : desktopRender()}
       {showFloorSwitcher && focusedFloor && (
         <FloorSwitcher focusedFloor={focusedFloor} />
       )}
-    </div>
+    </>
   );
 };
 
