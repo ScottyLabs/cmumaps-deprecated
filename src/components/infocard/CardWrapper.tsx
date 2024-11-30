@@ -1,14 +1,13 @@
 import { useSpring, animated } from '@react-spring/web';
 
 import React, { useEffect, useState } from 'react';
-import { isMobile } from 'react-device-detect';
 import { useDrag } from 'react-use-gesture';
 
 import {
   // setIsCardWrapperCollapsed,
   setIsCardWrapperFullyOpen,
 } from '@/lib/features/uiSlice';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 interface DraggableSheetProps {
   snapPoint: number;
@@ -132,6 +131,8 @@ interface CardWrapperProps {
 }
 
 const CardWrapper = ({ snapPoint, children, isOpen }: CardWrapperProps) => {
+  const isMobile = useAppSelector((state) => state.ui.isMobile);
+
   if (isMobile) {
     return (
       <>
