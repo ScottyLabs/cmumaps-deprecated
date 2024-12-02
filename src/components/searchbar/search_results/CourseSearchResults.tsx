@@ -10,6 +10,8 @@ import { setCourseData } from '@/lib/features/dataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Course, CourseData, SearchMap } from '@/types';
 
+import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
+import NoResultDisplay from '../display_helpers/NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 
 interface Props {
@@ -109,6 +111,14 @@ const CourseSearchResults = ({ query }: Props) => {
     setSearchResult(newSearchResults);
   }, [courseData, query]);
 
+  if (query.length == 0) {
+    return <KeepTypingDisplay />;
+  }
+
+  if (Object.keys(searchResult).length == 0) {
+    return <NoResultDisplay />;
+  }
+
   const renderCourseResultHelper = (courseCode: string, course: Course) => {
     return Object.entries(course.sections).map(([sectionCode, section]) => (
       <SearchResultWrapper
@@ -141,18 +151,20 @@ const CourseSearchResults = ({ query }: Props) => {
     ));
   };
 
-  return Object.entries(searchResult).map(([department, courses]) => (
-    <div key={department}>
-      <SearchResultWrapper>
-        <h2>{department}</h2>
-      </SearchResultWrapper>
-      {Object.entries(courses)
-        .slice(0, 10)
-        .map(([courseCode, course]) =>
-          renderCourseResultHelper(courseCode, course),
-        )}
-    </div>
-  ));
+  return Object.entries(searchResult)
+    .slice(0, 10)
+    .map(([department, courses]) => (
+      <div key={department}>
+        <SearchResultWrapper>
+          <h2>{department}</h2>
+        </SearchResultWrapper>
+        {Object.entries(courses)
+          .slice(0, 10)
+          .map(([courseCode, course]) =>
+            renderCourseResultHelper(courseCode, course),
+          )}
+      </div>
+    ));
 };
 
 export default CourseSearchResults;
