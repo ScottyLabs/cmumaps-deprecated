@@ -1,4 +1,4 @@
-const cacheName = "MyCache_1";
+const cacheName = "MyCache_v0.1";
 const cachedResources = ["/cmumaps-data/floorPlanMap.json"];
 
 async function precache() {
@@ -33,5 +33,12 @@ const cacheFirst = async (request) => {
 };
 
 self.addEventListener("fetch", (event) => {
+  console.log("UH oH, fetch event in service worker", event);
+  if (event?.request?.url == "https://localhost:3000/" || event?.request?.url == "https://maps.scottylabs.org/"  || event?.request?.url?.includes("wise-pika") || event?.request?.url?.includes("posthog")) {
+    return;
+  }
+
+  event.preventDefault();
   event.respondWith(cacheFirst(event.request));
+  
 });

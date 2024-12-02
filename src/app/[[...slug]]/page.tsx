@@ -99,9 +99,8 @@ const Page = ({ params, searchParams }: Props) => {
   // serviceWorker for caching
   useEffect(() => {
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js');
-      });
+      console.log('registering service worker');
+      navigator.serviceWorker.register('/sw.js');
     }
   }, []);
 
