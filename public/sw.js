@@ -1,4 +1,4 @@
-const cacheName = "MyCache_v0.1";
+const cacheName = "MyCache_v0.2";
 const cachedResources = ["/cmumaps-data/floorPlanMap.json"];
 
 async function precache() {
@@ -8,7 +8,8 @@ async function precache() {
 
 self.addEventListener("install", (event) => {
   console.log("Service worker install event!");
-  event.waitUntil(precache());
+  precache();
+  event.waitUntil(self.skipWaiting());
 });
 
 const putInCache = async (request, response) => {
