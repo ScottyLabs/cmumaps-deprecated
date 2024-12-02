@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 const isPublicRoute = createRouteMatcher([
   '/manifest.json',
   '/.well-known/assetlinks.json',
+  '/robots.txt',
 ]);
 
 export default clerkMiddleware((auth, request) => {
