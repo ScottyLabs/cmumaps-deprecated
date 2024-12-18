@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { setIsFloorPlanRendered } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Floor } from '@/types';
+import floorPlanMap from 'public/cmumaps-data/floorPlanMap.json'
 
 import FloorPlanView from './FloorPlanView';
 
@@ -40,7 +41,6 @@ interface Props {
 const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
   const dispatch = useAppDispatch();
 
-  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
 

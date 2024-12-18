@@ -5,6 +5,7 @@ import { setCurFloorIndex } from '@/lib/features/navSlice';
 import { setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Floor, Room, areFloorsEqual } from '@/types';
+import floorPlanMap from 'public/cmumaps-data/floorPlanMap.json'
 
 import { initialRegion } from '../buildings/MapDisplay';
 import { zoomOnFloor, zoomOnObject } from '../buildings/mapUtils';
@@ -17,7 +18,6 @@ interface Props {
 const NavDirections = ({ map, path }: Props) => {
   const dispatch = useAppDispatch();
 
-  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const curFloorIndex = useAppSelector((state) => state.nav.curFloorIndex);
   const buildings = useAppSelector((state) => state.data.buildings);
 
@@ -48,7 +48,7 @@ const NavDirections = ({ map, path }: Props) => {
       setPassedByRooms(passedByRooms);
       setPassedByFloors(newPassedByFloors);
     }
-  }, [floorPlanMap, path]);
+  }, [path]);
 
   // zoom on the selected floor
   useEffect(() => {

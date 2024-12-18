@@ -4,6 +4,8 @@ import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 import { getEateryId, sortEateries } from '@/util/eateryUtils';
+import floorPlanMap from 'public/cmumaps-data/floorPlanMap.json'
+
 
 import { zoomOnObject, zoomOnRoomById } from '../../buildings/mapUtils';
 import EateryInfoDisplay from '../../infocard/EateryInfoDisplay';
@@ -25,7 +27,6 @@ const FoodSearchResults = ({ map, query }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
-  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const eateryData = useAppSelector((state) => state.data.eateryData);
   const searchMap = useAppSelector((state) => state.data.searchMap);
   const userPostion = useAppSelector((state) => state.nav.userPosition);

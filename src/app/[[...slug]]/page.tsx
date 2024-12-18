@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { usePostHog } from 'posthog-js/react';
 
+import floorPlanMap from 'public/cmumaps-data/floorPlanMap.json'
+
 import React, { useEffect, useRef } from 'react';
 import { getSelectorsByUserAgent } from 'react-device-detect';
 import { Slide, toast, ToastContainer } from 'react-toastify';
@@ -22,7 +24,6 @@ import {
   setEateryData,
   setAvailableRoomImages,
   setSearchMap,
-  setFloorPlanMap,
 } from '@/lib/features/dataSlice';
 import {
   setEndLocation,
@@ -71,7 +72,6 @@ const Page = ({ params, searchParams }: Props) => {
 
   const mapRef = useRef<mapkit.Map | null>(null);
 
-  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const buildings = useAppSelector((state) => state.data.buildings);
 
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
@@ -175,13 +175,6 @@ const Page = ({ params, searchParams }: Props) => {
     fetch('/cmumaps-data/searchMap.json').then((response) =>
       response.json().then((searchMap) => {
         dispatch(setSearchMap(searchMap));
-      }),
-    );
-
-    // set floorPlanMap
-    fetch('/cmumaps-data/floorPlanMap.json').then((response) =>
-      response.json().then((floorPlanMap) => {
-        dispatch(setFloorPlanMap(floorPlanMap));
       }),
     );
   }, [dispatch]);

@@ -1,7 +1,9 @@
 import { ICompare, PriorityQueue } from '@datastructures-js/priority-queue';
+// import { SplineInterpolator } from '../../../../node_modules/spline-interpolator';
 import fs from 'fs';
 import { NextRequest } from 'next/server';
 import path from 'path';
+
 
 import { Building } from '@/types';
 import { latitudeRatio, longitudeRatio } from '@/util/geometry';
@@ -51,6 +53,8 @@ interface PathNode {
   currPath: Node[];
   length: number;
 }
+
+
 
 const comparePaths: ICompare<PathNode> = (a: PathNode, b: PathNode) =>
   a.length - b.length;
@@ -271,9 +275,9 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: 'Path not found' }, { status: 404 });
   }
   if ('error' in paths[1] || !paths[1]) {
-    resp = { Fastest: paths[0] };
+    resp = { Fastest: (paths[0]) };
   } else {
-    resp = { Fastest: paths[0], Alternative: paths[1] };
+    resp = { Fastest: (paths[0]), Alternative: (paths[1]) };
   }
 
   // Find the path

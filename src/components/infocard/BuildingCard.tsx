@@ -6,6 +6,8 @@ import { selectRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
 import { getEateryId, sortEateries } from '@/util/eateryUtils';
+import floorPlanMap from 'public/cmumaps-data/floorPlanMap.json'
+
 
 import { zoomOnRoomById } from '../buildings/mapUtils';
 import ButtonsRow from './ButtonsRow';
@@ -25,7 +27,6 @@ const BuildingCard = ({ map, building }: Props) => {
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const eateryData = useAppSelector((state) => state.data.eateryData);
-  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const searchMap = useAppSelector((state) => state.data.searchMap);
 
   const [eateries, setEateries] = useState<SearchRoom[]>([]);

@@ -9,6 +9,7 @@ import {
 import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, SearchRoom } from '@/types';
+import floorPlanMap from 'public/cmumaps-data/floorPlanMap.json'
 
 import { zoomOnObject, zoomOnRoomById } from '../../buildings/mapUtils';
 import RoomPin from '../../shared/RoomPin';
@@ -32,7 +33,6 @@ const RoomSearchResults = ({ map, query, searchResult, searchMode }: Props) => {
   const dispatch = useAppDispatch();
 
   const buildings = useAppSelector((state) => state.data.buildings);
-  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );

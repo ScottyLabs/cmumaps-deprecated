@@ -72,6 +72,7 @@
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "prisma": "^5.11.0",
+    "spline-interpolator": "^1.0.0",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"

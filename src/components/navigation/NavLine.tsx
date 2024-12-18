@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 import React, { useEffect, useState } from 'react';
 
-import { Node } from '@/app/api/findPath/types';
+import { Node, Path } from '@/app/api/findPath/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { areFloorsEqual } from '@/types';
 
@@ -22,6 +22,33 @@ interface IconInfo {
 }
 interface Props {
   map: mapkit.Map;
+}
+
+
+// eslint-disable-next-line 
+const SplineInterpolator = require('../../../node_modules/spline-interpolator');
+
+
+const smoothCoords = (path: Path) => {
+  console.log(path)
+  const indexList = path.map((node, i) => i);
+  const arrPathX = path.map((node) => node.coordinate.latitude);
+  const arrPathY = path.map((node) => node.coordinate.longitude);
+
+  const interpolatorX = new SplineInterpolator(indexList, arrPathX);
+  const interpolatorY = new SplineInterpolator(indexList, arrPathY);
+  const newCoordsX = interpolatorX.curve(1000, [0, arrPathX.length])
+  const newCoordsY = interpolatorY.curve(1000, [0, arrPathY.length])
+  const newCoords = newCoordsX.map((v, i) => ({
+      latitude: newCoordsX[i][1],
+      longitude: newCoordsY[i][1],
+    }));
+  const newPath = newCoords.map((coord, i) => ({
+      ...path[Math.floor(i/1000)],
+      coordinate: coord,
+    }));
+
+  return newPath;
 }
 
 const NavLine = ({ map }: Props) => {
@@ -84,7 +111,7 @@ const NavLine = ({ map }: Props) => {
       const newPathOverlays: mapkit.PolylineOverlay[] = [];
       if (curFloorPath) {
         const curFloorPathOverlay = new mapkit.PolylineOverlay(
-          curFloorPath.map(
+          smoothCoords(curFloorPath).map(
             (n: Node) =>
               new mapkit.Coordinate(
                 n.coordinate.latitude,
@@ -105,7 +132,7 @@ const NavLine = ({ map }: Props) => {
 
       if (restPath) {
         const restPathOverlay = new mapkit.PolylineOverlay(
-          restPath.map(
+          smoothCoords(restPath).map(
             (n: Node) =>
               new mapkit.Coordinate(
                 n.coordinate.latitude,
@@ -139,7 +166,7 @@ const NavLine = ({ map }: Props) => {
             };
 
             return new mapkit.PolylineOverlay(
-              recommendedPath[pathName].path.map(
+              smoothCoords(recommendedPath[pathName].path).map(
                 (n: Node) =>
                   new mapkit.Coordinate(
                     n.coordinate.latitude,
