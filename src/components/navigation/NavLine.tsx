@@ -196,7 +196,7 @@ const NavLine = ({ map }: Props) => {
 
         let lastToFloorInfo;
         if (i > 0) {
-          lastToFloorInfo = path[i].neighbors[path[i - 1].id].toFloorInfo;
+          lastToFloorInfo = path[i].neighbors[path[i - 1].id]?.toFloorInfo;
         }
 
         // going outside

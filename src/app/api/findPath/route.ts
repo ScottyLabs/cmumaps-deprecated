@@ -64,11 +64,9 @@ function findPath(
   stairsCost = 15, // cost of taking stairs in Meters
 ): MaybeRoute {
   const nodes = allNodes;
-
   // Dijkstras algorithm, performed over all start nodes
   const paths = start.map((s) => {
     const visited = new Set();
-
     const queue = new PriorityQueue<PathNode>(comparePaths);
     queue.enqueue({
       node: s,
@@ -84,13 +82,13 @@ function findPath(
       }
 
       // Supports multiple end nodes
-      if (end.map((e) => e.pos).includes(node.pos)) {
+
+      if (end.map((e) => e.coordinate).includes(node.coordinate)) {
         return { path: currPath, distance: length };
       }
 
       if (!visited.has(node)) {
         visited.add(node);
-
         Object.entries(node.neighbors)
           .filter(transitionFilter)
           .filter(([id, _neighbor]) => nodesFilter(nodes[id]))
