@@ -25,7 +25,7 @@ import {
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
-import { isInPolygonCoordinates } from '@/util/geometry';
+import { pointToPolygonDistance } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
@@ -170,12 +170,19 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           longitude: region.centerLongitude,
         };
 
-        const centerBuilding =
-          Object.values(buildings).find(
-            (building: Building) =>
-              building.shapes &&
-              isInPolygonCoordinates(building.shapes.flat(2), center),
-          ) ?? null;
+        // Find closest building to center
+        const [centerBuilding, _] = Object.values(buildings)
+          .map((building) => [
+            building,
+            pointToPolygonDistance(building.shapes.flat(2), center),
+          ])
+          .reduce(
+            ([acc_building, acc_distance], [building, distance]) =>
+              distance < acc_distance
+                ? [building, distance]
+                : [acc_building, acc_distance],
+            [buildings[0], Infinity],
+          ) as [Building, number];
 
         if (centerBuilding) {
           // if no floor is focused
@@ -203,6 +210,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           // that is the same ordinal as the currently focused floor
           else {
             const focusedBuilding = buildings[focusedFloor.buildingCode];
+            console.log(focusedBuilding, focusedFloor);
             if (focusedBuilding.code != centerBuilding.code) {
               const newFocusFloor = getFloorAtOrdinal(
                 centerBuilding,
@@ -297,6 +305,8 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         onRegionChangeEnd();
       }}
       onClick={(e) => {
+        console.log(mapRef.current?.overlays);
+
         // need to check usedScrolling because end of panning is a click
         if (!usedScrolling && !choosingRoomMode && !isNavOpen) {
           dispatch(setIsSearchOpen(false));

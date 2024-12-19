@@ -78,6 +78,18 @@ export function rangeOverlap(
   return bMin < aMin ? bMax > aMin : bMin < aMax;
 }
 
+export function pointToPolygonDistance(
+  vertices: Coordinate[],
+  point: Coordinate,
+) {
+  const minDistance = vertices.reduce((acc, vertex) => {
+    const distance = mapDistance(vertex, point);
+    return distance < acc ? distance : acc;
+  }, 9999999);
+
+  return minDistance;
+}
+
 /**
  * Determines whether a point is in a polygon
  * Based on https://stackoverflow.com/a/29915728/4652564
