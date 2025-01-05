@@ -34,7 +34,7 @@ const cacheFirst = async (request) => {
 };
 
 self.addEventListener("fetch", (event) => {
-  console.log("UH oH, fetch event in service worker", event);
+  const request = event.request;
   if (!(request.url.includes("floorPlanMap") || request.url.includes("searchMap") || request.url.includes("apple"))) {
     return;
   }

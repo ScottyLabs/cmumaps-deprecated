@@ -1,0 +1,137 @@
+use include_assets::NamedArchive;
+use priority_queue::PriorityQueue;
+use types::CmpF32;
+
+use std::error::Error;
+use std::collections::{HashMap, HashSet};
+
+pub mod types;
+
+// TODO: Waypoint to node
+pub fn waypoint_to_nodes(waypoint: types::Waypoint, graph: &types::Graph, buildings: &HashMap<String, types::Building>) -> Vec<String> {
+    let mut nodes = vec![];
+    match waypoint {
+        types::Waypoint::Room(room) => {
+            for value in graph.values() {
+                if value.roomId == room.id {
+                    nodes.push(value.id.clone())
+                }
+            }
+        },
+        types::Waypoint::Building(building) => {
+            nodes = buildings[&building.code].entrances.clone()
+        }, 
+        types::Waypoint::PlaceOnMap(placement) => {
+            let coord = placement.waypoint.clone();
+            let mut best_dist = None;
+            let mut best_node = None;
+            for node in graph.values(){ // Improve this with an R* tree
+                let dist = node.coordinate.dist(&coord);
+                match best_dist {
+                    None => {
+                        best_dist = Some(dist);
+                        best_node = Some(node.id.clone());
+                    },
+                    Some(cmp_dist) => if CmpF32(dist) < CmpF32(cmp_dist){
+                        best_dist = Some(dist);
+                        best_node = Some(node.id.clone());
+                    }
+                }
+            }
+            nodes = vec![best_node.expect("Graph should not be empty")]
+        },
+        types::Waypoint::UserPosition(placement) => {
+            let coord = placement.userPosition.clone();
+            let mut best_dist = None;
+            let mut best_node = None;
+            for node in graph.values(){ // Improve this with an R* tree
+                let dist = node.coordinate.dist(&coord);
+                match best_dist {
+                    None => {
+                        best_dist = Some(dist);
+                        best_node = Some(node.id.clone());
+                    },
+                    Some(cmp_dist) => if CmpF32(dist) < CmpF32(cmp_dist){
+                        best_dist = Some(dist);
+                        best_node = Some(node.id.clone());
+                    }
+                }
+            }
+            nodes = vec![best_node.expect("Graph should not be empty")]
+        }
+    }
+    nodes
+    
+}
+
+
+pub fn parse_graph(archive: &NamedArchive, graph_path: &str) -> Result<types::Graph, Box<dyn Error>> {
+    let graph_bytes = archive.get(graph_path).unwrap();
+    let graph_str = String::from_utf8_lossy(graph_bytes);
+    let graph= serde_json::from_str(&graph_str)?;
+    Ok(graph)
+}
+
+pub fn parse_buildings(archive: &NamedArchive, graph_path: &str) -> Result<types::Buildings, Box<dyn Error>> {
+    let buildings_bytes = archive.get(graph_path).unwrap();
+    let buildings_str = String::from_utf8_lossy(buildings_bytes);
+    let buildings= serde_json::from_str(&buildings_str)?;
+    Ok(buildings)
+}
+
+// TODO: alter distances functionally to implement outside avoidance
+pub fn find_path(start_nodes: &Vec<String>, end_nodes: &Vec<String>, graph: &types::Graph, outside_cost_mul: f32)->Option<types::Route>{
+    let mut pq = PriorityQueue::new();
+    let mut explored_set = HashSet::new();
+
+    for node_id in start_nodes {
+        let node = graph.get(node_id).unwrap();
+        pq.push(vec![node.id.clone()], types::CmpF32(0.0));
+        while let Some((cur_path, length)) = pq.pop() {
+            let path_len = cur_path.len();
+            assert!(path_len > 0);
+            let last_node_id = cur_path[path_len-1].clone();
+            let last_node = match graph.get(&last_node_id) {
+                None => continue,
+                Some(node) => node,
+            };
+
+            if !explored_set.contains(&last_node_id) {
+                explored_set.insert(last_node_id);
+            }
+            else {
+                continue
+            }
+            for node in end_nodes.clone() {
+                let last_node_id = cur_path[path_len-1].clone();
+                if node == last_node_id {
+                    return Some(types::Route {
+                        distance: length,
+                        path: cur_path,
+                    });
+                }
+            }
+
+            let neighbors = &last_node.neighbors;
+            for (id, edge) in neighbors.iter() {
+                let mut path_copy = cur_path.to_vec();
+                path_copy.push(id.to_string());
+                let types::CmpF32(float_len) = length;
+                let step_dist = {
+                    if edge.dist < 0.0 {
+                        25.0
+                    }
+                    else if edge.toFloorInfo != None && edge.toFloorInfo.clone().unwrap().toFloor == "outside-1" {
+                        edge.dist + outside_cost_mul
+                    }
+                    else {
+                        edge.dist
+                    }
+                };
+                let new_length = -float_len + step_dist; // ??? fix this for negatives / make more extendable
+                pq.push(path_copy, types::CmpF32(-new_length));
+            }
+        }
+    }
+    None
+}

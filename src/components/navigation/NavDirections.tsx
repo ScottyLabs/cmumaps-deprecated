@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import { Node } from '@/app/api/findPath/types';
 import { setCurFloorIndex } from '@/lib/features/navSlice';
 import { setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Floor, Room, areFloorsEqual } from '@/types';
+import { Floor, Room, areFloorsEqual, Node } from '@/types';
 
 import { initialRegion } from '../buildings/MapDisplay';
 import { zoomOnFloor, zoomOnObject } from '../buildings/mapUtils';

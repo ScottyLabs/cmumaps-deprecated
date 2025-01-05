@@ -1,18 +1,18 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Coordinate } from 'mapkit-react';
 
-import { Node, Waypoint } from '@/app/api/findPath/types';
+import { Node, Waypoint } from '@/types';
 
 type ChoosingRoomMode = 'start' | 'end' | null;
 
 interface NavState {
   startLocation: Waypoint | null;
   endLocation: Waypoint | null;
-  recommendedPath: Record<string, { path: Node[]; distance: number }> | null;
+  recommendedPath: { path: Node[]; distance: number }[] | null;
   startedNavigation: boolean;
 
   curFloorIndex: number;
-  selectedPathName: string;
+  selectedPathNum: number;
 
   isNavOpen: boolean;
   userPosition: Coordinate | null;
@@ -23,7 +23,7 @@ const initialState: NavState = {
   endLocation: null,
   startLocation: null,
   recommendedPath: null,
-  selectedPathName: '',
+  selectedPathNum: 0,
   isNavOpen: false,
   userPosition: null,
   choosingRoomMode: null,
@@ -54,8 +54,8 @@ const navSlice = createSlice({
       state.choosingRoomMode = action.payload;
     },
 
-    setSelectedPathName(state, action) {
-      state.selectedPathName = action.payload;
+    setSelectedPathNum(state, action) {
+      state.selectedPathNum = action.payload;
     },
 
     setStartedNavigation(state, action) {
@@ -75,7 +75,7 @@ export const {
   setRecommendedPath,
   setIsNavOpen,
   setUserPosition,
-  setSelectedPathName,
+  setSelectedPathNum,
   setStartedNavigation,
   setCurFloorIndex,
 } = navSlice.actions;
