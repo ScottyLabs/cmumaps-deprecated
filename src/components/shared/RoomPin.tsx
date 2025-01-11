@@ -11,7 +11,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { useAppSelector } from '@/lib/hooks';
-import { Room, RoomType, SearchRoom, getRoomTypeDetails } from '@/types';
+import { Room, RoomType, Document, getRoomTypeDetails } from '@/types';
 
 const icons: Partial<Record<RoomType, SVGElement>> = {
   Elevator: elevatorIcon,
@@ -32,10 +32,10 @@ const icons: Partial<Record<RoomType, SVGElement>> = {
 };
 
 interface RoomPinProps {
-  room: Room | SearchRoom;
+  room: Room | Document;
 }
 
-export function hasIcon(room: Room | SearchRoom) {
+export function hasIcon(room: Room | Document) {
   return room.type in icons;
 }
 
@@ -46,7 +46,7 @@ export function hasIcon(room: Room | SearchRoom) {
 export default function RoomPin({ room }: RoomPinProps) {
   const icon = icons[room.type] ?? null;
   const hasGraphic = icon !== null;
-  const roomColors = getRoomTypeDetails(room.type);
+  const roomColors = getRoomTypeDetails(room.type as RoomType);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const isSelected = room.id === selectedRoom?.id;
 

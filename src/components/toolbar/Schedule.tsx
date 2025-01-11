@@ -38,7 +38,7 @@ const Schedule = () => {
 
   const { user } = useUser();
 
-  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [scheduleData, setScheduleData] = useState<CourseData[]>([]);
 
@@ -106,7 +106,7 @@ const Schedule = () => {
             className="w-full rounded border bg-gray-50 p-1 text-left hover:bg-gray-300"
             onClick={handleCourseClick(
               course.room.split('-'),
-              searchMap,
+              floorPlanMap,
               router,
             )}
           >

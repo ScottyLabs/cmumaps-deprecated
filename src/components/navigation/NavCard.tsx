@@ -5,7 +5,6 @@ import endIcon from '@icons/path/end.svg';
 import startIcon from '@icons/path/start.svg';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
-import { env } from 'process';
 
 import React, { useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -50,7 +49,7 @@ const NavCard = ({ map }: Props) => {
   useEffect(() => {
     if (startLocation && endLocation) {
       dispatch(setRecommendedPath(null));
-      fetch(`${env.API_ROUTE}find-path`, {
+      fetch(`https://mp9boknsu3.execute-api.us-east-2.amazonaws.com/default/find-path`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

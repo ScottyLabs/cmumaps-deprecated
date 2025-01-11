@@ -118,7 +118,7 @@ export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
   }
 }
 
-export interface SearchRoom {
+export interface Document {
   /**
    * Unique ID (UUID)
    */
@@ -128,16 +128,12 @@ export interface SearchRoom {
    * The short name of the room, without the building name but including the
    * floor level (e.g. '121' for CUC 121)
    */
-  name: string;
-
-  /**
-   * A list of names under which the room is known for searching purposes (e.g. 'ABP vs Au Bon Pain')
-   */
-  aliases: string[];
+  nameWithSpace: string;
+  fullNameWithSpace: string;
 
   alias: string;
 
-  type: RoomType;
+  type: RoomType | "Building";
 
   labelPosition: Coordinate;
 
@@ -269,7 +265,7 @@ export interface Building {
  * A map from building code to a map of floor levels to a list of search rooms
  * Used for searching purposes
  */
-export type SearchMap = Record<BuildingCode, Record<FloorLevel, SearchRoom[]>>;
+export type SearchMap = Record<BuildingCode, Record<FloorLevel, Document[]>>;
 
 export type FloorPlanMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;
 

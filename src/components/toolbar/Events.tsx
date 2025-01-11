@@ -84,7 +84,7 @@ const Events = ({ map }: Props) => {
     });
   }, [today]);
 
-  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [eventData, setEventData] = useState<Record<
     string,
@@ -160,11 +160,11 @@ const Events = ({ map }: Props) => {
     const roomName = roomInfoArr[1];
     const floorLevel = roomName.charAt(0);
 
-    if (!searchMap) {
+    if (!floorPlanMap) {
       return;
     }
 
-    const selectedRoom = searchMap[buildingCode][floorLevel].find(
+    const selectedRoom = Object.values(floorPlanMap[buildingCode][floorLevel]).find(
       (room) => room.name == roomName,
     );
 

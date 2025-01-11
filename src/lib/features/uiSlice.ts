@@ -46,6 +46,12 @@ const uiSlice = createSlice({
       state.selectedRoom = action.payload;
       state.selectedBuilding = null;
       state.isSearchOpen = false;
+      if (action.payload && action.payload.id) {
+        let selectionHistoryStr = localStorage.getItem('selectionHistory') || "[]";
+        let selectionHistory = JSON.parse(selectionHistoryStr) as string[];
+        selectionHistory.push(action.payload.id);
+        localStorage.setItem('selectionHistory', JSON.stringify(selectionHistory));
+      }
     },
     setFocusedFloor(state, action: PayloadAction<Floor | null>) {
       state.focusedFloor = action.payload;

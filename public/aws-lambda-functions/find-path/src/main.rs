@@ -13,7 +13,7 @@ async fn main() -> Result<(), Error> {
     let graph = graph_parse_result.unwrap();
     let buildings_parse_result = graph_utils::parse_buildings(&archive, "buildings.json");
     let buildings = buildings_parse_result.expect("Invalid buildings json");
-    println!("Completed Parsing Graph and Buildings successfully.");
+    println!("Completed Parsing Graph and Buildings successfully!");
 
     run(service_fn(|request| function_handler(request, &graph, &buildings))).await
 }

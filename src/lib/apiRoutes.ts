@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event } from '@prisma/client';
 
-import { Floor, FloorPlan, Room } from '@/types';
+import { Floor, FloorPlan, Room, Document } from '@/types';
 
 export async function fetchEvents(
   roomName: string,
@@ -137,3 +137,23 @@ export const postUserSchedule = async (
   console.error('Failed to post schedule', response);
   return false;
 };
+
+export const searchQuery = async (query: string): Promise<Document[]> => {
+  const response = await fetch(`https://g2dj3tzxfa.execute-api.us-east-2.amazonaws.com/default/alpha-search`, {
+    method: 'POST',
+    body: query // This is a lite version of the assumption that the user stopped typing.  Idk how useful this is, so it's temporary for now.  If it's good, put it the rust code
+  });
+
+  try {
+    const body = await response.json();
+
+    if (!response.ok) {
+      console.error(body.error);
+      return [];
+    }
+    return body;
+  } catch (e) {
+    console.error('Failed to search', e);
+    return [];
+  }
+}
