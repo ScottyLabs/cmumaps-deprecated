@@ -30,7 +30,11 @@ const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {
   if (!eateryInfo) {
     return (
       <div className="ml-3 mt-2 flex justify-between">
-        <h3>{room.alias || (room as Room).name || (room as Document).nameWithSpace.split(" ")[0]}</h3>
+        <h3>
+          {room.alias ||
+            (room as Room).name ||
+            (room as Document).nameWithSpace.split(' ')[0]}
+        </h3>
       </div>
     );
   }
@@ -58,7 +62,9 @@ const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {
     return (
       <div className="flex items-center justify-between">
         <p className="text-[--color-gray]">
-          {room.floor.buildingCode} {(room as Room).name || (room as Document).nameWithSpace.split(" ")[0]}
+          {room.floor.buildingCode}{' '}
+          {(room as Room).name ||
+            (room as Document).nameWithSpace.split(' ')[0]}
         </p>
         <div className="flex items-center gap-2">
           {renderStatusCircle()}
@@ -69,7 +75,7 @@ const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {
   };
 
   return (
-    <div className="text-left font-[500]">
+    <div className="px-4 pb-3 pt-2 text-left font-[500]">
       {title}
       {renderLocationTimeInfo()}
       <p className="mt-2 leading-4">{eateryInfo.shortDescription}</p>
