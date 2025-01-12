@@ -39,7 +39,7 @@ fn tf_idf(term_freq: u8, doc_len: u16, doc_freq: u16, num_docs: u16) -> f64 {
     let tf = term_freq as f64;
     let df = doc_freq as f64;
     let n = num_docs as f64;
-    (tf / dl) * ((n) / (1.0+df)).ln()
+    (tf / (dl).powf(2.0)) * ((n) / (1.0+df)).ln()
 }
 
 fn trigrams(s: &str) -> Vec<String> {
@@ -66,7 +66,25 @@ pub fn parse_query(query: &String) -> Vec<String> {
     return trigrams
 }
 
-pub fn search(query: &Vec<String>, index: &types::SearchIndex, all_docs: &types::Documents, beam_width_opt: Option<u16>, n: usize) -> Vec<String> {
+pub fn coord_dist(a: types::Coordinate, b: types::Coordinate) -> f64 {
+    let latitude_ratio = 111318.8450631976;
+    let longitude_ratio = 84719.3945182816;
+
+    let x_diff = (a.latitude - b.latitude) * latitude_ratio;
+    let y_diff = (a.longitude - b.longitude) * longitude_ratio;
+    return (x_diff.powf(2.0) + y_diff.powf(2.0)).sqrt();
+}
+
+pub fn distance_weighted_score(a: &types::Document, b: Option<types::Coordinate>, score: f64) -> f64 {
+    if b.is_none() {
+        return score;
+    }
+    let pos = b.unwrap();
+    let dist = coord_dist(pos, a.label_position.clone());
+    return score / ((dist + 1.0).ln()+1.0);
+}
+
+pub fn search(query: &Vec<String>, index: &types::SearchIndex, all_docs: &types::Documents, beam_width_opt: Option<u16>, n: usize, pos: Option<types::Coordinate>) -> Vec<String> {
     let num_docs = 9824;
     let mut overall_scores = HashMap::new();
     for word in query {
@@ -90,7 +108,12 @@ pub fn search(query: &Vec<String>, index: &types::SearchIndex, all_docs: &types:
 
         }
     }
-    let sort_as_tupvec = overall_scores.iter().map(|(doc_id, score)| (doc_id.clone(), *score)).collect::<Vec<(String, f64)>>();
-    let res_n = top_n(&sort_as_tupvec, n);
+    let sort_as_tupvec = overall_scores.iter().map(
+        |(doc_id, score)| (doc_id.clone(), distance_weighted_score(all_docs.get(doc_id).expect("Bad problem"), pos.clone(), *score))
+    ).collect::<Vec<(String, f64)>>();
+    let mut res_n = top_n(&sort_as_tupvec, n);
+
+    res_n.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
+
     return res_n.iter().map(|(doc_id, _)| doc_id.clone()).collect();
 }

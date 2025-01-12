@@ -138,11 +138,20 @@ export const postUserSchedule = async (
   return false;
 };
 
-export const searchQuery = async (query: string): Promise<Document[]> => {
-  const response = await fetch(`https://g2dj3tzxfa.execute-api.us-east-2.amazonaws.com/default/alpha-search`, {
-    method: 'POST',
-    body: query // This is a lite version of the assumption that the user stopped typing.  Idk how useful this is, so it's temporary for now.  If it's good, put it the rust code
-  });
+export const searchQuery = async (
+  query: string,
+  userPosition: { latitude: number; longitude: number } | null,
+): Promise<Document[]> => {
+  const response = await fetch(
+    `https://g2dj3tzxfa.execute-api.us-east-2.amazonaws.com/default/alpha-search`,
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        query,
+        location: userPosition || '',
+      }),
+    },
+  );
 
   try {
     const body = await response.json();
@@ -156,4 +165,4 @@ export const searchQuery = async (query: string): Promise<Document[]> => {
     console.error('Failed to search', e);
     return [];
   }
-}
+};
