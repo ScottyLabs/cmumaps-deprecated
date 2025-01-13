@@ -33,7 +33,7 @@ const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {
         <h3>
           {room.alias ||
             (room as Room).name ||
-            (room as Document).nameWithSpace.split(' ')[0]}
+            (room as Document).nameWithSpace.split(' ')[1]}
         </h3>
       </div>
     );
