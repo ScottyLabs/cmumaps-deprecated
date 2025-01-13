@@ -81,7 +81,7 @@ pub fn distance_weighted_score(a: &types::Document, b: Option<types::Coordinate>
     }
     let pos = b.unwrap();
     let dist = coord_dist(pos, a.label_position.clone());
-    return score / ((dist + 1.0).ln()+1.0);
+    return score + 1.0/((dist + 10.0).ln()+1.0);
 }
 
 pub fn search(query: &Vec<String>, index: &types::SearchIndex, all_docs: &types::Documents, beam_width_opt: Option<u16>, n: usize, pos: Option<types::Coordinate>) -> Vec<String> {
