@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
+import { FaLocationCrosshairs } from 'react-icons/fa6';
 
 import { searchQuery } from '@/lib/apiRoutes';
-import { useAppSelector } from '@/lib/hooks';
+import {
+  setChoosingRoomMode,
+  setEndLocation,
+  setStartLocation,
+} from '@/lib/features/navSlice';
+import { setIsSearchOpen } from '@/lib/features/uiSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Document } from '@/types';
 
+import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
 import BuildingResult from './BuildingResult';
 import CourseSearchResults from './CourseSearchResults';
 import EventSearchResults from './EventSearchResults';
@@ -23,6 +31,23 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
   const userPosition = useAppSelector((state) => state.nav.userPosition);
   const [roomSearchResults, setRoomSearchResults] = useState<Document[]>([]);
 
+  const choosingRoomMode = useAppSelector(
+    (state) => state.nav.choosingRoomMode,
+  );
+  const dispatch = useAppDispatch();
+
+  const handlePositionClick = () => {
+    if (choosingRoomMode) {
+      if (choosingRoomMode == 'start') {
+        dispatch(setStartLocation({ userPosition }));
+      } else if (choosingRoomMode == 'end') {
+        dispatch(setEndLocation({ userPosition }));
+      }
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+    }
+  };
+
   useEffect(() => {
     setTimeout(() => {
       if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
@@ -32,6 +57,24 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
       }
     }, 200);
   }, [query, searchMode]);
+
+  if (query.length < 2 && searchMode == 'rooms') {
+    if (choosingRoomMode == null) {
+      return <KeepTypingDisplay />;
+    } else {
+      return (
+        <button
+          className="flex h-16 w-full items-center gap-3 pl-3 hover:bg-blue-200"
+          onClick={handlePositionClick}
+        >
+          <div className="text-lg text-blue-600">
+            <FaLocationCrosshairs />
+          </div>
+          <p> User Position</p>
+        </button>
+      );
+    }
+  }
 
   if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
     return roomSearchResults.map((document) => {
