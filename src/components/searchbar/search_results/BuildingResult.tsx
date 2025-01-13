@@ -5,7 +5,7 @@ import {
   setEndLocation,
   setStartLocation,
 } from '@/lib/features/navSlice';
-import { setIsSearchOpen } from '@/lib/features/uiSlice';
+import { selectBuilding, setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Document } from '@/types';
 
@@ -32,7 +32,12 @@ const BuildingResult = ({ map, building }: Props) => {
     );
 
 
-    const handleClick = (building: Document) => () => {
+    const handleClick = (build_doc: Document) => () => {
+        if (!buildings) {
+            return;
+        }
+
+        const building = buildings[build_doc.id];
         if (choosingRoomMode) {
         if (choosingRoomMode == 'start') {
             dispatch(setStartLocation(building));
@@ -43,10 +48,12 @@ const BuildingResult = ({ map, building }: Props) => {
         dispatch(setChoosingRoomMode(null));
         } else {
         if (buildings && map) {
-            const building_shapes = buildings[building.id].shapes.flat();
+            const building_shapes = building.shapes.flat();
             zoomOnObject(map, building_shapes);
+            dispatch(setIsSearchOpen(false));
+            dispatch(selectBuilding(building));
         }
-        dispatch(setIsSearchOpen(false));
+        
         }
     };
 
