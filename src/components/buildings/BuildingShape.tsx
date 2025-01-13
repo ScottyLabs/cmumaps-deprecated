@@ -108,7 +108,6 @@ export default function BuildingShape({ map, building }: BuildingShapeProps) {
     const getFillColor = () => {
       const noFloorPlanFillColor = '#6b7280';
       const academicBuildingFillColor = '#9ca3af';
-
       if (buildingCodeToShapeFillColor[building.code]) {
         return buildingCodeToShapeFillColor[building.code];
       } else if (building.floors.length == 0) {
