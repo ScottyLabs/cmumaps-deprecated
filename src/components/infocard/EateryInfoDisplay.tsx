@@ -64,7 +64,7 @@ const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {
         <p className="text-[--color-gray]">
           {room.floor.buildingCode}{' '}
           {(room as Room).name ||
-            (room as Document).nameWithSpace.split(' ')[0]}
+            (room as Document).nameWithSpace.split(' ')[1]}
         </p>
         <div className="flex items-center gap-2">
           {renderStatusCircle()}
