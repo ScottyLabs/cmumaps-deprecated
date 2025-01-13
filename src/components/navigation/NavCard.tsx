@@ -49,13 +49,16 @@ const NavCard = ({ map }: Props) => {
   useEffect(() => {
     if (startLocation && endLocation) {
       dispatch(setRecommendedPath(null));
-      fetch(`https://mp9boknsu3.execute-api.us-east-2.amazonaws.com/default/find-path`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      fetch(
+        `https://mp9boknsu3.execute-api.us-east-2.amazonaws.com/default/find-path`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ waypoints: [startLocation, endLocation] }),
         },
-        body: JSON.stringify({ waypoints: [startLocation, endLocation] }),
-      })
+      )
         .then((r) => {
           try {
             return r.json();
@@ -67,8 +70,8 @@ const NavCard = ({ map }: Props) => {
           return null;
         })
         .then((j) => {
-          if (!j || j.error) {
-            toast.error('Sorry, we are not able to find a path :(');
+          if (!j || j.error || j.message == 'Internal Server Error') {
+            toast.error('Sorry, these rooms are not connected (yet) 😢');
             return;
           } else {
             dispatch(setRecommendedPath(j));

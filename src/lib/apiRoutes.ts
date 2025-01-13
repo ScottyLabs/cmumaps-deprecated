@@ -156,13 +156,13 @@ export const searchQuery = async (
   try {
     const body = await response.json();
 
-    if (!response.ok) {
-      console.error(body.error);
+    if (!response.ok || body.message == 'Internal Server Error') {
+      console.error('Something went wrong :(');
       return [];
     }
     return body;
   } catch (e) {
-    console.error('Failed to search', e);
+    console.error('Something went wrong :(', e);
     return [];
   }
 };
