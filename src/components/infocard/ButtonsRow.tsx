@@ -1,7 +1,9 @@
 import Image from 'next/image';
+import inaccRooms from 'public/cmumaps-data/inacc_rooms.json';
 
 import React, { ReactElement, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
+import { TbXboxX } from 'react-icons/tb';
 import { toast } from 'react-toastify';
 
 import {
@@ -40,11 +42,17 @@ const ButtonsRow = ({ middleButton }: Props) => {
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
   const renderDirectionButton = () => {
+    const isRoomAcc = Boolean(
+      (room && inaccRooms.includes(room.id)) ||
+        (building && inaccRooms.includes(building.code)),
+    );
+
     return (
       <button
         id="DirectionButton"
         type="button"
-        className="flex items-center gap-2 rounded-lg bg-[#56b57b] px-3 py-1 text-white"
+        className="flex items-center gap-2 rounded-lg bg-[#56b57b] px-3 py-1 text-white disabled:bg-red-600"
+        disabled={isRoomAcc}
         onClick={() => {
           if (room) {
             dispatch(setIsNavOpen(true));
@@ -57,8 +65,8 @@ const ButtonsRow = ({ middleButton }: Props) => {
           }
         }}
       >
-        <FaArrowRight size={12} />
-        <p>Directions</p>
+        {isRoomAcc ? <TbXboxX size={20} /> : <FaArrowRight size={12} />}
+        <p>{isRoomAcc ? 'Not Accessible' : 'Directions'}</p>
       </button>
     );
   };
