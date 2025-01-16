@@ -121,7 +121,7 @@ pub fn find_path(start_nodes: &Vec<String>, end_nodes: &Vec<String>, graph: &typ
                     if edge.dist < 0.0 {
                         25.0
                     }
-                    else if edge.toFloorInfo != None && edge.toFloorInfo.clone().unwrap().toFloor == "outside-1" {
+                    else if last_node.floor.buildingCode == "outside" {
                         edge.dist + outside_cost_mul
                     }
                     else {

@@ -41,8 +41,8 @@ pub struct Edge {
 
 #[derive(Deserialize, Debug, Clone, Hash, PartialEq, PartialOrd, Eq, Ord, Serialize)]
 pub struct Floor {
-    buildingCode: String,
-    level: String,
+    pub buildingCode: String,
+    pub level: String,
 }
 
 #[derive(Deserialize, Debug, Clone, PartialEq, PartialOrd, Serialize)]

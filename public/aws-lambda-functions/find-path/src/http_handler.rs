@@ -42,11 +42,12 @@ pub(crate) async fn function_handler(event: Request, graph: &Graph, buildings: &
         path: route.path.iter().map(|node_id| (&graph[node_id]).clone()).collect(),
         distance: route.distance.to_f32()
     };
-    let more_indoor_nodes_route = NodesRoute {
+    let mut more_indoor_nodes_route = NodesRoute {
         path: more_indoor_route.path.iter().map(|node_id| (&graph[node_id]).clone()).collect(),
         distance: more_indoor_route.distance.to_f32()
     };
-    let response_obj = match nodes_route.distance != nodes_route.distance {
+    more_indoor_nodes_route.distance = more_indoor_nodes_route.distance % 100000.0;
+    let response_obj = match nodes_route.distance != more_indoor_nodes_route.distance {
         true => vec![nodes_route, more_indoor_nodes_route],
         false => vec![nodes_route]
     };

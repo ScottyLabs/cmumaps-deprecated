@@ -1,5 +1,3 @@
-import alternativeIcon from '@icons/nav/alternative.svg';
-import fastestIcon from '@icons/nav/fastest.svg';
 import swapIcon from '@icons/nav/swap.svg';
 import endIcon from '@icons/path/end.svg';
 import startIcon from '@icons/path/start.svg';
@@ -7,6 +5,8 @@ import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
 import React, { useEffect } from 'react';
+import { BsFillLightningChargeFill } from 'react-icons/bs';
+import { FaRegSnowflake } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
@@ -27,7 +27,10 @@ import { Waypoint } from '@/types';
 import CardWrapper from '../infocard/CardWrapper';
 import NavDirections from './NavDirections';
 
-const pathNumToIcon = [fastestIcon, alternativeIcon];
+const pathNumToIcon = [
+  <BsFillLightningChargeFill key="fast" size={25} />,
+  <FaRegSnowflake key="snow" size={25} />,
+];
 const pathNumToName = ['Fastest', 'Indoor'];
 
 interface Props {
@@ -178,11 +181,7 @@ const NavCard = ({ map }: Props) => {
         >
           <div className="mx-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Image
-                src={pathNumToIcon[pathNum]}
-                alt="Nav Path Icon"
-                height={40}
-              />
+              {pathNumToIcon[pathNum]}
               <div>
                 <p
                   className={`text-lg ${pathNum == selectedPathNum ? 'text-gray-800"' : 'text-gray-600'}`}
