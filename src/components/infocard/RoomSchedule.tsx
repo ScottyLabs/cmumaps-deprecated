@@ -9,6 +9,7 @@ import {
   endOfWeek,
   eachDayOfInterval,
 } from 'date-fns';
+import Image from 'next/image';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { FaChevronLeft } from 'react-icons/fa';
@@ -21,7 +22,6 @@ import { classroomTechInstructions } from './classroomTechInstructions';
 
 const RoomSchedule = () => {
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
-  console.log(selectedRoom);
   const today = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -181,7 +181,7 @@ const RoomSchedule = () => {
             rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-lg border-2 border-[#1e86ff] bg-transparent px-3 py-1 text-[#1e86ff]"
           >
-            <img src={desktopIcon} alt="Tech Guide" className="h-5 w-5" />
+            <Image src={desktopIcon} alt="Tech Guide" className="h-5 w-5" />
             <p>Tech Guide</p>
           </a>
         )}
@@ -189,9 +189,9 @@ const RoomSchedule = () => {
         {/* Change Reservation Button */}
         <a
           href="mailto:esrooms@andrew.cmu.edu"
-          className="flex items-center gap-2 rounded-lg border-2 border-blue-300 bg-transparent px-3 py-1 text-blue-300"
+          className="flex items-center gap-2 rounded-lg border-2 border-[#1e86ff] bg-transparent px-3 py-1 text-[#1e86ff]"
         >
-          <img
+          <Image
             src={envelopeIcon}
             alt="Change Reservation"
             className="h-5 w-5"
