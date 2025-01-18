@@ -22,7 +22,7 @@ interface Props {
 const EventSearchResults = ({ query }: Props) => {
   const router = useRouter();
 
-  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [searchResult, setSearchResults] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -88,7 +88,11 @@ const EventSearchResults = ({ query }: Props) => {
       const roomName = roomInfoArr[1];
       const floorLevel = roomName.charAt(0);
 
-      const buildingMap = searchMap[buildingCode];
+      if (!floorPlanMap) {
+        return;
+      }
+
+      const buildingMap = floorPlanMap[buildingCode];
 
       if (!buildingMap) {
         if (buildingCode == 'DNM') {
@@ -102,7 +106,7 @@ const EventSearchResults = ({ query }: Props) => {
       if (!buildingMap[floorLevel]) {
         toast.error('Floor not available!');
       } else {
-        const floorMap = buildingMap[floorLevel];
+        const floorMap = Object.values(buildingMap[floorLevel]);
         const selectedRoom = floorMap.find((room) => room.name == roomName);
 
         if (!selectedRoom) {

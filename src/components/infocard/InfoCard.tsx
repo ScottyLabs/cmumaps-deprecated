@@ -18,7 +18,7 @@ const InfoCard = ({ map, initSnapPoint, setCardVisibility }: Props) => {
 
   if (room) {
     setCardVisibility(true);
-    if (room.type == 'food') {
+    if (room.type == 'Food') {
       return <EateryCard room={room} initSnapPoint={initSnapPoint} />;
     } else {
       return <RoomCard initSnapPoint={initSnapPoint} room={room} />;

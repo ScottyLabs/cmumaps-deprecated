@@ -6,7 +6,8 @@ import { Building, Floor, Room } from '@/types';
 interface UIState {
   isMobile: boolean;
 
-  // A room/building is selected iff the user has clicked on it. And has not since clicked on another room, building, or the map.
+  // Room and Building are mutually exclusively selected.
+  // (i.e: you can't select on a room and a building at the same time)
   selectedRoom: Room | null;
   selectedBuilding: Building | null;
 
@@ -47,6 +48,12 @@ const uiSlice = createSlice({
       state.selectedRoom = action.payload;
       state.selectedBuilding = null;
       state.isSearchOpen = false;
+      if (action.payload && action.payload.id) {
+        let selectionHistoryStr = localStorage.getItem('selectionHistory') || "[]";
+        let selectionHistory = JSON.parse(selectionHistoryStr) as string[];
+        selectionHistory.push(action.payload.id);
+        localStorage.setItem('selectionHistory', JSON.stringify(selectionHistory));
+      }
     },
     setFocusedFloor(state, action: PayloadAction<Floor | null>) {
       state.focusedFloor = action.payload;

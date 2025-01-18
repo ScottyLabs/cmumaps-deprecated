@@ -1,0 +1,16 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.scottylabs.maps.twa",
+      "sha256_cert_fingerprints": [
+        "FC:59:AA:A8:83:74:29:E7:B6:37:4B:1A:B2:72:2C:57:17:52:45:B8:A4:66:E3:59:0E:E9:C7:EB:2D:4C:F7:FF",
+        "CA:6A:09:1D:90:C9:FA:2F:6E:D0:36:03:46:B9:82:4F:F3:9A:1D:C2:85:48:0C:57:15:5C:B2:03:BB:96:5E:DF"
+      ]
+    }
+  }
+]

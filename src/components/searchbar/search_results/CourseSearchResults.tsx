@@ -8,8 +8,10 @@ import { toast } from 'react-toastify';
 
 import { setCourseData } from '@/lib/features/dataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Course, CourseData, SearchMap } from '@/types';
+import { Course, CourseData, FloorPlanMap } from '@/types';
 
+import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
+import NoResultDisplay from '../display_helpers/NoResultDisplay';
 import SearchResultWrapper from './SearchResultWrapper';
 
 interface Props {
@@ -18,11 +20,19 @@ interface Props {
 }
 
 export const handleCourseClick =
-  (roomInfoArr: string[], searchMap: SearchMap, router: AppRouterInstance) =>
+  (
+    roomInfoArr: string[],
+    floorPlanMap: FloorPlanMap | null,
+    router: AppRouterInstance,
+  ) =>
   () => {
+    if (!floorPlanMap) {
+      return;
+    }
+
     const buildingCode = roomInfoArr[0];
 
-    const buildingMap = searchMap[buildingCode];
+    const buildingMap = floorPlanMap[buildingCode];
 
     if (!buildingMap) {
       if (buildingCode == 'DNM') {
@@ -42,7 +52,7 @@ export const handleCourseClick =
       toast.error('Floor not available!');
     } else {
       const floorMap = buildingMap[floorLevel];
-      const selectedRoom = floorMap.find((room) => room.name == roomName);
+      const selectedRoom = Object.values(floorMap).find((room) => room.name == roomName);
 
       if (!selectedRoom) {
         toast.error('Room not available!');
@@ -56,7 +66,7 @@ const CourseSearchResults = ({ query }: Props) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
   const courseData = useAppSelector((state) => state.data.courseData);
   const [searchResult, setSearchResult] = useState<CourseData>({});
 
@@ -101,13 +111,21 @@ const CourseSearchResults = ({ query }: Props) => {
     setSearchResult(newSearchResults);
   }, [courseData, query]);
 
+  if (query.length == 0) {
+    return <KeepTypingDisplay />;
+  }
+
+  if (Object.keys(searchResult).length == 0) {
+    return <NoResultDisplay />;
+  }
+
   const renderCourseResultHelper = (courseCode: string, course: Course) => {
     return Object.entries(course.sections).map(([sectionCode, section]) => (
       <SearchResultWrapper
         key={courseCode + sectionCode}
         handleClick={handleCourseClick(
           section.room.split(' '),
-          searchMap,
+          floorPlanMap,
           router,
         )}
       >
@@ -133,18 +151,20 @@ const CourseSearchResults = ({ query }: Props) => {
     ));
   };
 
-  return Object.entries(searchResult).map(([department, courses]) => (
-    <div key={department}>
-      <SearchResultWrapper>
-        <h2>{department}</h2>
-      </SearchResultWrapper>
-      {Object.entries(courses)
-        .slice(0, 10)
-        .map(([courseCode, course]) =>
-          renderCourseResultHelper(courseCode, course),
-        )}
-    </div>
-  ));
+  return Object.entries(searchResult)
+    .slice(0, 10)
+    .map(([department, courses]) => (
+      <div key={department}>
+        <SearchResultWrapper>
+          <h2>{department}</h2>
+        </SearchResultWrapper>
+        {Object.entries(courses)
+          .slice(0, 10)
+          .map(([courseCode, course]) =>
+            renderCourseResultHelper(courseCode, course),
+          )}
+      </div>
+    ));
 };
 
 export default CourseSearchResults;

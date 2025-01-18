@@ -8,7 +8,7 @@ interface Props {
 
 const SearchResultWrapper = ({ children, handleClick, isSelected }: Props) => {
   let classNames =
-    'flex w-full items-center justify-between gap-2 px-4 text-left';
+    'flex w-full items-center justify-between gap-2 px-4 text-left border-b';
   classNames += ' transition duration-150 ease-out';
 
   if (isSelected) {

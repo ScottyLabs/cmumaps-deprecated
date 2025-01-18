@@ -18,7 +18,6 @@ import {
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
-import SearchModeSelector from './SearchModeSelector';
 import { searchModeToIcon } from './searchMode';
 import SearchResults from './search_results/SearchResults';
 
@@ -32,9 +31,7 @@ const SearchBar = ({ map }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isSearchOpen = useAppSelector((state) => state.ui.isSearchOpen);
-  const buildings = useAppSelector((state) => state.data.buildings);
-
-  const room = useAppSelector((state) => state.ui.selectedRoom);
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
   const searchMode = useAppSelector((state) => state.ui.searchMode);
   const choosingRoomMode = useAppSelector(
@@ -43,8 +40,6 @@ const SearchBar = ({ map }: Props) => {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  const showSearchModeSelector = isSearchOpen && !choosingRoomMode;
-
   const autoFillSearchQuery = useCallback(() => {
     // return the building name if a building is selected
     if (building?.name) {
@@ -52,25 +47,27 @@ const SearchBar = ({ map }: Props) => {
       return;
     }
 
-    if (room) {
+    if (selectedRoom) {
       // the search query is the room alias if the room has an alias,
-      if (room?.alias) {
-        setSearchQuery(room.alias);
+      if (selectedRoom?.alias) {
+        setSearchQuery(selectedRoom.alias);
         return;
       }
       // otherwise it is the room floor name + the room name
       else {
-        setSearchQuery(room.floor.buildingCode + ' ' + room.name);
+        setSearchQuery(
+          selectedRoom.floor.buildingCode + ' ' + selectedRoom.name,
+        );
         return;
       }
     }
 
     // set the search query to empty when there is no room or building selected
-    if (!room && !building) {
+    if (!selectedRoom && !building) {
       setSearchQuery('');
       return;
     }
-  }, [building, room]);
+  }, [building, selectedRoom]);
 
   // set the search query using room and building
   useEffect(() => {
@@ -87,6 +84,15 @@ const SearchBar = ({ map }: Props) => {
       }
     }
   }, [choosingRoomMode, dispatch]);
+
+  // focus on the input when search mode changed to not default room
+  useEffect(() => {
+    if (inputRef.current) {
+      if (searchMode !== 'rooms') {
+        inputRef.current.focus();
+      }
+    }
+  }, [searchMode, dispatch]);
 
   // blur the input field when not searching (mainly used for clicking on the map to close search)
   useEffect(() => {
@@ -118,6 +124,22 @@ const SearchBar = ({ map }: Props) => {
     handleCloseSearch();
   });
 
+  // focus on the input if command f is pressed
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (inputRef.current) {
+        if ((event.metaKey || event.ctrlKey) && event.key === 'f') {
+          dispatch(setIsSearchOpen(true));
+          inputRef.current.focus();
+          event.preventDefault();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [dispatch]);
+
   const renderSearchQueryInput = () => {
     const renderCloseButton = () => (
       <IoIosClose
@@ -131,7 +153,7 @@ const SearchBar = ({ map }: Props) => {
     let icon = searchIcon;
 
     // check if the search bar is focused to determine icon
-    if (document.activeElement === inputRef.current) {
+    if (isSearchOpen) {
       icon = searchModeToIcon[searchMode];
     }
 
@@ -148,7 +170,7 @@ const SearchBar = ({ map }: Props) => {
 
         <input
           type="text"
-          className="w-full rounded p-2 outline-none"
+          className="w-full rounded p-2 pr-6 outline-none"
           placeholder={placeholder}
           ref={inputRef}
           value={searchQuery}
@@ -161,39 +183,22 @@ const SearchBar = ({ map }: Props) => {
           }}
         />
 
-        {isSearchOpen && renderCloseButton()}
+        {(isSearchOpen || searchQuery.length > 0) && renderCloseButton()}
       </div>
     );
   };
 
   const renderSearchResults = () => {
-    // displays all food, restroom, and study even if search query is empty
-    const showResult =
-      searchQuery !== '' || ['food', 'restrooms', 'study'].includes(searchMode);
-
     return (
-      <div
-        className={`z-10 flex-1 overflow-y-scroll rounded bg-white transition-opacity duration-150 ease-in-out ${
-          showResult ? 'mt-1 h-fit opacity-100' : 'h-0 opacity-0'
-        }`}
-      >
-        {showResult && <SearchResults map={map} query={searchQuery} />}
+      <div className="z-10 mt-1 h-fit flex-1 overflow-y-scroll rounded bg-white opacity-100 transition-opacity duration-150 ease-in-out">
+        <SearchResults map={map} query={searchQuery} />
       </div>
     );
   };
 
-  // don't display anything before the buildings are loaded
-  if (!buildings) {
-    return;
-  }
   return (
     <>
       {renderSearchQueryInput()}
-      {showSearchModeSelector && (
-        <div className="mt-2">
-          <SearchModeSelector />
-        </div>
-      )}
       {isSearchOpen && renderSearchResults()}
     </>
   );

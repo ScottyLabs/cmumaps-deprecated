@@ -5,8 +5,6 @@ import {
   BuildingCode,
   CourseData,
   EateryData,
-  FloorLevel,
-  FloorPlan,
   FloorPlanMap,
   SearchMap,
 } from '@/types';
@@ -14,19 +12,19 @@ import {
 interface DataState {
   buildings: Record<BuildingCode, Building> | null;
   eateryData: EateryData | null;
-  searchMap: SearchMap;
-  floorPlanMap: FloorPlanMap;
+  searchMap: SearchMap | null;
+  floorPlanMap: FloorPlanMap | null;
   courseData: CourseData | null;
-  availableRoomImages: Record<string, string[]>;
+  availableRoomImages: Record<string, string[]> | null;
 }
 
 const initialState: DataState = {
   buildings: null,
   eateryData: null,
-  searchMap: {},
-  floorPlanMap: {},
+  searchMap: null,
+  floorPlanMap: null,
   courseData: null,
-  availableRoomImages: {},
+  availableRoomImages: null,
 };
 
 const dataSlice = createSlice({
@@ -45,24 +43,11 @@ const dataSlice = createSlice({
     setAvailableRoomImages(state, action) {
       state.availableRoomImages = action.payload;
     },
-
     setSearchMap(state, action) {
       state.searchMap = action.payload;
     },
-
     setFloorPlanMap(state, action) {
       state.floorPlanMap = action.payload;
-    },
-
-    addFloorToFloorPlanMap(
-      state,
-      action: { payload: [BuildingCode, FloorLevel, FloorPlan] },
-    ) {
-      const [buidlingCode, floorLevel, floorPlan] = action.payload;
-      if (!state.floorPlanMap[buidlingCode]) {
-        state.floorPlanMap[buidlingCode] = {};
-      }
-      state.floorPlanMap[buidlingCode][floorLevel] = floorPlan;
     },
   },
 });
@@ -73,7 +58,6 @@ export const {
   setCourseData,
   setSearchMap,
   setFloorPlanMap,
-  addFloorToFloorPlanMap,
   setAvailableRoomImages,
 } = dataSlice.actions;
 export default dataSlice.reducer;

@@ -3,8 +3,8 @@ import {
   EateryInfo,
   EateryData,
   LocationState,
-  SearchRoom,
-  Room,
+  Document,
+  Room
 } from '@/types';
 
 const daysOfWeek = [
@@ -71,10 +71,13 @@ export const getEateryData = async (): Promise<EateryData> => {
     res.hoursUntilStateChange = hourDif;
     if (hourDif < 1) {
       res.locationState = 'OPENS_SOON';
-      res.statusMsg = `Closed (${Math.round(hourDif * 60)} minutes until open)`;
+      res.statusMsg = `Closed (${Math.round(hourDif * 60)} minutes until opening)`;
+    } else if (hourDif < 24 && Math.round(hourDif) == 1) {
+      res.locationState = 'CLOSED';
+      res.statusMsg = `Closed (${Math.round(hourDif)} hour until opening)`;
     } else if (hourDif < 24) {
       res.locationState = 'CLOSED';
-      res.statusMsg = `Closed (${Math.round(hourDif)} hours until open)`;
+      res.statusMsg = `Closed (${Math.round(hourDif)} hours until opening)`;
     } else {
       res.locationState = 'CLOSED';
       res.statusMsg = `Closed (open on ${daysOfWeek[nextDate.getDay()]})`;
@@ -99,12 +102,15 @@ export const getEateryData = async (): Promise<EateryData> => {
 
         // message depend on if more than an hour until closing
         res.hoursUntilStateChange = hourDif;
-        if (hourDif > 1) {
+        if (hourDif > 1 && Math.round(hourDif) > 1) {
           res.locationState = 'OPEN';
-          res.statusMsg = `Open (${Math.round(hourDif)} hours until close)`;
+          res.statusMsg = `Open (${Math.round(hourDif)} hours until closing)`;
+        } else if (hourDif > 1 && Math.round(hourDif) <= 1) {
+          res.locationState = 'OPEN';
+          res.statusMsg = `Open (${Math.round(hourDif)} hour until closing)`;
         } else {
           res.locationState = 'CLOSES_SOON';
-          res.statusMsg = `Open (${Math.round(hourDif * 60)} minutes until close)`;
+          res.statusMsg = `Open (${Math.round(hourDif * 60)} minutes until closing)`;
         }
       }
       // when close
@@ -190,6 +196,8 @@ const eateryRoomToId = {
   'WEH 5000A': 94,
   'CUC 231': 174,
   'CUC 202': 108,
+  'CUC 202-A': 88,
+
   'MI 401': 148,
   'CUC 233A': 138,
   'SC 4S101B': 155,
@@ -201,19 +209,26 @@ const eateryRoomToId = {
   'MOR B105': 190,
   'RES 116A': 98,
   'RES 111A': 114,
+
   'TEP 2016A': 134,
   'TEP 2016B': 185,
   'TEP 2016C': 175,
   'TEP 2016D': 173,
+  'TEP 2016E': 192,
+
   'TEP 2008A': 154,
 };
 
-export const getEateryId = (room: Room | SearchRoom) => {
-  return eateryRoomToId[room.floor.buildingCode + ' ' + room.name];
+export const getEateryId = (room: Document | Room) => {
+  if ("nameWithSpace" in room){
+    return eateryRoomToId[room.floor.buildingCode + ' ' + room.nameWithSpace.split(' ')[1]];
+  }
+  
+  return eateryRoomToId[(room as Room).floor.buildingCode + ' ' + (room as Room).name];
 };
 
 export const sortEateries = (
-  eateries: SearchRoom[],
+  eateries: (Document|Room)[],
   eateryData: EateryData,
 ) => {
   const locationStateOrder: LocationState[] = [

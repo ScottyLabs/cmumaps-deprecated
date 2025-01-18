@@ -1,7 +1,5 @@
 import ScottyLabsFeaturedIcon from '@icons/ScottyLabs-featured.png';
 import featuredIcon from '@icons/featured.svg';
-import foodFeaturedIcon from '@icons/food-featured.png';
-import foodIcon from '@icons/quick_search/food.svg';
 import { eachDayOfInterval, endOfWeek, format, startOfWeek } from 'date-fns';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -11,8 +9,7 @@ import Collapsible from 'react-collapsible';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
-import { setIsSearchOpen, setSearchMode } from '@/lib/features/uiSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppSelector } from '@/lib/hooks';
 
 import { zoomOnObject } from '../buildings/mapUtils';
 import CollapsibleWrapper from '../common/CollapsibleWrapper';
@@ -62,7 +59,6 @@ interface Props {
 
 const Events = ({ map }: Props) => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const today = useMemo(() => {
     const today = new Date();
@@ -84,7 +80,7 @@ const Events = ({ map }: Props) => {
     });
   }, [today]);
 
-  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [eventData, setEventData] = useState<Record<
     string,
@@ -122,12 +118,6 @@ const Events = ({ map }: Props) => {
   }, [dayOfWeek, eventData]);
 
   const handleClick = (eventInfo: EventInfo) => () => {
-    if (eventInfo.searchFood) {
-      dispatch(setIsSearchOpen(true));
-      dispatch(setSearchMode('food'));
-      return;
-    }
-
     const building = eventInfo.building;
 
     if (building) {
@@ -160,9 +150,13 @@ const Events = ({ map }: Props) => {
     const roomName = roomInfoArr[1];
     const floorLevel = roomName.charAt(0);
 
-    const selectedRoom = searchMap[buildingCode][floorLevel].find(
-      (room) => room.name == roomName,
-    );
+    if (!floorPlanMap) {
+      return;
+    }
+
+    const selectedRoom = Object.values(
+      floorPlanMap[buildingCode][floorLevel],
+    ).find((room) => room.name == roomName);
 
     if (selectedRoom) {
       router.push(`${buildingCode}-${selectedRoom.name}`);
@@ -293,15 +287,6 @@ const Events = ({ map }: Props) => {
                   <p className="absolute bottom-1 left-2 text-white">
                     Featured
                   </p>
-                </div>
-              )}
-              {eventInfo.searchFood && (
-                <div className="relative -mb-1">
-                  <Image src={foodFeaturedIcon} alt="Food Featured Icon" />
-                  <div className="absolute bottom-1 left-2 flex items-center gap-2 text-white">
-                    <Image src={foodIcon} alt="Food Icon" height={18} />
-                    <p> Food</p>
-                  </div>
                 </div>
               )}
               <div className="p-2">

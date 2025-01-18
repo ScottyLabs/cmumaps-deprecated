@@ -11,31 +11,31 @@ import Image from 'next/image';
 import React from 'react';
 
 import { useAppSelector } from '@/lib/hooks';
-import { Room, SearchRoom, getRoomTypeDetails } from '@/types';
+import { Room, RoomType, Document, getRoomTypeDetails } from '@/types';
 
-const icons: { [type: string]: SVGElement } = {
-  elevator: elevatorIcon,
-  corridor: corridorIcon,
-  dining: diningIcon,
-  food: foodIcon,
-  stairs: stairsIcon,
-  library: studyIcon,
-  restroom: restroomIcon,
-  classroom: studyIcon,
-  parking: pinIcon,
-  studio: pinIcon,
-  vestibule: pinIcon,
-  auditorium: pinIcon,
-  sport: pinIcon,
-  workshop: pinIcon,
-  store: pinIcon,
+const icons: Partial<Record<RoomType, SVGElement>> = {
+  Elevator: elevatorIcon,
+  Corridor: corridorIcon,
+  Dining: diningIcon,
+  Food: foodIcon,
+  Stairs: stairsIcon,
+  Library: studyIcon,
+  Restroom: restroomIcon,
+  Classroom: studyIcon,
+  Parking: pinIcon,
+  Studio: pinIcon,
+  Vestibule: pinIcon,
+  Auditorium: pinIcon,
+  Sport: pinIcon,
+  Workshop: pinIcon,
+  Store: pinIcon,
 };
 
 interface RoomPinProps {
-  room: Room | SearchRoom;
+  room: Room | Document;
 }
 
-export function hasIcon(room: Room | SearchRoom) {
+export function hasIcon(room: Room | Document) {
   return room.type in icons;
 }
 
@@ -46,7 +46,7 @@ export function hasIcon(room: Room | SearchRoom) {
 export default function RoomPin({ room }: RoomPinProps) {
   const icon = icons[room.type] ?? null;
   const hasGraphic = icon !== null;
-  const roomColors = getRoomTypeDetails(room.type);
+  const roomColors = getRoomTypeDetails(room.type as RoomType);
   const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const isSelected = room.id === selectedRoom?.id;
 

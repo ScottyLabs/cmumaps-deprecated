@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Event } from '@prisma/client';
 
-import { Floor, FloorPlan, Room } from '@/types';
+import { Floor, FloorPlan, Room, Document } from '@/types';
 
 export async function fetchEvents(
   roomName: string,
@@ -136,4 +136,33 @@ export const postUserSchedule = async (
   }
   console.error('Failed to post schedule', response);
   return false;
+};
+
+export const searchQuery = async (
+  query: string,
+  userPosition: { latitude: number; longitude: number } | null,
+): Promise<Document[]> => {
+  const response = await fetch(
+    `https://g2dj3tzxfa.execute-api.us-east-2.amazonaws.com/default/alpha-search`,
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        query,
+        location: userPosition || '',
+      }),
+    },
+  );
+
+  try {
+    const body = await response.json();
+
+    if (!response.ok || body.message == 'Internal Server Error') {
+      console.error('Something went wrong :(');
+      return [];
+    }
+    return body;
+  } catch (e) {
+    console.error('Something went wrong :(', e);
+    return [];
+  }
 };

@@ -1,5 +1,7 @@
 import { useUser } from '@clerk/nextjs';
+import slidersIcon from '@icons/sliders.svg';
 import ical from 'ical';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import React, { useEffect, useState } from 'react';
@@ -36,14 +38,14 @@ const Schedule = () => {
 
   const { user } = useUser();
 
-  const searchMap = useAppSelector((state) => state.data.searchMap);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
 
   const [scheduleData, setScheduleData] = useState<CourseData[]>([]);
 
   useEffect(() => {
     if (user) {
       getUserSchedule(user.id).then((dbScheduleData) => {
-        if (dbScheduleData) {
+        if (Object.keys(dbScheduleData).length !== 0) {
           setScheduleData(JSON.parse(dbScheduleData));
         }
       });
@@ -84,7 +86,6 @@ const Schedule = () => {
         }
 
         setScheduleData(newScheduleData);
-
         if (user) {
           postUserSchedule(user.id, JSON.stringify(newScheduleData));
         }
@@ -105,7 +106,7 @@ const Schedule = () => {
             className="w-full rounded border bg-gray-50 p-1 text-left hover:bg-gray-300"
             onClick={handleCourseClick(
               course.room.split('-'),
-              searchMap,
+              floorPlanMap,
               router,
             )}
           >
@@ -157,11 +158,37 @@ const Schedule = () => {
     );
   };
 
+  const renderReuploadButton = () => {
+    return (
+      <div className="flex justify-end">
+        {/* Upload New Button, hide default html picker */}
+        <label className="mb-1 mr-4 cursor-pointer rounded-md bg-blue-600 px-2 py-1 font-medium text-white">
+          <Image
+            alt={'Lock Icon'}
+            src={slidersIcon}
+            className="inline-block pb-1"
+          />
+          Upload New Schedule
+          <input
+            type="file"
+            id="reUploadFileInput"
+            accept=".ics"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </label>
+      </div>
+    );
+  };
+
   return (
     <CollapsibleWrapper title="Schedule">
-      <div className="space-y-2 pb-2">
-        {scheduleData.length > 0 ? renderSchedule() : renderNoSchedule()}
-      </div>
+      <>
+        <div className="space-y-2 pb-2">
+          {scheduleData.length > 0 ? renderSchedule() : renderNoSchedule()}
+        </div>
+        {scheduleData.length > 0 ? renderReuploadButton() : null}
+      </>
     </CollapsibleWrapper>
   );
 };

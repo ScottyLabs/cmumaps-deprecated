@@ -151,7 +151,7 @@ const CardWrapper = ({ snapPoint, children, isOpen }: CardWrapperProps) => {
     );
   } else {
     return (
-      <div className="w-96 overflow-clip rounded-lg bg-white shadow-lg shadow-gray-400">
+      <div className="flex w-96 flex-col overflow-hidden rounded-lg bg-white shadow-lg shadow-gray-400">
         {children}
       </div>
     );

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Node } from '@/app/api/findPath/types';
 import { setCurFloorIndex } from '@/lib/features/navSlice';
 import { setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Floor, Room, areFloorsEqual } from '@/types';
+import { Floor, Room, areFloorsEqual, Node } from '@/types';
 
+import { initialRegion } from '../buildings/MapDisplay';
 import { zoomOnFloor, zoomOnObject } from '../buildings/mapUtils';
 
 interface Props {
@@ -38,7 +38,7 @@ const NavDirections = ({ map, path }: Props) => {
           const level = node.floor.level;
           const buildingCode = node.floor.buildingCode;
 
-          if (floorPlanMap[buildingCode][level][node.roomId]) {
+          if (floorPlanMap && floorPlanMap[buildingCode][level][node.roomId]) {
             passedByRooms.push(floorPlanMap[buildingCode][level][node.roomId]);
           }
         }
@@ -51,6 +51,10 @@ const NavDirections = ({ map, path }: Props) => {
 
   // zoom on the selected floor
   useEffect(() => {
+    if (!buildings) {
+      return;
+    }
+
     if (passedByFloors) {
       const curFloor = passedByFloors[curFloorIndex];
       const { buildingCode, level } = curFloor;
@@ -60,12 +64,16 @@ const NavDirections = ({ map, path }: Props) => {
         dispatch(setFocusedFloor(null));
         zoomOnObject(map, [
           {
-            latitude: 40.444 - 0.006337455593801167 / 2,
-            longitude: -79.945 - 0.011960061265583022 / 2,
+            latitude:
+              initialRegion.centerLatitude - initialRegion.latitudeDelta,
+            longitude:
+              initialRegion.centerLongitude - initialRegion.longitudeDelta,
           },
           {
-            latitude: 40.444 + 0.006337455593801167 / 2,
-            longitude: -79.945 + 0.011960061265583022 / 2,
+            latitude:
+              initialRegion.centerLatitude + initialRegion.latitudeDelta,
+            longitude:
+              initialRegion.centerLongitude + initialRegion.longitudeDelta,
           },
         ]);
       }
