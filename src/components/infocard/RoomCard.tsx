@@ -28,6 +28,10 @@ const RoomCard = ({ room, initSnapPoint }: Props) => {
     getDbRoomExists(room).then((response) => setHasSchedule(response));
   }, [room]);
 
+  useEffect(() => {
+    initSnapPoint?.(hasSchedule ? 403 : 300);
+  }, [hasSchedule, initSnapPoint]);
+
   if (!buildings || hasSchedule === null) {
     return;
   }
@@ -110,8 +114,6 @@ const RoomCard = ({ room, initSnapPoint }: Props) => {
 
     return <ButtonsRow middleButton={renderMiddleButton()} />;
   };
-
-  initSnapPoint?.(hasSchedule ? 403 : 300);
 
   return (
     // <CardWrapper snapPoint={hasSchedule ? 403 : 300}>

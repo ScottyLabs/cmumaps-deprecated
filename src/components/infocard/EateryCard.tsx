@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ImSpoonKnife } from 'react-icons/im';
 
 import { useAppSelector } from '@/lib/hooks';
@@ -16,6 +16,10 @@ interface Props {
 
 const Eaterycard = ({ room, initSnapPoint }: Props) => {
   const eateryData = useAppSelector((state) => state.data.eateryData);
+
+  useEffect(() => {
+    initSnapPoint?.(340);
+  }, [initSnapPoint]);
 
   if (!eateryData) {
     return;
@@ -63,8 +67,6 @@ const Eaterycard = ({ room, initSnapPoint }: Props) => {
       />
     );
   };
-
-  initSnapPoint?.(340);
 
   return (
     // <CardWrapper snapPoint={340}>

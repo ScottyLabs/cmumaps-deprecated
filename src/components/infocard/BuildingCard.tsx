@@ -58,6 +58,10 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
     setEateries(newEateries);
   }, [building.code, building.floors, floorPlanMap]);
 
+  useEffect(() => {
+    initSnapPoint?.(eateries.length > 0 ? 440 : 275);
+  }, [initSnapPoint, eateries]);
+
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
 
@@ -225,8 +229,6 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
       );
     }
   };
-
-  initSnapPoint?.(eateries.length > 0 ? 440 : 275);
 
   return (
     // <CardWrapper snapPoint={eateries.length > 0 ? 440 : 275}>
