@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useAppSelector } from '@/lib/hooks';
 
@@ -16,15 +16,17 @@ const InfoCard = ({ map, initSnapPoint, setCardVisibility }: Props) => {
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
 
-  if (room) {
+  useEffect(() => {
     setCardVisibility?.(true);
+  }, [setCardVisibility]);
+
+  if (room) {
     if (room.type == 'Food') {
       return <EateryCard room={room} initSnapPoint={initSnapPoint} />;
     } else {
       return <RoomCard initSnapPoint={initSnapPoint} room={room} />;
     }
   } else if (building) {
-    setCardVisibility?.(true);
     return (
       <BuildingCard
         initSnapPoint={initSnapPoint}
@@ -33,7 +35,6 @@ const InfoCard = ({ map, initSnapPoint, setCardVisibility }: Props) => {
       />
     );
   } else {
-    setCardVisibility?.(true);
     return <></>;
   }
 };
