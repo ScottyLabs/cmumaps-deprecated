@@ -120,5 +120,3 @@ export const {
   setIsFloorPlanRendered,
 } = uiSlice.actions;
 export default uiSlice.reducer;
-
-//Remove this comment
