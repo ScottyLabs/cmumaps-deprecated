@@ -49,10 +49,14 @@ const uiSlice = createSlice({
       state.selectedBuilding = null;
       state.isSearchOpen = false;
       if (action.payload && action.payload.id) {
-        let selectionHistoryStr = localStorage.getItem('selectionHistory') || "[]";
-        let selectionHistory = JSON.parse(selectionHistoryStr) as string[];
+        const selectionHistoryStr =
+          localStorage.getItem('selectionHistory') || '[]';
+        const selectionHistory = JSON.parse(selectionHistoryStr) as string[];
         selectionHistory.push(action.payload.id);
-        localStorage.setItem('selectionHistory', JSON.stringify(selectionHistory));
+        localStorage.setItem(
+          'selectionHistory',
+          JSON.stringify(selectionHistory),
+        );
       }
     },
     setFocusedFloor(state, action: PayloadAction<Floor | null>) {
@@ -116,3 +120,5 @@ export const {
   setIsFloorPlanRendered,
 } = uiSlice.actions;
 export default uiSlice.reducer;
+
+//Remove this comment
