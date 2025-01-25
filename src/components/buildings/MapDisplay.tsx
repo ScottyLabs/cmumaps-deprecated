@@ -6,6 +6,7 @@ import {
   MapType,
   CoordinateRegion,
   Annotation,
+  MapInteractionEvent,
 } from 'mapkit-react';
 
 import React, { useState } from 'react';
@@ -17,7 +18,8 @@ import {
 } from '@/lib/features/navSlice';
 import {
   deselectBuilding,
-  selectRoom,
+  deselectRoom,
+  selectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
   setIsZooming,
@@ -72,7 +74,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const isZooming = useAppSelector((state) => state.ui.isZooming);
 
-  const [usedScrolling, setUsedScrolling] = useState<boolean>(false);
+  const [usedPanning, setUsedPanning] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
   const [showFloor, setShowFloor] = useState<boolean>(false);
 
@@ -217,7 +219,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     }
 
     mapRef.current.addEventListener('scroll-end', () => {
-      setUsedScrolling(true);
+      setUsedPanning(true);
     });
 
     const randomCoordinate = new mapkit.Coordinate(40.444, -79.945);
@@ -255,6 +257,48 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     }
   };
 
+  const handleClick = (e: MapInteractionEvent) => {
+    // skip if usedPanning is true since end of panning is a click
+    if (usedPanning) {
+      setUsedPanning(false);
+      return;
+    }
+
+    // check if a building is clicked
+    let clickedBuilding = false;
+
+    if (!showFloor) {
+      const coords = e.toCoordinates();
+
+      for (const buildingCode in buildings) {
+        if (
+          buildings[buildingCode].shapes[0] &&
+          isInPolygonCoordinates(buildings[buildingCode].shapes[0], coords)
+        ) {
+          dispatch(selectBuilding(buildings[buildingCode]));
+          clickedBuilding = true;
+          break;
+        }
+      }
+    }
+
+    if (!choosingRoomMode && !isNavOpen) {
+      dispatch(setIsSearchOpen(false));
+      dispatch(deselectRoom());
+      if (!clickedBuilding) {
+        dispatch(deselectBuilding());
+      }
+    } else if (choosingRoomMode) {
+      if (choosingRoomMode == 'start') {
+        dispatch(setStartLocation({ waypoint: e.toCoordinates() }));
+      } else if (choosingRoomMode == 'end') {
+        dispatch(setEndLocation({ waypoint: e.toCoordinates() }));
+      }
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+    }
+  };
+
   return (
     <Map
       ref={mapRef}
@@ -279,23 +323,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         dispatch(setIsZooming(false));
         onRegionChangeEnd();
       }}
-      onClick={(e) => {
-        // need to check usedScrolling because end of panning is a click
-        if (!usedScrolling && !choosingRoomMode && !isNavOpen) {
-          dispatch(setIsSearchOpen(false));
-          dispatch(deselectBuilding());
-          dispatch(selectRoom(null));
-        } else if (choosingRoomMode) {
-          if (choosingRoomMode == 'start') {
-            dispatch(setStartLocation({ waypoint: e.toCoordinates() }));
-          } else if (choosingRoomMode == 'end') {
-            dispatch(setEndLocation({ waypoint: e.toCoordinates() }));
-          }
-          dispatch(setIsSearchOpen(false));
-          dispatch(setChoosingRoomMode(null));
-        }
-        setUsedScrolling(false);
-      }}
+      onClick={handleClick}
       onLoad={handleLoad}
     >
       {buildings &&
