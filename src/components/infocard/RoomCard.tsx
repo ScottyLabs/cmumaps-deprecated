@@ -13,7 +13,7 @@ import RoomSchedule from './RoomSchedule';
 
 interface Props {
   room: Room;
-  initSnapPoint: (number) => void;
+  initSnapPoint?: (number) => void;
 }
 
 const RoomCard = ({ room, initSnapPoint }: Props) => {
@@ -111,7 +111,7 @@ const RoomCard = ({ room, initSnapPoint }: Props) => {
     return <ButtonsRow middleButton={renderMiddleButton()} />;
   };
 
-  initSnapPoint(hasSchedule ? 403 : 300);
+  initSnapPoint?.(hasSchedule ? 403 : 300);
 
   return (
     // <CardWrapper snapPoint={hasSchedule ? 403 : 300}>

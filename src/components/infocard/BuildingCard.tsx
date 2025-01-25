@@ -15,7 +15,7 @@ import InfoCardImage from './InfoCardImage';
 interface Props {
   map: mapkit.Map | null;
   building: Building;
-  initSnapPoint: (number) => void;
+  initSnapPoint?: (number) => void;
 }
 
 const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
@@ -226,7 +226,7 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
     }
   };
 
-  initSnapPoint(eateries.length > 0 ? 440 : 275);
+  initSnapPoint?.(eateries.length > 0 ? 440 : 275);
 
   return (
     // <CardWrapper snapPoint={eateries.length > 0 ? 440 : 275}>

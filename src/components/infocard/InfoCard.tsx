@@ -16,31 +16,24 @@ const InfoCard = ({ map, initSnapPoint, setCardVisibility }: Props) => {
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
 
-  const initSP =
-    initSnapPoint ||
-    (() => {
-      null;
-    });
-  const setCV =
-    setCardVisibility ||
-    (() => {
-      null;
-    });
-
   if (room) {
-    setCV(true);
+    setCardVisibility?.(true);
     if (room.type == 'Food') {
-      return <EateryCard room={room} initSnapPoint={initSP} />;
+      return <EateryCard room={room} initSnapPoint={initSnapPoint} />;
     } else {
-      return <RoomCard initSnapPoint={initSP} room={room} />;
+      return <RoomCard initSnapPoint={initSnapPoint} room={room} />;
     }
   } else if (building) {
-    setCV(true);
+    setCardVisibility?.(true);
     return (
-      <BuildingCard initSnapPoint={initSP} map={map} building={building} />
+      <BuildingCard
+        initSnapPoint={initSnapPoint}
+        map={map}
+        building={building}
+      />
     );
   } else {
-    setCV(false);
+    setCardVisibility?.(true);
     return <></>;
   }
 };

@@ -11,7 +11,7 @@ import InfoCardImage from './InfoCardImage';
 
 interface Props {
   room: Room;
-  initSnapPoint: (number) => void;
+  initSnapPoint?: (number) => void;
 }
 
 const Eaterycard = ({ room, initSnapPoint }: Props) => {
@@ -64,7 +64,7 @@ const Eaterycard = ({ room, initSnapPoint }: Props) => {
     );
   };
 
-  initSnapPoint(340);
+  initSnapPoint?.(340);
 
   return (
     // <CardWrapper snapPoint={340}>
