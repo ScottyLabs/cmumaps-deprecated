@@ -39,11 +39,14 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
   const snapTo = (index) => {
     const closestSnap = snapPoints[index];
     api.start({ y: closestSnap });
-    // setLastPos(oy);
-    dispatch(setIsCardWrapperFullyOpen(closestSnap == snapPoints[2]));
     setSnapPos(closestSnap);
     setSnapIndex(index);
   };
+
+  useEffect(() => {
+    const closestSnap = snapPoints[snapIndex];
+    dispatch(setIsCardWrapperFullyOpen(closestSnap == snapPoints[2]));
+  }, [dispatch, snapIndex, snapPoints]);
 
   const onClick = () => {
     snapTo((snapIndex + 1) % 3);
