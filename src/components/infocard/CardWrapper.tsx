@@ -48,6 +48,14 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
     dispatch(setIsCardWrapperFullyOpen(closestSnap == snapPoints[2]));
   }, [dispatch, snapIndex, snapPoints]);
 
+  useEffect(() => {
+    if (isOpen) {
+      snapTo(1);
+    } else {
+      snapTo(0);
+    }
+  }, [isOpen]);
+
   const onClick = () => {
     snapTo((snapIndex + 1) % 3);
   };
