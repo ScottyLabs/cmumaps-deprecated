@@ -65,7 +65,7 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
     setSnapIndex(snapPoints.indexOf(closestSnap));
     dispatch(setIsCardWrapperFullyOpen(closestSnap == snapPoints[2]));
     setSnapPos(closestSnap);
-  }, [api, dispatch, isOpen, snapPoints]);
+  }, [api]);
 
   const bind = useDrag(
     ({ movement: [, oy], velocities, last }) => {

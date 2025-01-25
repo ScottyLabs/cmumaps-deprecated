@@ -17,8 +17,8 @@ const InfoCard = ({ map, initSnapPoint, setCardVisibility }: Props) => {
   const building = useAppSelector((state) => state.ui.selectedBuilding);
 
   useEffect(() => {
-    setCardVisibility?.(true);
-  }, [setCardVisibility]);
+    setCardVisibility?.(room || building);
+  }, [building, room, setCardVisibility]);
 
   if (room) {
     if (room.type == 'Food') {
