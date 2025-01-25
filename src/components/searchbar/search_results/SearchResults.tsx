@@ -13,8 +13,6 @@ import { Document } from '@/types';
 
 import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
 import BuildingResult from './BuildingResult';
-import CourseSearchResults from './CourseSearchResults';
-import EventSearchResults from './EventSearchResults';
 import FoodResult from './FoodResult';
 import RoomResult from './RoomResult';
 
@@ -50,13 +48,11 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
-        searchQuery(query, userPosition).then((res) => {
-          setRoomSearchResults(res);
-        });
-      }
+      searchQuery(query, userPosition).then((res) => {
+        setRoomSearchResults(res);
+      });
     }, 200);
-  }, [query, searchMode]);
+  }, [query, searchMode, userPosition]);
 
   if (query.length < 2 && searchMode == 'rooms') {
     if (choosingRoomMode == null) {
@@ -89,10 +85,6 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
           return <RoomResult key={document.id} map={map} room={document} />;
       }
     });
-  } else if (searchMode == 'events') {
-    return <EventSearchResults map={map} query={query} />;
-  } else if (searchMode == 'courses') {
-    return <CourseSearchResults map={map} query={query} />;
   }
 };
 
