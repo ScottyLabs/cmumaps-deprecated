@@ -276,7 +276,7 @@ const NavCard = ({ map }: Props) => {
   };
 
   return (
-    <CardWrapper snapPoint={0.4}>
+    <CardWrapper isOpen={true} snapPoint={0.4}>
       <div>
         {renderTop()}
         <div className="flex gap-4">

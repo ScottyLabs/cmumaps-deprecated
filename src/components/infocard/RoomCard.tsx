@@ -8,7 +8,6 @@ import { useAppSelector } from '@/lib/hooks';
 import { Room } from '@/types';
 
 import ButtonsRow, { renderMiddleButtonHelper } from './ButtonsRow';
-import CardWrapper from './CardWrapper';
 import InfoCardImage from './InfoCardImage';
 import RoomSchedule from './RoomSchedule';
 

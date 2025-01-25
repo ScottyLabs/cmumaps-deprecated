@@ -8,32 +8,39 @@ import RoomCard from './RoomCard';
 
 interface Props {
   map: mapkit.Map | null;
-  initSnapPoint: (number) => void;
-  setCardVisibility: (boolean) => void;
+  initSnapPoint?: (number) => void;
+  setCardVisibility?: (boolean) => void;
 }
 
 const InfoCard = ({ map, initSnapPoint, setCardVisibility }: Props) => {
   const room = useAppSelector((state) => state.ui.selectedRoom);
   const building = useAppSelector((state) => state.ui.selectedBuilding);
 
+  const initSP =
+    initSnapPoint ||
+    (() => {
+      null;
+    });
+  const setCV =
+    setCardVisibility ||
+    (() => {
+      null;
+    });
+
   if (room) {
-    setCardVisibility(true);
+    setCV(true);
     if (room.type == 'Food') {
-      return <EateryCard room={room} initSnapPoint={initSnapPoint} />;
+      return <EateryCard room={room} initSnapPoint={initSP} />;
     } else {
-      return <RoomCard initSnapPoint={initSnapPoint} room={room} />;
+      return <RoomCard initSnapPoint={initSP} room={room} />;
     }
   } else if (building) {
-    setCardVisibility(true);
+    setCV(true);
     return (
-      <BuildingCard
-        initSnapPoint={initSnapPoint}
-        map={map}
-        building={building}
-      />
+      <BuildingCard initSnapPoint={initSP} map={map} building={building} />
     );
   } else {
-    setCardVisibility(false);
+    setCV(false);
     return <></>;
   }
 };

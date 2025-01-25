@@ -13,7 +13,6 @@ import Schedule from './Schedule';
 
 interface Props {
   map: mapkit.Map | null;
-  initSnapPoint: (a: number) => void;
 }
 
 const ToolBar = ({ map }: Props) => {
@@ -60,7 +59,6 @@ const ToolBar = ({ map }: Props) => {
   };
 
   const [snapPoint, setSnapPoint] = useState(340);
-  // var [visible, setVisible] = useState(true);
 
   const initSnapPoint = (sp) => {
     if (sp != snapPoint) {
@@ -68,10 +66,7 @@ const ToolBar = ({ map }: Props) => {
     }
   };
 
-  let [cardVisible, setCardVisibile] = useState(true);
-  const setCardVisibility = (b) => {
-    cardVisible = b;
-  };
+  const [cardVisible, setCardVisibile] = useState(true);
 
   const mobileRender = () => {
     return (
@@ -115,10 +110,12 @@ const ToolBar = ({ map }: Props) => {
 
             {!isSearchOpen && !isCardOpen && <Schedule />}
 
-            {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
-            {isNavOpen && isCardOpen && !choosingRoomMode && (
-              <NavCard map={map} />
-            )}
+            <div className="flex w-96 flex-col overflow-hidden rounded-lg bg-white shadow-lg shadow-gray-400">
+              {!isNavOpen && !isSearchOpen && <InfoCard map={map} />}
+              {isNavOpen && isCardOpen && !choosingRoomMode && (
+                <NavCard map={map} />
+              )}
+            </div>
           </div>
         </div>
         <div className="fixed left-[25rem] my-4">
