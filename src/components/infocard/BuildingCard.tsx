@@ -115,6 +115,7 @@ const BuildingCard = ({ map, building }: Props) => {
             showDots
             responsive={responsive}
             arrows={false}
+            infinite={true}
             containerClass="react-multi-carousel-list"
             dotListClass="gap-2"
             customDot={<CustomDot />}
