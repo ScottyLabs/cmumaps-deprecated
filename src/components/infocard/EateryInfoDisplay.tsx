@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 
-import { EateryInfo, LocationState, Room, SearchRoom } from '@/types';
+import { EateryInfo, LocationState, Room, Document } from '@/types';
 
 interface Props {
-  room: Room | SearchRoom;
+  room: Room | Document;
   title: ReactElement;
   eateryInfo: EateryInfo | undefined | null;
 }
@@ -30,7 +30,11 @@ const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {
   if (!eateryInfo) {
     return (
       <div className="ml-3 mt-2 flex justify-between">
-        <h3>{room.alias || room.name}</h3>
+        <h3>
+          {room.alias ||
+            (room as Room).name ||
+            (room as Document).nameWithSpace.split(' ')[1]}
+        </h3>
       </div>
     );
   }
@@ -58,7 +62,9 @@ const EateryInfoDisplay = ({ room, title, eateryInfo }: Props) => {
     return (
       <div className="flex items-center justify-between">
         <p className="text-[--color-gray]">
-          {room.floor.buildingCode} {room.name}
+          {room.floor.buildingCode}{' '}
+          {(room as Room).name ||
+            (room as Document).nameWithSpace.split(' ')[1]}
         </p>
         <div className="flex items-center gap-2">
           {renderStatusCircle()}

@@ -2,6 +2,15 @@ import { NextRequest } from 'next/server';
 
 import prisma from '@/lib/prisma';
 
+type Event = {
+  id: string;
+  name: string;
+  date: Date;
+  startTime: Date;
+  endTime: Date;
+  roomName: string;
+};
+
 async function retrieveEvents(
   roomName: string | undefined,
   startDate: string,
@@ -36,7 +45,7 @@ export async function GET(req: NextRequest) {
 
   const events = await retrieveEvents(roomName, startDate, endDate);
 
-  const groupedEvents = [];
+  const groupedEvents: Event[][] = [];
   let date = new Date(startDate);
   for (let i = 0; i < 7; i++) {
     const dateEvents = events.filter(
@@ -48,5 +57,6 @@ export async function GET(req: NextRequest) {
     groupedEvents.push(dateEvents);
     date = new Date(date.valueOf() + 60 * 60 * 24 * 1000); // Increment date by 1 day
   }
+
   return Response.json(groupedEvents);
 }

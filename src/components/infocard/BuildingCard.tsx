@@ -4,7 +4,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 import { selectRoom } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, SearchRoom } from '@/types';
+import { Building, Document, Room } from '@/types';
 import { getEateryId, sortEateries } from '@/util/eateryUtils';
 
 import { zoomOnRoomById } from '../buildings/mapUtils';
@@ -26,26 +26,28 @@ const BuildingCard = ({ map, building }: Props) => {
   const buildings = useAppSelector((state) => state.data.buildings);
   const eateryData = useAppSelector((state) => state.data.eateryData);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
-  const searchMap = useAppSelector((state) => state.data.searchMap);
 
-  const [eateries, setEateries] = useState<SearchRoom[]>([]);
+  const [eateries, setEateries] = useState<Room[]>([]);
 
   useEffect(() => {
     const newEateries = building.floors
       .map((floorLevel) => {
         if (
-          !searchMap[`${building.code}`] ||
-          !searchMap[`${building.code}`][floorLevel]
+          !(
+            floorPlanMap &&
+            floorPlanMap[building.code] &&
+            floorPlanMap[building.code][floorLevel]
+          )
         ) {
           return [];
         }
-        const rooms = searchMap[`${building.code}`][`${floorLevel}`];
-        return rooms.filter((room) => room.type == 'food');
+        const rooms = Object.values(floorPlanMap[building.code][floorLevel]);
+        return rooms.filter((room) => room.type == 'Food');
       })
       .flat();
 
     setEateries(newEateries);
-  }, [building.code, building.floors, searchMap]);
+  }, [building.code, building.floors]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;
@@ -62,7 +64,7 @@ const BuildingCard = ({ map, building }: Props) => {
       return;
     }
 
-    const renderTitle = (eatery: SearchRoom) => {
+    const renderTitle = (eatery: Document | Room) => {
       return <h3> {eatery.alias}</h3>;
     };
 
@@ -113,6 +115,7 @@ const BuildingCard = ({ map, building }: Props) => {
             showDots
             responsive={responsive}
             arrows={false}
+            infinite={true}
             containerClass="react-multi-carousel-list"
             dotListClass="gap-2"
             customDot={<CustomDot />}
@@ -139,7 +142,7 @@ const BuildingCard = ({ map, building }: Props) => {
         </div>
       );
     } else {
-      const handleClick = (eatery: SearchRoom) => () => {
+      const handleClick = (eatery: Document | Room) => () => {
         dispatch(selectRoom(eatery));
         zoomOnRoomById(
           map,
@@ -154,7 +157,7 @@ const BuildingCard = ({ map, building }: Props) => {
       return (
         <>
           <p className="mb-2 ml-3 text-base text-gray-500">Eateries nearby</p>
-          <div className="max-h-96 space-y-3 overflow-y-auto px-2 pb-3">
+          <div className="space-y-3 overflow-y-auto px-2 pb-3">
             {eateries.map((eatery) => {
               const eateryInfo = eateryData[getEateryId(eatery)];
 

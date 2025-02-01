@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import { Node } from '@/app/api/findPath/types';
 import { setCurFloorIndex } from '@/lib/features/navSlice';
 import { setFocusedFloor } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Floor, Room, areFloorsEqual } from '@/types';
+import { Floor, Room, areFloorsEqual, Node } from '@/types';
 
 import { initialRegion } from '../buildings/MapDisplay';
 import { zoomOnFloor, zoomOnObject } from '../buildings/mapUtils';
@@ -39,7 +38,7 @@ const NavDirections = ({ map, path }: Props) => {
           const level = node.floor.level;
           const buildingCode = node.floor.buildingCode;
 
-          if (floorPlanMap[buildingCode][level][node.roomId]) {
+          if (floorPlanMap && floorPlanMap[buildingCode][level][node.roomId]) {
             passedByRooms.push(floorPlanMap[buildingCode][level][node.roomId]);
           }
         }
@@ -52,6 +51,10 @@ const NavDirections = ({ map, path }: Props) => {
 
   // zoom on the selected floor
   useEffect(() => {
+    if (!buildings) {
+      return;
+    }
+
     if (passedByFloors) {
       const curFloor = passedByFloors[curFloorIndex];
       const { buildingCode, level } = curFloor;

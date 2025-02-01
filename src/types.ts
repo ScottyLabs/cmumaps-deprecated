@@ -3,8 +3,7 @@
  */
 import { Coordinate } from 'mapkit-react';
 
-export type ID = string;
-
+export type RoomId = string;
 export type BuildingCode = string;
 export type FloorLevel = string;
 
@@ -17,31 +16,32 @@ export type AbsoluteCoordinate = { x: number; y: number };
  * Room types
  */
 export const RoomTypeList = [
-  'default',
-  'corridor',
-  'auditorium',
-  'office',
-  'classroom',
-  'operational', // Used for storage or maintenance, not publicly accessible
-  'conference',
-  'study',
-  'laboratory',
-  'computer lab',
-  'studio',
-  'workshop',
-  'vestibule',
-  'storage',
-  'restroom',
-  'stairs',
-  'elevator',
-  'ramp',
-  'food',
-  'dining',
-  'store',
-  'library',
-  'sport',
-  'parking',
-  'inaccessible',
+  'Default',
+  'Corridor',
+  'Auditorium',
+  'Office',
+  'Classroom',
+  'Operational', // Used for storage or maintenance, not publicly accessible
+  'Conference',
+  'Study',
+  'Library Study Room',
+  'Laboratory',
+  'Computer Lab',
+  'Studio',
+  'Workshop',
+  'Vestibule',
+  'Storage',
+  'Restroom',
+  'Stairs',
+  'Elevator',
+  'Ramp',
+  'Dining',
+  'Food',
+  'Store',
+  'Library',
+  'Sport',
+  'Parking',
+  'Inaccessible',
   '', // not assigned
 ] as const;
 
@@ -74,70 +74,66 @@ interface RoomTypeDetails {
  */
 export function getRoomTypeDetails(type: RoomType): RoomTypeDetails {
   switch (type) {
-    case 'default':
+    case 'Default':
       return { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' };
-    case 'corridor':
+    case 'Corridor':
       return { primary: '#cecece', background: '#fefefe', border: '#cccccc' };
-    case 'office':
+    case 'Office':
       return { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' };
-    case 'auditorium':
-    case 'classroom':
-    case 'conference':
+    case 'Auditorium':
+    case 'Classroom':
+    case 'Conference':
       return { primary: '#7082b3', background: '#e6ecfe', border: '#9eabcd' };
-    case 'operational':
-    case 'storage':
+    case 'Operational':
+    case 'Storage':
       return { primary: '#808080', background: '#ece3d5', border: '#b9b9b9' };
-    case 'laboratory':
-    case 'computer lab':
-    case 'studio':
-    case 'workshop':
+    case 'Laboratory':
+    case 'Computer Lab':
+    case 'Studio':
+    case 'Workshop':
       return { primary: '#ff7e81', background: '#ffdbdc', border: '#ff7e81' };
-    case 'vestibule':
+    case 'Vestibule':
       return { primary: '#cecece', background: '#fefefe', border: '#cccccc' };
-    case 'restroom':
+    case 'Restroom':
       return { primary: '#c39dff', background: '#e7dfed', border: '#d6d0db' };
-    case 'stairs':
-    case 'elevator':
-    case 'ramp':
+    case 'Stairs':
+    case 'Elevator':
+    case 'Ramp':
       return { primary: '#3b92f0', background: '#c4dadf', border: '#9bacb0' };
-    case 'dining':
+    case 'Dining':
       return { primary: '#ff961c', background: '#ffdcb2', border: '#f8992a' };
-    case 'food':
+    case 'Food':
       return { primary: '#ff961c', background: '#ffdcb2', border: '#f8992a' };
-    case 'store':
+    case 'Store':
       return { primary: '#ffc855', background: '#fff0d0', border: '#ffc855' };
-    case 'library':
-    case 'study':
+    case 'Library':
+    case 'Study':
       return { primary: '#d18e63', background: '#f5dbc8', border: '#d18e63' };
-    case 'sport':
+    case 'Sport':
       return { primary: '#6bc139', background: '#e1fcd1', border: '#9ac382' };
-    case 'parking':
+    case 'Parking':
       return { primary: '#51a2f7', background: '#d4e9ff', border: '#51a2f7' };
     default:
       return { primary: '#b5b3b2', background: '#eeeeee', border: '#cccccc' };
   }
 }
 
-export interface SearchRoom {
+export interface Document {
   /**
    * Unique ID (UUID)
    */
-  id: string;
+  id: RoomId;
 
   /**
    * The short name of the room, without the building name but including the
    * floor level (e.g. '121' for CUC 121)
    */
-  name: string;
-
-  /**
-   * A list of names under which the room is known for searching purposes (e.g. 'ABP vs Au Bon Pain')
-   */
-  aliases: string[];
+  nameWithSpace: string;
+  fullNameWithSpace: string;
 
   alias: string;
 
-  type: RoomType;
+  type: RoomType | "Building";
 
   labelPosition: Coordinate;
 
@@ -148,7 +144,7 @@ export interface Room {
   /**
    * Unique ID (UUID)
    */
-  id: string;
+  id: RoomId;
 
   /**
    * Building-Floor code (e.g. 'WEH-4')
@@ -218,7 +214,7 @@ export interface Floor {
 /**
  * Details about a specific building floor.
  */
-export type FloorPlan = Record<ID, Room>;
+export type FloorPlan = Record<RoomId, Room>;
 
 /**
  * The details of a building.
@@ -269,7 +265,7 @@ export interface Building {
  * A map from building code to a map of floor levels to a list of search rooms
  * Used for searching purposes
  */
-export type SearchMap = Record<BuildingCode, Record<FloorLevel, SearchRoom[]>>;
+export type SearchMap = Record<BuildingCode, Record<FloorLevel, Document[]>>;
 
 export type FloorPlanMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;
 
@@ -306,3 +302,33 @@ export interface CourseSection {
   startTime: string;
   endTime: string;
 }
+
+export type Edge = {
+  dist: number;
+  toFloorInfo: { toFloor: string; type: string };
+};
+
+export type Node = {
+  pos: { x: number; y: number };
+  neighbors: {
+    [neighborId: string]: Edge;
+  };
+  roomId: string;
+  floor: Floor;
+  coordinate: Coordinate;
+  id: string;
+};
+
+export type Path = Node[];
+
+export type Route = { path: Path; distance: number };
+export type MaybeRoute = Route | { error: string };
+
+export type RouteResponse = Record<string, Route>;
+
+// The things we navigate between
+export type Waypoint =
+  | Room
+  | Building
+  | { userPosition: Coordinate }
+  | { waypoint: Coordinate };

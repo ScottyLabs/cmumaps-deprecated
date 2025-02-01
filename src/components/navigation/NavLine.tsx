@@ -11,9 +11,8 @@ import Image from 'next/image';
 
 import React, { useEffect, useState } from 'react';
 
-import { Node } from '@/app/api/findPath/types';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { areFloorsEqual } from '@/types';
+import { areFloorsEqual, Node } from '@/types';
 
 interface IconInfo {
   coordinate: Coordinate;
@@ -28,9 +27,7 @@ const NavLine = ({ map }: Props) => {
   const dispatch = useAppDispatch();
 
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
-  const selectedPathName = useAppSelector(
-    (state) => state.nav.selectedPathName,
-  );
+  const selectedPathNum = useAppSelector((state) => state.nav.selectedPathNum);
   const startedNavigation = useAppSelector(
     (state) => state.nav.startedNavigation,
   );
@@ -49,11 +46,11 @@ const NavLine = ({ map }: Props) => {
   useEffect(() => {
     if (
       startedNavigation &&
-      selectedPathName &&
+      selectedPathNum &&
       recommendedPath &&
-      recommendedPath[selectedPathName]
+      recommendedPath[selectedPathNum]
     ) {
-      const path: Node[] = recommendedPath[selectedPathName].path;
+      const path: Node[] = recommendedPath[selectedPathNum].path;
       const newCurFloorPath: Node[] = [];
       const newRestPath: Node[] = [];
       let count = 0;
@@ -76,7 +73,7 @@ const NavLine = ({ map }: Props) => {
       setCurFloorPath(newCurFloorPath);
       setRestPath(newRestPath);
     }
-  }, [curFloorIndex, recommendedPath, selectedPathName, startedNavigation]);
+  }, [curFloorIndex, recommendedPath, selectedPathNum, startedNavigation]);
 
   // calculate the pathOverlay
   useEffect(() => {
@@ -131,15 +128,15 @@ const NavLine = ({ map }: Props) => {
         setPathOverlay([]);
       } else {
         setPathOverlay(
-          Object.keys(recommendedPath).map((pathName) => {
+          recommendedPath.map((_, pathNum) => {
             const style = {
-              strokeColor: selectedPathName == pathName ? 'blue' : 'gray',
-              strokeOpacity: selectedPathName == pathName ? 0.9 : 0.5,
+              strokeColor: selectedPathNum == pathNum ? 'blue' : 'gray',
+              strokeOpacity: selectedPathNum == pathNum ? 0.9 : 0.5,
               lineWidth: 5,
             };
 
             return new mapkit.PolylineOverlay(
-              recommendedPath[pathName].path.map(
+              recommendedPath[pathNum].path.map(
                 (n: Node) =>
                   new mapkit.Coordinate(
                     n.coordinate.latitude,
@@ -156,7 +153,7 @@ const NavLine = ({ map }: Props) => {
     recommendedPath,
     restPath,
     curFloorPath,
-    selectedPathName,
+    selectedPathNum,
     startedNavigation,
   ]);
 
@@ -259,7 +256,7 @@ const NavLine = ({ map }: Props) => {
     };
 
     const addStartEndIcons = () => {
-      const path = recommendedPath[selectedPathName].path;
+      const path = recommendedPath[selectedPathNum].path;
       newIconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
       newIconInfos.push({
         coordinate: path[path.length - 1].coordinate,
@@ -283,7 +280,7 @@ const NavLine = ({ map }: Props) => {
     } else {
       newIconInfos = [
         ...newIconInfos,
-        ...calculateIcon(recommendedPath[selectedPathName].path),
+        ...calculateIcon(recommendedPath[selectedPathNum].path),
       ];
     }
 
@@ -291,7 +288,7 @@ const NavLine = ({ map }: Props) => {
   }, [
     recommendedPath,
     startedNavigation,
-    selectedPathName,
+    selectedPathNum,
     curFloorPath,
     restPath,
   ]);

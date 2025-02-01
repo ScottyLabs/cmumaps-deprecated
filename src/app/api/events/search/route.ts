@@ -16,6 +16,10 @@ async function searchEvents(query: string) {
               wildcard: '*',
             },
           },
+          sort: {
+            score: { $meta: 'searchScore' },
+            date: -1,
+          },
         },
       },
     ],

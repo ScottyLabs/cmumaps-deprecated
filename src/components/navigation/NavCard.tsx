@@ -1,5 +1,3 @@
-import alternativeIcon from '@icons/nav/alternative.svg';
-import fastestIcon from '@icons/nav/fastest.svg';
 import swapIcon from '@icons/nav/swap.svg';
 import endIcon from '@icons/path/end.svg';
 import startIcon from '@icons/path/start.svg';
@@ -7,12 +5,14 @@ import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
 import React, { useEffect } from 'react';
+import { BsFillLightningChargeFill } from 'react-icons/bs';
+import { FaRegSnowflake } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
 import {
   setChoosingRoomMode,
-  setSelectedPathName,
+  setSelectedPathNum,
   setEndLocation,
   setIsNavOpen,
   setRecommendedPath,
@@ -22,15 +22,16 @@ import {
 } from '@/lib/features/navSlice';
 import { setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { Building, Room } from '@/types';
+import { Waypoint } from '@/types';
 
 import CardWrapper from '../infocard/CardWrapper';
 import NavDirections from './NavDirections';
 
-const pathNameToIcon = {
-  Fastest: fastestIcon,
-  Alternative: alternativeIcon,
-};
+const pathNumToIcon = [
+  <BsFillLightningChargeFill key="fast" size={25} />,
+  <FaRegSnowflake key="snow" size={25} />,
+];
+const pathNumToName = ['Fastest', 'Indoor'];
 
 interface Props {
   map: mapkit.Map | null;
@@ -42,9 +43,7 @@ const NavCard = ({ map }: Props) => {
   const startLocation = useAppSelector((state) => state.nav.startLocation);
   const endLocation = useAppSelector((state) => state.nav.endLocation);
   const recommendedPath = useAppSelector((state) => state.nav.recommendedPath);
-  const selectedPathName = useAppSelector(
-    (state) => state.nav.selectedPathName,
-  );
+  const selectedPathNum = useAppSelector((state) => state.nav.selectedPathNum);
   const startedNavigation = useAppSelector(
     (state) => state.nav.startedNavigation,
   );
@@ -53,13 +52,16 @@ const NavCard = ({ map }: Props) => {
   useEffect(() => {
     if (startLocation && endLocation) {
       dispatch(setRecommendedPath(null));
-      fetch('/api/findPath', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      fetch(
+        `https://mp9boknsu3.execute-api.us-east-2.amazonaws.com/default/find-path`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ waypoints: [startLocation, endLocation] }),
         },
-        body: JSON.stringify({ waypoints: [startLocation, endLocation] }),
-      })
+      )
         .then((r) => {
           try {
             return r.json();
@@ -71,12 +73,12 @@ const NavCard = ({ map }: Props) => {
           return null;
         })
         .then((j) => {
-          if (!j || j.error) {
-            toast.error('Sorry, we are not able to find a path :(');
+          if (!j || j.error || j.message == 'Internal Server Error') {
+            toast.error('Sorry, these rooms are not connected (yet) 😢');
             return;
           } else {
             dispatch(setRecommendedPath(j));
-            dispatch(setSelectedPathName(Object.keys(j)[0]));
+            dispatch(setSelectedPathNum(Object.keys(j)[0]));
           }
         });
     }
@@ -95,6 +97,8 @@ const NavCard = ({ map }: Props) => {
             } else {
               dispatch(setRecommendedPath(null));
               dispatch(setIsNavOpen(false));
+              dispatch(setEndLocation(null));
+              dispatch(setStartLocation(null));
             }
           }}
         />
@@ -104,7 +108,7 @@ const NavCard = ({ map }: Props) => {
   };
 
   const renderRoomInput = (
-    navLocation: Room | Building | null,
+    navLocation: Waypoint | null,
     placeHolder: string,
     icon: StaticImport,
     handleClick: () => void,
@@ -119,8 +123,12 @@ const NavCard = ({ map }: Props) => {
           return (
             <p>{navLocation.floor?.buildingCode + ' ' + navLocation.name}</p>
           );
-        } else {
+        } else if ('name' in navLocation) {
           return <p>{navLocation.name}</p>;
+        } else if ('userPosition' in navLocation) {
+          return <p>Your Location</p>;
+        } else if ('waypoint' in navLocation) {
+          return <p>Waypoint</p>;
         }
       } else {
         return <p className="text-[gray]">{placeHolder}</p>;
@@ -164,26 +172,21 @@ const NavCard = ({ map }: Props) => {
 
     return renderRoomInput(endLocation, placeHolder, endIcon, handleClick);
   };
-
-  const renderPathInfo = (pathName: string, distanceMeters: number) => {
+  const renderPathInfo = (pathNum: number, distanceMeters: number) => {
     return (
-      <div key={pathName} className="flex w-full justify-center">
+      <div key={String(pathNum)} className="flex w-full justify-center">
         <button
-          className={`w-[22.5rem] rounded-lg border py-2 ${pathName == selectedPathName ? 'bg-[#1e86ff] text-white' : 'text-gray-600'}`}
-          onClick={() => dispatch(setSelectedPathName(pathName))}
+          className={`w-[22.5rem] rounded-lg border py-2 ${pathNum == selectedPathNum ? 'bg-[#1e86ff] text-white' : 'text-gray-600'}`}
+          onClick={() => dispatch(setSelectedPathNum(pathNum))}
         >
           <div className="mx-2 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Image
-                src={pathNameToIcon[pathName]}
-                alt="Nav Path Icon"
-                height={40}
-              />
+              {pathNumToIcon[pathNum]}
               <div>
                 <p
-                  className={`text-lg ${pathName == selectedPathName ? 'text-gray-800"' : 'text-gray-600'}`}
+                  className={`text-lg ${pathNum == selectedPathNum ? 'text-gray-800"' : 'text-gray-600'}`}
                 >
-                  {pathName}
+                  {pathNumToName[pathNum]}
                 </p>
               </div>
             </div>
@@ -198,11 +201,12 @@ const NavCard = ({ map }: Props) => {
   };
 
   const renderPathWrapper = () => {
+    console.log(recommendedPath);
     return (
       recommendedPath && (
         <div className="my-2 space-y-2">
-          {Object.entries(recommendedPath).map(([pathName, { distance }]) =>
-            renderPathInfo(pathName, distance),
+          {recommendedPath.map(({ distance }, pathNum) =>
+            renderPathInfo(pathNum, distance),
           )}
         </div>
       )
@@ -250,7 +254,7 @@ const NavCard = ({ map }: Props) => {
           : recommendedPath &&
             map && (
               <NavDirections
-                path={recommendedPath[selectedPathName].path}
+                path={recommendedPath[selectedPathNum].path}
                 map={map}
               />
             )}

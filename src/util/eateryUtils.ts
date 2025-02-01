@@ -3,8 +3,8 @@ import {
   EateryInfo,
   EateryData,
   LocationState,
-  SearchRoom,
-  Room,
+  Document,
+  Room
 } from '@/types';
 
 const daysOfWeek = [
@@ -219,12 +219,16 @@ const eateryRoomToId = {
   'TEP 2008A': 154,
 };
 
-export const getEateryId = (room: Room | SearchRoom) => {
-  return eateryRoomToId[room.floor.buildingCode + ' ' + room.name];
+export const getEateryId = (room: Document | Room) => {
+  if ("nameWithSpace" in room){
+    return eateryRoomToId[room.floor.buildingCode + ' ' + room.nameWithSpace.split(' ')[1]];
+  }
+  
+  return eateryRoomToId[(room as Room).floor.buildingCode + ' ' + (room as Room).name];
 };
 
 export const sortEateries = (
-  eateries: SearchRoom[],
+  eateries: (Document|Room)[],
   eateryData: EateryData,
 ) => {
   const locationStateOrder: LocationState[] = [

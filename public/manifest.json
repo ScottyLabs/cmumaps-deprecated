@@ -13,5 +13,6 @@
   ],
   "scope": "/",
   "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "description": "Interactive map of the CMU campus"
 }

@@ -3,7 +3,7 @@
  */
 import { Coordinate } from 'mapkit-react';
 
-import { AbsoluteCoordinate } from './types';
+import { AbsoluteCoordinate } from '@/types';
 
 // The number of meters in a degree.
 // Values computed for the Pittsburgh region using https://stackoverflow.com/a/51765950/4652564

@@ -39,7 +39,10 @@ const RoomCard = ({ room }: Props) => {
     let url = `/assets/location_images/building_room_images/${buildingCode}/${buildingCode}.jpg`;
 
     // but get the room image if it exists
-    if (availableRoomImages[buildingCode].includes(room.name + '.jpg')) {
+    if (
+      availableRoomImages &&
+      availableRoomImages[buildingCode].includes(room.name + '.jpg')
+    ) {
       url = `/assets/location_images/building_room_images/${buildingCode}/${room.name}.jpg`;
     }
 
@@ -47,27 +50,35 @@ const RoomCard = ({ room }: Props) => {
   };
 
   const renderRoomTitle = () => {
-    const getText = () => {
+    const renderTitle = () => {
       if (room.alias) {
-        return room.alias;
+        return <h2>{room.alias}</h2>;
       }
 
       if (
-        room.type == 'restroom' ||
-        room.type == 'stairs' ||
-        room.type == 'elevator'
+        room.type == 'Restroom' ||
+        room.type == 'Stairs' ||
+        room.type == 'Elevator'
       ) {
-        return room.type;
+        return <h2>{room.type}</h2>;
       }
-      return `${buildings[room.floor.buildingCode].name} ${room.name}`;
+
+      return (
+        <div className="flex items-center justify-between">
+          <h2>
+            {buildings[room.floor.buildingCode].name} {room.name}
+          </h2>
+          <p className="italic">{room.type}</p>
+        </div>
+      );
     };
 
     if (hasSchedule) {
-      return <h2 className="ml-3 mt-2">{getText()}</h2>;
+      return <div className="mx-3 mt-2">{renderTitle()}</div>;
     } else {
       return (
-        <div className="ml-3 mt-2">
-          <h2>{getText()}</h2>
+        <div className="mx-3 mt-2">
+          {renderTitle()}
           <p className="text-[--color-gray]">No Room Schedule Available</p>
         </div>
       );
@@ -83,6 +94,14 @@ const RoomCard = ({ room }: Props) => {
           'Reserve Room',
           icon,
           'https://25live.collegenet.com/pro/cmu#!/home/event/form',
+        );
+      } else if (room.type == 'Library Study Room') {
+        const icon = <Image src={reserveIcon} alt="Reserve Icon" />;
+
+        return renderMiddleButtonHelper(
+          'Reserve Study Room',
+          icon,
+          'https://cmu.libcal.com/r',
         );
       } else {
         return <></>;

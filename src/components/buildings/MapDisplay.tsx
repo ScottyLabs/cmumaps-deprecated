@@ -5,13 +5,21 @@ import {
   Map,
   MapType,
   CoordinateRegion,
+  Annotation,
+  MapInteractionEvent,
 } from 'mapkit-react';
 
 import React, { useEffect, useState } from 'react';
 
 import {
+  setChoosingRoomMode,
+  setEndLocation,
+  setStartLocation,
+} from '@/lib/features/navSlice';
+import {
   deselectBuilding,
-  selectRoom,
+  deselectRoom,
+  selectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
   setIsZooming,
@@ -23,11 +31,13 @@ import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
+import RoomPin from '../shared/RoomPin';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay, {
   getFloorAtOrdinal,
   getOrdinalOfFloor,
 } from './FloorPlanOverlay';
+import { zoomOnRoom } from './mapUtils';
 
 //#region Constants
 const THRESHOLD_DENSITY_TO_SHOW_FLOORS = 350_000;
@@ -57,6 +67,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const focusedFloor = useAppSelector((state) => state.ui.focusedFloor);
+  const selectedRoom = useAppSelector((state) => state.ui.selectedRoom);
   const isMobile = useAppSelector((state) => state.ui.isMobile);
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
@@ -65,7 +76,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   const isZooming = useAppSelector((state) => state.ui.isZooming);
   const userPostion = useAppSelector((state) => state.nav.userPosition);
 
-  const [usedScrolling, setUsedScrolling] = useState<boolean>(false);
+  const [usedPanning, setUsedPanning] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
   const [showFloor, setShowFloor] = useState<boolean>(false);
 
@@ -168,7 +179,6 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
 
       const newShowFloor = density >= THRESHOLD_DENSITY_TO_SHOW_FLOORS;
       setShowFloor(newShowFloor);
-
       dispatch(setShowRoomNames(density >= THRESHOLD_DENSITY_TO_SHOW_ROOMS));
 
       // don't set floor when zooming on room
@@ -195,8 +205,18 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           ) ?? null;
 
         if (centerBuilding) {
-          // focus on the default floor of the center building if no floor is focused
+          // if no floor is focused
+          //   - we focus on the floor of the selected room if there is one
+          //     and it is in the center building
+          //   - otherwise we focus on the default floor of the center building
           if (!focusedFloor) {
+            if (selectedRoom) {
+              if (selectedRoom.floor.buildingCode == centerBuilding.code) {
+                dispatch(setFocusedFloor(selectedRoom.floor));
+                return;
+              }
+            }
+
             const newFocusFloor = {
               buildingCode: centerBuilding.code,
               level: centerBuilding.defaultFloor,
@@ -206,7 +226,8 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
           }
 
           // if we are focusing on a different building,
-          // then focus on the floor of the center building that is the same ordinal as the currently focused floor
+          // then focus on the floor of the center building
+          // that is the same ordinal as the currently focused floor
           else {
             const focusedBuilding = buildings[focusedFloor.buildingCode];
             if (focusedBuilding.code != centerBuilding.code) {
@@ -234,7 +255,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     }
 
     mapRef.current.addEventListener('scroll-end', () => {
-      setUsedScrolling(true);
+      setUsedPanning(true);
     });
 
     const randomCoordinate = new mapkit.Coordinate(40.444, -79.945);
@@ -249,6 +270,75 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       pinOptions,
     );
     mapRef.current?.addAnnotation(pinAnnotation);
+  };
+
+  const renderSelectedRoomPin = () => {
+    if (selectedRoom) {
+      return (
+        <Annotation
+          latitude={selectedRoom.labelPosition.latitude}
+          longitude={selectedRoom.labelPosition.longitude}
+        >
+          <div
+            className="flex flex-col items-center"
+            onClick={(e) => {
+              zoomOnRoom(mapRef.current, selectedRoom, dispatch);
+              e.stopPropagation();
+            }}
+          >
+            <RoomPin room={{ ...selectedRoom, id: selectedRoom?.id }} />
+            <div className="text-center text-sm font-bold leading-[1.1] tracking-wide">
+              <p>{selectedRoom.name}</p>
+              {selectedRoom.alias && (
+                <p className="w-16 text-wrap italic">{selectedRoom.alias}</p>
+              )}
+            </div>
+          </div>
+        </Annotation>
+      );
+    }
+  };
+
+  const handleClick = (e: MapInteractionEvent) => {
+    // skip if usedPanning is true since end of panning is a click
+    if (usedPanning) {
+      setUsedPanning(false);
+      return;
+    }
+
+    // check if a building is clicked
+    let clickedBuilding = false;
+
+    if (!showFloor) {
+      const coords = e.toCoordinates();
+
+      for (const buildingCode in buildings) {
+        if (
+          buildings[buildingCode].shapes[0] &&
+          isInPolygonCoordinates(buildings[buildingCode].shapes[0], coords)
+        ) {
+          dispatch(selectBuilding(buildings[buildingCode]));
+          clickedBuilding = true;
+          break;
+        }
+      }
+    }
+
+    if (!choosingRoomMode && !isNavOpen) {
+      dispatch(setIsSearchOpen(false));
+      dispatch(deselectRoom());
+      if (!clickedBuilding) {
+        dispatch(deselectBuilding());
+      }
+    } else if (choosingRoomMode) {
+      if (choosingRoomMode == 'start') {
+        dispatch(setStartLocation({ waypoint: e.toCoordinates() }));
+      } else if (choosingRoomMode == 'end') {
+        dispatch(setEndLocation({ waypoint: e.toCoordinates() }));
+      }
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+    }
   };
 
   return (
@@ -275,15 +365,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         dispatch(setIsZooming(false));
         onRegionChangeEnd();
       }}
-      onClick={() => {
-        // need to check usedScrolling because end of panning is a click
-        if (!usedScrolling && !choosingRoomMode && !isNavOpen) {
-          dispatch(setIsSearchOpen(false));
-          dispatch(deselectBuilding());
-          dispatch(selectRoom(null));
-        }
-        setUsedScrolling(false);
-      }}
+      onClick={handleClick}
       onLoad={handleLoad}
     >
       {buildings &&
@@ -303,6 +385,8 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       )}
 
       {mapRef.current && <NavLine map={mapRef.current} />}
+
+      {renderSelectedRoomPin()}
     </Map>
   );
 };
