@@ -39,15 +39,14 @@ pub(crate) async fn function_handler(event: Request, graph: &Graph, buildings: &
     let route = find_path(&start_nodes, &end_nodes, &graph, 1.0).unwrap();
     let more_indoor_route = find_path(&start_nodes, &end_nodes, &graph, 100000.0).unwrap();
     let nodes_route =  NodesRoute {
-        path: route.path.iter().map(|node_id| (&graph[node_id]).clone()).collect(),
-        distance: route.distance.to_f32()
+        path: route.path.path.iter().map(|node_id| (&graph[node_id]).clone()).collect(),
+        distance: route.distance.to_f32() - route.path.add_cost.parse::<f32>().unwrap()
     };
-    let mut more_indoor_nodes_route = NodesRoute {
-        path: more_indoor_route.path.iter().map(|node_id| (&graph[node_id]).clone()).collect(),
-        distance: more_indoor_route.distance.to_f32()
+    let more_indoor_nodes_route = NodesRoute {
+        path: more_indoor_route.path.path.iter().map(|node_id| (&graph[node_id]).clone()).collect(),
+        distance: more_indoor_route.distance.to_f32() - more_indoor_route.path.add_cost.parse::<f32>().unwrap()
     };
-    more_indoor_nodes_route.distance = more_indoor_nodes_route.distance % 100000.0;
-    let response_obj = match nodes_route.distance != more_indoor_nodes_route.distance {
+    let response_obj = match (more_indoor_nodes_route.distance - nodes_route.distance > 10.0) {
         true => vec![nodes_route, more_indoor_nodes_route],
         false => vec![nodes_route]
     };
