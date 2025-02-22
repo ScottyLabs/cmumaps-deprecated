@@ -116,14 +116,12 @@ const RoomCard = ({ room, initSnapPoint }: Props) => {
   };
 
   return (
-    // <CardWrapper snapPoint={hasSchedule ? 403 : 300}>
     <>
       {renderRoomImage()}
       {renderRoomTitle()}
       {renderButtonsRow()}
       {hasSchedule && <RoomSchedule />}
     </>
-    // </CardWrapper>
   );
 };
 

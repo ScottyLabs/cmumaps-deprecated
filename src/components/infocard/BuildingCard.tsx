@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-import { selectRoom } from '@/lib/features/uiSlice';
+import {
+  COLLAPSED,
+  EXPANDED,
+  HALF_OPEN,
+  selectRoom,
+} from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building, Document, Room } from '@/types';
 import { getEateryId, sortEateries } from '@/util/eateryUtils';
@@ -23,24 +28,15 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
-  const isCardWrapperCollapsed = useAppSelector(
-    (state) => state.ui.isCardWrapperCollapsed,
+  const cardWrapperStatus = useAppSelector(
+    (state) => state.ui.cardWrapperStatus,
   );
 
   const buildings = useAppSelector((state) => state.data.buildings);
   const eateryData = useAppSelector((state) => state.data.eateryData);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
-  const isFullyOpen = useAppSelector(
-    (state) => state.ui.isCardWrapperFullyOpen,
-  );
 
   const [eateries, setEateries] = useState<Room[]>([]);
-
-  // const [isFullyOpen, setIsFullyOpen] = useState(true);
-
-  // function toggleFullyOpen() {
-  //   setIsFullyOpen((isOpen) => !isOpen);
-  // }
 
   useEffect(() => {
     const newEateries = building.floors
@@ -139,12 +135,12 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
 
       return (
         <div className="mb-1">
-          {!isCardWrapperCollapsed && (
+          {cardWrapperStatus != COLLAPSED && (
             <p className="-mb-3 ml-3 text-base text-gray-500">
               Eateries nearby
             </p>
           )}
-          {!isFullyOpen && !isCardWrapperCollapsed && (
+          {cardWrapperStatus == HALF_OPEN && (
             <div>
               <Carousel
                 showDots
@@ -176,7 +172,7 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
               </Carousel>
             </div>
           )}
-          {isFullyOpen && (
+          {cardWrapperStatus == EXPANDED && (
             <div className="mt-4 max-h-96 space-y-3 overflow-y-auto px-2 pb-3">
               {eateries.map((eatery) => {
                 const eateryInfo = eateryData[getEateryId(eatery)];
@@ -240,16 +236,14 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
   };
 
   return (
-    // <CardWrapper snapPoint={eateries.length > 0 ? 440 : 275}>
     <>
-      {!isCardWrapperCollapsed && renderBuildingImage()}
+      {cardWrapperStatus != COLLAPSED && renderBuildingImage()}
       <h2 className="ml-3 mt-2">
         {building.name} ({building.code})
       </h2>
       {renderButtonsRow()}
       {renderEateryCarousel()}
     </>
-    // </CardWrapper>
   );
 };
 

@@ -69,13 +69,11 @@ const Eaterycard = ({ room, initSnapPoint }: Props) => {
   };
 
   return (
-    // <CardWrapper snapPoint={340}>
     <>
       {renderEateryImage()}
       {renderInfo()}
       {renderButtonsRow()}
     </>
-    // </CardWrapper>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { getIsCardOpen } from '@/lib/features/uiSlice';
+import { COLLAPSED, getIsCardOpen } from '@/lib/features/uiSlice';
 import { useAppSelector } from '@/lib/hooks';
 
 import FloorSwitcher from '../buildings/FloorSwitcher';
@@ -27,7 +27,7 @@ const ToolBar = ({ map }: Props) => {
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
   const isCardWrapperCollapsed = useAppSelector(
-    (state) => state.ui.isCardWrapperCollapsed,
+    (state) => state.ui.cardWrapperStatus == COLLAPSED,
   );
 
   let showSearchModeSelector =

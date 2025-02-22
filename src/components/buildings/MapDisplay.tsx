@@ -19,10 +19,11 @@ import {
   deselectBuilding,
   selectRoom,
   setFocusedFloor,
-  setIsCardWrapperCollapsed,
+  setCardWrapperStatus,
   setIsSearchOpen,
   setIsZooming,
   setShowRoomNames,
+  COLLAPSED,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Building } from '@/types';
@@ -145,7 +146,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
     (region, density) => {
-      dispatch(setIsCardWrapperCollapsed(true));
+      dispatch(setCardWrapperStatus(COLLAPSED));
 
       if (!buildings) {
         return;

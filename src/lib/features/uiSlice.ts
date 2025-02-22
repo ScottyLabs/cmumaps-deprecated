@@ -3,6 +3,12 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { SearchMode } from '@/components/searchbar/searchMode';
 import { Building, Floor, Room } from '@/types';
 
+export type InfoCardStatus = 'collapsed' | 'halfOpen' | 'expanded';
+
+export const COLLAPSED: InfoCardStatus = 'collapsed';
+export const HALF_OPEN: InfoCardStatus = 'halfOpen';
+export const EXPANDED: InfoCardStatus = 'expanded';
+
 interface UIState {
   isMobile: boolean;
 
@@ -14,8 +20,10 @@ interface UIState {
   focusedFloor: Floor | null;
   isSearchOpen: boolean;
 
-  isCardWrapperCollapsed: boolean;
-  isCardWrapperFullyOpen: boolean;
+  // isCardWrapperCollapsed: boolean;
+  // isCardWrapperFullyOpen: boolean;
+
+  cardWrapperStatus: InfoCardStatus;
 
   showRoomNames: boolean;
 
@@ -32,8 +40,7 @@ const initialState: UIState = {
   selectedBuilding: null,
   focusedFloor: null,
   isSearchOpen: false,
-  isCardWrapperCollapsed: true,
-  isCardWrapperFullyOpen: false,
+  cardWrapperStatus: COLLAPSED,
   showRoomNames: false,
   searchMode: 'rooms',
   isZooming: false,
@@ -74,11 +81,8 @@ const uiSlice = createSlice({
     setIsSearchOpen(state, action: PayloadAction<boolean>) {
       state.isSearchOpen = action.payload;
     },
-    setIsCardWrapperCollapsed(state, action: PayloadAction<boolean>) {
-      state.isCardWrapperCollapsed = action.payload;
-    },
-    setIsCardWrapperFullyOpen(state, action: PayloadAction<boolean>) {
-      state.isCardWrapperFullyOpen = action.payload;
+    setCardWrapperStatus(state, action: PayloadAction<InfoCardStatus>) {
+      state.cardWrapperStatus = action.payload;
     },
     setIsMobile(state, action: PayloadAction<boolean>) {
       state.isMobile = action.payload;
@@ -111,8 +115,7 @@ export const {
   deselectBuilding,
   setFocusedFloor,
   setIsSearchOpen,
-  setIsCardWrapperCollapsed,
-  setIsCardWrapperFullyOpen,
+  setCardWrapperStatus,
   setIsMobile,
   setShowRoomNames,
   setSearchMode,

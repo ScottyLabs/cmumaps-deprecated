@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { useDrag } from 'react-use-gesture';
 
 import {
-  setIsCardWrapperCollapsed, // setIsCardWrapperCollapsed,
-  setIsCardWrapperFullyOpen,
+  COLLAPSED,
+  EXPANDED,
+  HALF_OPEN,
+  setCardWrapperStatus,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
@@ -16,8 +18,8 @@ interface DraggableSheetProps {
 }
 
 function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
-  const isCardWrapperCollapsed = useAppSelector(
-    (state) => state.ui.isCardWrapperCollapsed,
+  const cardWrapperStatus = useAppSelector(
+    (state) => state.ui.cardWrapperStatus,
   );
 
   const [{ y }, api] = useSpring(() => {
@@ -49,8 +51,10 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
 
   useEffect(() => {
     const closestSnap = snapPoints[snapIndex];
-    dispatch(setIsCardWrapperFullyOpen(closestSnap == snapPoints[2]));
-    dispatch(setIsCardWrapperCollapsed(closestSnap == snapPoints[0]));
+    const closestSnapIndex = snapPoints.indexOf(closestSnap);
+    dispatch(
+      setCardWrapperStatus([COLLAPSED, HALF_OPEN, EXPANDED][closestSnapIndex]),
+    );
   }, [dispatch, snapIndex, snapPoints]);
 
   useEffect(() => {
@@ -62,10 +66,10 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
   }, [isOpen]);
 
   useEffect(() => {
-    if (isCardWrapperCollapsed) {
+    if (cardWrapperStatus == COLLAPSED) {
       snapTo(0);
     }
-  }, [isCardWrapperCollapsed]);
+  }, [cardWrapperStatus]);
 
   const onClick = () => {
     snapTo((snapIndex + 1) % 3);
@@ -81,8 +85,11 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
       api.start({ y: closestSnap });
     }
 
-    setSnapIndex(snapPoints.indexOf(closestSnap));
-    dispatch(setIsCardWrapperFullyOpen(closestSnap == snapPoints[2]));
+    const closestSnapIndex = snapPoints.indexOf(closestSnap);
+    setSnapIndex(closestSnapIndex);
+    dispatch(
+      setCardWrapperStatus([COLLAPSED, HALF_OPEN, EXPANDED][closestSnapIndex]),
+    );
     setSnapPos(closestSnap);
   }, [api]);
 
@@ -102,8 +109,13 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
 
         api.start({ y: closestSnap });
 
-        setSnapIndex(snapPoints.indexOf(closestSnap));
-        dispatch(setIsCardWrapperFullyOpen(closestSnap == snapPoints[2]));
+        const closestSnapIndex = snapPoints.indexOf(closestSnap);
+        setSnapIndex(closestSnapIndex);
+        dispatch(
+          setCardWrapperStatus(
+            [COLLAPSED, HALF_OPEN, EXPANDED][closestSnapIndex],
+          ),
+        );
         setSnapPos(closestSnap);
       }
     },
