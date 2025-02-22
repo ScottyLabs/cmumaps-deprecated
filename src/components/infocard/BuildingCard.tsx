@@ -139,8 +139,12 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
 
       return (
         <div className="mb-1">
-          <p className="-mb-3 ml-3 text-base text-gray-500">Eateries nearby</p>
-          {!isFullyOpen && (
+          {!isCardWrapperCollapsed && (
+            <p className="-mb-3 ml-3 text-base text-gray-500">
+              Eateries nearby
+            </p>
+          )}
+          {!isFullyOpen && !isCardWrapperCollapsed && (
             <div>
               <Carousel
                 showDots
