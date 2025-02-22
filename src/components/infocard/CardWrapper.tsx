@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDrag } from 'react-use-gesture';
 
 import {
-  // setIsCardWrapperCollapsed,
+  setIsCardWrapperCollapsed, // setIsCardWrapperCollapsed,
   setIsCardWrapperFullyOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -16,6 +16,10 @@ interface DraggableSheetProps {
 }
 
 function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
+  const isCardWrapperCollapsed = useAppSelector(
+    (state) => state.ui.isCardWrapperCollapsed,
+  );
+
   const [{ y }, api] = useSpring(() => {
     0;
   }); // Create springs, each corresponds to an item, controlling its transform, scale, etc.
@@ -25,7 +29,7 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
   let snapPoints;
   if (snapPoint != null) {
     snapPoints = [
-      window.innerHeight - 45,
+      window.innerHeight - 45 - 100,
       window.innerHeight - snapPoint - 12,
       0,
     ];
@@ -46,6 +50,7 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
   useEffect(() => {
     const closestSnap = snapPoints[snapIndex];
     dispatch(setIsCardWrapperFullyOpen(closestSnap == snapPoints[2]));
+    dispatch(setIsCardWrapperCollapsed(closestSnap == snapPoints[0]));
   }, [dispatch, snapIndex, snapPoints]);
 
   useEffect(() => {
@@ -55,6 +60,12 @@ function DraggableSheet({ snapPoint, children, isOpen }: DraggableSheetProps) {
       snapTo(0);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (isCardWrapperCollapsed) {
+      snapTo(0);
+    }
+  }, [isCardWrapperCollapsed]);
 
   const onClick = () => {
     snapTo((snapIndex + 1) % 3);

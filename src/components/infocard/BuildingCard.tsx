@@ -23,6 +23,10 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
 
   const isMobile = useAppSelector((state) => state.ui.isMobile);
 
+  const isCardWrapperCollapsed = useAppSelector(
+    (state) => state.ui.isCardWrapperCollapsed,
+  );
+
   const buildings = useAppSelector((state) => state.data.buildings);
   const eateryData = useAppSelector((state) => state.data.eateryData);
   const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
@@ -234,7 +238,7 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
   return (
     // <CardWrapper snapPoint={eateries.length > 0 ? 440 : 275}>
     <>
-      {renderBuildingImage()}
+      {!isCardWrapperCollapsed && renderBuildingImage()}
       <h2 className="ml-3 mt-2">
         {building.name} ({building.code})
       </h2>

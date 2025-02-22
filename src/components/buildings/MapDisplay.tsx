@@ -19,6 +19,7 @@ import {
   deselectBuilding,
   selectRoom,
   setFocusedFloor,
+  setIsCardWrapperCollapsed,
   setIsSearchOpen,
   setIsZooming,
   setShowRoomNames,
@@ -144,6 +145,9 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
     (region, density) => {
+      dispatch(setIsCardWrapperCollapsed(true));
+      console.log('Collapse card wrapper');
+
       if (!buildings) {
         return;
       }
@@ -297,6 +301,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         onRegionChangeEnd();
       }}
       onClick={(e) => {
+        console.log('Mouse click');
         // need to check usedScrolling because end of panning is a click
         if (!usedScrolling && !choosingRoomMode && !isNavOpen) {
           dispatch(setIsSearchOpen(false));
