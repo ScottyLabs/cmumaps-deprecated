@@ -10,7 +10,7 @@ pub struct Document {
     pub id: String,
     pub name_with_space: String,
     pub full_name_with_space: String,
-    pub label_position: Coordinate,
+    pub label_position: Option<Coordinate>,
     #[serde(rename(deserialize = "type"), alias = "type")]
     pub _type: String, // serde treat as type
     pub alias: String,
