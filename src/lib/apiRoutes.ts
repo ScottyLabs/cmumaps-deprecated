@@ -148,7 +148,7 @@ export const searchQuery = async (
       method: 'POST',
       body: JSON.stringify({
         query,
-        location: userPosition || '',
+        location: userPosition || null,
       }),
     },
   );
