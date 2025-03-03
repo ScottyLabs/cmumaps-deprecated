@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
 
+import useClerkToken from '@/hooks/useClerkToken';
 import { searchQuery } from '@/lib/apiRoutes';
 import {
   setChoosingRoomMode,
@@ -29,6 +30,8 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
   const userPosition = useAppSelector((state) => state.nav.userPosition);
   const [roomSearchResults, setRoomSearchResults] = useState<Document[]>([]);
 
+  const token = useClerkToken();
+
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
   );
@@ -48,11 +51,11 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
 
   useEffect(() => {
     setTimeout(() => {
-      searchQuery(query, userPosition).then((res) => {
+      searchQuery(query, userPosition, token).then((res) => {
         setRoomSearchResults(res);
       });
     }, 200);
-  }, [query, searchMode, userPosition]);
+  }, [query, searchMode, userPosition, token]);
 
   if (query.length < 2 && searchMode == 'rooms') {
     if (choosingRoomMode == null) {

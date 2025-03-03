@@ -10,6 +10,7 @@ import { FaRegSnowflake } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
+import useClerkToken from '@/hooks/useClerkToken';
 import {
   setChoosingRoomMode,
   setSelectedPathNum,
@@ -47,16 +48,21 @@ const NavCard = ({ map }: Props) => {
   const startedNavigation = useAppSelector(
     (state) => state.nav.startedNavigation,
   );
+  const token = useClerkToken();
 
   // calculate path from start to end
   useEffect(() => {
     if (startLocation && endLocation) {
       dispatch(setRecommendedPath(null));
       fetch(
-        `https://mp9boknsu3.execute-api.us-east-2.amazonaws.com/default/find-path`,
+        process.env.NEXT_PUBLIC_SEARCH_ENDPOINT +
+          process.env.NODE_ENV +
+          '/find-path',
         {
           method: 'POST',
+
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ waypoints: [startLocation, endLocation] }),
@@ -82,7 +88,7 @@ const NavCard = ({ map }: Props) => {
           }
         });
     }
-  }, [startLocation, endLocation, dispatch]);
+  }, [startLocation, endLocation, dispatch, token]);
 
   const renderTop = () => {
     return (
