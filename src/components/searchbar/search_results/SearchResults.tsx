@@ -76,13 +76,32 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
     return roomSearchResults.map((document) => {
       switch (document.type) {
         case 'Food':
-          return <FoodResult key={document.id} map={map} eatery={document} />;
+          return (
+            <FoodResult
+              key={document.id}
+              map={map}
+              eatery={document}
+              query={query}
+            />
+          );
         case 'Building':
           return (
-            <BuildingResult key={document.id} map={map} building={document} />
+            <BuildingResult
+              key={document.id}
+              map={map}
+              building={document}
+              query={query}
+            />
           );
         default:
-          return <RoomResult key={document.id} map={map} room={document} />;
+          return (
+            <RoomResult
+              key={document.id}
+              map={map}
+              room={document}
+              query={query}
+            />
+          );
       }
     });
   }

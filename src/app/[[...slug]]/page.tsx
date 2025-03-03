@@ -36,7 +36,7 @@ import {
   getIsCardOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { cachedFetch } from '@/lib/idb/IDBInterface';
+import { cachedFetch } from '@/lib/idb/dataStore';
 import { Building, BuildingCode, Floor, Room, RoomId } from '@/types';
 import { decodeCoord, encodeCoord } from '@/util/coordEncoding';
 import { getEateryData } from '@/util/eateryUtils';

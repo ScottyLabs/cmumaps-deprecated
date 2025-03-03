@@ -76,6 +76,9 @@ export function cachedFetch(
 
     if (!db.objectStoreNames.contains('dataStore')) {
       const dataStore = db.createObjectStore('dataStore');
+      if (!db.objectStoreNames.contains('logStore')) {
+        db.createObjectStore('logStore', { autoIncrement: true });
+      }
 
       dataStore.transaction.onerror = (event: any) => {
         failure(event);
@@ -93,6 +96,7 @@ export function cachedFetch(
             .transaction('dataStore', 'readwrite')
             .objectStore('dataStore');
           buildingsTransfer.add(buildings, 'buildings');
+          success(floorPlans, buildings);
         },
         (error) => {
           failure(error);
