@@ -1,56 +1,105 @@
-import { FloorPlanMap } from "@/types";
+import { Buildings, Floor, FloorPlanMap } from '@/types';
 
 let db: IDBDatabase;
+let didDBLoad = false;
+export class MapIDB {
+  loadDB(floorPlans: FloorPlanMap, buildings: Buildings) {
+    const DBOpenRequest = window.indexedDB.open('cmumaps', 1);
 
-class MapIDB {
-    floorPlanURL: string;
-    buildingsURL: string;
+    // Initialize the database connection
+    DBOpenRequest.onerror = function () {
+      console.error('Error loading database. Subsequent queries will fail.');
+    };
+    DBOpenRequest.onsuccess = function () {
+      db = DBOpenRequest.result;
+    };
 
-    constructor(floorPlanURL: string, buildingsURL: string) {
-        // Initialize the database connection
-        const DBOpenRequest = window.indexedDB.open('cmumaps', 1);
-        DBOpenRequest.onerror = function(event) {
-            console.error('Error loading database. Subsequent queries will fail.');
+    DBOpenRequest.onupgradeneeded = function (event: any) {
+      db = event.target.result;
+      if (db === null) {
+        return;
+      }
+
+      if (
+        !db.objectStoreNames.contains('floorPlans') &&
+        !db.objectStoreNames.contains('buildings')
+      ) {
+        const floorPlanStore = db.createObjectStore('floorPlans');
+        db.createObjectStore('buildings');
+
+        floorPlanStore.createIndex('floorStr', 'floorStr', { unique: false });
+
+        floorPlanStore.transaction.onerror = (event: any) => {
+          console.error(event);
         };
-        DBOpenRequest.onsuccess = function(event) {
-            db = DBOpenRequest.result;
-        };
 
-        DBOpenRequest.onupgradeneeded = async function(event) {
-            db = DBOpenRequest.result;
-            if (db === null) return;
+        // there is only one transaction for all the stores, so we just wait for it to complete and then start filling it.
+        floorPlanStore.transaction.addEventListener('complete', () => {
+          const floorPlanTransactStore = db
+            .transaction('floorPlans', 'readwrite')
+            .objectStore('floorPlans');
+          buildFloorPlanStore(floorPlans, floorPlanTransactStore);
 
-            const floorPlans = await fetch(floorPlanURL).then(response => response.json())
-            const floorPlanStore = db.createObjectStore('floorPlans', { keyPath: 'id' });
-            ingestFloorPlan(floorPlans, floorPlanStore);
+          const buildingsTransactStore = db
+            .transaction('buildings', 'readwrite')
+            .objectStore('buildings');
+          buildBuildingsStore(buildings, buildingsTransactStore);
+          didDBLoad = true;
+        });
+      }
+    };
+  }
 
-            const buildings = await fetch(buildingsURL).then(response => response.json())
-            const buildingsStore = db.createObjectStore('buildings', { keyPath: 'id' });
-            ingestBuildings(buildings, buildingsStore);
-
-            db.createObjectStore('floorPlans', { keyPath: 'id' });
-            db.createObjectStore('buildings', { keyPath: 'id' });
-        }
-
-        this.floorPlanURL = floorPlanURL;
-        this.buildingsURL = buildingsURL;
-
-
+  getFloorsRooms(floor: Floor) {
+    if (!didDBLoad) {
+      return;
     }
+    const transaction = db.transaction(['floorPlans'], 'readonly');
+    const objectStore = transaction.objectStore('floorPlans');
+    const request = objectStore
+      .index('floorStr')
+      .getAll(`${floor.buildingCode}-${floor.level}`);
+    return new Promise((resolve, reject) => {
+      request.onsuccess = () => {
+        resolve(request.result);
+      };
+      request.onerror = () => {
+        reject(request.error);
+      };
+    });
+  }
 }
 
-function ingestFloorPlan(data: FloorPlanMap, store: IDBObjectStore) {
-    for (const [building_code, building_plan] of data.entries()) {
-        for (const [floor_num, floor_plan] of building_plan.entries()) {
-            for (const [room_id, room] of floor_plan.entries()) {
-                store.add(room, building_code+"-"+floor_num+"-"+room_id);
-            }
+function buildFloorPlanStore(
+  floor_plan_map: FloorPlanMap,
+  floorPlanTransactStore: IDBObjectStore,
+) {
+  for (const building_plan of Object.values(floor_plan_map)) {
+    for (const floor_plan of Object.values(building_plan)) {
+      for (const [room_id, room] of Object.entries(floor_plan)) {
+        const floor = room['floor'];
+        room['floorStr'] = `${floor.buildingCode}-${floor.level}`;
+        const request = floorPlanTransactStore.add(room, room_id);
+        if (request) {
+          request.onerror = (event: any) => {
+            console.error(event);
+          };
         }
+      }
     }
+  }
 }
 
-function ingestBuildings(data: any, store: IDBObjectStore) {
-    for (const building of data) {
-        store.add(building);
+function buildBuildingsStore(
+  buildings: Buildings,
+  buildingsTransactStore: IDBObjectStore,
+) {
+  for (const [building_code, building_object] of Object.entries(buildings)) {
+    const request = buildingsTransactStore.add(building_object, building_code);
+    if (request) {
+      request.onerror = (event: any) => {
+        console.error(event);
+      };
     }
+  }
 }

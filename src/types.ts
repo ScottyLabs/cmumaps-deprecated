@@ -133,7 +133,7 @@ export interface Document {
 
   alias: string;
 
-  type: RoomType | "Building";
+  type: RoomType | 'Building';
 
   labelPosition: Coordinate;
 
@@ -214,7 +214,7 @@ export interface Floor {
 /**
  * Details about a specific building floor.
  */
-export type FloorPlan = Map<RoomId, Room>;
+export type FloorPlan = Record<RoomId, Room>;
 
 /**
  * The details of a building.
@@ -265,9 +265,9 @@ export interface Building {
  * A map from building code to a map of floor levels to a list of search rooms
  * Used for searching purposes
  */
-export type SearchMap = Map<BuildingCode, Map<FloorLevel, Document[]>>;
+export type SearchMap = Record<BuildingCode, Record<FloorLevel, Document[]>>;
 
-export type FloorPlanMap = Map<BuildingCode, Map<FloorLevel, FloorPlan>>;
+export type FloorPlanMap = Record<BuildingCode, Record<FloorLevel, FloorPlan>>;
 
 export type LocationState =
   | 'OPEN'
@@ -318,6 +318,8 @@ export type Node = {
   coordinate: Coordinate;
   id: string;
 };
+
+export type Buildings = Record<BuildingCode, Building>;
 
 export type Path = Node[];
 

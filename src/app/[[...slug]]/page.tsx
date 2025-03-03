@@ -36,6 +36,7 @@ import {
   getIsCardOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { MapIDB } from '@/lib/idb/IDBInterface';
 import { Building, BuildingCode, Floor, Room, RoomId } from '@/types';
 import { decodeCoord, encodeCoord } from '@/util/coordEncoding';
 import { getEateryData } from '@/util/eateryUtils';
@@ -182,6 +183,16 @@ const Page = ({ params, searchParams }: Props) => {
     fetch('/cmumaps-data/floorPlanMap.json').then((response) =>
       response.json().then((floorPlanMap) => {
         dispatch(setFloorPlanMap(floorPlanMap));
+      }),
+    );
+
+    fetch('/cmumaps-data/floorPlanMap.json').then((response) =>
+      response.json().then((floorPlanMap) => {
+        fetch('/cmumaps-data/buildings.json').then((response) =>
+          response.json().then((buildings) => {
+            new MapIDB().loadDB(floorPlanMap, buildings);
+          }),
+        );
       }),
     );
   }, [dispatch]);
