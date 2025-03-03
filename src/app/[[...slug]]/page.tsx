@@ -36,7 +36,7 @@ import {
   getIsCardOpen,
 } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { MapIDB } from '@/lib/idb/IDBInterface';
+import { cachedFetch } from '@/lib/idb/IDBInterface';
 import { Building, BuildingCode, Floor, Room, RoomId } from '@/types';
 import { decodeCoord, encodeCoord } from '@/util/coordEncoding';
 import { getEateryData } from '@/util/eateryUtils';
@@ -165,13 +165,6 @@ const Page = ({ params, searchParams }: Props) => {
       return;
     }
 
-    // set buildings
-    fetch('/cmumaps-data/buildings.json').then((response) =>
-      response.json().then((buildings) => {
-        dispatch(setBuildings(buildings));
-      }),
-    );
-
     // set searchMap
     fetch('/cmumaps-data/searchMap.json').then((response) =>
       response.json().then((searchMap) => {
@@ -179,21 +172,16 @@ const Page = ({ params, searchParams }: Props) => {
       }),
     );
 
-    // set floorPlanMap
-    fetch('/cmumaps-data/floorPlanMap.json').then((response) =>
-      response.json().then((floorPlanMap) => {
+    cachedFetch(
+      '/cmumaps-data/floorPlanMap.json',
+      '/cmumaps-data/buildings.json',
+      (floorPlanMap, buildings) => {
         dispatch(setFloorPlanMap(floorPlanMap));
-      }),
-    );
-
-    fetch('/cmumaps-data/floorPlanMap.json').then((response) =>
-      response.json().then((floorPlanMap) => {
-        fetch('/cmumaps-data/buildings.json').then((response) =>
-          response.json().then((buildings) => {
-            new MapIDB().loadDB(floorPlanMap, buildings);
-          }),
-        );
-      }),
+        dispatch(setBuildings(buildings));
+      },
+      (error) => {
+        console.error('Failed to fetch data:', error);
+      },
     );
   }, [dispatch]);
 
