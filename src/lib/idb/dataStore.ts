@@ -10,11 +10,15 @@ export function cachedFetch(
 ) {
   const DBOpenRequest = window.indexedDB.open('cmumaps', 3);
 
+  DBOpenRequest.onblocked = function () {
+    console.error('Database blocked');
+  };
   // Initialize the database connection
   DBOpenRequest.onerror = function () {
     console.error('Error loading database. Subsequent queries will fail.');
   };
   DBOpenRequest.onsuccess = function () {
+    console.log('onsuccess');
     db = DBOpenRequest.result;
 
     // Check if the database is empty
@@ -69,10 +73,12 @@ export function cachedFetch(
   };
 
   DBOpenRequest.onupgradeneeded = function (event: any) {
+    console.log('onupgradeneeded');
     db = event.target.result;
     if (db === null) {
       return;
     }
+
     if (db.objectStoreNames.contains('dataStore')) {
       db.deleteObjectStore('dataStore');
     }
@@ -81,9 +87,7 @@ export function cachedFetch(
     }
 
     const dataStore = db.createObjectStore('dataStore');
-    if (!db.objectStoreNames.contains('logStore')) {
-      db.createObjectStore('logStore', { autoIncrement: true });
-    }
+    db.createObjectStore('logStore', { autoIncrement: true });
 
     dataStore.transaction.onerror = (event: any) => {
       failure(event);

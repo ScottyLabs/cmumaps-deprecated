@@ -16,14 +16,15 @@ interface RecentSearchesProps {
 }
 
 const RecentSearches = ({ currentSearch, map }: RecentSearchesProps) => {
-  const [loggedSearches, setLoggedSearches] = useState<Document[]>([]);
+  const [loggedSearches, setLoggedSearches] = useState<Document[] | null>(null);
 
-  if (!loggedSearches) {
-    pullLogs(setLoggedSearches, (e) => console.error(e));
+  if (loggedSearches === null) {
+    setTimeout(() => {
+      pullLogs(setLoggedSearches, (e) => console.error(e));
+    }, 100);
     return <LoadingDisplay />;
   }
   if (loggedSearches.length === 0) {
-    pullLogs(setLoggedSearches, (e) => console.error(e));
     return <KeepTypingDisplay />;
   }
 

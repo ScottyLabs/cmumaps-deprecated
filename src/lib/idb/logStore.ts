@@ -1,7 +1,7 @@
 import { Document } from '@/types';
 
 export function pushLog(query: string, doc: Document, context: any = {}) {
-  const DBOpenRequest = window.indexedDB.open('cmumaps', 1);
+  const DBOpenRequest = window.indexedDB.open('cmumaps', 3);
 
   // Initialize the database connection
   DBOpenRequest.onerror = function () {
