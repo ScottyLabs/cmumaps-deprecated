@@ -3,6 +3,7 @@ import { FaRegClock } from 'react-icons/fa6';
 
 import { pullLogs } from '@/lib/idb/logStore';
 
+import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
 import LoadingDisplay from '../display_helpers/LoadingDisplay';
 
 const RecentSearch = ({ text }: { text: string }) => {
@@ -27,7 +28,7 @@ const RecentSearches = ({ currentSearch, setQuery }: RecentSearchesProps) => {
   const [loggedSearches, setLoggedSearches] = useState<string[]>([]);
   console.log(loggedSearches);
 
-  if (!loggedSearches || !loggedSearches.length) {
+  if (!loggedSearches) {
     pullLogs(
       (l) => {
         setLoggedSearches(
@@ -40,6 +41,9 @@ const RecentSearches = ({ currentSearch, setQuery }: RecentSearchesProps) => {
       (e) => console.log(e),
     );
     return <LoadingDisplay />;
+  }
+  if (loggedSearches.length === 0) {
+    return <KeepTypingDisplay />;
   }
 
   const filteredSearches = loggedSearches.filter((text) =>
