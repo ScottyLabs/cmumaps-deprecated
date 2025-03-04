@@ -28,8 +28,11 @@ const RecentSearches = ({ currentSearch, map }: RecentSearchesProps) => {
   }
 
   const filteredSearches = loggedSearches.filter((doc) =>
-    JSON.stringify(doc).toLowerCase().includes(currentSearch.toLowerCase()),
+    JSON.stringify(Object.values(doc))
+      .toLowerCase()
+      .includes(currentSearch.toLowerCase()),
   );
+  console.log(filteredSearches);
 
   return (
     <div>
