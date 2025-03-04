@@ -153,7 +153,7 @@ export const searchQuery = async (
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         query,
