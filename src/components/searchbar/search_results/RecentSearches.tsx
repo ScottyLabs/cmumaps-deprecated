@@ -2,76 +2,76 @@ import React, { useState } from 'react';
 import { FaRegClock } from 'react-icons/fa6';
 
 import { pullLogs } from '@/lib/idb/logStore';
+import { Document } from '@/types';
 
 import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
 import LoadingDisplay from '../display_helpers/LoadingDisplay';
-
-const RecentSearch = ({ text }: { text: string }) => {
-  return (
-    <div className="flex h-12 items-center gap-3 overflow-x-hidden">
-      <div className="flex-1">
-        <FaRegClock className="text-gray-500" />
-      </div>
-      <div className="flex flex-col space-x-2 truncate">
-        <span>{text}</span>
-      </div>
-    </div>
-  );
-};
+import BuildingResult from './BuildingResult';
+import FoodResult from './FoodResult';
+import RoomResult from './RoomResult';
 
 interface RecentSearchesProps {
   currentSearch: string;
-  setQuery: (query: string) => void;
+  map: mapkit.Map | null;
 }
 
-const RecentSearches = ({ currentSearch, setQuery }: RecentSearchesProps) => {
-  const [loggedSearches, setLoggedSearches] = useState<string[]>([]);
-  console.log(loggedSearches);
+const RecentSearches = ({ currentSearch, map }: RecentSearchesProps) => {
+  const [loggedSearches, setLoggedSearches] = useState<Document[]>([]);
 
   if (!loggedSearches) {
-    pullLogs(
-      (l) => {
-        setLoggedSearches(
-          l
-            .map((m) => m.query)
-            .reverse()
-            .slice(0, 6),
-        );
-      },
-      (e) => console.error(e),
-    );
+    pullLogs(setLoggedSearches, (e) => console.error(e));
     return <LoadingDisplay />;
   }
   if (loggedSearches.length === 0) {
-    pullLogs(
-      (l) => {
-        setLoggedSearches(
-          l
-            .map((m) => m.query)
-            .reverse()
-            .slice(0, 6),
-        );
-      },
-      (e) => console.error(e),
-    );
+    pullLogs(setLoggedSearches, (e) => console.error(e));
     return <KeepTypingDisplay />;
   }
 
-  const filteredSearches = loggedSearches.filter((text) =>
-    text.toLowerCase().includes(currentSearch.toLowerCase()),
+  const filteredSearches = loggedSearches.filter((doc) =>
+    JSON.stringify(doc).toLowerCase().includes(currentSearch.toLowerCase()),
   );
 
-  return filteredSearches.map((text) => (
-    <div
-      key={text.toString()}
-      className={
-        'ease-out-mb-1 flex w-full items-center justify-between gap-2 border-b px-4 pt-2 text-left transition duration-150 hover:bg-gray-100'
-      }
-      onClick={() => setQuery(text.toString())}
-    >
-      <RecentSearch text={text} />
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <h2 className="m-2 text-lg font-semibold text-gray-700">
+          Recent Searches
+        </h2>
+        <FaRegClock className="m-2 text-gray-700" />
+      </div>
+      {filteredSearches.map((document: Document) => {
+        switch (document.type) {
+          case 'Food':
+            return (
+              <FoodResult
+                key={document.id}
+                map={map}
+                eatery={document}
+                query={'recent'}
+              />
+            );
+          case 'Building':
+            return (
+              <BuildingResult
+                key={document.id}
+                map={map}
+                building={document}
+                query={'recent'}
+              />
+            );
+          default:
+            return (
+              <RoomResult
+                key={document.id}
+                map={map}
+                room={document}
+                query={'recent'}
+              />
+            );
+        }
+      })}
     </div>
-  ));
+  );
 };
 
 export default RecentSearches;

@@ -1,4 +1,6 @@
-export function pushLog(query: string, resultId: string, context: any = {}) {
+import { Document } from '@/types';
+
+export function pushLog(query: string, doc: Document, context: any = {}) {
   const DBOpenRequest = window.indexedDB.open('cmumaps', 1);
 
   // Initialize the database connection
@@ -7,7 +9,7 @@ export function pushLog(query: string, resultId: string, context: any = {}) {
   };
   DBOpenRequest.onsuccess = function () {
     const db = DBOpenRequest.result;
-    addLog(db, query, resultId);
+    addLog(db, query, doc);
   };
 
   DBOpenRequest.onupgradeneeded = function (event: any) {
@@ -26,14 +28,14 @@ export function pushLog(query: string, resultId: string, context: any = {}) {
       };
       logStore.transaction.oncomplete = () => {
         console.log('Successfully created logStore');
-        addLog(db, query, resultId, context);
+        addLog(db, query, doc, context);
       };
     }
   };
 }
 
 export function pullLogs(
-  success: (logs: any[]) => void,
+  success: (logs: Document[]) => void,
   failure: (error: any) => void,
 ) {
   const DBOpenRequest = window.indexedDB.open('cmumaps', 1);
@@ -49,7 +51,17 @@ export function pullLogs(
     const request = logStore.getAll();
     request.onerror = failure;
     request.onsuccess = function () {
-      success(request.result);
+      const logs = request.result;
+      const dup_docs = logs.map((log: any) => log.doc);
+      const uniqueDocIds = {};
+      for (let i = 0; i < dup_docs.length; i++) {
+        uniqueDocIds[dup_docs[i].id] = dup_docs[i];
+      }
+      const docs = Object.values(uniqueDocIds)
+        .reverse()
+        .slice(0, 6) as Document[];
+      console.log('docs: ', docs);
+      success(docs);
     };
   };
 
@@ -79,14 +91,14 @@ function upgradeDB(event: any) {
 function addLog(
   db: IDBDatabase,
   query: string,
-  resultId: string,
+  doc: Document,
   context: any = {},
 ) {
   const transaction = db.transaction(['logStore'], 'readwrite');
   const logStore = transaction.objectStore('logStore');
   const request = logStore.add({
     query,
-    resultId,
+    doc,
     timestamp: Date.now(),
     context,
   });

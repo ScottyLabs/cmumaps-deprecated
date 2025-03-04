@@ -20,13 +20,12 @@ import RoomResult from './RoomResult';
 interface SearchResultsProps {
   map: mapkit.Map | null;
   query: string;
-  setQuery: (query: string) => void;
 }
 
 /**
  * Displays the search results.
  */
-const SearchResults = ({ map, query, setQuery }: SearchResultsProps) => {
+const SearchResults = ({ map, query }: SearchResultsProps) => {
   const searchMode = useAppSelector((state) => state.ui.searchMode);
   const userPosition = useAppSelector((state) => state.nav.userPosition);
   const [roomSearchResults, setRoomSearchResults] = useState<Document[]>([]);
@@ -60,7 +59,7 @@ const SearchResults = ({ map, query, setQuery }: SearchResultsProps) => {
 
   if (query.length < 2 && searchMode == 'rooms') {
     if (choosingRoomMode == null) {
-      return <RecentSearches currentSearch={query} setQuery={setQuery} />;
+      return <RecentSearches currentSearch={query} map={map} />;
     } else {
       return (
         <button

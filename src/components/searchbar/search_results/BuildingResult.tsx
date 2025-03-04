@@ -40,16 +40,16 @@ const BuildingResult = ({ map, building, query }: Props) => {
     const building = buildings[build_doc.id];
     if (choosingRoomMode) {
       if (choosingRoomMode == 'start') {
-        pushLog(query, building.code, { nav: 'start' });
+        pushLog(query, build_doc, { nav: 'start' });
         dispatch(setStartLocation(building));
       } else if (choosingRoomMode == 'end') {
-        pushLog(query, building.code, { nav: 'end' });
+        pushLog(query, build_doc, { nav: 'end' });
         dispatch(setEndLocation(building));
       }
       dispatch(setIsSearchOpen(false));
       dispatch(setChoosingRoomMode(null));
     } else {
-      pushLog(query, building.code);
+      pushLog(query, build_doc);
       if (buildings && map) {
         const building_shapes = building.shapes.flat();
         zoomOnObject(map, building_shapes);

@@ -48,16 +48,16 @@ const RoomSearchResults = ({ map, room, query }: Props) => {
   const handleClick = (Document: Document) => () => {
     if (choosingRoomMode) {
       if (choosingRoomMode == 'start') {
-        pushLog(query, Document.id, { nav: 'start' });
+        pushLog(query, Document, { nav: 'start' });
         dispatch(setStartLocation(Document));
       } else if (choosingRoomMode == 'end') {
-        pushLog(query, Document.id, { nav: 'end' });
+        pushLog(query, Document, { nav: 'end' });
         dispatch(setEndLocation(Document));
       }
       dispatch(setIsSearchOpen(false));
       dispatch(setChoosingRoomMode(null));
     } else {
-      pushLog(query, Document.id);
+      pushLog(query, Document);
       zoomOnRoomById(
         map,
         Document.id,

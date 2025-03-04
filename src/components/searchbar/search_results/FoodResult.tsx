@@ -39,7 +39,7 @@ const RoomSearchResults = ({ map, eatery, query }: Props) => {
     <SearchResultWrapper
       key={eatery.id}
       handleClick={() => {
-        pushLog(query, eatery.id);
+        pushLog(query, eatery);
         zoomOnRoomById(
           map,
           eatery.id,
