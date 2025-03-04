@@ -38,11 +38,22 @@ const RecentSearches = ({ currentSearch, setQuery }: RecentSearchesProps) => {
             .slice(0, 6),
         );
       },
-      (e) => console.log(e),
+      (e) => console.error(e),
     );
     return <LoadingDisplay />;
   }
   if (loggedSearches.length === 0) {
+    pullLogs(
+      (l) => {
+        setLoggedSearches(
+          l
+            .map((m) => m.query)
+            .reverse()
+            .slice(0, 6),
+        );
+      },
+      (e) => console.error(e),
+    );
     return <KeepTypingDisplay />;
   }
 
