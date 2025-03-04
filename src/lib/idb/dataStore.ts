@@ -8,7 +8,7 @@ export function cachedFetch(
   success: (floorPlans: FloorPlanMap, buildings: Buildings) => void,
   failure: (error: any) => void,
 ) {
-  const DBOpenRequest = window.indexedDB.open('cmumaps', 2);
+  const DBOpenRequest = window.indexedDB.open('cmumaps', 3);
 
   // Initialize the database connection
   DBOpenRequest.onerror = function () {
@@ -73,36 +73,40 @@ export function cachedFetch(
     if (db === null) {
       return;
     }
-
-    if (!db.objectStoreNames.contains('dataStore')) {
-      const dataStore = db.createObjectStore('dataStore');
-      if (!db.objectStoreNames.contains('logStore')) {
-        db.createObjectStore('logStore', { autoIncrement: true });
-      }
-
-      dataStore.transaction.onerror = (event: any) => {
-        failure(event);
-      };
-
-      networkFetch(
-        floorPlanURL,
-        buildingsURL,
-        (floorPlans, buildings) => {
-          const floorsTransfer = db
-            .transaction('dataStore', 'readwrite')
-            .objectStore('dataStore');
-          floorsTransfer.add(floorPlans, 'floorPlans');
-          const buildingsTransfer = db
-            .transaction('dataStore', 'readwrite')
-            .objectStore('dataStore');
-          buildingsTransfer.add(buildings, 'buildings');
-          success(floorPlans, buildings);
-        },
-        (error) => {
-          failure(error);
-        },
-      );
+    if (db.objectStoreNames.contains('dataStore')) {
+      db.deleteObjectStore('dataStore');
     }
+    if (db.objectStoreNames.contains('logStore')) {
+      db.deleteObjectStore('logStore');
+    }
+
+    const dataStore = db.createObjectStore('dataStore');
+    if (!db.objectStoreNames.contains('logStore')) {
+      db.createObjectStore('logStore', { autoIncrement: true });
+    }
+
+    dataStore.transaction.onerror = (event: any) => {
+      failure(event);
+    };
+
+    networkFetch(
+      floorPlanURL,
+      buildingsURL,
+      (floorPlans, buildings) => {
+        const floorsTransfer = db
+          .transaction('dataStore', 'readwrite')
+          .objectStore('dataStore');
+        floorsTransfer.add(floorPlans, 'floorPlans');
+        const buildingsTransfer = db
+          .transaction('dataStore', 'readwrite')
+          .objectStore('dataStore');
+        buildingsTransfer.add(buildings, 'buildings');
+        success(floorPlans, buildings);
+      },
+      (error) => {
+        failure(error);
+      },
+    );
   };
 }
 
