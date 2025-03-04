@@ -60,6 +60,9 @@ const FloorPlanOverlay = ({ visibleBuildings }: Props) => {
     return getFloorAtOrdinal(building, ordinal);
   });
   return visibleFloors.map((floor) => {
+    if (!floor) {
+      return;
+    }
     if (floor) {
       return (
         // key is the key to prevent re-rendering

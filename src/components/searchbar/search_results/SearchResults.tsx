@@ -12,20 +12,21 @@ import { setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Document } from '@/types';
 
-import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
 import BuildingResult from './BuildingResult';
 import FoodResult from './FoodResult';
+import RecentSearches from './RecentSearches';
 import RoomResult from './RoomResult';
 
 interface SearchResultsProps {
   map: mapkit.Map | null;
   query: string;
+  setQuery: (query: string) => void;
 }
 
 /**
  * Displays the search results.
  */
-const SearchResults = ({ map, query }: SearchResultsProps) => {
+const SearchResults = ({ map, query, setQuery }: SearchResultsProps) => {
   const searchMode = useAppSelector((state) => state.ui.searchMode);
   const userPosition = useAppSelector((state) => state.nav.userPosition);
   const [roomSearchResults, setRoomSearchResults] = useState<Document[]>([]);
@@ -59,7 +60,7 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
 
   if (query.length < 2 && searchMode == 'rooms') {
     if (choosingRoomMode == null) {
-      return <KeepTypingDisplay />;
+      return <RecentSearches currentSearch={query} setQuery={setQuery} />;
     } else {
       return (
         <button
@@ -79,13 +80,32 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
     return roomSearchResults.map((document) => {
       switch (document.type) {
         case 'Food':
-          return <FoodResult key={document.id} map={map} eatery={document} />;
+          return (
+            <FoodResult
+              key={document.id}
+              map={map}
+              eatery={document}
+              query={query}
+            />
+          );
         case 'Building':
           return (
-            <BuildingResult key={document.id} map={map} building={document} />
+            <BuildingResult
+              key={document.id}
+              map={map}
+              building={document}
+              query={query}
+            />
           );
         default:
-          return <RoomResult key={document.id} map={map} room={document} />;
+          return (
+            <RoomResult
+              key={document.id}
+              map={map}
+              room={document}
+              query={query}
+            />
+          );
       }
     });
   }

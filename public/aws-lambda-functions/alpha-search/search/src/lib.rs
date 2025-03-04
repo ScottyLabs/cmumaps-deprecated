@@ -76,11 +76,12 @@ pub fn coord_dist(a: types::Coordinate, b: types::Coordinate) -> f64 {
 }
 
 pub fn distance_weighted_score(a: &types::Document, b: Option<types::Coordinate>, score: f64) -> f64 {
-    if b.is_none() {
+    if b.is_none() || a.label_position.is_none() {
         return score;
     }
-    let pos = b.unwrap();
-    let dist = coord_dist(pos, a.label_position.clone());
+    let usr_pos = b.unwrap();
+    let loc_pos = a.label_position.clone().unwrap();
+    let dist = coord_dist(usr_pos, loc_pos);
     return score + 1.0/((dist + 10.0).ln()+1.0);
 }
 
