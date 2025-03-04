@@ -191,7 +191,11 @@ const SearchBar = ({ map }: Props) => {
   const renderSearchResults = () => {
     return (
       <div className="z-10 mt-1 h-fit flex-1 overflow-y-scroll rounded bg-white opacity-100 transition-opacity duration-150 ease-in-out">
-        <SearchResults map={map} query={searchQuery} />
+        <SearchResults
+          map={map}
+          query={searchQuery}
+          setQuery={setSearchQuery}
+        />
       </div>
     );
   };
