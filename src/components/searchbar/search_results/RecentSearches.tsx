@@ -24,15 +24,15 @@ const RecentSearches = ({ currentSearch, map }: RecentSearchesProps) => {
     }, 100);
     return <LoadingDisplay />;
   }
-  if (loggedSearches.length === 0) {
-    return <KeepTypingDisplay />;
-  }
 
   const filteredSearches = loggedSearches.filter((doc) =>
     JSON.stringify(Object.values(doc))
       .toLowerCase()
       .includes(currentSearch.toLowerCase()),
   );
+  if (filteredSearches.length === 0) {
+    return <KeepTypingDisplay />;
+  }
   console.log(filteredSearches);
 
   return (

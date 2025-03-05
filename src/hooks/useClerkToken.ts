@@ -8,8 +8,8 @@ const useClerkToken = () => {
 
   useEffect(() => {
     (async () => {
-      const token = await session?.getToken();
-      setToken(token);
+      const session_token = await session?.getToken();
+      setToken(session_token);
     })();
   }, [isLoaded, session]);
 
