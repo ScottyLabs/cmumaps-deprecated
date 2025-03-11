@@ -57,7 +57,7 @@ const NavCard = ({ map }: Props) => {
       fetch(
         process.env.NEXT_PUBLIC_SEARCH_ENDPOINT +
           process.env.NODE_ENV +
-          '/alpha-search',
+          '/find-path',
         {
           method: 'POST',
           headers: {
