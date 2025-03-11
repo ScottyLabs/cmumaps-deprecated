@@ -1,6 +1,6 @@
 import { Document } from '@/types';
 
-export function pushLog(query: string, doc: Document, context: any = {}) {
+export function pushLog(query: string, doc: Document, context = {}) {
   const DBOpenRequest = window.indexedDB.open('cmumaps', 3);
 
   // Initialize the database connection
@@ -12,8 +12,8 @@ export function pushLog(query: string, doc: Document, context: any = {}) {
     addLog(db, query, doc);
   };
 
-  DBOpenRequest.onupgradeneeded = function (event: any) {
-    const db = event.target.result;
+  DBOpenRequest.onupgradeneeded = function (event) {
+    const db = (event.target as HTMLFormElement).result;
     if (db === null) {
       return;
     }
@@ -36,7 +36,7 @@ export function pushLog(query: string, doc: Document, context: any = {}) {
 
 export function pullLogs(
   success: (logs: Document[]) => void,
-  failure: (error: any) => void,
+  failure: (error) => void,
 ) {
   const DBOpenRequest = window.indexedDB.open('cmumaps', 3);
 
@@ -52,7 +52,7 @@ export function pullLogs(
     request.onerror = failure;
     request.onsuccess = function () {
       const logs = request.result;
-      const dup_docs = logs.map((log: any) => log.doc);
+      const dup_docs = logs.map((log) => log.doc);
       const uniqueDocIds = {};
       for (let i = 0; i < dup_docs.length; i++) {
         uniqueDocIds[dup_docs[i].id] = dup_docs[i];
@@ -68,7 +68,7 @@ export function pullLogs(
   DBOpenRequest.onupgradeneeded = upgradeDB;
 }
 
-function upgradeDB(event: any) {
+function upgradeDB(event) {
   const db = event.target.result;
   if (db === null) {
     return;
@@ -88,12 +88,7 @@ function upgradeDB(event: any) {
   }
 }
 
-function addLog(
-  db: IDBDatabase,
-  query: string,
-  doc: Document,
-  context: any = {},
-) {
+function addLog(db: IDBDatabase, query: string, doc: Document, context = {}) {
   const transaction = db.transaction(['logStore'], 'readwrite');
   const logStore = transaction.objectStore('logStore');
   const request = logStore.add({

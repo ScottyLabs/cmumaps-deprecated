@@ -6,7 +6,7 @@ export function cachedFetch(
   floorPlanURL: string,
   buildingsURL: string,
   success: (floorPlans: FloorPlanMap, buildings: Buildings) => void,
-  failure: (error: any) => void,
+  failure: (error) => void,
 ) {
   const DBOpenRequest = window.indexedDB.open('cmumaps', 3);
 
@@ -72,9 +72,8 @@ export function cachedFetch(
     };
   };
 
-  DBOpenRequest.onupgradeneeded = function (event: any) {
-    console.log('onupgradeneeded');
-    db = event.target.result;
+  DBOpenRequest.onupgradeneeded = function (event) {
+    db = (event.target as HTMLFormElement).result;
     if (db === null) {
       return;
     }
@@ -89,7 +88,7 @@ export function cachedFetch(
     const dataStore = db.createObjectStore('dataStore');
     db.createObjectStore('logStore', { autoIncrement: true });
 
-    dataStore.transaction.onerror = (event: any) => {
+    dataStore.transaction.onerror = (event) => {
       failure(event);
     };
 

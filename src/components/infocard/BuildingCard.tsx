@@ -47,7 +47,7 @@ const BuildingCard = ({ map, building }: Props) => {
       .flat();
 
     setEateries(newEateries);
-  }, [building.code, building.floors]);
+  }, [building.code, building.floors, floorPlanMap]);
 
   const renderBuildingImage = () => {
     const url = `/assets/location_images/building_room_images/${building.code}/${building.code}.jpg`;

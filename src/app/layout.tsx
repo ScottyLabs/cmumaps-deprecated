@@ -37,7 +37,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  
   return (
     <StoreProvider>
       <ClerkProvider
@@ -49,10 +48,6 @@ export default function RootLayout({
               name="viewport"
               content="width=device-width, initial-scale=1"
             />
-            <script
-          crossOrigin="anonymous"
-          src="//unpkg.com/react-scan/dist/auto.global.js"
-        />
             <meta name="description" content="Google Maps for CMU" />
             <script>const global = globalThis;</script>
           </head>

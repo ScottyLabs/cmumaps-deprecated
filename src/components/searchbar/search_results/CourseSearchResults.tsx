@@ -52,7 +52,9 @@ export const handleCourseClick =
       toast.error('Floor not available!');
     } else {
       const floorMap = buildingMap[floorLevel];
-      const selectedRoom = Object.values(floorMap).find((room) => room.name == roomName);
+      const selectedRoom = Object.values(floorMap).find(
+        (room) => room.name == roomName,
+      );
 
       if (!selectedRoom) {
         toast.error('Room not available!');

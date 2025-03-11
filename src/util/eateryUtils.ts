@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  EateryInfo,
-  EateryData,
-  LocationState,
-  Document,
-  Room
-} from '@/types';
+import { EateryInfo, EateryData, LocationState, Document, Room } from '@/types';
 
 const daysOfWeek = [
   'Sunday', // 0
@@ -220,15 +214,19 @@ const eateryRoomToId = {
 };
 
 export const getEateryId = (room: Document | Room) => {
-  if ("nameWithSpace" in room){
-    return eateryRoomToId[room.floor.buildingCode + ' ' + room.nameWithSpace.split(' ')[1]];
+  if ('nameWithSpace' in room) {
+    return eateryRoomToId[
+      room.floor.buildingCode + ' ' + room.nameWithSpace.split(' ')[1]
+    ];
   }
-  
-  return eateryRoomToId[(room as Room).floor.buildingCode + ' ' + (room as Room).name];
+
+  return eateryRoomToId[
+    (room as Room).floor.buildingCode + ' ' + (room as Room).name
+  ];
 };
 
 export const sortEateries = (
-  eateries: (Document|Room)[],
+  eateries: (Document | Room)[],
   eateryData: EateryData,
 ) => {
   const locationStateOrder: LocationState[] = [
