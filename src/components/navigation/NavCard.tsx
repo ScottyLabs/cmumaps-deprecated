@@ -55,15 +55,13 @@ const NavCard = ({ map }: Props) => {
     if (startLocation && endLocation) {
       dispatch(setRecommendedPath(null));
       fetch(
-        process.env.NEXT_PUBLIC_FINDPATH_ENDPOINT +
+        process.env.NEXT_PUBLIC_SEARCH_ENDPOINT +
           process.env.NODE_ENV +
-          '/find-path',
+          '/alpha-search',
         {
           method: 'POST',
-
           headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ waypoints: [startLocation, endLocation] }),
         },
