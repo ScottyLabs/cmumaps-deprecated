@@ -160,7 +160,7 @@ const Schedule = () => {
 
   const renderReuploadButton = () => {
     return (
-      <div className="flex justify-end">
+      <div className="flex justify-end w-10">
         {/* Upload New Button, hide default html picker */}
         <label className="mb-1 mr-4 cursor-pointer rounded-md bg-blue-600 px-2 py-1 font-medium text-white">
           <Image
