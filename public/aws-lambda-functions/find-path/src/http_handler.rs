@@ -1,12 +1,13 @@
+use std::collections::HashMap;
+
 use lambda_http::{http::Method, Body, Error, Request, Response};
 
 use serde_json;
 
-use crate::graph_utils::{find_path, types::{Buildings, Graph, NodesRoute, Waypoints}, waypoint_to_nodes};
-
+use crate::graph_utils::{find_path, types::{Buildings, Graph, NodesRoute, Waypoints}, waypoint_to_nodes, weather_service::{get_current_weather, get_weather_multiplier}};
 
 /// This is the main body for the function.
-/// Write your code inside it.
+/// Write your code inside it. 
 /// There are some code example in the following URLs:
 /// - https://github.com/awslabs/aws-lambda-rust-runtime/tree/main/examples
 pub(crate) async fn function_handler(event: Request, graph: &Graph, buildings: &Buildings) -> Result<Response<Body>, Error> {
@@ -37,7 +38,10 @@ pub(crate) async fn function_handler(event: Request, graph: &Graph, buildings: &
     let start_nodes = waypoint_to_nodes(start_waypoint, &graph, &buildings);
     let end_nodes = waypoint_to_nodes(end_waypoint, &graph, &buildings);
     let route = find_path(&start_nodes, &end_nodes, &graph, 1.0).unwrap();
-    let more_indoor_route = find_path(&start_nodes, &end_nodes, &graph, 100000.0).unwrap();
+    let weather = get_current_weather("2dafadbe397a5550472e5eff165e2f62").await;
+    let weather_multiplier = get_weather_multiplier(&weather.unwrap());
+    let weather_path_type = if weather_multiplier < 1.0 { "Outdoor" } else { "Indoor" };
+    let more_indoor_route = find_path(&start_nodes, &end_nodes, &graph, weather_multiplier).unwrap();
     let nodes_route =  NodesRoute {
         path: route.path.path.iter().map(|node_id| (&graph[node_id]).clone()).collect(),
         distance: route.distance.to_f32() - route.path.add_cost.parse::<f32>().unwrap()
@@ -47,8 +51,8 @@ pub(crate) async fn function_handler(event: Request, graph: &Graph, buildings: &
         distance: more_indoor_route.distance.to_f32() - more_indoor_route.path.add_cost.parse::<f32>().unwrap()
     };
     let response_obj = match (more_indoor_nodes_route.distance - nodes_route.distance > 10.0) {
-        true => vec![nodes_route, more_indoor_nodes_route],
-        false => vec![nodes_route]
+        true => HashMap::from([("Fastest",nodes_route), (weather_path_type, more_indoor_nodes_route)]),
+        false => HashMap::from([("Fastest",nodes_route)])
     };
     let path_json = serde_json::to_string(&response_obj).unwrap_or("[]".to_string());
 

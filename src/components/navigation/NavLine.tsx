@@ -14,6 +14,8 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { areFloorsEqual, Node } from '@/types';
 
+import { pathNumToName } from './NavCard';
+
 interface IconInfo {
   coordinate: Coordinate;
   icon: StaticImport;
@@ -48,9 +50,9 @@ const NavLine = ({ map }: Props) => {
       startedNavigation &&
       selectedPathNum &&
       recommendedPath &&
-      recommendedPath[selectedPathNum]
+      recommendedPath[pathNumToName[selectedPathNum]]
     ) {
-      const path: Node[] = recommendedPath[selectedPathNum].path;
+      const path: Node[] = recommendedPath[pathNumToName[selectedPathNum]].path;
       const newCurFloorPath: Node[] = [];
       const newRestPath: Node[] = [];
       let count = 0;
@@ -128,7 +130,8 @@ const NavLine = ({ map }: Props) => {
         setPathOverlay([]);
       } else {
         setPathOverlay(
-          recommendedPath.map((_, pathNum) => {
+          Object.entries(recommendedPath).map(([pathName, _]) => {
+            const pathNum = Math.max(pathNumToName.indexOf(pathName), 0);
             const style = {
               strokeColor: selectedPathNum == pathNum ? 'blue' : 'gray',
               strokeOpacity: selectedPathNum == pathNum ? 0.9 : 0.5,
@@ -136,7 +139,7 @@ const NavLine = ({ map }: Props) => {
             };
 
             return new mapkit.PolylineOverlay(
-              recommendedPath[pathNum].path.map(
+              recommendedPath[pathName].path.map(
                 (n: Node) =>
                   new mapkit.Coordinate(
                     n.coordinate.latitude,
@@ -256,7 +259,7 @@ const NavLine = ({ map }: Props) => {
     };
 
     const addStartEndIcons = () => {
-      const path = recommendedPath[selectedPathNum].path;
+      const path = recommendedPath[pathNumToName[selectedPathNum]].path;
       newIconInfos.push({ coordinate: path[0].coordinate, icon: startIcon });
       newIconInfos.push({
         coordinate: path[path.length - 1].coordinate,
@@ -280,7 +283,7 @@ const NavLine = ({ map }: Props) => {
     } else {
       newIconInfos = [
         ...newIconInfos,
-        ...calculateIcon(recommendedPath[selectedPathNum].path),
+        ...calculateIcon(recommendedPath[pathNumToName[selectedPathNum]].path),
       ];
     }
 

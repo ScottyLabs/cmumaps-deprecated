@@ -1,0 +1,17 @@
+{
+    "version": "2.0",
+    "routeKey": "POST /find-path",
+    "rawPath": "/find-path",
+    "rawQueryString": "",
+    "headers": {
+        "content-type": "application/json"
+    },
+    "requestContext": {
+        "http": {
+            "method": "POST",
+            "path": "/find-path"
+        }
+    },
+    "body": "{\"waypoints\":[{\"name\":\"4401\",\"labelPosition\":{\"latitude\":40.4438142995773,\"longitude\":-79.9441553605715},\"type\":\"Auditorium\",\"id\":\"e51032f4-63d9-498f-9e6b-5af0e893cc8c\",\"floor\":{\"buildingCode\":\"GHC\",\"level\":\"4\"},\"alias\":\"Rashid\",\"coordinates\":[[{\"latitude\":40.443725867833315,\"longitude\":-79.94414485044855},{\"latitude\":40.443738898194646,\"longitude\":-79.94414069211764},{\"latitude\":40.443743273522024,\"longitude\":-79.94415167119254},{\"latitude\":40.443854248482275,\"longitude\":-79.94412457360843},{\"latitude\":40.44387294538962,\"longitude\":-79.94412061857054},{\"latitude\":40.44387817308239,\"longitude\":-79.94413388152032},{\"latitude\":40.44388937387187,\"longitude\":-79.94412682718563},{\"latitude\":40.44390944987566,\"longitude\":-79.94419309893652},{\"latitude\":40.4439421258503,\"longitude\":-79.94431153713151},{\"latitude\":40.44380775295307,\"longitude\":-79.94438162734473},{\"latitude\":40.443794812635325,\"longitude\":-79.94434670894272},{\"latitude\":40.44378976332625,\"longitude\":-79.94433449108446},{\"latitude\":40.443784456881225,\"longitude\":-79.94432807344589},{\"latitude\":40.44377904303877,\"longitude\":-79.94432290423646},{\"latitude\":40.44377361900706,\"longitude\":-79.94431890028297},{\"latitude\":40.44376725262992,\"longitude\":-79.94431720577485},{\"latitude\":40.44375686919799,\"longitude\":-79.94431928466105},{\"latitude\":40.443733077944394,\"longitude\":-79.94415511995773},{\"latitude\":40.44372761148504,\"longitude\":-79.94415413459502},{\"latitude\":40.443725867833315,\"longitude\":-79.94414485044855}],[{\"latitude\":40.44392235356098,\"longitude\":-79.94428865194867},{\"latitude\":40.44388809318323,\"longitude\":-79.94430331175288},{\"latitude\":40.44389447163499,\"longitude\":-79.94432546355995},{\"latitude\":40.44392685906124,\"longitude\":-79.94430779386647},{\"latitude\":40.44392235356098,\"longitude\":-79.94428865194867}],[{\"latitude\":40.443882115255356,\"longitude\":-79.94433086067421},{\"latitude\":40.4438784753574,\"longitude\":-79.94430744674298},{\"latitude\":40.44381283468786,\"longitude\":-79.94432707802136},{\"latitude\":40.44382420985808,\"longitude\":-79.94436186332545},{\"latitude\":40.443882115255356,\"longitude\":-79.94433086067421}]]},{\"userPosition\":{\"latitude\":40.44142616799795,\"longitude\":-79.94612230825821}}]}",
+    "isBase64Encoded": false
+}

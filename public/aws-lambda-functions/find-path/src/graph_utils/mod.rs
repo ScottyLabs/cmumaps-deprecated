@@ -7,6 +7,7 @@ use std::collections::{HashMap, HashSet};
 use std::str::FromStr;
 
 pub mod types;
+pub mod weather_service;
 
 /// Converts a waypoint (Room, Building, or Coordinate as PlaceOnMap or UserPosition)
 pub fn waypoint_to_nodes(waypoint: types::Waypoint, graph: &types::Graph, buildings: &HashMap<String, types::Building>) -> Vec<String> {

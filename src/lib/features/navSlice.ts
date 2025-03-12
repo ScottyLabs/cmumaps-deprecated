@@ -8,7 +8,7 @@ type ChoosingRoomMode = 'start' | 'end' | null;
 interface NavState {
   startLocation: Waypoint | null;
   endLocation: Waypoint | null;
-  recommendedPath: { path: Node[]; distance: number }[] | null;
+  recommendedPath: Record<string, { path: Node[]; distance: number }> | null;
   startedNavigation: boolean;
 
   curFloorIndex: number;
@@ -45,7 +45,10 @@ const navSlice = createSlice({
       state.startLocation = action.payload;
     },
     setRecommendedPath(state, action) {
-      state.recommendedPath = action.payload;
+      state.recommendedPath = action.payload as Record<
+        string,
+        { path: Node[]; distance: number }
+      > | null;
     },
     setIsNavOpen(state, action) {
       state.isNavOpen = action.payload;

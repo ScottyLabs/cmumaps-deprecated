@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import React, { useEffect } from 'react';
 import { BsFillLightningChargeFill } from 'react-icons/bs';
-import { FaRegSnowflake } from 'react-icons/fa';
+import { FaRegSnowflake, FaSun } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
@@ -31,8 +31,9 @@ import NavDirections from './NavDirections';
 const pathNumToIcon = [
   <BsFillLightningChargeFill key="fast" size={25} />,
   <FaRegSnowflake key="snow" size={25} />,
+  <FaSun key="outdoor" size={25} />,
 ];
-const pathNumToName = ['Fastest', 'Indoor'];
+export const pathNumToName = ['Fastest', 'Indoor', 'Outdoor'];
 
 interface Props {
   map: mapkit.Map | null;
@@ -56,7 +57,7 @@ const NavCard = ({ map }: Props) => {
       dispatch(setRecommendedPath(null));
       fetch(
         process.env.NEXT_PUBLIC_FINDPATH_ENDPOINT +
-          process.env.NODE_ENV +
+          (process.env.NODE_ENV == 'development' ? '' : process.env.NODE_ENV) +
           '/find-path',
         {
           method: 'POST',
@@ -82,7 +83,7 @@ const NavCard = ({ map }: Props) => {
             return;
           } else {
             dispatch(setRecommendedPath(j));
-            dispatch(setSelectedPathNum(Object.keys(j)[0]));
+            dispatch(setSelectedPathNum(0));
           }
         });
     }
@@ -209,9 +210,10 @@ const NavCard = ({ map }: Props) => {
     return (
       recommendedPath && (
         <div className="my-2 space-y-2">
-          {recommendedPath.map(({ distance }, pathNum) =>
-            renderPathInfo(pathNum, distance),
-          )}
+          {Object.entries(recommendedPath).map(([pathname, { distance }]) => {
+            const pathNum = Math.max(pathNumToName.indexOf(pathname), 0);
+            return renderPathInfo(pathNum, distance);
+          })}
         </div>
       )
     );
@@ -258,7 +260,7 @@ const NavCard = ({ map }: Props) => {
           : recommendedPath &&
             map && (
               <NavDirections
-                path={recommendedPath[selectedPathNum].path}
+                path={recommendedPath[pathNumToName[selectedPathNum]].path}
                 map={map}
               />
             )}

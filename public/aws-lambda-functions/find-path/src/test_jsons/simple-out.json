@@ -1,0 +1,3950 @@
+{
+    "Outdoor": {
+        "path": [
+            {
+                "neighbors": {
+                    "e7efc6e6-a968-4b66-aa8e-160f03ee957c": {
+                        "dist": 3.0530674,
+                        "toFloorInfo": null
+                    },
+                    "e3b3e805-2e60-4a45-afaf-0f374de83961": {
+                        "dist": 4.5825605,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "e51032f4-63d9-498f-9e6b-5af0e893cc8c",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.4438,
+                    "longitude": -79.94432
+                },
+                "id": "22cc21d3-0813-4bc6-8d26-96abc767a1e5"
+            },
+            {
+                "neighbors": {
+                    "22cc21d3-0813-4bc6-8d26-96abc767a1e5": {
+                        "dist": 4.5825605,
+                        "toFloorInfo": null
+                    },
+                    "614d6882-b61f-4f92-8a20-d1650cb11efa": {
+                        "dist": 1.8005726,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "e51032f4-63d9-498f-9e6b-5af0e893cc8c",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443817,
+                    "longitude": -79.94437
+                },
+                "id": "e3b3e805-2e60-4a45-afaf-0f374de83961"
+            },
+            {
+                "neighbors": {
+                    "e3b3e805-2e60-4a45-afaf-0f374de83961": {
+                        "dist": 1.8005726,
+                        "toFloorInfo": null
+                    },
+                    "e9c66d2f-ddc5-4489-9b3e-fca88c6ce0b5": {
+                        "dist": 4.122277,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "833ddb44-c93d-4043-b97b-fa250b8035be",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44382,
+                    "longitude": -79.94439
+                },
+                "id": "614d6882-b61f-4f92-8a20-d1650cb11efa"
+            },
+            {
+                "neighbors": {
+                    "dc08bafa-aeb4-461e-a2d9-8b27f3afdf82": {
+                        "dist": 5.434954,
+                        "toFloorInfo": null
+                    },
+                    "614d6882-b61f-4f92-8a20-d1650cb11efa": {
+                        "dist": 4.122277,
+                        "toFloorInfo": null
+                    },
+                    "b20b5e33-ed73-4f5c-8802-cb288bffddc0": {
+                        "dist": 3.2885346,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "443bd1b0-df63-4000-831f-f31cac4fef25",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44384,
+                    "longitude": -79.94443
+                },
+                "id": "e9c66d2f-ddc5-4489-9b3e-fca88c6ce0b5"
+            },
+            {
+                "neighbors": {
+                    "4ea10d12-56ce-4a10-8e73-eb0b36d4fb65": {
+                        "dist": 5.618008,
+                        "toFloorInfo": null
+                    },
+                    "e9c66d2f-ddc5-4489-9b3e-fca88c6ce0b5": {
+                        "dist": 3.2885346,
+                        "toFloorInfo": null
+                    },
+                    "c73f6152-7b31-448f-acef-af36e4249a4b": {
+                        "dist": 8.84209,
+                        "toFloorInfo": null
+                    },
+                    "c8836396-79c4-4a92-85ff-f62ecc14d1f9": {
+                        "dist": 4.3139563,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "443bd1b0-df63-4000-831f-f31cac4fef25",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44382,
+                    "longitude": -79.944466
+                },
+                "id": "b20b5e33-ed73-4f5c-8802-cb288bffddc0"
+            },
+            {
+                "neighbors": {
+                    "1715717718": {
+                        "dist": 2.569056,
+                        "toFloorInfo": {
+                            "toFloor": "outside 1"
+                        }
+                    },
+                    "4ea10d12-56ce-4a10-8e73-eb0b36d4fb65": {
+                        "dist": 3.4252577,
+                        "toFloorInfo": null
+                    },
+                    "b20b5e33-ed73-4f5c-8802-cb288bffddc0": {
+                        "dist": 4.3139563,
+                        "toFloorInfo": null
+                    },
+                    "acfc7938-e3ef-40bc-bb99-eadba611e592": {
+                        "dist": 4.599097,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "443bd1b0-df63-4000-831f-f31cac4fef25",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443832,
+                    "longitude": -79.94451
+                },
+                "id": "c8836396-79c4-4a92-85ff-f62ecc14d1f9"
+            },
+            {
+                "neighbors": {
+                    "1715713075": {
+                        "dist": 2.6833072,
+                        "toFloorInfo": null
+                    },
+                    "c8836396-79c4-4a92-85ff-f62ecc14d1f9": {
+                        "dist": 2.569056,
+                        "toFloorInfo": {
+                            "toFloor": "GHC 4"
+                        }
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443813,
+                    "longitude": -79.94452
+                },
+                "id": "1715717718"
+            },
+            {
+                "neighbors": {
+                    "1715713082": {
+                        "dist": 11.524364,
+                        "toFloorInfo": null
+                    },
+                    "1715717718": {
+                        "dist": 2.6833072,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443798,
+                    "longitude": -79.94454
+                },
+                "id": "1715713075"
+            },
+            {
+                "neighbors": {
+                    "1715713075": {
+                        "dist": 11.524364,
+                        "toFloorInfo": null
+                    },
+                    "1715713090": {
+                        "dist": 8.477775,
+                        "toFloorInfo": null
+                    },
+                    "1715713081": {
+                        "dist": 5.7480316,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443836,
+                    "longitude": -79.944664
+                },
+                "id": "1715713082"
+            },
+            {
+                "neighbors": {
+                    "1715713082": {
+                        "dist": 8.477775,
+                        "toFloorInfo": null
+                    },
+                    "1715713089": {
+                        "dist": 3.3839989,
+                        "toFloorInfo": null
+                    },
+                    "1715713077": {
+                        "dist": 3.001183,
+                        "toFloorInfo": null
+                    },
+                    "1715713076": {
+                        "dist": 7.4745097,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443813,
+                    "longitude": -79.94476
+                },
+                "id": "1715713090"
+            },
+            {
+                "neighbors": {
+                    "1715713090": {
+                        "dist": 3.001183,
+                        "toFloorInfo": null
+                    },
+                    "9098995337": {
+                        "dist": 5.1199875,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443794,
+                    "longitude": -79.944786
+                },
+                "id": "1715713077"
+            },
+            {
+                "neighbors": {
+                    "1715713077": {
+                        "dist": 5.1199875,
+                        "toFloorInfo": null
+                    },
+                    "9098995338": {
+                        "dist": 1.8328362,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44376,
+                    "longitude": -79.944824
+                },
+                "id": "9098995337"
+            },
+            {
+                "neighbors": {
+                    "1715713097": {
+                        "dist": 5.8278184,
+                        "toFloorInfo": null
+                    },
+                    "9098995337": {
+                        "dist": 1.8328362,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443745,
+                    "longitude": -79.94484
+                },
+                "id": "9098995338"
+            },
+            {
+                "neighbors": {
+                    "1715713071": {
+                        "dist": 4.919211,
+                        "toFloorInfo": null
+                    },
+                    "9098995338": {
+                        "dist": 5.8278184,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.4437,
+                    "longitude": -79.94486
+                },
+                "id": "1715713097"
+            },
+            {
+                "neighbors": {
+                    "1704819996": {
+                        "dist": 3.3290558,
+                        "toFloorInfo": null
+                    },
+                    "1715713097": {
+                        "dist": 4.919211,
+                        "toFloorInfo": null
+                    },
+                    "9098995330": {
+                        "dist": 12.025784,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443653,
+                    "longitude": -79.94487
+                },
+                "id": "1715713071"
+            },
+            {
+                "neighbors": {
+                    "1704820009": {
+                        "dist": 3.1772566,
+                        "toFloorInfo": null
+                    },
+                    "3312325113": {
+                        "dist": 8.309885,
+                        "toFloorInfo": null
+                    },
+                    "1715713071": {
+                        "dist": 12.025784,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443607,
+                    "longitude": -79.945
+                },
+                "id": "9098995330"
+            },
+            {
+                "neighbors": {
+                    "9098995331": {
+                        "dist": 2.1522088,
+                        "toFloorInfo": null
+                    },
+                    "9098995330": {
+                        "dist": 8.309885,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443535,
+                    "longitude": -79.94498
+                },
+                "id": "3312325113"
+            },
+            {
+                "neighbors": {
+                    "3312325113": {
+                        "dist": 2.1522088,
+                        "toFloorInfo": null
+                    },
+                    "3312325114": {
+                        "dist": 2.768358,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443516,
+                    "longitude": -79.94497
+                },
+                "id": "9098995331"
+            },
+            {
+                "neighbors": {
+                    "9098995331": {
+                        "dist": 2.768358,
+                        "toFloorInfo": null
+                    },
+                    "9255060574": {
+                        "dist": 14.95453,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443493,
+                    "longitude": -79.94498
+                },
+                "id": "3312325114"
+            },
+            {
+                "neighbors": {
+                    "3312325114": {
+                        "dist": 14.95453,
+                        "toFloorInfo": null
+                    },
+                    "9255060575": {
+                        "dist": 5.438302,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443367,
+                    "longitude": -79.94504
+                },
+                "id": "9255060574"
+            },
+            {
+                "neighbors": {
+                    "9255060576": {
+                        "dist": 7.5238223,
+                        "toFloorInfo": null
+                    },
+                    "9255060574": {
+                        "dist": 5.438302,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443317,
+                    "longitude": -79.94504
+                },
+                "id": "9255060575"
+            },
+            {
+                "neighbors": {
+                    "9255060575": {
+                        "dist": 7.5238223,
+                        "toFloorInfo": null
+                    },
+                    "9255060577": {
+                        "dist": 6.9370456,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443275,
+                    "longitude": -79.94497
+                },
+                "id": "9255060576"
+            },
+            {
+                "neighbors": {
+                    "1705867240": {
+                        "dist": 40.08116,
+                        "toFloorInfo": null
+                    },
+                    "9255060576": {
+                        "dist": 6.9370456,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443264,
+                    "longitude": -79.944885
+                },
+                "id": "9255060577"
+            },
+            {
+                "neighbors": {
+                    "9255060577": {
+                        "dist": 40.08116,
+                        "toFloorInfo": null
+                    },
+                    "1705867322": {
+                        "dist": 28.645758,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443134,
+                    "longitude": -79.94444
+                },
+                "id": "1705867240"
+            },
+            {
+                "neighbors": {
+                    "1705867336": {
+                        "dist": 3.1332924,
+                        "toFloorInfo": null
+                    },
+                    "1705867240": {
+                        "dist": 28.645758,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44318,
+                    "longitude": -79.944115
+                },
+                "id": "1705867322"
+            },
+            {
+                "neighbors": {
+                    "1705867322": {
+                        "dist": 3.1332924,
+                        "toFloorInfo": null
+                    },
+                    "1705867291": {
+                        "dist": 3.3461688,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44318,
+                    "longitude": -79.94408
+                },
+                "id": "1705867336"
+            },
+            {
+                "neighbors": {
+                    "1705867336": {
+                        "dist": 3.3461688,
+                        "toFloorInfo": null
+                    },
+                    "1705867305": {
+                        "dist": 2.5551786,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44317,
+                    "longitude": -79.94404
+                },
+                "id": "1705867291"
+            },
+            {
+                "neighbors": {
+                    "1705867291": {
+                        "dist": 2.5551786,
+                        "toFloorInfo": null
+                    },
+                    "9099043227": {
+                        "dist": 3.2098248,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443153,
+                    "longitude": -79.944016
+                },
+                "id": "1705867305"
+            },
+            {
+                "neighbors": {
+                    "1705867305": {
+                        "dist": 3.2098248,
+                        "toFloorInfo": null
+                    },
+                    "9255047004": {
+                        "dist": 3.0538185,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443127,
+                    "longitude": -79.944
+                },
+                "id": "9099043227"
+            },
+            {
+                "neighbors": {
+                    "9099043227": {
+                        "dist": 3.0538185,
+                        "toFloorInfo": null
+                    },
+                    "1705867372": {
+                        "dist": 6.4206204,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.4431,
+                    "longitude": -79.94399
+                },
+                "id": "9255047004"
+            },
+            {
+                "neighbors": {
+                    "3134464731": {
+                        "dist": 4.4206696,
+                        "toFloorInfo": null
+                    },
+                    "1705867349": {
+                        "dist": 6.4936976,
+                        "toFloorInfo": null
+                    },
+                    "9255047004": {
+                        "dist": 6.4206204,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.443043,
+                    "longitude": -79.944
+                },
+                "id": "1705867372"
+            },
+            {
+                "neighbors": {
+                    "1705867372": {
+                        "dist": 6.4936976,
+                        "toFloorInfo": null
+                    },
+                    "1705867339": {
+                        "dist": 2.8211308,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442993,
+                    "longitude": -79.94396
+                },
+                "id": "1705867349"
+            },
+            {
+                "neighbors": {
+                    "1705867272": {
+                        "dist": 5.0520988,
+                        "toFloorInfo": null
+                    },
+                    "1705867349": {
+                        "dist": 2.8211308,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44297,
+                    "longitude": -79.94397
+                },
+                "id": "1705867339"
+            },
+            {
+                "neighbors": {
+                    "1705867339": {
+                        "dist": 5.0520988,
+                        "toFloorInfo": null
+                    },
+                    "1705867295": {
+                        "dist": 6.259354,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442932,
+                    "longitude": -79.94401
+                },
+                "id": "1705867272"
+            },
+            {
+                "neighbors": {
+                    "1705867272": {
+                        "dist": 6.259354,
+                        "toFloorInfo": null
+                    },
+                    "1705867310": {
+                        "dist": 4.0704126,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442894,
+                    "longitude": -79.94406
+                },
+                "id": "1705867295"
+            },
+            {
+                "neighbors": {
+                    "1705867295": {
+                        "dist": 4.0704126,
+                        "toFloorInfo": null
+                    },
+                    "1705867364": {
+                        "dist": 5.1809855,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44286,
+                    "longitude": -79.944084
+                },
+                "id": "1705867310"
+            },
+            {
+                "neighbors": {
+                    "9252324278": {
+                        "dist": 14.402944,
+                        "toFloorInfo": null
+                    },
+                    "1705867310": {
+                        "dist": 5.1809855,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442818,
+                    "longitude": -79.9441
+                },
+                "id": "1705867364"
+            },
+            {
+                "neighbors": {
+                    "1705867364": {
+                        "dist": 14.402944,
+                        "toFloorInfo": null
+                    },
+                    "1705902942": {
+                        "dist": 7.245015,
+                        "toFloorInfo": null
+                    },
+                    "9252324279": {
+                        "dist": 33.34566,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442772,
+                    "longitude": -79.94394
+                },
+                "id": "9252324278"
+            },
+            {
+                "neighbors": {
+                    "9252324278": {
+                        "dist": 7.245015,
+                        "toFloorInfo": null
+                    },
+                    "1705902924": {
+                        "dist": 3.8701758,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442745,
+                    "longitude": -79.94386
+                },
+                "id": "1705902942"
+            },
+            {
+                "neighbors": {
+                    "1705902934": {
+                        "dist": 19.628057,
+                        "toFloorInfo": null
+                    },
+                    "1705902942": {
+                        "dist": 3.8701758,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442715,
+                    "longitude": -79.94388
+                },
+                "id": "1705902924"
+            },
+            {
+                "neighbors": {
+                    "1705902924": {
+                        "dist": 19.628057,
+                        "toFloorInfo": null
+                    },
+                    "1705902930": {
+                        "dist": 16.588228,
+                        "toFloorInfo": null
+                    },
+                    "302755594": {
+                        "dist": 13.912494,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442646,
+                    "longitude": -79.943665
+                },
+                "id": "1705902934"
+            },
+            {
+                "neighbors": {
+                    "1705902930": {
+                        "dist": 24.618113,
+                        "toFloorInfo": null
+                    },
+                    "1705902934": {
+                        "dist": 13.912494,
+                        "toFloorInfo": null
+                    },
+                    "302755593": {
+                        "dist": 21.082363,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44253,
+                    "longitude": -79.943596
+                },
+                "id": "302755594"
+            },
+            {
+                "neighbors": {
+                    "9252324617": {
+                        "dist": 12.517929,
+                        "toFloorInfo": null
+                    },
+                    "302755594": {
+                        "dist": 21.082363,
+                        "toFloorInfo": null
+                    },
+                    "302755913": {
+                        "dist": 37.998158,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442352,
+                    "longitude": -79.94369
+                },
+                "id": "302755593"
+            },
+            {
+                "neighbors": {
+                    "302755593": {
+                        "dist": 12.517929,
+                        "toFloorInfo": null
+                    },
+                    "9252324274": {
+                        "dist": 9.18965,
+                        "toFloorInfo": null
+                    },
+                    "302756599": {
+                        "dist": 9.345611,
+                        "toFloorInfo": null
+                    },
+                    "2297210982": {
+                        "dist": 3.6132028,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442276,
+                    "longitude": -79.943794
+                },
+                "id": "9252324617"
+            },
+            {
+                "neighbors": {
+                    "302756597": {
+                        "dist": 6.198966,
+                        "toFloorInfo": null
+                    },
+                    "2297210943": {
+                        "dist": 5.0976906,
+                        "toFloorInfo": null
+                    },
+                    "9252324617": {
+                        "dist": 9.345611,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442192,
+                    "longitude": -79.943825
+                },
+                "id": "302756599"
+            },
+            {
+                "neighbors": {
+                    "302756593": {
+                        "dist": 27.014416,
+                        "toFloorInfo": null
+                    },
+                    "302756599": {
+                        "dist": 6.198966,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442154,
+                    "longitude": -79.94387
+                },
+                "id": "302756597"
+            },
+            {
+                "neighbors": {
+                    "9251992084": {
+                        "dist": 12.871923,
+                        "toFloorInfo": null
+                    },
+                    "302756597": {
+                        "dist": 27.014416,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442085,
+                    "longitude": -79.94418
+                },
+                "id": "302756593"
+            },
+            {
+                "neighbors": {
+                    "302756522": {
+                        "dist": 15.717931,
+                        "toFloorInfo": null
+                    },
+                    "9251992085": {
+                        "dist": 9.231122,
+                        "toFloorInfo": null
+                    },
+                    "302756593": {
+                        "dist": 12.871923,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442062,
+                    "longitude": -79.94433
+                },
+                "id": "9251992084"
+            },
+            {
+                "neighbors": {
+                    "302756552": {
+                        "dist": 38.292717,
+                        "toFloorInfo": null
+                    },
+                    "302756523": {
+                        "dist": 32.878788,
+                        "toFloorInfo": null
+                    },
+                    "302756497": {
+                        "dist": 50.654884,
+                        "toFloorInfo": null
+                    },
+                    "9251992084": {
+                        "dist": 15.717931,
+                        "toFloorInfo": null
+                    },
+                    "302756570": {
+                        "dist": 12.804075,
+                        "toFloorInfo": null
+                    },
+                    "302756479": {
+                        "dist": 52.631878,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442055,
+                    "longitude": -79.94451
+                },
+                "id": "302756522"
+            },
+            {
+                "neighbors": {
+                    "12321440383": {
+                        "dist": 11.258403,
+                        "toFloorInfo": null
+                    },
+                    "302756732": {
+                        "dist": 38.32367,
+                        "toFloorInfo": null
+                    },
+                    "302756552": {
+                        "dist": 32.49631,
+                        "toFloorInfo": null
+                    },
+                    "302756522": {
+                        "dist": 50.654884,
+                        "toFloorInfo": null
+                    },
+                    "302756523": {
+                        "dist": 39.383038,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.441864,
+                    "longitude": -79.94506
+                },
+                "id": "302756497"
+            },
+            {
+                "neighbors": {
+                    "302756737": {
+                        "dist": 10.943824,
+                        "toFloorInfo": null
+                    },
+                    "9246507467": {
+                        "dist": 27.63239,
+                        "toFloorInfo": null
+                    },
+                    "302756497": {
+                        "dist": 38.32367,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.441956,
+                    "longitude": -79.945496
+                },
+                "id": "302756732"
+            },
+            {
+                "neighbors": {
+                    "9246507459": {
+                        "dist": 10.716236,
+                        "toFloorInfo": null
+                    },
+                    "302756732": {
+                        "dist": 27.63239,
+                        "toFloorInfo": null
+                    },
+                    "9246507466": {
+                        "dist": 10.38678,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442028,
+                    "longitude": -79.94581
+                },
+                "id": "9246507467"
+            },
+            {
+                "neighbors": {
+                    "302756480": {
+                        "dist": 13.583929,
+                        "toFloorInfo": null
+                    },
+                    "9246507467": {
+                        "dist": 10.716236,
+                        "toFloorInfo": null
+                    },
+                    "9246507460": {
+                        "dist": 10.475981,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442055,
+                    "longitude": -79.94593
+                },
+                "id": "9246507459"
+            },
+            {
+                "neighbors": {
+                    "9247560129": {
+                        "dist": 9.348513,
+                        "toFloorInfo": null
+                    },
+                    "9252324619": {
+                        "dist": 7.65928,
+                        "toFloorInfo": null
+                    },
+                    "9246507459": {
+                        "dist": 13.583929,
+                        "toFloorInfo": null
+                    },
+                    "302967563": {
+                        "dist": 15.793597,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44208,
+                    "longitude": -79.94608
+                },
+                "id": "302756480"
+            },
+            {
+                "neighbors": {
+                    "bb236f1d-a3bd-412b-b007-f0f4c1853a8c": {
+                        "dist": 4.254291,
+                        "toFloorInfo": {
+                            "toFloor": "PH 1"
+                        }
+                    },
+                    "302756480": {
+                        "dist": 7.65928,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442017,
+                    "longitude": -79.946106
+                },
+                "id": "9252324619"
+            },
+            {
+                "neighbors": {
+                    "994f0a7a-09ea-462c-9407-3122da30a29a": {
+                        "dist": 3.5207975,
+                        "toFloorInfo": null
+                    },
+                    "9252324619": {
+                        "dist": 4.254291,
+                        "toFloorInfo": {
+                            "toFloor": "outside 1"
+                        }
+                    }
+                },
+                "roomId": "31187409-e789-4dbd-9e81-5142f78421c4",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44198,
+                    "longitude": -79.94612
+                },
+                "id": "bb236f1d-a3bd-412b-b007-f0f4c1853a8c"
+            },
+            {
+                "neighbors": {
+                    "504b616e-ac67-444a-a571-c2e2c2dffa07": {
+                        "dist": 5.787996,
+                        "toFloorInfo": null
+                    },
+                    "f22bfea8-4241-4002-b605-270bafc1297b": {
+                        "dist": 4.8375416,
+                        "toFloorInfo": null
+                    },
+                    "31237743-b901-4fd5-877b-63d18cae1ab6": {
+                        "dist": 2.7739563,
+                        "toFloorInfo": null
+                    },
+                    "bb236f1d-a3bd-412b-b007-f0f4c1853a8c": {
+                        "dist": 3.5207975,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.441956,
+                    "longitude": -79.94615
+                },
+                "id": "994f0a7a-09ea-462c-9407-3122da30a29a"
+            },
+            {
+                "neighbors": {
+                    "994f0a7a-09ea-462c-9407-3122da30a29a": {
+                        "dist": 2.7739563,
+                        "toFloorInfo": null
+                    },
+                    "e6773181-c251-4831-91b4-1ed94604bbb4": {
+                        "dist": 4.395818,
+                        "toFloorInfo": null
+                    },
+                    "b90edbfc-2f01-4ac6-81b2-b9d1d3bf601b": {
+                        "dist": 2.1722124,
+                        "toFloorInfo": null
+                    },
+                    "966edd46-d4c0-4e8a-9bc5-618c7c2ad4f1": {
+                        "dist": 4.5152106,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44193,
+                    "longitude": -79.94615
+                },
+                "id": "31237743-b901-4fd5-877b-63d18cae1ab6"
+            },
+            {
+                "neighbors": {
+                    "6faf6e2d-10e8-4931-85c9-81bab57ddc3f": {
+                        "dist": 4.387052,
+                        "toFloorInfo": null
+                    },
+                    "ec14bcdf-a0ca-439d-9159-0370ee72db7b": {
+                        "dist": 4.182425,
+                        "toFloorInfo": null
+                    },
+                    "31237743-b901-4fd5-877b-63d18cae1ab6": {
+                        "dist": 2.1722124,
+                        "toFloorInfo": null
+                    },
+                    "f64b84f6-6217-4ffc-86b9-c35a9122ec07": {
+                        "dist": 5.9995337,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44191,
+                    "longitude": -79.94616
+                },
+                "id": "b90edbfc-2f01-4ac6-81b2-b9d1d3bf601b"
+            },
+            {
+                "neighbors": {
+                    "b90edbfc-2f01-4ac6-81b2-b9d1d3bf601b": {
+                        "dist": 5.9995337,
+                        "toFloorInfo": null
+                    },
+                    "56ede6a7-5648-4220-9979-7b14b012e4d1": {
+                        "dist": 3.6919188,
+                        "toFloorInfo": null
+                    },
+                    "22ab2768-bccf-4939-a51b-06fb6103e168": {
+                        "dist": 5.0597095,
+                        "toFloorInfo": null
+                    },
+                    "b04b1a69-7a30-4840-8e11-145b3463366b": {
+                        "dist": 4.051454,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44186,
+                    "longitude": -79.94618
+                },
+                "id": "f64b84f6-6217-4ffc-86b9-c35a9122ec07"
+            },
+            {
+                "neighbors": {
+                    "f64b84f6-6217-4ffc-86b9-c35a9122ec07": {
+                        "dist": 3.6919188,
+                        "toFloorInfo": null
+                    },
+                    "1b828703-dd3d-4aac-b0d8-2cbcda931d10": {
+                        "dist": 4.0432367,
+                        "toFloorInfo": null
+                    },
+                    "9d0c7438-d15c-44ae-afd1-e6f01fbb99df": {
+                        "dist": 5.005314,
+                        "toFloorInfo": null
+                    },
+                    "8232ae87-6044-4cf6-ac39-1f4b47d20bf4": {
+                        "dist": 3.6247876,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44183,
+                    "longitude": -79.94618
+                },
+                "id": "56ede6a7-5648-4220-9979-7b14b012e4d1"
+            },
+            {
+                "neighbors": {
+                    "ead82463-7d68-468c-91bf-ad820731c62f": {
+                        "dist": 4.9295063,
+                        "toFloorInfo": null
+                    },
+                    "56ede6a7-5648-4220-9979-7b14b012e4d1": {
+                        "dist": 3.6247876,
+                        "toFloorInfo": null
+                    },
+                    "681185a0-ba81-4dd7-bceb-30c204246e29": {
+                        "dist": 3.31534,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.4418,
+                    "longitude": -79.946205
+                },
+                "id": "8232ae87-6044-4cf6-ac39-1f4b47d20bf4"
+            },
+            {
+                "neighbors": {
+                    "0a33a57a-e0ca-4a60-a458-487ff4d0efb9": {
+                        "dist": 3.8354177,
+                        "toFloorInfo": null
+                    },
+                    "7bcfdbe9-de68-4f40-b00e-d15df99a4901": {
+                        "dist": 4.5001655,
+                        "toFloorInfo": null
+                    },
+                    "1319d120-a116-47bf-b1db-2f7764092912": {
+                        "dist": 4.460486,
+                        "toFloorInfo": null
+                    },
+                    "8232ae87-6044-4cf6-ac39-1f4b47d20bf4": {
+                        "dist": 4.9295063,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "bfc2299a-1ffe-4775-8b6e-c7775afb5ec6",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.441753,
+                    "longitude": -79.946205
+                },
+                "id": "ead82463-7d68-468c-91bf-ad820731c62f"
+            },
+            {
+                "neighbors": {
+                    "bab78a4c-51eb-4f96-b371-5cebdd85c360": {
+                        "dist": 4.972754,
+                        "toFloorInfo": null
+                    },
+                    "7ab00570-2568-492f-9477-e163d774d023": {
+                        "dist": 4.555607,
+                        "toFloorInfo": null
+                    },
+                    "ead82463-7d68-468c-91bf-ad820731c62f": {
+                        "dist": 4.5001655,
+                        "toFloorInfo": null
+                    },
+                    "c8032bb3-7cae-4057-af81-43c4665c9438": {
+                        "dist": 6.1908274,
+                        "toFloorInfo": null
+                    },
+                    "47134985-b1db-4931-a4f4-74e54e12697f": {
+                        "dist": 6.130538,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "681e7ed2-4487-484b-aaf2-1af05d648e1b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44172,
+                    "longitude": -79.94623
+                },
+                "id": "7bcfdbe9-de68-4f40-b00e-d15df99a4901"
+            },
+            {
+                "neighbors": {
+                    "7bcfdbe9-de68-4f40-b00e-d15df99a4901": {
+                        "dist": 6.1908274,
+                        "toFloorInfo": null
+                    },
+                    "2265ad6e-2a31-4f48-b162-68097d02bbab": {
+                        "dist": -1.0,
+                        "toFloorInfo": {
+                            "toFloor": "PH-2"
+                        }
+                    }
+                },
+                "roomId": "4625e089-87dc-481f-81a2-51fbcc90287f",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.441708,
+                    "longitude": -79.94616
+                },
+                "id": "c8032bb3-7cae-4057-af81-43c4665c9438"
+            },
+            {
+                "neighbors": {
+                    "7955b65b-0b84-4b8b-8f3e-1a87fa76c8e8": {
+                        "dist": 5.526675,
+                        "toFloorInfo": null
+                    },
+                    "c8032bb3-7cae-4057-af81-43c4665c9438": {
+                        "dist": -1.0,
+                        "toFloorInfo": {
+                            "toFloor": "PH-1"
+                        }
+                    },
+                    "db6a4ba5-4e99-4bfb-8d1f-2b79399d0ac0": {
+                        "dist": 8.671548,
+                        "toFloorInfo": null
+                    },
+                    "3150a2f1-4038-4eb6-befa-bd7ad3b54a7b": {
+                        "dist": 14.119873,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "5742773d-d018-40d1-bb1e-0d017216421c",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.441704,
+                    "longitude": -79.94614
+                },
+                "id": "2265ad6e-2a31-4f48-b162-68097d02bbab"
+            },
+            {
+                "neighbors": {
+                    "a1e21f1f-5e7a-414b-8c38-bc4a7859391d": {
+                        "dist": 9.00321,
+                        "toFloorInfo": null
+                    },
+                    "2265ad6e-2a31-4f48-b162-68097d02bbab": {
+                        "dist": 14.119873,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "9e3974a7-3c9a-4e64-9ef4-3e098bb07469",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.44158,
+                    "longitude": -79.94617
+                },
+                "id": "3150a2f1-4038-4eb6-befa-bd7ad3b54a7b"
+            },
+            {
+                "neighbors": {
+                    "4c433d09-e0f9-46fb-bb81-4ed3d51a2fcb": {
+                        "dist": 6.997077,
+                        "toFloorInfo": null
+                    },
+                    "3150a2f1-4038-4eb6-befa-bd7ad3b54a7b": {
+                        "dist": 9.00321,
+                        "toFloorInfo": null
+                    },
+                    "7a0f6819-dce7-4628-bb52-5b4511219bb6": {
+                        "dist": 6.2144113,
+                        "toFloorInfo": null
+                    },
+                    "dae43941-9b23-4472-9eb3-8202700fce78": {
+                        "dist": 3.2085128,
+                        "toFloorInfo": null
+                    },
+                    "7eafd8ac-f5cc-42e6-bea7-9f139a5fe383": {
+                        "dist": 3.5691714,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "6ee989b7-ba4d-4188-986c-5b8c26cb7475",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.441532,
+                    "longitude": -79.946075
+                },
+                "id": "a1e21f1f-5e7a-414b-8c38-bc4a7859391d"
+            },
+            {
+                "neighbors": {
+                    "929dc12f-e94a-482a-b9b4-21e2609264f1": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    },
+                    "167f22d5-0269-4826-9918-4f5bedddaec5": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    },
+                    "f64043ef-84a9-4604-9654-6bb0193eaf40": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    },
+                    "a1e21f1f-5e7a-414b-8c38-bc4a7859391d": {
+                        "dist": 3.2085128,
+                        "toFloorInfo": null
+                    },
+                    "77f4a15f-3a91-4360-912b-0e5da62d8f55": {
+                        "dist": 6.430367,
+                        "toFloorInfo": null
+                    },
+                    "85bf1ff8-5851-46a4-910e-5f30b7bc96d5": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    },
+                    "c9a968f3-2b83-405e-9057-d5f9867a1162": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "6ee989b7-ba4d-4188-986c-5b8c26cb7475",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.44152,
+                    "longitude": -79.94611
+                },
+                "id": "dae43941-9b23-4472-9eb3-8202700fce78"
+            },
+            {
+                "neighbors": {
+                    "dae43941-9b23-4472-9eb3-8202700fce78": {
+                        "dist": 6.430367,
+                        "toFloorInfo": null
+                    },
+                    "317e2110-fe95-49b7-863e-6a6340db60f7": {
+                        "dist": 3.416709,
+                        "toFloorInfo": null
+                    },
+                    "03e17e71-592b-4de5-8277-d0592c4e0242": {
+                        "dist": 6.5038843,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "eed21d39-cdac-4277-8b75-cb06af275b6b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.441463,
+                    "longitude": -79.94613
+                },
+                "id": "77f4a15f-3a91-4360-912b-0e5da62d8f55"
+            }
+        ],
+        "distance": 656.29504
+    },
+    "Fastest": {
+        "path": [
+            {
+                "neighbors": {
+                    "e7efc6e6-a968-4b66-aa8e-160f03ee957c": {
+                        "dist": 3.0530674,
+                        "toFloorInfo": null
+                    },
+                    "e3b3e805-2e60-4a45-afaf-0f374de83961": {
+                        "dist": 4.5825605,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "e51032f4-63d9-498f-9e6b-5af0e893cc8c",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.4438,
+                    "longitude": -79.94432
+                },
+                "id": "22cc21d3-0813-4bc6-8d26-96abc767a1e5"
+            },
+            {
+                "neighbors": {
+                    "22cc21d3-0813-4bc6-8d26-96abc767a1e5": {
+                        "dist": 4.5825605,
+                        "toFloorInfo": null
+                    },
+                    "614d6882-b61f-4f92-8a20-d1650cb11efa": {
+                        "dist": 1.8005726,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "e51032f4-63d9-498f-9e6b-5af0e893cc8c",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443817,
+                    "longitude": -79.94437
+                },
+                "id": "e3b3e805-2e60-4a45-afaf-0f374de83961"
+            },
+            {
+                "neighbors": {
+                    "e3b3e805-2e60-4a45-afaf-0f374de83961": {
+                        "dist": 1.8005726,
+                        "toFloorInfo": null
+                    },
+                    "e9c66d2f-ddc5-4489-9b3e-fca88c6ce0b5": {
+                        "dist": 4.122277,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "833ddb44-c93d-4043-b97b-fa250b8035be",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44382,
+                    "longitude": -79.94439
+                },
+                "id": "614d6882-b61f-4f92-8a20-d1650cb11efa"
+            },
+            {
+                "neighbors": {
+                    "dc08bafa-aeb4-461e-a2d9-8b27f3afdf82": {
+                        "dist": 5.434954,
+                        "toFloorInfo": null
+                    },
+                    "614d6882-b61f-4f92-8a20-d1650cb11efa": {
+                        "dist": 4.122277,
+                        "toFloorInfo": null
+                    },
+                    "b20b5e33-ed73-4f5c-8802-cb288bffddc0": {
+                        "dist": 3.2885346,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "443bd1b0-df63-4000-831f-f31cac4fef25",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44384,
+                    "longitude": -79.94443
+                },
+                "id": "e9c66d2f-ddc5-4489-9b3e-fca88c6ce0b5"
+            },
+            {
+                "neighbors": {
+                    "4ea10d12-56ce-4a10-8e73-eb0b36d4fb65": {
+                        "dist": 5.618008,
+                        "toFloorInfo": null
+                    },
+                    "e9c66d2f-ddc5-4489-9b3e-fca88c6ce0b5": {
+                        "dist": 3.2885346,
+                        "toFloorInfo": null
+                    },
+                    "c73f6152-7b31-448f-acef-af36e4249a4b": {
+                        "dist": 8.84209,
+                        "toFloorInfo": null
+                    },
+                    "c8836396-79c4-4a92-85ff-f62ecc14d1f9": {
+                        "dist": 4.3139563,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "443bd1b0-df63-4000-831f-f31cac4fef25",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44382,
+                    "longitude": -79.944466
+                },
+                "id": "b20b5e33-ed73-4f5c-8802-cb288bffddc0"
+            },
+            {
+                "neighbors": {
+                    "378e8a98-15af-4886-816f-a0121954c1ba": {
+                        "dist": 7.9389434,
+                        "toFloorInfo": null
+                    },
+                    "b20b5e33-ed73-4f5c-8802-cb288bffddc0": {
+                        "dist": 8.84209,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "fc26ace5-0d31-4691-a2d7-16e9d3802310",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44378,
+                    "longitude": -79.944374
+                },
+                "id": "c73f6152-7b31-448f-acef-af36e4249a4b"
+            },
+            {
+                "neighbors": {
+                    "fae941ee-b692-4249-8e46-2e135eab84bf": {
+                        "dist": 6.7911787,
+                        "toFloorInfo": null
+                    },
+                    "c73f6152-7b31-448f-acef-af36e4249a4b": {
+                        "dist": 7.9389434,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "fc26ace5-0d31-4691-a2d7-16e9d3802310",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44371,
+                    "longitude": -79.94435
+                },
+                "id": "378e8a98-15af-4886-816f-a0121954c1ba"
+            },
+            {
+                "neighbors": {
+                    "7ab47c82-8fe9-42ab-acf4-78855936683d": {
+                        "dist": 7.0535736,
+                        "toFloorInfo": null
+                    },
+                    "378e8a98-15af-4886-816f-a0121954c1ba": {
+                        "dist": 6.7911787,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "fc26ace5-0d31-4691-a2d7-16e9d3802310",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443653,
+                    "longitude": -79.94438
+                },
+                "id": "fae941ee-b692-4249-8e46-2e135eab84bf"
+            },
+            {
+                "neighbors": {
+                    "9e2d44b1-fb0f-4ac5-8559-7283e236db2d": {
+                        "dist": 6.9865084,
+                        "toFloorInfo": null
+                    },
+                    "ef97dfa8-8aa2-4364-86ce-11104fe39f4f": {
+                        "dist": 2.9273906,
+                        "toFloorInfo": null
+                    },
+                    "fae941ee-b692-4249-8e46-2e135eab84bf": {
+                        "dist": 7.0535736,
+                        "toFloorInfo": null
+                    },
+                    "e7ec5e63-080d-4bdc-b7e8-bd2c8b38ed53": {
+                        "dist": 6.3610287,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "fc26ace5-0d31-4691-a2d7-16e9d3802310",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443592,
+                    "longitude": -79.9444
+                },
+                "id": "7ab47c82-8fe9-42ab-acf4-78855936683d"
+            },
+            {
+                "neighbors": {
+                    "de89e28f-99c2-4107-8601-edec62496ad1": {
+                        "dist": 7.992614,
+                        "toFloorInfo": null
+                    },
+                    "7ab47c82-8fe9-42ab-acf4-78855936683d": {
+                        "dist": 6.3610287,
+                        "toFloorInfo": null
+                    },
+                    "c06966bc-e889-4d23-a7c6-59d5f9f49ee4": {
+                        "dist": 5.237891,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "d49f45fa-63a9-44cb-9809-9f5c0bfdd1dc",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44358,
+                    "longitude": -79.94447
+                },
+                "id": "e7ec5e63-080d-4bdc-b7e8-bd2c8b38ed53"
+            },
+            {
+                "neighbors": {
+                    "e7ec5e63-080d-4bdc-b7e8-bd2c8b38ed53": {
+                        "dist": 7.992614,
+                        "toFloorInfo": null
+                    },
+                    "faf125d9-1a54-4b96-91f3-d32173d10ce8": {
+                        "dist": 6.850837,
+                        "toFloorInfo": null
+                    },
+                    "0e1e73c0-7aab-4692-a199-f12c9d4268b6": {
+                        "dist": 1.6172125,
+                        "toFloorInfo": null
+                    },
+                    "1f4ad2f3-fbf3-4e0c-9d1b-3705c1753032": {
+                        "dist": 4.4595394,
+                        "toFloorInfo": null
+                    },
+                    "e7c69d2d-ca67-417f-b7cf-c509e78e1343": {
+                        "dist": 2.7729566,
+                        "toFloorInfo": null
+                    },
+                    "26813faf-7262-4251-a2aa-f9959dd367be": {
+                        "dist": 6.1742706,
+                        "toFloorInfo": null
+                    },
+                    "4fe65d60-c73d-4bc7-9f96-19985c1b16fc": {
+                        "dist": 6.463056,
+                        "toFloorInfo": null
+                    },
+                    "d212121d-ccee-49e3-881a-f5e9ebdaba18": {
+                        "dist": 4.129563,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443512,
+                    "longitude": -79.94451
+                },
+                "id": "de89e28f-99c2-4107-8601-edec62496ad1"
+            },
+            {
+                "neighbors": {
+                    "b0cbc030-6494-409d-bcab-d3b6f995d560": {
+                        "dist": 6.0213776,
+                        "toFloorInfo": null
+                    },
+                    "56c3b28c-1c70-4c45-a75c-bce00e51875f": {
+                        "dist": 9.357693,
+                        "toFloorInfo": null
+                    },
+                    "de89e28f-99c2-4107-8601-edec62496ad1": {
+                        "dist": 6.850837,
+                        "toFloorInfo": null
+                    },
+                    "bcfc3218-9c73-4b52-a3b1-7736479e6740": {
+                        "dist": 3.9052942,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443455,
+                    "longitude": -79.94454
+                },
+                "id": "faf125d9-1a54-4b96-91f3-d32173d10ce8"
+            },
+            {
+                "neighbors": {
+                    "2b07af5b-dbd6-4cda-ba5d-19e9cda1d5e4": {
+                        "dist": 3.9665926,
+                        "toFloorInfo": null
+                    },
+                    "ffdc7bf1-f399-4269-b09f-4f0f8523d4a5": {
+                        "dist": 5.3706775,
+                        "toFloorInfo": null
+                    },
+                    "77e42b57-f77f-4e12-bb8c-b1ab8eba3b40": {
+                        "dist": 3.1075127,
+                        "toFloorInfo": null
+                    },
+                    "faf125d9-1a54-4b96-91f3-d32173d10ce8": {
+                        "dist": 9.357693,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443382,
+                    "longitude": -79.944595
+                },
+                "id": "56c3b28c-1c70-4c45-a75c-bce00e51875f"
+            },
+            {
+                "neighbors": {
+                    "56c3b28c-1c70-4c45-a75c-bce00e51875f": {
+                        "dist": 3.9665926,
+                        "toFloorInfo": null
+                    },
+                    "77e42b57-f77f-4e12-bb8c-b1ab8eba3b40": {
+                        "dist": 4.4065347,
+                        "toFloorInfo": null
+                    },
+                    "a5f34b45-1962-40c9-8ac5-4bfd1a796133": {
+                        "dist": 3.5342553,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443348,
+                    "longitude": -79.9446
+                },
+                "id": "2b07af5b-dbd6-4cda-ba5d-19e9cda1d5e4"
+            },
+            {
+                "neighbors": {
+                    "ca327d93-9502-4f06-a627-e0d1d4c6fa3f": {
+                        "dist": 3.1613085,
+                        "toFloorInfo": null
+                    },
+                    "2b07af5b-dbd6-4cda-ba5d-19e9cda1d5e4": {
+                        "dist": 3.5342553,
+                        "toFloorInfo": null
+                    },
+                    "848a3822-bdb9-4cf7-9a31-e05eb10a3082": {
+                        "dist": 4.7433577,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443336,
+                    "longitude": -79.94464
+                },
+                "id": "a5f34b45-1962-40c9-8ac5-4bfd1a796133"
+            },
+            {
+                "neighbors": {
+                    "a90ac7d1-7aab-4ecf-9039-5b799882489c": {
+                        "dist": 2.5153859,
+                        "toFloorInfo": null
+                    },
+                    "669903ab-3ba7-4433-9f25-a50f6790cf47": {
+                        "dist": 4.941607,
+                        "toFloorInfo": null
+                    },
+                    "a5f34b45-1962-40c9-8ac5-4bfd1a796133": {
+                        "dist": 4.7433577,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443336,
+                    "longitude": -79.944695
+                },
+                "id": "848a3822-bdb9-4cf7-9a31-e05eb10a3082"
+            },
+            {
+                "neighbors": {
+                    "c3a088d7-450c-4c11-b7af-c76c94d51481": {
+                        "dist": 2.1841936,
+                        "toFloorInfo": null
+                    },
+                    "848a3822-bdb9-4cf7-9a31-e05eb10a3082": {
+                        "dist": 4.941607,
+                        "toFloorInfo": null
+                    },
+                    "e3c6f492-0fed-4b3c-ba8c-ff25de18e7e7": {
+                        "dist": 4.046744,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443344,
+                    "longitude": -79.944756
+                },
+                "id": "669903ab-3ba7-4433-9f25-a50f6790cf47"
+            },
+            {
+                "neighbors": {
+                    "669903ab-3ba7-4433-9f25-a50f6790cf47": {
+                        "dist": 4.046744,
+                        "toFloorInfo": null
+                    },
+                    "7ae63330-66c5-4101-93df-8087045e4872": {
+                        "dist": 3.6937037,
+                        "toFloorInfo": null
+                    },
+                    "b22d05aa-c1e9-4c34-adb1-cb6b6a862d2d": {
+                        "dist": 6.1725707,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44335,
+                    "longitude": -79.9448
+                },
+                "id": "e3c6f492-0fed-4b3c-ba8c-ff25de18e7e7"
+            },
+            {
+                "neighbors": {
+                    "b22d05aa-c1e9-4c34-adb1-cb6b6a862d2d": {
+                        "dist": 2.8186538,
+                        "toFloorInfo": null
+                    },
+                    "b3da7822-7a6b-4d56-bce1-5485b5d19801": {
+                        "dist": 2.0138104,
+                        "toFloorInfo": null
+                    },
+                    "8efe1787-4d84-42b6-b66b-a372cc4da533": {
+                        "dist": 4.069765,
+                        "toFloorInfo": null
+                    },
+                    "e3c6f492-0fed-4b3c-ba8c-ff25de18e7e7": {
+                        "dist": 3.6937037,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443348,
+                    "longitude": -79.94485
+                },
+                "id": "7ae63330-66c5-4101-93df-8087045e4872"
+            },
+            {
+                "neighbors": {
+                    "7ae63330-66c5-4101-93df-8087045e4872": {
+                        "dist": 4.069765,
+                        "toFloorInfo": null
+                    },
+                    "b22d05aa-c1e9-4c34-adb1-cb6b6a862d2d": {
+                        "dist": 4.060185,
+                        "toFloorInfo": null
+                    },
+                    "696b738a-e012-4bbe-a423-417c3643feb5": {
+                        "dist": 6.0132513,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443325,
+                    "longitude": -79.944885
+                },
+                "id": "8efe1787-4d84-42b6-b66b-a372cc4da533"
+            },
+            {
+                "neighbors": {
+                    "8efe1787-4d84-42b6-b66b-a372cc4da533": {
+                        "dist": 6.0132513,
+                        "toFloorInfo": null
+                    },
+                    "47f36906-acd3-4b20-938a-1529f0c414e3": {
+                        "dist": 6.1874757,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "f61e8e39-a0ff-4fa8-ad42-9837741958fa",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44333,
+                    "longitude": -79.944954
+                },
+                "id": "696b738a-e012-4bbe-a423-417c3643feb5"
+            },
+            {
+                "neighbors": {
+                    "642a3a27-3088-4ead-969b-cfe8eaf4e596": {
+                        "dist": 5.7912474,
+                        "toFloorInfo": null
+                    },
+                    "696b738a-e012-4bbe-a423-417c3643feb5": {
+                        "dist": 6.1874757,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "eb1d6e15-a052-4df0-bc0b-fa70feeea3d6",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443336,
+                    "longitude": -79.94503
+                },
+                "id": "47f36906-acd3-4b20-938a-1529f0c414e3"
+            },
+            {
+                "neighbors": {
+                    "47f36906-acd3-4b20-938a-1529f0c414e3": {
+                        "dist": 5.7912474,
+                        "toFloorInfo": null
+                    },
+                    "c7af10ae-b87f-4a0a-b2e9-101392c743c0": {
+                        "dist": 5.8995175,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "eb1d6e15-a052-4df0-bc0b-fa70feeea3d6",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443344,
+                    "longitude": -79.94509
+                },
+                "id": "642a3a27-3088-4ead-969b-cfe8eaf4e596"
+            },
+            {
+                "neighbors": {
+                    "642a3a27-3088-4ead-969b-cfe8eaf4e596": {
+                        "dist": 5.8995175,
+                        "toFloorInfo": null
+                    },
+                    "7f05e9df-6f78-407a-8adb-d900c0317ddc": {
+                        "dist": 6.039198,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "eb1d6e15-a052-4df0-bc0b-fa70feeea3d6",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44335,
+                    "longitude": -79.94516
+                },
+                "id": "c7af10ae-b87f-4a0a-b2e9-101392c743c0"
+            },
+            {
+                "neighbors": {
+                    "c7af10ae-b87f-4a0a-b2e9-101392c743c0": {
+                        "dist": 6.039198,
+                        "toFloorInfo": null
+                    },
+                    "03f4e8e6-fc20-4048-81b2-4c19222583a6": {
+                        "dist": 0.4310255,
+                        "toFloorInfo": {
+                            "toFloor": "NSH-4"
+                        }
+                    }
+                },
+                "roomId": "eb1d6e15-a052-4df0-bc0b-fa70feeea3d6",
+                "floor": {
+                    "buildingCode": "GHC",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44336,
+                    "longitude": -79.94524
+                },
+                "id": "7f05e9df-6f78-407a-8adb-d900c0317ddc"
+            },
+            {
+                "neighbors": {
+                    "df9b6041-e535-442e-9cde-bcd6abea3e9a": {
+                        "dist": 2.706142,
+                        "toFloorInfo": null
+                    },
+                    "7f05e9df-6f78-407a-8adb-d900c0317ddc": {
+                        "dist": 0.4310255,
+                        "toFloorInfo": {
+                            "toFloor": "GHC-4"
+                        }
+                    },
+                    "26df39dc-10e8-47ed-88fa-f2d970868e77": {
+                        "dist": 3.5787673,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443356,
+                    "longitude": -79.94524
+                },
+                "id": "03f4e8e6-fc20-4048-81b2-4c19222583a6"
+            },
+            {
+                "neighbors": {
+                    "df9b6041-e535-442e-9cde-bcd6abea3e9a": {
+                        "dist": 3.3142684,
+                        "toFloorInfo": null
+                    },
+                    "4c9a9a08-f22b-443c-88a3-effd10abf3d0": {
+                        "dist": 3.4419107,
+                        "toFloorInfo": null
+                    },
+                    "03f4e8e6-fc20-4048-81b2-4c19222583a6": {
+                        "dist": 3.5787673,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443344,
+                    "longitude": -79.945274
+                },
+                "id": "26df39dc-10e8-47ed-88fa-f2d970868e77"
+            },
+            {
+                "neighbors": {
+                    "26df39dc-10e8-47ed-88fa-f2d970868e77": {
+                        "dist": 3.4419107,
+                        "toFloorInfo": null
+                    },
+                    "6b273a15-4540-4f75-8ac6-3995195e19d7": {
+                        "dist": 3.6050406,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443314,
+                    "longitude": -79.94529
+                },
+                "id": "4c9a9a08-f22b-443c-88a3-effd10abf3d0"
+            },
+            {
+                "neighbors": {
+                    "3ca9174c-a5f6-480f-8fbc-4eba7a3f06c3": {
+                        "dist": 2.5572472,
+                        "toFloorInfo": null
+                    },
+                    "4c9a9a08-f22b-443c-88a3-effd10abf3d0": {
+                        "dist": 3.6050406,
+                        "toFloorInfo": null
+                    },
+                    "a1b1c983-4925-4a78-bfe7-0b6330a7b306": {
+                        "dist": 4.5563183,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "7a9f60c9-9863-49ec-a36d-cd10c67a3376",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443283,
+                    "longitude": -79.945305
+                },
+                "id": "6b273a15-4540-4f75-8ac6-3995195e19d7"
+            },
+            {
+                "neighbors": {
+                    "03a1f9c8-8d77-4677-b211-37680cb40dda": {
+                        "dist": 3.7781236,
+                        "toFloorInfo": null
+                    },
+                    "6b273a15-4540-4f75-8ac6-3995195e19d7": {
+                        "dist": 4.5563183,
+                        "toFloorInfo": null
+                    },
+                    "c75609dd-b444-46e1-af05-ec696b864a8f": {
+                        "dist": 3.3002357,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443245,
+                    "longitude": -79.94531
+                },
+                "id": "a1b1c983-4925-4a78-bfe7-0b6330a7b306"
+            },
+            {
+                "neighbors": {
+                    "a1b1c983-4925-4a78-bfe7-0b6330a7b306": {
+                        "dist": 3.7781236,
+                        "toFloorInfo": null
+                    },
+                    "103c9821-e7a4-42e2-ac49-c3b49a514a8d": {
+                        "dist": 3.977243,
+                        "toFloorInfo": null
+                    },
+                    "33ba4595-7f39-4018-abb3-092ee88b8514": {
+                        "dist": 3.7884622,
+                        "toFloorInfo": null
+                    },
+                    "2ab33928-f1af-4c75-91b4-e79b2993c862": {
+                        "dist": 4.400048,
+                        "toFloorInfo": null
+                    },
+                    "c03b4724-b34e-47b9-990b-4ba2211b18c8": {
+                        "dist": 4.1693034,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443214,
+                    "longitude": -79.945335
+                },
+                "id": "03a1f9c8-8d77-4677-b211-37680cb40dda"
+            },
+            {
+                "neighbors": {
+                    "e3a20643-90f5-49c9-82cb-d81f5a5f6820": {
+                        "dist": 4.023051,
+                        "toFloorInfo": null
+                    },
+                    "03a1f9c8-8d77-4677-b211-37680cb40dda": {
+                        "dist": 3.7884622,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44318,
+                    "longitude": -79.945335
+                },
+                "id": "33ba4595-7f39-4018-abb3-092ee88b8514"
+            },
+            {
+                "neighbors": {
+                    "972fdfd0-7660-4372-a121-d93f7018a41e": {
+                        "dist": 3.2739253,
+                        "toFloorInfo": null
+                    },
+                    "33ba4595-7f39-4018-abb3-092ee88b8514": {
+                        "dist": 4.023051,
+                        "toFloorInfo": null
+                    },
+                    "76cfb1c2-6484-40a6-8c25-241ae664b559": {
+                        "dist": 3.8552105,
+                        "toFloorInfo": null
+                    },
+                    "4b6cc9df-a3ad-4107-bdc8-fe94cdfbaa31": {
+                        "dist": 3.4390666,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443146,
+                    "longitude": -79.94535
+                },
+                "id": "e3a20643-90f5-49c9-82cb-d81f5a5f6820"
+            },
+            {
+                "neighbors": {
+                    "5cd072f5-e6ea-498d-befa-43b743695bfa": {
+                        "dist": 3.2109485,
+                        "toFloorInfo": null
+                    },
+                    "f2c23489-6e1a-482a-b452-5b8c0011bd40": {
+                        "dist": 4.3868375,
+                        "toFloorInfo": null
+                    },
+                    "e3a20643-90f5-49c9-82cb-d81f5a5f6820": {
+                        "dist": 3.2739253,
+                        "toFloorInfo": null
+                    },
+                    "b3e8c749-5b35-4834-b443-e1767a07e5c0": {
+                        "dist": 3.8103359,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443142,
+                    "longitude": -79.94539
+                },
+                "id": "972fdfd0-7660-4372-a121-d93f7018a41e"
+            },
+            {
+                "neighbors": {
+                    "e65c256e-1289-4da1-9f77-17d63495a912": {
+                        "dist": 4.123077,
+                        "toFloorInfo": null
+                    },
+                    "972fdfd0-7660-4372-a121-d93f7018a41e": {
+                        "dist": 3.8103359,
+                        "toFloorInfo": null
+                    },
+                    "f64ab76d-7ede-4c4e-8aa7-6e6b1802e2b7": {
+                        "dist": 4.4993787,
+                        "toFloorInfo": null
+                    },
+                    "9fc8a487-deef-4d2c-bba6-c1d638ce0fd8": {
+                        "dist": 3.1774526,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44315,
+                    "longitude": -79.945435
+                },
+                "id": "b3e8c749-5b35-4834-b443-e1767a07e5c0"
+            },
+            {
+                "neighbors": {
+                    "6f261884-dcf9-4913-a098-75eed075734e": {
+                        "dist": 3.8943589,
+                        "toFloorInfo": null
+                    },
+                    "b3e8c749-5b35-4834-b443-e1767a07e5c0": {
+                        "dist": 4.123077,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44316,
+                    "longitude": -79.94548
+                },
+                "id": "e65c256e-1289-4da1-9f77-17d63495a912"
+            },
+            {
+                "neighbors": {
+                    "91763e83-e592-4b4d-bc36-484b92e0d0a2": {
+                        "dist": 3.7853851,
+                        "toFloorInfo": null
+                    },
+                    "e65c256e-1289-4da1-9f77-17d63495a912": {
+                        "dist": 3.8943589,
+                        "toFloorInfo": null
+                    },
+                    "72f1b675-a887-4ce5-9f57-75cea3fe03de": {
+                        "dist": 3.5511065,
+                        "toFloorInfo": null
+                    },
+                    "94259972-51cc-4b77-860b-dfc550b3f135": {
+                        "dist": 3.665641,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44317,
+                    "longitude": -79.945526
+                },
+                "id": "6f261884-dcf9-4913-a098-75eed075734e"
+            },
+            {
+                "neighbors": {
+                    "6f261884-dcf9-4913-a098-75eed075734e": {
+                        "dist": 3.665641,
+                        "toFloorInfo": null
+                    },
+                    "91911eac-581c-43ec-b66b-cb61fab7d536": {
+                        "dist": 3.3965795,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "33258358-7e54-49a8-8cc9-b5a069942e8b",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443176,
+                    "longitude": -79.945564
+                },
+                "id": "94259972-51cc-4b77-860b-dfc550b3f135"
+            },
+            {
+                "neighbors": {
+                    "97eaefee-a61b-418d-9657-1185f760c541": {
+                        "dist": 3.1246495,
+                        "toFloorInfo": null
+                    },
+                    "4150d716-9e88-4f23-8462-83f1620e71fe": {
+                        "dist": 2.9159193,
+                        "toFloorInfo": null
+                    },
+                    "94259972-51cc-4b77-860b-dfc550b3f135": {
+                        "dist": 3.3965795,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44318,
+                    "longitude": -79.9456
+                },
+                "id": "91911eac-581c-43ec-b66b-cb61fab7d536"
+            },
+            {
+                "neighbors": {
+                    "dbee5782-875f-4bb3-a4e8-e2aefde313cd": {
+                        "dist": 3.1776762,
+                        "toFloorInfo": null
+                    },
+                    "91911eac-581c-43ec-b66b-cb61fab7d536": {
+                        "dist": 3.1246495,
+                        "toFloorInfo": null
+                    },
+                    "0ecd1f30-7f62-4a2e-882f-25e599029312": {
+                        "dist": 3.456268,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443153,
+                    "longitude": -79.94562
+                },
+                "id": "97eaefee-a61b-418d-9657-1185f760c541"
+            },
+            {
+                "neighbors": {
+                    "cd8e9f7b-aab5-4d0a-9f02-dcb23f831a6e": {
+                        "dist": 3.0103266,
+                        "toFloorInfo": {
+                            "toFloor": "WEH-4"
+                        }
+                    },
+                    "0ecd1f30-7f62-4a2e-882f-25e599029312": {
+                        "dist": 3.2966785,
+                        "toFloorInfo": null
+                    },
+                    "92498a0f-4a68-4cea-977a-2d6cf021099d": {
+                        "dist": 3.2709649,
+                        "toFloorInfo": null
+                    },
+                    "97eaefee-a61b-418d-9657-1185f760c541": {
+                        "dist": 3.1776762,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "d0034ee1-3e9a-4498-967c-32850ee94039",
+                "floor": {
+                    "buildingCode": "NSH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.443146,
+                    "longitude": -79.94565
+                },
+                "id": "dbee5782-875f-4bb3-a4e8-e2aefde313cd"
+            },
+            {
+                "neighbors": {
+                    "f9e45ca4-6dfd-4e8f-b342-6b0f786e3413": {
+                        "dist": 31.886263,
+                        "toFloorInfo": null
+                    },
+                    "dbee5782-875f-4bb3-a4e8-e2aefde313cd": {
+                        "dist": 3.0103266,
+                        "toFloorInfo": {
+                            "toFloor": "NSH-4"
+                        }
+                    }
+                },
+                "roomId": "1a7b853f-cb9b-44d0-a1ec-c339c13b83bd",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44312,
+                    "longitude": -79.94566
+                },
+                "id": "cd8e9f7b-aab5-4d0a-9f02-dcb23f831a6e"
+            },
+            {
+                "neighbors": {
+                    "91854f02-65f9-4f95-81cc-18d7811410e7": {
+                        "dist": 3.5452168,
+                        "toFloorInfo": null
+                    },
+                    "cd8e9f7b-aab5-4d0a-9f02-dcb23f831a6e": {
+                        "dist": 31.886263,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "1a7b853f-cb9b-44d0-a1ec-c339c13b83bd",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44284,
+                    "longitude": -79.94576
+                },
+                "id": "f9e45ca4-6dfd-4e8f-b342-6b0f786e3413"
+            },
+            {
+                "neighbors": {
+                    "690d9b15-8130-41d6-aa52-7217f9d45590": {
+                        "dist": 3.6036565,
+                        "toFloorInfo": null
+                    },
+                    "693de25a-ed99-4c1b-a2a3-24327b5aca15": {
+                        "dist": 3.202461,
+                        "toFloorInfo": null
+                    },
+                    "f9e45ca4-6dfd-4e8f-b342-6b0f786e3413": {
+                        "dist": 3.5452168,
+                        "toFloorInfo": null
+                    },
+                    "e9a600fc-de90-4725-a216-f738a9d9c6d6": {
+                        "dist": 3.9527059,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "232e91c7-f403-4151-b406-2ee33d4efbdd",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44281,
+                    "longitude": -79.94577
+                },
+                "id": "91854f02-65f9-4f95-81cc-18d7811410e7"
+            },
+            {
+                "neighbors": {
+                    "a75ea6f4-2812-4e7a-a6c2-ac3653e082b2": {
+                        "dist": 3.8664894,
+                        "toFloorInfo": null
+                    },
+                    "91854f02-65f9-4f95-81cc-18d7811410e7": {
+                        "dist": 3.9527059,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "232e91c7-f403-4151-b406-2ee33d4efbdd",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.442776,
+                    "longitude": -79.945786
+                },
+                "id": "e9a600fc-de90-4725-a216-f738a9d9c6d6"
+            },
+            {
+                "neighbors": {
+                    "6b0c242d-da5e-4d02-8fc9-7fc9f830e5c4": {
+                        "dist": 3.085093,
+                        "toFloorInfo": null
+                    },
+                    "86d940b9-c12a-4ff3-9d86-76b57564eba7": {
+                        "dist": 3.6014214,
+                        "toFloorInfo": null
+                    },
+                    "e9a600fc-de90-4725-a216-f738a9d9c6d6": {
+                        "dist": 3.8664894,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "232e91c7-f403-4151-b406-2ee33d4efbdd",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.442745,
+                    "longitude": -79.94579
+                },
+                "id": "a75ea6f4-2812-4e7a-a6c2-ac3653e082b2"
+            },
+            {
+                "neighbors": {
+                    "a75ea6f4-2812-4e7a-a6c2-ac3653e082b2": {
+                        "dist": 3.085093,
+                        "toFloorInfo": null
+                    },
+                    "6408246d-06a5-457c-8f3e-702a92ff7670": {
+                        "dist": 3.4588292,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "232e91c7-f403-4151-b406-2ee33d4efbdd",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44272,
+                    "longitude": -79.9458
+                },
+                "id": "6b0c242d-da5e-4d02-8fc9-7fc9f830e5c4"
+            },
+            {
+                "neighbors": {
+                    "6b0c242d-da5e-4d02-8fc9-7fc9f830e5c4": {
+                        "dist": 3.4588292,
+                        "toFloorInfo": null
+                    },
+                    "f289d741-6df5-4cd4-9693-a97969c3be31": {
+                        "dist": 4.8759084,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "232e91c7-f403-4151-b406-2ee33d4efbdd",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.442688,
+                    "longitude": -79.945816
+                },
+                "id": "6408246d-06a5-457c-8f3e-702a92ff7670"
+            },
+            {
+                "neighbors": {
+                    "dc1501c2-d523-498c-b4b4-82a81966ebd4": {
+                        "dist": 4.0782986,
+                        "toFloorInfo": null
+                    },
+                    "6408246d-06a5-457c-8f3e-702a92ff7670": {
+                        "dist": 4.8759084,
+                        "toFloorInfo": null
+                    },
+                    "160e42fb-a2f7-4840-a3ea-19f4c8947f52": {
+                        "dist": 2.6982608,
+                        "toFloorInfo": null
+                    },
+                    "b30619d9-1c5f-403f-91aa-b11823a5d772": {
+                        "dist": 4.1832247,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "51d7241f-542d-432b-9bb0-efbee353c638",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.442646,
+                    "longitude": -79.94583
+                },
+                "id": "f289d741-6df5-4cd4-9693-a97969c3be31"
+            },
+            {
+                "neighbors": {
+                    "52536235-6ac3-474d-ae47-2a7a3e44fab5": {
+                        "dist": 5.4228606,
+                        "toFloorInfo": null
+                    },
+                    "3cfc4613-e2e9-468b-bd15-81ae87110c65": {
+                        "dist": 4.0826874,
+                        "toFloorInfo": null
+                    },
+                    "14a298f2-3548-4783-bb9f-7a68782cb4f1": {
+                        "dist": 2.7680898,
+                        "toFloorInfo": null
+                    },
+                    "f289d741-6df5-4cd4-9693-a97969c3be31": {
+                        "dist": 2.6982608,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "51d7241f-542d-432b-9bb0-efbee353c638",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.44265,
+                    "longitude": -79.94586
+                },
+                "id": "160e42fb-a2f7-4840-a3ea-19f4c8947f52"
+            },
+            {
+                "neighbors": {
+                    "f8aeb4ee-3e0c-4e70-af19-c9f3404fc6c3": {
+                        "dist": -1.0,
+                        "toFloorInfo": {
+                            "toFloor": "WEH-5"
+                        }
+                    },
+                    "a2947076-0946-422e-af31-8f83d8f881a6": {
+                        "dist": -1.0,
+                        "toFloorInfo": {
+                            "toFloor": "WEH-3"
+                        }
+                    },
+                    "160e42fb-a2f7-4840-a3ea-19f4c8947f52": {
+                        "dist": 4.0826874,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "a689f5e5-20ba-4028-b228-b171aa556697",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "4"
+                },
+                "coordinate": {
+                    "latitude": 40.442688,
+                    "longitude": -79.945854
+                },
+                "id": "3cfc4613-e2e9-468b-bd15-81ae87110c65"
+            },
+            {
+                "neighbors": {
+                    "b6b0af96-fb42-488c-9c8b-0f4dade2ab18": {
+                        "dist": 3.9338748,
+                        "toFloorInfo": null
+                    },
+                    "3cfc4613-e2e9-468b-bd15-81ae87110c65": {
+                        "dist": -1.0,
+                        "toFloorInfo": {
+                            "toFloor": "WEH-4"
+                        }
+                    },
+                    "5ad15032-9746-4e36-a36f-8a8d70a504b5": {
+                        "dist": -1.0,
+                        "toFloorInfo": {
+                            "toFloor": "WEH-6"
+                        }
+                    }
+                },
+                "roomId": "9f2d0480-1fb8-4e69-8327-3218078ab4d4",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "5"
+                },
+                "coordinate": {
+                    "latitude": 40.44268,
+                    "longitude": -79.945854
+                },
+                "id": "f8aeb4ee-3e0c-4e70-af19-c9f3404fc6c3"
+            },
+            {
+                "neighbors": {
+                    "846a3714-4908-428e-ac6f-ece358e99d7b": {
+                        "dist": 3.1298387,
+                        "toFloorInfo": null
+                    },
+                    "03045279-c6ec-4390-83f4-4cc254c5e7e5": {
+                        "dist": 5.1939096,
+                        "toFloorInfo": null
+                    },
+                    "f8aeb4ee-3e0c-4e70-af19-c9f3404fc6c3": {
+                        "dist": 3.9338748,
+                        "toFloorInfo": null
+                    },
+                    "a9ced36a-d951-4f5a-975e-d486913457f5": {
+                        "dist": 2.7319698,
+                        "toFloorInfo": null
+                    },
+                    "e8f3900c-1034-4dc6-a89d-df4181d93ed1": {
+                        "dist": 3.5481849,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "c8ef2e2e-d34a-4360-90fa-f7adce79e35d",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "5"
+                },
+                "coordinate": {
+                    "latitude": 40.442646,
+                    "longitude": -79.945854
+                },
+                "id": "b6b0af96-fb42-488c-9c8b-0f4dade2ab18"
+            },
+            {
+                "neighbors": {
+                    "846a3714-4908-428e-ac6f-ece358e99d7b": {
+                        "dist": 2.4841185,
+                        "toFloorInfo": null
+                    },
+                    "f7285feb-299c-4be0-8bc7-88041e5cc404": {
+                        "dist": 3.6434267,
+                        "toFloorInfo": null
+                    },
+                    "b6b0af96-fb42-488c-9c8b-0f4dade2ab18": {
+                        "dist": 2.7319698,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "c8ef2e2e-d34a-4360-90fa-f7adce79e35d",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "5"
+                },
+                "coordinate": {
+                    "latitude": 40.442623,
+                    "longitude": -79.94585
+                },
+                "id": "a9ced36a-d951-4f5a-975e-d486913457f5"
+            },
+            {
+                "neighbors": {
+                    "a9ced36a-d951-4f5a-975e-d486913457f5": {
+                        "dist": 3.6434267,
+                        "toFloorInfo": null
+                    },
+                    "c615e972-383b-4cc5-ab0c-a16a47f37246": {
+                        "dist": 3.8214824,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "c8ef2e2e-d34a-4360-90fa-f7adce79e35d",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "5"
+                },
+                "coordinate": {
+                    "latitude": 40.44259,
+                    "longitude": -79.945854
+                },
+                "id": "f7285feb-299c-4be0-8bc7-88041e5cc404"
+            },
+            {
+                "neighbors": {
+                    "f7285feb-299c-4be0-8bc7-88041e5cc404": {
+                        "dist": 3.8214824,
+                        "toFloorInfo": null
+                    },
+                    "f1f25f95-8ad1-4bbe-b178-8681ad7f389a": {
+                        "dist": 3.1919463,
+                        "toFloorInfo": null
+                    },
+                    "12159965096": {
+                        "dist": 9.790607,
+                        "toFloorInfo": {
+                            "toFloor": "outside 1"
+                        }
+                    }
+                },
+                "roomId": "c8ef2e2e-d34a-4360-90fa-f7adce79e35d",
+                "floor": {
+                    "buildingCode": "WEH",
+                    "level": "5"
+                },
+                "coordinate": {
+                    "latitude": 40.44256,
+                    "longitude": -79.94587
+                },
+                "id": "c615e972-383b-4cc5-ab0c-a16a47f37246"
+            },
+            {
+                "neighbors": {
+                    "9252324299": {
+                        "dist": 4.7142477,
+                        "toFloorInfo": null
+                    },
+                    "303350136": {
+                        "dist": 48.98873,
+                        "toFloorInfo": null
+                    },
+                    "c615e972-383b-4cc5-ab0c-a16a47f37246": {
+                        "dist": 9.790607,
+                        "toFloorInfo": {
+                            "toFloor": "WEH 5"
+                        }
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44252,
+                    "longitude": -79.94576
+                },
+                "id": "12159965096"
+            },
+            {
+                "neighbors": {
+                    "9252324298": {
+                        "dist": 4.2517347,
+                        "toFloorInfo": null
+                    },
+                    "12159965096": {
+                        "dist": 4.7142477,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44253,
+                    "longitude": -79.945816
+                },
+                "id": "9252324299"
+            },
+            {
+                "neighbors": {
+                    "303350134": {
+                        "dist": 8.28995,
+                        "toFloorInfo": null
+                    },
+                    "9252324299": {
+                        "dist": 4.2517347,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442493,
+                    "longitude": -79.94583
+                },
+                "id": "9252324298"
+            },
+            {
+                "neighbors": {
+                    "12159965095": {
+                        "dist": 8.5236025,
+                        "toFloorInfo": null
+                    },
+                    "9252324298": {
+                        "dist": 8.28995,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44251,
+                    "longitude": -79.94593
+                },
+                "id": "303350134"
+            },
+            {
+                "neighbors": {
+                    "302756477": {
+                        "dist": 8.751446,
+                        "toFloorInfo": null
+                    },
+                    "303350134": {
+                        "dist": 8.5236025,
+                        "toFloorInfo": null
+                    },
+                    "8a30b3d7-5ec3-4764-8f97-19fcf503ed1d": {
+                        "dist": 10.704961,
+                        "toFloorInfo": {
+                            "toFloor": "SC 4"
+                        }
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442436,
+                    "longitude": -79.94595
+                },
+                "id": "12159965095"
+            },
+            {
+                "neighbors": {
+                    "12159965095": {
+                        "dist": 8.751446,
+                        "toFloorInfo": null
+                    },
+                    "7418357195": {
+                        "dist": 9.567995,
+                        "toFloorInfo": null
+                    },
+                    "9248699757": {
+                        "dist": 24.18143,
+                        "toFloorInfo": null
+                    },
+                    "302967563": {
+                        "dist": 16.300255,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44236,
+                    "longitude": -79.945984
+                },
+                "id": "302756477"
+            },
+            {
+                "neighbors": {
+                    "302967568": {
+                        "dist": 14.599916,
+                        "toFloorInfo": null
+                    },
+                    "302756480": {
+                        "dist": 15.793597,
+                        "toFloorInfo": null
+                    },
+                    "302756477": {
+                        "dist": 16.300255,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44222,
+                    "longitude": -79.94603
+                },
+                "id": "302967563"
+            },
+            {
+                "neighbors": {
+                    "9247560129": {
+                        "dist": 9.348513,
+                        "toFloorInfo": null
+                    },
+                    "9252324619": {
+                        "dist": 7.65928,
+                        "toFloorInfo": null
+                    },
+                    "9246507459": {
+                        "dist": 13.583929,
+                        "toFloorInfo": null
+                    },
+                    "302967563": {
+                        "dist": 15.793597,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44208,
+                    "longitude": -79.94608
+                },
+                "id": "302756480"
+            },
+            {
+                "neighbors": {
+                    "bb236f1d-a3bd-412b-b007-f0f4c1853a8c": {
+                        "dist": 4.254291,
+                        "toFloorInfo": {
+                            "toFloor": "PH 1"
+                        }
+                    },
+                    "302756480": {
+                        "dist": 7.65928,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "",
+                "floor": {
+                    "buildingCode": "outside",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.442017,
+                    "longitude": -79.946106
+                },
+                "id": "9252324619"
+            },
+            {
+                "neighbors": {
+                    "994f0a7a-09ea-462c-9407-3122da30a29a": {
+                        "dist": 3.5207975,
+                        "toFloorInfo": null
+                    },
+                    "9252324619": {
+                        "dist": 4.254291,
+                        "toFloorInfo": {
+                            "toFloor": "outside 1"
+                        }
+                    }
+                },
+                "roomId": "31187409-e789-4dbd-9e81-5142f78421c4",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44198,
+                    "longitude": -79.94612
+                },
+                "id": "bb236f1d-a3bd-412b-b007-f0f4c1853a8c"
+            },
+            {
+                "neighbors": {
+                    "504b616e-ac67-444a-a571-c2e2c2dffa07": {
+                        "dist": 5.787996,
+                        "toFloorInfo": null
+                    },
+                    "f22bfea8-4241-4002-b605-270bafc1297b": {
+                        "dist": 4.8375416,
+                        "toFloorInfo": null
+                    },
+                    "31237743-b901-4fd5-877b-63d18cae1ab6": {
+                        "dist": 2.7739563,
+                        "toFloorInfo": null
+                    },
+                    "bb236f1d-a3bd-412b-b007-f0f4c1853a8c": {
+                        "dist": 3.5207975,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.441956,
+                    "longitude": -79.94615
+                },
+                "id": "994f0a7a-09ea-462c-9407-3122da30a29a"
+            },
+            {
+                "neighbors": {
+                    "994f0a7a-09ea-462c-9407-3122da30a29a": {
+                        "dist": 2.7739563,
+                        "toFloorInfo": null
+                    },
+                    "e6773181-c251-4831-91b4-1ed94604bbb4": {
+                        "dist": 4.395818,
+                        "toFloorInfo": null
+                    },
+                    "b90edbfc-2f01-4ac6-81b2-b9d1d3bf601b": {
+                        "dist": 2.1722124,
+                        "toFloorInfo": null
+                    },
+                    "966edd46-d4c0-4e8a-9bc5-618c7c2ad4f1": {
+                        "dist": 4.5152106,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44193,
+                    "longitude": -79.94615
+                },
+                "id": "31237743-b901-4fd5-877b-63d18cae1ab6"
+            },
+            {
+                "neighbors": {
+                    "6faf6e2d-10e8-4931-85c9-81bab57ddc3f": {
+                        "dist": 4.387052,
+                        "toFloorInfo": null
+                    },
+                    "ec14bcdf-a0ca-439d-9159-0370ee72db7b": {
+                        "dist": 4.182425,
+                        "toFloorInfo": null
+                    },
+                    "31237743-b901-4fd5-877b-63d18cae1ab6": {
+                        "dist": 2.1722124,
+                        "toFloorInfo": null
+                    },
+                    "f64b84f6-6217-4ffc-86b9-c35a9122ec07": {
+                        "dist": 5.9995337,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44191,
+                    "longitude": -79.94616
+                },
+                "id": "b90edbfc-2f01-4ac6-81b2-b9d1d3bf601b"
+            },
+            {
+                "neighbors": {
+                    "b90edbfc-2f01-4ac6-81b2-b9d1d3bf601b": {
+                        "dist": 5.9995337,
+                        "toFloorInfo": null
+                    },
+                    "56ede6a7-5648-4220-9979-7b14b012e4d1": {
+                        "dist": 3.6919188,
+                        "toFloorInfo": null
+                    },
+                    "22ab2768-bccf-4939-a51b-06fb6103e168": {
+                        "dist": 5.0597095,
+                        "toFloorInfo": null
+                    },
+                    "b04b1a69-7a30-4840-8e11-145b3463366b": {
+                        "dist": 4.051454,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44186,
+                    "longitude": -79.94618
+                },
+                "id": "f64b84f6-6217-4ffc-86b9-c35a9122ec07"
+            },
+            {
+                "neighbors": {
+                    "f64b84f6-6217-4ffc-86b9-c35a9122ec07": {
+                        "dist": 3.6919188,
+                        "toFloorInfo": null
+                    },
+                    "1b828703-dd3d-4aac-b0d8-2cbcda931d10": {
+                        "dist": 4.0432367,
+                        "toFloorInfo": null
+                    },
+                    "9d0c7438-d15c-44ae-afd1-e6f01fbb99df": {
+                        "dist": 5.005314,
+                        "toFloorInfo": null
+                    },
+                    "8232ae87-6044-4cf6-ac39-1f4b47d20bf4": {
+                        "dist": 3.6247876,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44183,
+                    "longitude": -79.94618
+                },
+                "id": "56ede6a7-5648-4220-9979-7b14b012e4d1"
+            },
+            {
+                "neighbors": {
+                    "ead82463-7d68-468c-91bf-ad820731c62f": {
+                        "dist": 4.9295063,
+                        "toFloorInfo": null
+                    },
+                    "56ede6a7-5648-4220-9979-7b14b012e4d1": {
+                        "dist": 3.6247876,
+                        "toFloorInfo": null
+                    },
+                    "681185a0-ba81-4dd7-bceb-30c204246e29": {
+                        "dist": 3.31534,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "74316170-3f60-4895-babf-af00525c906b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.4418,
+                    "longitude": -79.946205
+                },
+                "id": "8232ae87-6044-4cf6-ac39-1f4b47d20bf4"
+            },
+            {
+                "neighbors": {
+                    "0a33a57a-e0ca-4a60-a458-487ff4d0efb9": {
+                        "dist": 3.8354177,
+                        "toFloorInfo": null
+                    },
+                    "7bcfdbe9-de68-4f40-b00e-d15df99a4901": {
+                        "dist": 4.5001655,
+                        "toFloorInfo": null
+                    },
+                    "1319d120-a116-47bf-b1db-2f7764092912": {
+                        "dist": 4.460486,
+                        "toFloorInfo": null
+                    },
+                    "8232ae87-6044-4cf6-ac39-1f4b47d20bf4": {
+                        "dist": 4.9295063,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "bfc2299a-1ffe-4775-8b6e-c7775afb5ec6",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.441753,
+                    "longitude": -79.946205
+                },
+                "id": "ead82463-7d68-468c-91bf-ad820731c62f"
+            },
+            {
+                "neighbors": {
+                    "bab78a4c-51eb-4f96-b371-5cebdd85c360": {
+                        "dist": 4.972754,
+                        "toFloorInfo": null
+                    },
+                    "7ab00570-2568-492f-9477-e163d774d023": {
+                        "dist": 4.555607,
+                        "toFloorInfo": null
+                    },
+                    "ead82463-7d68-468c-91bf-ad820731c62f": {
+                        "dist": 4.5001655,
+                        "toFloorInfo": null
+                    },
+                    "c8032bb3-7cae-4057-af81-43c4665c9438": {
+                        "dist": 6.1908274,
+                        "toFloorInfo": null
+                    },
+                    "47134985-b1db-4931-a4f4-74e54e12697f": {
+                        "dist": 6.130538,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "681e7ed2-4487-484b-aaf2-1af05d648e1b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.44172,
+                    "longitude": -79.94623
+                },
+                "id": "7bcfdbe9-de68-4f40-b00e-d15df99a4901"
+            },
+            {
+                "neighbors": {
+                    "7bcfdbe9-de68-4f40-b00e-d15df99a4901": {
+                        "dist": 6.1908274,
+                        "toFloorInfo": null
+                    },
+                    "2265ad6e-2a31-4f48-b162-68097d02bbab": {
+                        "dist": -1.0,
+                        "toFloorInfo": {
+                            "toFloor": "PH-2"
+                        }
+                    }
+                },
+                "roomId": "4625e089-87dc-481f-81a2-51fbcc90287f",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "1"
+                },
+                "coordinate": {
+                    "latitude": 40.441708,
+                    "longitude": -79.94616
+                },
+                "id": "c8032bb3-7cae-4057-af81-43c4665c9438"
+            },
+            {
+                "neighbors": {
+                    "7955b65b-0b84-4b8b-8f3e-1a87fa76c8e8": {
+                        "dist": 5.526675,
+                        "toFloorInfo": null
+                    },
+                    "c8032bb3-7cae-4057-af81-43c4665c9438": {
+                        "dist": -1.0,
+                        "toFloorInfo": {
+                            "toFloor": "PH-1"
+                        }
+                    },
+                    "db6a4ba5-4e99-4bfb-8d1f-2b79399d0ac0": {
+                        "dist": 8.671548,
+                        "toFloorInfo": null
+                    },
+                    "3150a2f1-4038-4eb6-befa-bd7ad3b54a7b": {
+                        "dist": 14.119873,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "5742773d-d018-40d1-bb1e-0d017216421c",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.441704,
+                    "longitude": -79.94614
+                },
+                "id": "2265ad6e-2a31-4f48-b162-68097d02bbab"
+            },
+            {
+                "neighbors": {
+                    "a1e21f1f-5e7a-414b-8c38-bc4a7859391d": {
+                        "dist": 9.00321,
+                        "toFloorInfo": null
+                    },
+                    "2265ad6e-2a31-4f48-b162-68097d02bbab": {
+                        "dist": 14.119873,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "9e3974a7-3c9a-4e64-9ef4-3e098bb07469",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.44158,
+                    "longitude": -79.94617
+                },
+                "id": "3150a2f1-4038-4eb6-befa-bd7ad3b54a7b"
+            },
+            {
+                "neighbors": {
+                    "4c433d09-e0f9-46fb-bb81-4ed3d51a2fcb": {
+                        "dist": 6.997077,
+                        "toFloorInfo": null
+                    },
+                    "3150a2f1-4038-4eb6-befa-bd7ad3b54a7b": {
+                        "dist": 9.00321,
+                        "toFloorInfo": null
+                    },
+                    "7a0f6819-dce7-4628-bb52-5b4511219bb6": {
+                        "dist": 6.2144113,
+                        "toFloorInfo": null
+                    },
+                    "dae43941-9b23-4472-9eb3-8202700fce78": {
+                        "dist": 3.2085128,
+                        "toFloorInfo": null
+                    },
+                    "7eafd8ac-f5cc-42e6-bea7-9f139a5fe383": {
+                        "dist": 3.5691714,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "6ee989b7-ba4d-4188-986c-5b8c26cb7475",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.441532,
+                    "longitude": -79.946075
+                },
+                "id": "a1e21f1f-5e7a-414b-8c38-bc4a7859391d"
+            },
+            {
+                "neighbors": {
+                    "929dc12f-e94a-482a-b9b4-21e2609264f1": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    },
+                    "167f22d5-0269-4826-9918-4f5bedddaec5": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    },
+                    "f64043ef-84a9-4604-9654-6bb0193eaf40": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    },
+                    "a1e21f1f-5e7a-414b-8c38-bc4a7859391d": {
+                        "dist": 3.2085128,
+                        "toFloorInfo": null
+                    },
+                    "77f4a15f-3a91-4360-912b-0e5da62d8f55": {
+                        "dist": 6.430367,
+                        "toFloorInfo": null
+                    },
+                    "85bf1ff8-5851-46a4-910e-5f30b7bc96d5": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    },
+                    "c9a968f3-2b83-405e-9057-d5f9867a1162": {
+                        "dist": 1.290458,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "6ee989b7-ba4d-4188-986c-5b8c26cb7475",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.44152,
+                    "longitude": -79.94611
+                },
+                "id": "dae43941-9b23-4472-9eb3-8202700fce78"
+            },
+            {
+                "neighbors": {
+                    "dae43941-9b23-4472-9eb3-8202700fce78": {
+                        "dist": 6.430367,
+                        "toFloorInfo": null
+                    },
+                    "317e2110-fe95-49b7-863e-6a6340db60f7": {
+                        "dist": 3.416709,
+                        "toFloorInfo": null
+                    },
+                    "03e17e71-592b-4de5-8277-d0592c4e0242": {
+                        "dist": 6.5038843,
+                        "toFloorInfo": null
+                    }
+                },
+                "roomId": "eed21d39-cdac-4277-8b75-cb06af275b6b",
+                "floor": {
+                    "buildingCode": "PH",
+                    "level": "2"
+                },
+                "coordinate": {
+                    "latitude": 40.441463,
+                    "longitude": -79.94613
+                },
+                "id": "77f4a15f-3a91-4360-912b-0e5da62d8f55"
+            }
+        ],
+        "distance": 476.66476
+    }
+}
