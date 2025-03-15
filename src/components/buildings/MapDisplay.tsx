@@ -31,6 +31,7 @@ import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
+import EventPin from '../shared/EventPin';
 import RoomPin from '../shared/RoomPin';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay, {
@@ -341,6 +342,11 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     }
   };
 
+  const mockPositions = [
+    [40.44249719447571, -79.94314319195851],
+    [40.441888072786064, -79.94442558459103],
+  ];
+
   return (
     <Map
       ref={mapRef}
@@ -387,6 +393,12 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       {mapRef.current && <NavLine map={mapRef.current} />}
 
       {renderSelectedRoomPin()}
+
+      {mockPositions.map((position, index) => (
+        <Annotation key={index} latitude={position[0]} longitude={position[1]}>
+          <EventPin />
+        </Annotation>
+      ))}
     </Map>
   );
 };
