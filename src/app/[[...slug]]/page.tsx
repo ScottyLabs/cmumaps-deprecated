@@ -116,14 +116,22 @@ const Page = ({ params, searchParams }: Props) => {
 
   // get user position
   useEffect(() => {
-    navigator?.geolocation?.getCurrentPosition((pos) => {
-      const coord = {
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
-      };
+    navigator?.geolocation?.watchPosition(
+      (pos) => {
+        const coord = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        };
 
-      dispatch(setUserPosition(coord));
-    });
+        dispatch(setUserPosition(coord));
+      },
+      (err) => {
+        console.error(err);
+      },
+      {
+        enableHighAccuracy: true,
+      },
+    );
   }, [dispatch]);
 
   // load the list of images of the rooms
