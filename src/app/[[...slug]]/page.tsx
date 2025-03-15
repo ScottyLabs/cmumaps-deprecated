@@ -40,7 +40,7 @@ import { Building, BuildingCode, Floor, Room, RoomId } from '@/types';
 import { decodeCoord, encodeCoord } from '@/util/coordEncoding';
 import { getEateryData } from '@/util/eateryUtils';
 
-// const mockUserPosition = [40.44249719447571, -79.94314319195851]; 40.441888072786064, -79.94442558459103
+// const mockUserPosition = [40.44249719447571, -79.94314319195851];
 const FLOOR_REGEX = /^[A-F0-9]|LL|M|EV|PH/; // matches A-F, 0-9, and LL at the start of a string
 
 interface Props {
