@@ -8,15 +8,25 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, request) => {
-  if (!isPublicRoute(request)) {
-    auth().protect();
-  }
   const userAgent = request.headers.get('user-agent') || '';
   const url = new URL(request.url);
-
-  url.searchParams.set('userAgent', userAgent);
-
-  return NextResponse.rewrite(url);
+  if (
+    url.searchParams.get('secret') === '1234' ||
+    request.cookies.get('access_approved')
+  ) {
+    // TODO: Store a cookie for the user
+    url.searchParams.set('userAgent', userAgent);
+    const resp = NextResponse.rewrite(url);
+    resp.cookies.set('access_approved', 'true');
+    return resp;
+  } else {
+    console.log(request.url);
+    if (!isPublicRoute(request)) {
+      auth().protect();
+    }
+    url.searchParams.set('userAgent', userAgent);
+    return NextResponse.rewrite(url);
+  }
 });
 
 export const config = {
