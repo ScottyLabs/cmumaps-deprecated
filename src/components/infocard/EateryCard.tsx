@@ -18,7 +18,7 @@ const Eaterycard = ({ room, initSnapPoint }: Props) => {
   const eateryData = useAppSelector((state) => state.data.eateryData);
 
   useEffect(() => {
-    initSnapPoint?.(352);
+    initSnapPoint?.(360);
   }, [initSnapPoint]);
 
   if (!eateryData) {

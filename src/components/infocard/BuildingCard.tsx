@@ -59,7 +59,7 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
   }, [building.code, building.floors, floorPlanMap]);
 
   useEffect(() => {
-    initSnapPoint?.(eateries.length > 0 ? 452 : 287);
+    initSnapPoint?.(eateries.length > 0 ? 460 : 295);
   }, [initSnapPoint, eateries]);
 
   const renderBuildingImage = () => {
@@ -238,7 +238,7 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
   return (
     <>
       {cardWrapperStatus != COLLAPSED && renderBuildingImage()}
-      <h2 className="ml-3 mt-2">
+      <h2 className="ml-3 pt-2">
         {building.name} ({building.code})
       </h2>
       {renderButtonsRow()}
