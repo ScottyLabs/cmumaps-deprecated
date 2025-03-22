@@ -90,7 +90,9 @@ const ToolBar = ({ map }: Props) => {
             </CardWrapper>
           )}
           {isNavOpen && isCardOpen && !choosingRoomMode && (
-            <NavCard map={map} />
+            <CardWrapper snapPoint={snapPoint} isOpen={cardVisible}>
+              <NavCard map={map} />
+            </CardWrapper>
           )}
         </div>
       </div>
