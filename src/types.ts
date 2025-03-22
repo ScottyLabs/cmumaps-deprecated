@@ -133,7 +133,7 @@ export interface Document {
 
   alias: string;
 
-  type: RoomType | "Building";
+  type: RoomType | 'Building';
 
   labelPosition: Coordinate;
 
@@ -318,6 +318,8 @@ export type Node = {
   coordinate: Coordinate;
   id: string;
 };
+
+export type Buildings = Record<BuildingCode, Building>;
 
 export type Path = Node[];
 

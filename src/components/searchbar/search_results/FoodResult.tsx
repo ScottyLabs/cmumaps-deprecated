@@ -1,44 +1,45 @@
 import React from 'react';
 
+import EateryInfoDisplay from '@/components/infocard/EateryInfoDisplay';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { pushLog } from '@/lib/idb/logStore';
 import { Document } from '@/types';
+import { getEateryId } from '@/util/eateryUtils';
 
 import { zoomOnRoomById } from '../../buildings/mapUtils';
 import SearchResultWrapper from './SearchResultWrapper';
-import EateryInfoDisplay from '@/components/infocard/EateryInfoDisplay';
-import { getEateryId } from '@/util/eateryUtils';
-
 
 interface Props {
-    map: mapkit.Map | null;
-    eatery: Document;
+  map: mapkit.Map | null;
+  eatery: Document;
+  query: string;
 }
 
 /**
  * Displays the search results.
  */
-const RoomSearchResults = ({ map, eatery }: Props) => {
-    const dispatch = useAppDispatch();
+const RoomSearchResults = ({ map, eatery, query }: Props) => {
+  const dispatch = useAppDispatch();
 
-    const buildings = useAppSelector((state) => state.data.buildings);
-    const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
-    const eateryData = useAppSelector((state) => state.data.eateryData);
+  const buildings = useAppSelector((state) => state.data.buildings);
+  const floorPlanMap = useAppSelector((state) => state.data.floorPlanMap);
+  const eateryData = useAppSelector((state) => state.data.eateryData);
 
-    if (!eateryData) {
-      return;
-    }
-    
-    const renderTitle = (eatery: Document) => {
-          return <h3> {eatery.alias}</h3>;
-        };
+  if (!eateryData) {
+    return;
+  }
 
-    const eateryInfo = eateryData[getEateryId(eatery)];
-    
+  const renderTitle = (eatery: Document) => {
+    return <h3> {eatery.alias}</h3>;
+  };
 
-    return (
-      <SearchResultWrapper
+  const eateryInfo = eateryData[getEateryId(eatery)];
+
+  return (
+    <SearchResultWrapper
       key={eatery.id}
       handleClick={() => {
+        pushLog(query, eatery.id);
         zoomOnRoomById(
           map,
           eatery.id,
@@ -57,7 +58,7 @@ const RoomSearchResults = ({ map, eatery }: Props) => {
         />
       </div>
     </SearchResultWrapper>
-    );
-}
+  );
+};
 
 export default RoomSearchResults;

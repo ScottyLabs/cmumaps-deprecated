@@ -141,14 +141,23 @@ export const postUserSchedule = async (
 export const searchQuery = async (
   query: string,
   userPosition: { latitude: number; longitude: number } | null,
+  token: string | null | undefined,
 ): Promise<Document[]> => {
+  if (!token) {
+    return [];
+  }
   const response = await fetch(
-    `https://g2dj3tzxfa.execute-api.us-east-2.amazonaws.com/default/alpha-search`,
+    process.env.NEXT_PUBLIC_SEARCH_ENDPOINT +
+      process.env.NODE_ENV +
+      '/alpha-search',
     {
       method: 'POST',
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({
         query,
-        location: userPosition || '',
+        location: userPosition || null,
       }),
     },
   );

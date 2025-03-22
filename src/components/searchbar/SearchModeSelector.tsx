@@ -7,17 +7,12 @@ import { useAppDispatch } from '@/lib/hooks';
 
 import { SearchMode, SearchModeList, searchModeToIcon } from './searchMode';
 
-const searchModeToDisplayText: Record<'rooms' | 'courses' | 'events', string> =
-  {
-    rooms: 'Rooms',
-    courses: 'Courses',
-    events: 'Events',
-  };
+const searchModeToDisplayText: Record<SearchMode, string> = {
+  rooms: 'Rooms',
+};
 
 const searchModeToBgColor: Record<SearchMode, string> = {
   rooms: 'bg-[#636672]',
-  courses: 'bg-[#C41230]',
-  events: 'bg-[#87BCFB]',
 };
 
 const SearchModeSelector = () => {

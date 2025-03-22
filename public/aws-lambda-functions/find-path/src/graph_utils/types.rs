@@ -74,8 +74,13 @@ pub struct Node { // dropped the pos field
     pub id: String,
 }
 
-pub type GraphPath = Vec<String>;
-pub type NodeGraphPath = Vec<Node>;
+#[derive(Serialize, Hash, PartialEq, Eq)]
+pub struct GraphPath {
+    pub path: Vec<String>,
+    pub add_cost: String,
+}
+
+type NodeGraphPath = Vec<Node>;
 
 #[derive(Serialize)]
 pub struct Route { 
