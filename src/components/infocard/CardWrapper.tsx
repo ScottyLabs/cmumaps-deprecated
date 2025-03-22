@@ -31,9 +31,9 @@ function DraggableSheet({ snapPoint, children }: DraggableSheetProps) {
 
   let snapPoints;
   if (snapPoint != null) {
-    snapPoints = [window.innerHeight - 145, window.innerHeight - snapPoint, 0];
+    snapPoints = [window.innerHeight - 145, window.innerHeight - snapPoint, -8];
   } else {
-    snapPoints = [window.innerHeight - 145, 0];
+    snapPoints = [window.innerHeight - 145, -8];
   }
 
   const [snapIndex, setSnapIndex] = useState(1);
@@ -109,25 +109,15 @@ function DraggableSheet({ snapPoint, children }: DraggableSheetProps) {
         style={{
           touchAction: 'none',
           cursor: 'grab',
-          zIndex: -1,
-          transform: 'translate(0px,-8px)',
         }}
         onClick={onClick}
-        className="content-top h-32 rounded-t-xl bg-white text-center"
+        className="flex h-12 items-center justify-center rounded-t-xl bg-white text-center"
       >
         <div className="flex h-12 items-center justify-center rounded-t-xl bg-white text-center">
-          <div
-            className="h-1 w-12 rounded-full bg-black"
-            style={{ top: 10 }}
-          ></div>
+          <div className="h-1 w-12 rounded-full bg-black"></div>
         </div>
       </animated.div>
-      <animated.div
-        className="h-svh bg-white"
-        style={{ transform: 'translate(0px,-90px)' }}
-      >
-        {children}
-      </animated.div>
+      <animated.div className="h-svh bg-white">{children}</animated.div>
     </animated.div>
   );
 }
