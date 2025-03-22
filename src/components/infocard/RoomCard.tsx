@@ -29,7 +29,7 @@ const RoomCard = ({ room, initSnapPoint }: Props) => {
   }, [room]);
 
   useEffect(() => {
-    initSnapPoint?.(hasSchedule ? 403 : 300);
+    initSnapPoint?.(hasSchedule ? 415 : 312);
   }, [hasSchedule, initSnapPoint]);
 
   if (!buildings || hasSchedule === null) {

@@ -59,7 +59,7 @@ const BuildingCard = ({ map, building, initSnapPoint }: Props) => {
   }, [building.code, building.floors, floorPlanMap]);
 
   useEffect(() => {
-    initSnapPoint?.(eateries.length > 0 ? 440 : 275);
+    initSnapPoint?.(eateries.length > 0 ? 452 : 287);
   }, [initSnapPoint, eateries]);
 
   const renderBuildingImage = () => {

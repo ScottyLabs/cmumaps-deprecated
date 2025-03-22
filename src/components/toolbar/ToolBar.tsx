@@ -66,8 +66,6 @@ const ToolBar = ({ map }: Props) => {
     }
   };
 
-  const [cardVisible, setCardVisibile] = useState(true);
-
   const mobileRender = () => {
     return (
       <div
@@ -81,16 +79,12 @@ const ToolBar = ({ map }: Props) => {
           {!isSearchOpen && !isCardOpen && <Schedule />}
 
           {!isNavOpen && !isSearchOpen && (
-            <CardWrapper snapPoint={snapPoint} isOpen={cardVisible}>
-              <InfoCard
-                map={map}
-                setCardVisibility={setCardVisibile}
-                initSnapPoint={initSnapPoint}
-              />
+            <CardWrapper snapPoint={snapPoint}>
+              <InfoCard map={map} initSnapPoint={initSnapPoint} />
             </CardWrapper>
           )}
           {isNavOpen && isCardOpen && !choosingRoomMode && (
-            <CardWrapper snapPoint={snapPoint} isOpen={cardVisible}>
+            <CardWrapper snapPoint={400}>
               <NavCard map={map} />
             </CardWrapper>
           )}
