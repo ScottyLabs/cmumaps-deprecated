@@ -66,6 +66,9 @@ const uiSlice = createSlice({
         );
       }
     },
+    deselectRoom(state) {
+      state.selectedRoom = null;
+    },
     setFocusedFloor(state, action: PayloadAction<Floor | null>) {
       state.focusedFloor = action.payload;
       state.isFloorPlanRendered = false;
@@ -112,6 +115,7 @@ export const getIsCardOpen = (state: UIState) => {
 export const {
   selectRoom,
   selectBuilding,
+  deselectRoom,
   deselectBuilding,
   setFocusedFloor,
   setIsSearchOpen,

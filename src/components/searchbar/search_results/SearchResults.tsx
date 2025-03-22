@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
 
+import useClerkToken from '@/hooks/useClerkToken';
 import { searchQuery } from '@/lib/apiRoutes';
 import {
   setChoosingRoomMode,
@@ -11,25 +12,26 @@ import { setIsSearchOpen } from '@/lib/features/uiSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Document } from '@/types';
 
-import KeepTypingDisplay from '../display_helpers/KeepTypingDisplay';
 import BuildingResult from './BuildingResult';
-import CourseSearchResults from './CourseSearchResults';
-import EventSearchResults from './EventSearchResults';
 import FoodResult from './FoodResult';
+import RecentSearches from './RecentSearches';
 import RoomResult from './RoomResult';
 
 interface SearchResultsProps {
   map: mapkit.Map | null;
   query: string;
+  setQuery: (query: string) => void;
 }
 
 /**
  * Displays the search results.
  */
-const SearchResults = ({ map, query }: SearchResultsProps) => {
+const SearchResults = ({ map, query, setQuery }: SearchResultsProps) => {
   const searchMode = useAppSelector((state) => state.ui.searchMode);
   const userPosition = useAppSelector((state) => state.nav.userPosition);
   const [roomSearchResults, setRoomSearchResults] = useState<Document[]>([]);
+
+  const token = useClerkToken();
 
   const choosingRoomMode = useAppSelector(
     (state) => state.nav.choosingRoomMode,
@@ -50,17 +52,15 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (['rooms', 'restrooms', 'study'].includes(searchMode)) {
-        searchQuery(query, userPosition).then((res) => {
-          setRoomSearchResults(res);
-        });
-      }
+      searchQuery(query, userPosition, token).then((res) => {
+        setRoomSearchResults(res);
+      });
     }, 200);
-  }, [query, searchMode]);
+  }, [query, searchMode, userPosition, token]);
 
   if (query.length < 2 && searchMode == 'rooms') {
     if (choosingRoomMode == null) {
-      return <KeepTypingDisplay />;
+      return <RecentSearches currentSearch={query} setQuery={setQuery} />;
     } else {
       return (
         <button
@@ -80,19 +80,34 @@ const SearchResults = ({ map, query }: SearchResultsProps) => {
     return roomSearchResults.map((document) => {
       switch (document.type) {
         case 'Food':
-          return <FoodResult key={document.id} map={map} eatery={document} />;
+          return (
+            <FoodResult
+              key={document.id}
+              map={map}
+              eatery={document}
+              query={query}
+            />
+          );
         case 'Building':
           return (
-            <BuildingResult key={document.id} map={map} building={document} />
+            <BuildingResult
+              key={document.id}
+              map={map}
+              building={document}
+              query={query}
+            />
           );
         default:
-          return <RoomResult key={document.id} map={map} room={document} />;
+          return (
+            <RoomResult
+              key={document.id}
+              map={map}
+              room={document}
+              query={query}
+            />
+          );
       }
     });
-  } else if (searchMode == 'events') {
-    return <EventSearchResults map={map} query={query} />;
-  } else if (searchMode == 'courses') {
-    return <CourseSearchResults map={map} query={query} />;
   }
 };
 

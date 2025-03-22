@@ -6,9 +6,10 @@ import {
   MapType,
   CoordinateRegion,
   Annotation,
+  MapInteractionEvent,
 } from 'mapkit-react';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   setChoosingRoomMode,
@@ -17,7 +18,8 @@ import {
 } from '@/lib/features/navSlice';
 import {
   deselectBuilding,
-  selectRoom,
+  deselectRoom,
+  selectBuilding,
   setFocusedFloor,
   setCardWrapperStatus,
   setIsSearchOpen,
@@ -31,6 +33,7 @@ import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
+import EventPin from '../shared/EventPin';
 import RoomPin from '../shared/RoomPin';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay, {
@@ -74,74 +77,34 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
   );
   const isNavOpen = useAppSelector((state) => state.nav.isNavOpen);
   const isZooming = useAppSelector((state) => state.ui.isZooming);
+  const userPostion = useAppSelector((state) => state.nav.userPosition);
 
-  const [usedScrolling, setUsedScrolling] = useState<boolean>(false);
+  const [usedPanning, setUsedPanning] = useState<boolean>(false);
   const [visibleBuildings, setVisibleBuildings] = useState<Building[]>([]);
   const [showFloor, setShowFloor] = useState<boolean>(false);
 
-  const throttledCalculateVisibleBuildings = throttle(
-    (region: CoordinateRegion) => {
-      calculateVisibleBuildings(region);
-    },
-    1000,
-  );
-
-  const calculateVisibleBuildings = (region: CoordinateRegion) => {
-    if (!buildings) {
-      console.error('Buildings not loaded when calculating visible buildings!');
+  // draw user position blue circle
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) {
       return;
     }
 
-    const boundingBox = {
-      minLatitude: region.centerLatitude - region.latitudeDelta / 2,
-      maxLatitude: region.centerLatitude + region.latitudeDelta / 2,
-      minLongitude: region.centerLongitude - region.longitudeDelta / 2,
-      maxLongitude: region.centerLongitude + region.longitudeDelta / 2,
+    if (!userPostion) {
+      return;
+    }
+
+    const circle = new mapkit.CircleOverlay(
+      new mapkit.Coordinate(userPostion.latitude, userPostion.longitude),
+      3,
+    );
+
+    map.addOverlay(circle);
+
+    return () => {
+      map.removeOverlay(circle);
     };
-
-    const buildingsToFocus = Object.values(buildings).filter((building) => {
-      const [buildingLats, buildingLongs] = building.shapes[0].reduce(
-        (acc: [number[], number[]], point: Coordinate) => {
-          acc[0].push(point.latitude);
-          acc[1].push(point.longitude);
-          return acc;
-        },
-        [[], []],
-      );
-
-      const buildingBoundingBox = {
-        minLatitude: Math.min(...buildingLats),
-        maxLatitude: Math.max(...buildingLats),
-        minLongitude: Math.min(...buildingLongs),
-        maxLongitude: Math.max(...buildingLongs),
-      };
-
-      const horizontalPoints = [
-        [boundingBox.minLatitude, -1],
-        [boundingBox.maxLatitude, -1],
-        [buildingBoundingBox.minLatitude, 1],
-        [buildingBoundingBox.maxLatitude, 1],
-      ];
-      const verticalPoints = [
-        [boundingBox.minLongitude, -1],
-        [boundingBox.maxLongitude, -1],
-        [buildingBoundingBox.minLongitude, 1],
-        [buildingBoundingBox.maxLongitude, 1],
-      ];
-      horizontalPoints.sort((a, b) => a[0] - b[0]);
-      verticalPoints.sort((a, b) => a[0] - b[0]);
-
-      const horizantalOverlap =
-        !(horizontalPoints[0][1] == -1 && horizontalPoints[1][1] == -1) &&
-        !(horizontalPoints[2][1] == -1 && horizontalPoints[3][1] == -1);
-      const verticalOverlap =
-        !(verticalPoints[0][1] == -1 && verticalPoints[1][1] == -1) &&
-        !(verticalPoints[2][1] == -1 && verticalPoints[3][1] == -1);
-
-      return horizantalOverlap && verticalOverlap;
-    });
-    setVisibleBuildings(buildingsToFocus);
-  };
+  });
 
   // React to pan/zoom events
   const { onRegionChangeStart, onRegionChangeEnd } = useMapPosition(
@@ -151,6 +114,71 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       if (!buildings) {
         return;
       }
+      const calculateVisibleBuildings = (region: CoordinateRegion) => {
+        if (!buildings) {
+          console.error(
+            'Buildings not loaded when calculating visible buildings!',
+          );
+          return;
+        }
+
+        const boundingBox = {
+          minLatitude: region.centerLatitude - region.latitudeDelta / 2,
+          maxLatitude: region.centerLatitude + region.latitudeDelta / 2,
+          minLongitude: region.centerLongitude - region.longitudeDelta / 2,
+          maxLongitude: region.centerLongitude + region.longitudeDelta / 2,
+        };
+
+        const buildingsToFocus = Object.values(buildings).filter((building) => {
+          const [buildingLats, buildingLongs] = building.shapes[0].reduce(
+            (acc: [number[], number[]], point: Coordinate) => {
+              acc[0].push(point.latitude);
+              acc[1].push(point.longitude);
+              return acc;
+            },
+            [[], []],
+          );
+
+          const buildingBoundingBox = {
+            minLatitude: Math.min(...buildingLats),
+            maxLatitude: Math.max(...buildingLats),
+            minLongitude: Math.min(...buildingLongs),
+            maxLongitude: Math.max(...buildingLongs),
+          };
+
+          const horizontalPoints = [
+            [boundingBox.minLatitude, -1],
+            [boundingBox.maxLatitude, -1],
+            [buildingBoundingBox.minLatitude, 1],
+            [buildingBoundingBox.maxLatitude, 1],
+          ];
+          const verticalPoints = [
+            [boundingBox.minLongitude, -1],
+            [boundingBox.maxLongitude, -1],
+            [buildingBoundingBox.minLongitude, 1],
+            [buildingBoundingBox.maxLongitude, 1],
+          ];
+          horizontalPoints.sort((a, b) => a[0] - b[0]);
+          verticalPoints.sort((a, b) => a[0] - b[0]);
+
+          const horizantalOverlap =
+            !(horizontalPoints[0][1] == -1 && horizontalPoints[1][1] == -1) &&
+            !(horizontalPoints[2][1] == -1 && horizontalPoints[3][1] == -1);
+          const verticalOverlap =
+            !(verticalPoints[0][1] == -1 && verticalPoints[1][1] == -1) &&
+            !(verticalPoints[2][1] == -1 && verticalPoints[3][1] == -1);
+
+          return horizantalOverlap && verticalOverlap;
+        });
+        setVisibleBuildings(buildingsToFocus);
+      };
+
+      const throttledCalculateVisibleBuildings = throttle(
+        (region: CoordinateRegion) => {
+          calculateVisibleBuildings(region);
+        },
+        1000,
+      );
 
       throttledCalculateVisibleBuildings(region);
 
@@ -232,7 +260,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     }
 
     mapRef.current.addEventListener('scroll-end', () => {
-      setUsedScrolling(true);
+      setUsedPanning(true);
     });
 
     const randomCoordinate = new mapkit.Coordinate(40.444, -79.945);
@@ -276,6 +304,53 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
     }
   };
 
+  const handleClick = (e: MapInteractionEvent) => {
+    // skip if usedPanning is true since end of panning is a click
+    if (usedPanning) {
+      setUsedPanning(false);
+      return;
+    }
+
+    // check if a building is clicked
+    let clickedBuilding = false;
+
+    if (!showFloor) {
+      const coords = e.toCoordinates();
+
+      for (const buildingCode in buildings) {
+        if (
+          buildings[buildingCode].shapes[0] &&
+          isInPolygonCoordinates(buildings[buildingCode].shapes[0], coords)
+        ) {
+          dispatch(selectBuilding(buildings[buildingCode]));
+          clickedBuilding = true;
+          break;
+        }
+      }
+    }
+
+    if (!choosingRoomMode && !isNavOpen) {
+      dispatch(setIsSearchOpen(false));
+      dispatch(deselectRoom());
+      if (!clickedBuilding) {
+        dispatch(deselectBuilding());
+      }
+    } else if (choosingRoomMode) {
+      if (choosingRoomMode == 'start') {
+        dispatch(setStartLocation({ waypoint: e.toCoordinates() }));
+      } else if (choosingRoomMode == 'end') {
+        dispatch(setEndLocation({ waypoint: e.toCoordinates() }));
+      }
+      dispatch(setIsSearchOpen(false));
+      dispatch(setChoosingRoomMode(null));
+    }
+  };
+
+  const mockPositions = [
+    [40.44249719447571, -79.94314319195851],
+    [40.441888072786064, -79.94442558459103],
+  ];
+
   return (
     <Map
       ref={mapRef}
@@ -300,25 +375,7 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
         dispatch(setIsZooming(false));
         onRegionChangeEnd();
       }}
-      onClick={(e) => {
-        // need to check usedScrolling because end of panning is a click
-        if (!usedScrolling && !choosingRoomMode && !isNavOpen) {
-          dispatch(setIsSearchOpen(false));
-          dispatch(deselectBuilding());
-          dispatch(selectRoom(null));
-        }
-        // select start/end location by clicking on the map
-        else if (choosingRoomMode) {
-          if (choosingRoomMode == 'start') {
-            dispatch(setStartLocation({ waypoint: e.toCoordinates() }));
-          } else if (choosingRoomMode == 'end') {
-            dispatch(setEndLocation({ waypoint: e.toCoordinates() }));
-          }
-          dispatch(setIsSearchOpen(false));
-          dispatch(setChoosingRoomMode(null));
-        }
-        setUsedScrolling(false);
-      }}
+      onClick={handleClick}
       onLoad={handleLoad}
     >
       {buildings &&
@@ -340,6 +397,12 @@ const MapDisplay = ({ mapRef }: MapDisplayProps) => {
       {mapRef.current && <NavLine map={mapRef.current} />}
 
       {renderSelectedRoomPin()}
+
+      {mockPositions.map((position, index) => (
+        <Annotation key={index} latitude={position[0]} longitude={position[1]}>
+          <EventPin />
+        </Annotation>
+      ))}
     </Map>
   );
 };
