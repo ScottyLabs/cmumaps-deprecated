@@ -2,6 +2,39 @@ import { Buildings, FloorPlanMap } from '@/types';
 
 let db: IDBDatabase;
 
+function fetchAndSync(floorPlanURL, buildingsURL, success, failure) {
+  networkFetch(
+    floorPlanURL,
+    buildingsURL,
+    (floorPlans, buildings) => {
+      const floorsTransfer = db
+        .transaction('dataStore', 'readwrite')
+        .objectStore('dataStore');
+      floorsTransfer.add(floorPlans, 'floorPlans');
+      const addBuildings = function () {
+        console.log('Added floor plans to dataStore');
+        const buildingsTransfer = db
+          .transaction('dataStore', 'readwrite')
+          .objectStore('dataStore');
+        buildingsTransfer.add(buildings, 'buildings');
+        buildingsTransfer.transaction.oncomplete = function () {
+          console.log('Added buildings to dataStore');
+          success(buildings, floorPlans);
+        };
+        buildingsTransfer.transaction.onerror = function () {
+          console.log('Added buildings to dataStore');
+          success(buildings, floorPlans);
+        };
+      };
+      floorsTransfer.transaction.onerror = addBuildings;
+      floorsTransfer.transaction.oncomplete = addBuildings;
+    },
+    (error) => {
+      failure(error);
+    },
+  );
+}
+
 export function cachedFetch(
   floorPlanURL: string,
   buildingsURL: string,
@@ -24,44 +57,18 @@ export function cachedFetch(
     request.onerror = function (event) {
       console.error(event, 'Attempting to fetch from network.');
       if (request.result === undefined) {
-        networkFetch(
-          floorPlanURL,
-          buildingsURL,
-          (floorPlans, buildings) => {
-            const floorsTransfer = db
-              .transaction('dataStore', 'readwrite')
-              .objectStore('dataStore');
-            floorsTransfer.add(floorPlans, 'floorPlans');
-            const buildingsTransfer = db
-              .transaction('buildings', 'readwrite')
-              .objectStore('buildings');
-            buildingsTransfer.add(buildings, 'buildings');
-          },
-          (error) => {
-            failure(error);
-          },
-        );
+        fetchAndSync(buildingsURL, floorPlanURL, success, failure);
       }
     };
     request.onsuccess = function () {
-      if (request.result === undefined) {
-        networkFetch(
-          floorPlanURL,
-          buildingsURL,
-          (floorPlans, buildings) => {
-            const floorsTransfer = db
-              .transaction('dataStore', 'readwrite')
-              .objectStore('dataStore');
-            floorsTransfer.add(floorPlans, 'floorPlans');
-            const buildingsTransfer = db
-              .transaction('buildings', 'readwrite')
-              .objectStore('buildings');
-            buildingsTransfer.add(buildings, 'buildings');
-          },
-          (error) => {
-            failure(error);
-          },
-        );
+      console.log(
+        request.result,
+        !request.result,
+        !request.result[0],
+        !request.result[1],
+      );
+      if (!request.result || !request.result[0] || !request.result[1]) {
+        fetchAndSync(buildingsURL, floorPlanURL, success, failure);
       } else {
         success(request.result[1], request.result[0]);
       }
@@ -84,24 +91,7 @@ export function cachedFetch(
         failure(event);
       };
 
-      networkFetch(
-        floorPlanURL,
-        buildingsURL,
-        (floorPlans, buildings) => {
-          const floorsTransfer = db
-            .transaction('dataStore', 'readwrite')
-            .objectStore('dataStore');
-          floorsTransfer.add(floorPlans, 'floorPlans');
-          const buildingsTransfer = db
-            .transaction('dataStore', 'readwrite')
-            .objectStore('dataStore');
-          buildingsTransfer.add(buildings, 'buildings');
-          success(floorPlans, buildings);
-        },
-        (error) => {
-          failure(error);
-        },
-      );
+      fetchAndSync(buildingsURL, floorPlanURL, success, failure);
     }
   };
 }
