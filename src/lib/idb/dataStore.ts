@@ -20,11 +20,11 @@ function fetchAndSync(floorPlanURL, buildingsURL, success, failure) {
         buildingsTransfer.add(buildings, 'buildings');
         buildingsTransfer.transaction.oncomplete = function () {
           console.log('Added buildings to dataStore');
-          success(buildings, floorPlans);
+          success(floorPlans, buildings);
         };
         buildingsTransfer.transaction.onerror = function () {
           console.log('Added buildings to dataStore');
-          success(buildings, floorPlans);
+          success(floorPlans, buildings);
         };
       };
       floorsTransfer.transaction.onerror = addBuildings;
