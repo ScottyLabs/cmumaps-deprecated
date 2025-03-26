@@ -1,3 +1,4 @@
+// I'm sorry if you are reading this code.  It was written with great haste
 import { Buildings, FloorPlanMap } from '@/types';
 
 let db: IDBDatabase;
