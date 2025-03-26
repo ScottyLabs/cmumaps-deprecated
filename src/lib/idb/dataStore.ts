@@ -42,7 +42,7 @@ export function cachedFetch(
   success: (floorPlans: FloorPlanMap, buildings: Buildings) => void,
   failure: (error: any) => void,
 ) {
-  const DBOpenRequest = window.indexedDB.open('cmumaps', 1);
+  const DBOpenRequest = window.indexedDB.open('cmumaps', 3);
 
   // Initialize the database connection
   DBOpenRequest.onerror = function () {
