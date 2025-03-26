@@ -58,7 +58,7 @@ export function cachedFetch(
     request.onerror = function (event) {
       console.error(event, 'Attempting to fetch from network.');
       if (request.result === undefined) {
-        fetchAndSync(buildingsURL, floorPlanURL, success, failure);
+        fetchAndSync(floorPlanURL, buildingsURL, success, failure);
       }
     };
     request.onsuccess = function () {
@@ -69,7 +69,7 @@ export function cachedFetch(
         !request.result[1],
       );
       if (!request.result || !request.result[0] || !request.result[1]) {
-        fetchAndSync(buildingsURL, floorPlanURL, success, failure);
+        fetchAndSync(floorPlanURL, buildingsURL, success, failure);
       } else {
         success(request.result[1], request.result[0]);
       }
@@ -92,7 +92,7 @@ export function cachedFetch(
         failure(event);
       };
 
-      fetchAndSync(buildingsURL, floorPlanURL, success, failure);
+      fetchAndSync(floorPlanURL, buildingsURL, success, failure);
     }
   };
 }
