@@ -13,10 +13,17 @@ export default clerkMiddleware((auth, request) => {
   }
   const userAgent = request.headers.get('user-agent') || '';
   const url = new URL(request.url);
+  const referrer = request.headers.get('referer');
 
   url.searchParams.set('userAgent', userAgent);
 
-  return NextResponse.rewrite(url);
+  const response = NextResponse.rewrite(url);
+
+  if (!referrer || !referrer.startsWith('scottycon-guide.com')) {
+    response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  }
+
+  return response;
 });
 
 export const config = {
