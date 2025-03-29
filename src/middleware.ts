@@ -13,18 +13,15 @@ export default clerkMiddleware((auth, request) => {
   }
   const userAgent = request.headers.get('user-agent') || '';
   const url = new URL(request.url);
-  const referrer = request.headers.get('referer');
 
   url.searchParams.set('userAgent', userAgent);
 
   const response = NextResponse.rewrite(url);
 
-  if (!referrer || !referrer.startsWith('scottycon-guide.com')) {
-    response.headers.set(
-      'Content-Security-Policy',
-      "frame-ancestors 'self' https://www.scottycon-guide.com;",
-    );
-  }
+  response.headers.set(
+    'Content-Security-Policy',
+    "frame-ancestors 'self' https://www.scottycon-guide.com;",
+  );
 
   return response;
 });
