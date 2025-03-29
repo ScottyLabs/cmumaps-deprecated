@@ -22,7 +22,10 @@ export default clerkMiddleware((auth, request) => {
     'Content-Security-Policy',
     "frame-ancestors 'self' https://www.scottycon-guide.com;",
   );
-  response.headers.set('X-frame-options', 'SAMEORIGIN');
+  response.headers.set(
+    'X-frame-options',
+    'ALLOW-FROM https://www.scottycon-guide.com',
+  );
 
   return response;
 });
