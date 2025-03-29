@@ -20,7 +20,10 @@ export default clerkMiddleware((auth, request) => {
   const response = NextResponse.rewrite(url);
 
   if (!referrer || !referrer.startsWith('scottycon-guide.com')) {
-    response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+    response.headers.set(
+      'Content-Security-Policy',
+      "frame-ancestors 'self' https://www.scottycon-guide.com;",
+    );
   }
 
   return response;
