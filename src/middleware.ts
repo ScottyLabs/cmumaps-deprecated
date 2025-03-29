@@ -7,9 +7,9 @@ const isPublicRoute = createRouteMatcher([
   '/robots.txt',
 ]);
 
-export default clerkMiddleware((auth, request) => {
+export default clerkMiddleware((_, request) => {
   if (!isPublicRoute(request)) {
-    auth().protect();
+    // auth().protect();
   }
   const userAgent = request.headers.get('user-agent') || '';
   const url = new URL(request.url);
