@@ -1,3 +1,4 @@
 [submodule "public/cmumaps-data"]
 	path = public/cmumaps-data
 	url = https://github.com/ScottyLabs/cmumaps-data.git
+	branch = public

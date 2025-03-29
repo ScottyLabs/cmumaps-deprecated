@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  SignIn,
-  SignedIn,
-  SignedOut,
-  UserButton,
-  useAuth,
-} from '@clerk/nextjs';
+import { UserButton, useAuth } from '@clerk/nextjs';
 import questionMarkIcon from '@icons/question-mark.png';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -167,7 +161,7 @@ const Page = ({ params, searchParams }: Props) => {
 
   // load the buildings, searchMap, and floorPlanMap data
   useEffect(() => {
-    if (!dispatch || !isSignedIn) {
+    if (!dispatch) {
       return;
     }
 
@@ -189,7 +183,7 @@ const Page = ({ params, searchParams }: Props) => {
         console.error('Failed to fetch data:', error);
       },
     );
-  }, [dispatch, isSignedIn]);
+  }, [dispatch]);
 
   // extracting data from URL in the initial loading of the page
   // cmumaps.com/{buildingCode}-{roomName}?src={}&dst={}.
@@ -486,38 +480,28 @@ const Page = ({ params, searchParams }: Props) => {
   };
 
   return (
-    <>
-      <SignedOut>
-        <div className="flex h-screen items-center justify-center">
-          <SignIn />
-        </div>
-      </SignedOut>
+    <main className="relative h-screen">
+      <div className="absolute z-10">
+        <ToolBar map={mapRef.current} />
+      </div>
 
-      <SignedIn>
-        <main className="relative h-screen">
-          <div className="absolute z-10">
-            <ToolBar map={mapRef.current} />
-          </div>
+      <MapDisplay mapRef={mapRef} />
+      <div className="fixed z-10">{renderIcons()}</div>
 
-          <MapDisplay mapRef={mapRef} />
-          <div className="fixed z-10">{renderIcons()}</div>
-
-          <ToastContainer
-            position="top-right"
-            autoClose={2000}
-            hideProgressBar={true}
-            closeOnClick
-            theme="colored"
-            transition={Slide}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-end',
-            }}
-          />
-        </main>
-      </SignedIn>
-    </>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={true}
+        closeOnClick
+        theme="colored"
+        transition={Slide}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+        }}
+      />
+    </main>
   );
 };
 
