@@ -57,63 +57,72 @@ const FloorPlanView = ({ floor, floorPlan }: Props) => {
     }
   };
 
-  return Object.entries(floorPlan).map(([roomId, room]) => {
-    const roomColors = getRoomTypeDetails(room.type);
+  return Object.entries(floorPlan)
+    .filter(([_, room]) => {
+      return (
+        room.type == 'Restroom' ||
+        room.type == 'Corridor' ||
+        room.type == 'Stairs' ||
+        room.type == 'Elevator'
+      );
+    })
+    .map(([roomId, room]) => {
+      const roomColors = getRoomTypeDetails(room.type);
 
-    const isSelected = selectedRoom?.id === roomId;
+      const isSelected = selectedRoom?.id === roomId;
 
-    const showIcon = hasIcon(room) || isSelected;
+      const showIcon = hasIcon(room) || isSelected;
 
-    const pinlessRoomTypes = ['Default', 'Corridors'];
+      const pinlessRoomTypes = ['Default', 'Corridors'];
 
-    return (
-      <div key={room.id}>
-        <Polygon
-          points={room.coordinates}
-          selected={isSelected}
-          enabled={true}
-          fillColor={roomColors.background}
-          fillOpacity={1}
-          strokeColor={isSelected ? '#FFBD59' : roomColors.border}
-          strokeOpacity={1}
-          lineWidth={isSelected ? 5 : 1}
-          onSelect={handleSelectRoom(room)}
-          fillRule="nonzero"
-        />
+      return (
+        <div key={room.id}>
+          <Polygon
+            points={room.coordinates}
+            selected={isSelected}
+            enabled={true}
+            fillColor={roomColors.background}
+            fillOpacity={1}
+            strokeColor={isSelected ? '#FFBD59' : roomColors.border}
+            strokeOpacity={1}
+            lineWidth={isSelected ? 5 : 1}
+            onSelect={handleSelectRoom(room)}
+            fillRule="nonzero"
+          />
 
-        {focusedFloor?.buildingCode == floor.buildingCode &&
-          focusedFloor.level == floor.level &&
-          !isSelected && (
-            <Annotation
-              latitude={room.labelPosition.latitude}
-              longitude={room.labelPosition.longitude}
-              visible={showRoomNames || showIcon}
-              displayPriority={'low'}
-            >
-              <div
-                className="flex flex-col items-center"
-                onClick={(e) => {
-                  handleSelectRoom(room)();
-                  e.stopPropagation();
-                }}
+          {focusedFloor?.buildingCode == floor.buildingCode &&
+            focusedFloor.level == floor.level &&
+            !isSelected && (
+              <Annotation
+                latitude={room.labelPosition.latitude}
+                longitude={room.labelPosition.longitude}
+                visible={showRoomNames || showIcon}
+                displayPriority={'low'}
               >
-                {(!pinlessRoomTypes.includes(room.type) || isSelected) && (
-                  <RoomPin room={{ ...room, id: roomId }} />
-                )}
-                {(showRoomNames || room.alias) && (
-                  <div className="text-center text-sm leading-[1.1] tracking-wide">
-                    {showRoomNames && <p>{room.name}</p>}
-                    {room.alias && (
-                      <p className="w-16 text-wrap italic">{room.alias}</p>
-                    )}
-                  </div>
-                )}
-              </div>
-            </Annotation>
-          )}
-      </div>
-    );
-  });
+                <div
+                  className="flex flex-col items-center"
+                  onClick={(e) => {
+                    handleSelectRoom(room)();
+                    e.stopPropagation();
+                  }}
+                >
+                  {(!pinlessRoomTypes.includes(room.type) || isSelected) && (
+                    <RoomPin room={{ ...room, id: roomId }} />
+                  )}
+                  {(showRoomNames || room.alias) && (
+                    <div className="text-center text-sm leading-[1.1] tracking-wide">
+                      {showRoomNames && <p>{room.name}</p>}
+                      {room.alias && (
+                        <p className="w-16 text-wrap italic">{room.alias}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </Annotation>
+            )}
+        </div>
+      );
+    });
 };
 
 export default FloorPlanView;
