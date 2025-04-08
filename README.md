@@ -2,7 +2,7 @@
 
 This repository is now deprecated. Please refer to the new repository: [ScottyLabs/cmumaps](https://github.com/ScottyLabs/cmumaps)
 
-This project is inherently a client-side application, so we have moved away from Next.js to a more suitable architecture.
+This project is inherently a client-side application, so we have moved away from Next.js to a more suitable architecture. 
 
 ## Getting Started
 
