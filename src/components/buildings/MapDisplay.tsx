@@ -31,7 +31,6 @@ import { isInPolygonCoordinates } from '@/util/geometry';
 
 import useMapPosition from '../../hooks/useMapPosition';
 import NavLine from '../navigation/NavLine';
-import EventPin from '../shared/EventPin';
 import RoomPin from '../shared/RoomPin';
 import BuildingShape from './BuildingShape';
 import FloorPlanOverlay, {
